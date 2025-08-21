@@ -8,6 +8,8 @@ import AdminOverview from "@/components/dashboard/AdminOverview";
 import StartupManagement from "@/components/dashboard/StartupManagement";
 import ApplicationManagement from "@/components/dashboard/ApplicationManagement";
 import InvestorManagement from "@/components/dashboard/InvestorManagement";
+import AdminSettings from "@/components/dashboard/AdminSettings";
+import ProgramManagement from "@/components/dashboard/ProgramManagement";
 
 const AdminDashboard = () => {
   const { toast } = useToast();
@@ -49,14 +51,16 @@ const AdminDashboard = () => {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-9">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="startups">Startups</TabsTrigger>
             <TabsTrigger value="applications">Applications</TabsTrigger>
             <TabsTrigger value="investors">Investors</TabsTrigger>
             <TabsTrigger value="deals">Deals</TabsTrigger>
             <TabsTrigger value="content">Content</TabsTrigger>
+            <TabsTrigger value="programs">Programs</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -173,6 +177,10 @@ const AdminDashboard = () => {
             </div>
           </TabsContent>
 
+          <TabsContent value="programs" className="space-y-6">
+            <ProgramManagement />
+          </TabsContent>
+
           <TabsContent value="analytics" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card>
@@ -237,6 +245,10 @@ const AdminDashboard = () => {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          <TabsContent value="settings" className="space-y-6">
+            <AdminSettings />
           </TabsContent>
         </Tabs>
       </main>

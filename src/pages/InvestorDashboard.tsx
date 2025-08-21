@@ -1,4 +1,3 @@
-
 import Navigation from "@/components/Navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,10 @@ import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Plus, Eye, MessageSquare, TrendingUp, Star, DollarSign, Users, Target } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+
+import BlogManagement from "@/components/dashboard/BlogManagement";
+import PortfolioManagement from "@/components/dashboard/PortfolioManagement";
+import InvestorSettings from "@/components/dashboard/InvestorSettings";
 
 const InvestorDashboard = () => {
   const { toast } = useToast();
@@ -197,65 +200,17 @@ const InvestorDashboard = () => {
         </div>
 
         <Tabs defaultValue="portfolio" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
             <TabsTrigger value="pipeline">Deal Pipeline</TabsTrigger>
             <TabsTrigger value="opportunities">New Deals</TabsTrigger>
+            <TabsTrigger value="blogs">Blog Management</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
           <TabsContent value="portfolio" className="space-y-6">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold">Portfolio Companies</h2>
-              <Button variant="outline">Export Portfolio</Button>
-            </div>
-            <Card>
-              <CardContent className="p-0">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Company</TableHead>
-                      <TableHead>Sector</TableHead>
-                      <TableHead>Investment</TableHead>
-                      <TableHead>Current Value</TableHead>
-                      <TableHead>Growth</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {portfolioCompanies.map((company) => (
-                      <TableRow key={company.id}>
-                        <TableCell className="font-medium">{company.company}</TableCell>
-                        <TableCell>
-                          <Badge variant="outline">{company.sector}</Badge>
-                        </TableCell>
-                        <TableCell>{company.investmentAmount}</TableCell>
-                        <TableCell>{company.currentValuation}</TableCell>
-                        <TableCell>
-                          <span className="text-green-600 font-semibold">{company.growth}</span>
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant={company.status === "Active" ? "default" : "secondary"}>
-                            {company.status}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex space-x-2">
-                            <Button variant="outline" size="sm" onClick={() => handleViewPortfolio(company.id)}>
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                            <Button variant="outline" size="sm">
-                              <MessageSquare className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
+            <PortfolioManagement />
           </TabsContent>
 
           <TabsContent value="pipeline" className="space-y-6">
@@ -358,6 +313,10 @@ const InvestorDashboard = () => {
             </div>
           </TabsContent>
 
+          <TabsContent value="blogs" className="space-y-6">
+            <BlogManagement />
+          </TabsContent>
+
           <TabsContent value="analytics" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card className="bg-card-gradient border-border">
@@ -428,6 +387,10 @@ const InvestorDashboard = () => {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          <TabsContent value="settings" className="space-y-6">
+            <InvestorSettings />
           </TabsContent>
         </Tabs>
       </main>
