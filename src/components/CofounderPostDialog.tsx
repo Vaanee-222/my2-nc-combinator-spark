@@ -19,7 +19,9 @@ const CofounderPostDialog = ({ children }: CofounderPostDialogProps) => {
   const [open, setOpen] = useState(false);
   const [skills, setSkills] = useState<string[]>([]);
   const [newSkill, setNewSkill] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const [formData, setFormData] = useState({
     title: "",
