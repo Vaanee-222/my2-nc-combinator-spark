@@ -1,13 +1,15 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Hackathon from "./pages/Hackathon";
 import HackathonDetail from "./pages/HackathonDetail";
 import Incubation from "./pages/Incubation";
@@ -56,53 +58,59 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/hackathon" element={<Hackathon />} />
-          <Route path="/hackathon/:id" element={<HackathonDetail />} />
-          <Route path="/hackathon-detail/:id" element={<HackathonDetail />} />
-          <Route path="/incubation" element={<Incubation />} />
-          <Route path="/mvp-lab" element={<MVPLab />} />
-          <Route path="/inclab" element={<INCLab />} />
-          <Route path="/resources" element={<Resources />} />
-          <Route path="/partnership" element={<Partnership />} />
-          <Route path="/about" element={<AboutUs />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/startup-dashboard" element={<StartupDashboard />} />
-          <Route path="/admin-dashboard" element={<AdminDashboard />} />
-          <Route path="/investor-dashboard" element={<InvestorDashboard />} />
-          <Route path="/mentor-dashboard" element={<MentorDashboard />} />
-          <Route path="/user-dashboard" element={<UserDashboard />} />
-          <Route path="/cofounder-dashboard" element={<CofounderDashboard />} />
-          <Route path="/blog/:id" element={<BlogDetail />} />
-          <Route path="/requirements" element={<RequirementsDetail />} />
-          <Route path="/startup-directory" element={<StartupDirectory />} />
-          <Route path="/startup-profile/:id" element={<StartupProfile />} />
-          <Route path="/deals" element={<Deals />} />
-          <Route path="/blogs" element={<Blogs />} />
-          <Route path="/news" element={<News />} />
-          <Route path="/meet-cofounder" element={<MeetCofounder />} />
-          <Route path="/investor-centre" element={<InvestorCentre />} />
-          <Route path="/investor-profile/:id" element={<InvestorProfile />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/terms-conditions" element={<TermsConditions />} />
-          <Route path="/current-cohort" element={<CurrentCohort />} />
-          <Route path="/featured-startups" element={<FeaturedStartups />} />
-          <Route path="/philosophy" element={<Philosophy />} />
-          <Route path="/all-applications" element={<AllApplications />} />
-          <Route path="/program-details" element={<ProgramDetails />} />
-          <Route path="/consultation-booking" element={<ConsultationBooking />} />
-          <Route path="/success-stories" element={<SuccessStories />} />
-          <Route path="/become-mentor" element={<BecomeMentor />} />
-          <Route path="/past-events" element={<PastEvents />} />
-          <Route path="/cloud-credits" element={<CloudCredits />} />
-          <Route path="/grants-funding" element={<GrantsFunding />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<Index />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/hackathon" element={<Hackathon />} />
+            <Route path="/hackathon/:id" element={<HackathonDetail />} />
+            <Route path="/hackathon-detail/:id" element={<HackathonDetail />} />
+            <Route path="/incubation" element={<Incubation />} />
+            <Route path="/mvp-lab" element={<MVPLab />} />
+            <Route path="/inclab" element={<INCLab />} />
+            <Route path="/resources" element={<Resources />} />
+            <Route path="/partnership" element={<Partnership />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/blog/:id" element={<BlogDetail />} />
+            <Route path="/requirements" element={<RequirementsDetail />} />
+            <Route path="/startup-directory" element={<StartupDirectory />} />
+            <Route path="/startup-profile/:id" element={<StartupProfile />} />
+            <Route path="/deals" element={<Deals />} />
+            <Route path="/blogs" element={<Blogs />} />
+            <Route path="/news" element={<News />} />
+            <Route path="/meet-cofounder" element={<MeetCofounder />} />
+            <Route path="/investor-centre" element={<InvestorCentre />} />
+            <Route path="/investor-profile/:id" element={<InvestorProfile />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-conditions" element={<TermsConditions />} />
+            <Route path="/current-cohort" element={<CurrentCohort />} />
+            <Route path="/featured-startups" element={<FeaturedStartups />} />
+            <Route path="/philosophy" element={<Philosophy />} />
+            <Route path="/all-applications" element={<AllApplications />} />
+            <Route path="/program-details" element={<ProgramDetails />} />
+            <Route path="/consultation-booking" element={<ConsultationBooking />} />
+            <Route path="/success-stories" element={<SuccessStories />} />
+            <Route path="/become-mentor" element={<BecomeMentor />} />
+            <Route path="/past-events" element={<PastEvents />} />
+            <Route path="/cloud-credits" element={<CloudCredits />} />
+            <Route path="/grants-funding" element={<GrantsFunding />} />
+
+            {/* Protected dashboard routes */}
+            <Route path="/admin-dashboard" element={<ProtectedRoute allowedRoles={["admin"]}><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/startup-dashboard" element={<ProtectedRoute allowedRoles={["startup"]}><StartupDashboard /></ProtectedRoute>} />
+            <Route path="/investor-dashboard" element={<ProtectedRoute allowedRoles={["investor"]}><InvestorDashboard /></ProtectedRoute>} />
+            <Route path="/mentor-dashboard" element={<ProtectedRoute allowedRoles={["mentor"]}><MentorDashboard /></ProtectedRoute>} />
+            <Route path="/user-dashboard" element={<ProtectedRoute><UserDashboard /></ProtectedRoute>} />
+            <Route path="/cofounder-dashboard" element={<ProtectedRoute allowedRoles={["cofounder"]}><CofounderDashboard /></ProtectedRoute>} />
+
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
