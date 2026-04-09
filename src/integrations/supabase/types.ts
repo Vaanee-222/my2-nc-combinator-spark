@@ -14,16 +14,273 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      applications: {
+        Row: {
+          applicant_name: string
+          created_at: string
+          description: string | null
+          email: string
+          id: string
+          phone: string | null
+          program: string
+          startup_name: string | null
+          status: string
+          user_id: string | null
+        }
+        Insert: {
+          applicant_name: string
+          created_at?: string
+          description?: string | null
+          email: string
+          id?: string
+          phone?: string | null
+          program: string
+          startup_name?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Update: {
+          applicant_name?: string
+          created_at?: string
+          description?: string | null
+          email?: string
+          id?: string
+          phone?: string | null
+          program?: string
+          startup_name?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      cofounder_requests: {
+        Row: {
+          commitment: string | null
+          contact_email: string | null
+          created_at: string
+          description: string | null
+          equity_offered: string | null
+          id: string
+          location: string | null
+          skills_needed: string | null
+          status: string
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          commitment?: string | null
+          contact_email?: string | null
+          created_at?: string
+          description?: string | null
+          equity_offered?: string | null
+          id?: string
+          location?: string | null
+          skills_needed?: string | null
+          status?: string
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          commitment?: string | null
+          contact_email?: string | null
+          created_at?: string
+          description?: string | null
+          equity_offered?: string | null
+          id?: string
+          location?: string | null
+          skills_needed?: string | null
+          status?: string
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      hackathon_registrations: {
+        Row: {
+          age: string | null
+          city: string | null
+          college: string | null
+          created_at: string
+          email: string
+          experience: string | null
+          frameworks: string | null
+          full_name: string
+          github_profile: string | null
+          graduation: string | null
+          id: string
+          phone: string | null
+          portfolio: string | null
+          programming_languages: string | null
+          specialization: string | null
+          status: string
+          user_id: string | null
+        }
+        Insert: {
+          age?: string | null
+          city?: string | null
+          college?: string | null
+          created_at?: string
+          email: string
+          experience?: string | null
+          frameworks?: string | null
+          full_name: string
+          github_profile?: string | null
+          graduation?: string | null
+          id?: string
+          phone?: string | null
+          portfolio?: string | null
+          programming_languages?: string | null
+          specialization?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Update: {
+          age?: string | null
+          city?: string | null
+          college?: string | null
+          created_at?: string
+          email?: string
+          experience?: string | null
+          frameworks?: string | null
+          full_name?: string
+          github_profile?: string | null
+          graduation?: string | null
+          id?: string
+          phone?: string | null
+          portfolio?: string | null
+          programming_languages?: string | null
+          specialization?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      incubation_applications: {
+        Row: {
+          created_at: string
+          description: string | null
+          email: string
+          founder_name: string
+          funding_status: string | null
+          id: string
+          industry: string | null
+          phone: string | null
+          pitch_deck_url: string | null
+          stage: string | null
+          startup_name: string | null
+          status: string
+          team_size: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          email: string
+          founder_name: string
+          funding_status?: string | null
+          id?: string
+          industry?: string | null
+          phone?: string | null
+          pitch_deck_url?: string | null
+          stage?: string | null
+          startup_name?: string | null
+          status?: string
+          team_size?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          email?: string
+          founder_name?: string
+          funding_status?: string | null
+          id?: string
+          industry?: string | null
+          phone?: string | null
+          pitch_deck_url?: string | null
+          stage?: string | null
+          startup_name?: string | null
+          status?: string
+          team_size?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          city: string | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          city?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          city?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "startup" | "investor" | "mentor" | "cofounder"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +407,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "startup", "investor", "mentor", "cofounder"],
+    },
   },
 } as const
