@@ -45,25 +45,34 @@ const CofounderPostDialog = ({ children }: CofounderPostDialogProps) => {
     setSkills(skills.filter(skill => skill !== skillToRemove));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Co-founder Requirement Posted",
-      description: "Your co-founder requirement has been posted successfully.",
-    });
-    setOpen(false);
-    // Reset form
-    setFormData({
-      title: "",
-      role: "",
-      description: "",
-      experience: "",
-      equity: "",
-      location: "",
-      commitment: "",
-      salary: ""
-    });
-    setSkills([]);
+    if (!user) {
+      toast({ title: "Please log in", description: "You need to be logged in to post.", variant: "destructive" });
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase.from("cofounder_requests").insert({
+        user_id: user.id,
+        title: formData.title,
+        description: `${formData.description}\nRole: ${formData.role}\nExperience: ${formData.experience}`,
+        skills_needed: skills.join(", "),
+        equity_offered: formData.equity,
+        commitment: formData.commitment,
+        location: formData.location,
+        contact_email: user.email || "",
+      });
+      if (error) throw error;
+      toast({ title: "Co-founder Requirement Posted ✅", description: "Your requirement has been posted successfully." });
+      setOpen(false);
+      setFormData({ title: "", role: "", description: "", experience: "", equity: "", location: "", commitment: "", salary: "" });
+      setSkills([]);
+    } catch (error: any) {
+      toast({ title: "Post Failed", description: error.message, variant: "destructive" });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
