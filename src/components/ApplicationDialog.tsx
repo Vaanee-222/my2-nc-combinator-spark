@@ -13,6 +13,8 @@ interface ApplicationDialogProps {
   children: React.ReactNode;
   program?: string;
   title?: string;
+  type?: string;
+  description?: string;
 }
 
 const ApplicationDialog = ({ children, program = "INClab", title }: ApplicationDialogProps) => {
