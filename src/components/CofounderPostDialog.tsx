@@ -8,6 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CofounderPostDialogProps {
   children: React.ReactNode;
@@ -17,7 +19,9 @@ const CofounderPostDialog = ({ children }: CofounderPostDialogProps) => {
   const [open, setOpen] = useState(false);
   const [skills, setSkills] = useState<string[]>([]);
   const [newSkill, setNewSkill] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const [formData, setFormData] = useState({
     title: "",
@@ -41,25 +45,34 @@ const CofounderPostDialog = ({ children }: CofounderPostDialogProps) => {
     setSkills(skills.filter(skill => skill !== skillToRemove));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Co-founder Requirement Posted",
-      description: "Your co-founder requirement has been posted successfully.",
-    });
-    setOpen(false);
-    // Reset form
-    setFormData({
-      title: "",
-      role: "",
-      description: "",
-      experience: "",
-      equity: "",
-      location: "",
-      commitment: "",
-      salary: ""
-    });
-    setSkills([]);
+    if (!user) {
+      toast({ title: "Please log in", description: "You need to be logged in to post.", variant: "destructive" });
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase.from("cofounder_requests").insert({
+        user_id: user.id,
+        title: formData.title,
+        description: `${formData.description}\nRole: ${formData.role}\nExperience: ${formData.experience}`,
+        skills_needed: skills.join(", "),
+        equity_offered: formData.equity,
+        commitment: formData.commitment,
+        location: formData.location,
+        contact_email: user.email || "",
+      });
+      if (error) throw error;
+      toast({ title: "Co-founder Requirement Posted ✅", description: "Your requirement has been posted successfully." });
+      setOpen(false);
+      setFormData({ title: "", role: "", description: "", experience: "", equity: "", location: "", commitment: "", salary: "" });
+      setSkills([]);
+    } catch (error: any) {
+      toast({ title: "Post Failed", description: error.message, variant: "destructive" });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

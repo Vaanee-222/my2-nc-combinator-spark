@@ -7,6 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 
 interface IncApplicationDialogProps {
   children: React.ReactNode;
@@ -14,45 +16,44 @@ interface IncApplicationDialogProps {
 
 const IncApplicationDialog = ({ children }: IncApplicationDialogProps) => {
   const [open, setOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
-    startupName: "",
-    founderName: "",
-    email: "",
-    phone: "",
-    stage: "",
-    sector: "",
-    description: "",
-    problem: "",
-    solution: "",
-    traction: "",
-    funding: "",
-    teamSize: "",
-    website: ""
+    startupName: "", founderName: "", email: "", phone: "",
+    stage: "", sector: "", description: "", problem: "",
+    solution: "", traction: "", funding: "", teamSize: "", website: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Application Submitted",
-      description: "Your Inc Combinator application has been submitted successfully. We'll review it within 7 days.",
-    });
-    setOpen(false);
-    setFormData({
-      startupName: "",
-      founderName: "",
-      email: "",
-      phone: "",
-      stage: "",
-      sector: "",
-      description: "",
-      problem: "",
-      solution: "",
-      traction: "",
-      funding: "",
-      teamSize: "",
-      website: ""
-    });
+    if (!user) {
+      toast({ title: "Please log in", description: "You need to be logged in to apply.", variant: "destructive" });
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase.from("incubation_applications").insert({
+        user_id: user.id,
+        founder_name: formData.founderName,
+        email: formData.email,
+        phone: formData.phone,
+        startup_name: formData.startupName,
+        industry: formData.sector,
+        stage: formData.stage,
+        description: `${formData.description}\nProblem: ${formData.problem}\nSolution: ${formData.solution}\nTraction: ${formData.traction}`,
+        team_size: formData.teamSize,
+        funding_status: formData.funding,
+      });
+      if (error) throw error;
+      toast({ title: "Application Submitted ✅", description: "Your incubation application has been submitted." });
+      setOpen(false);
+      setFormData({ startupName: "", founderName: "", email: "", phone: "", stage: "", sector: "", description: "", problem: "", solution: "", traction: "", funding: "", teamSize: "", website: "" });
+    } catch (error: any) {
+      toast({ title: "Submission Failed", description: error.message, variant: "destructive" });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
