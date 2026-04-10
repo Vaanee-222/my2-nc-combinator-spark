@@ -1,89 +1,82 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Building2, Users, TrendingUp, DollarSign, FileText } from "lucide-react";
+import { Building2, Users, FileText, Code, Rocket } from "lucide-react";
+import { format } from "date-fns";
 
 interface AdminOverviewProps {
   stats: {
-    totalStartups: number;
-    activeApplications: number;
-    totalInvestors: number;
-    totalDeals: number;
-    monthlyGrowth: number;
+    totalApplications: number;
+    totalHackathonRegs: number;
+    totalIncubationApps: number;
+    totalCofounderReqs: number;
+    totalUsers: number;
   };
-  recentApplications: Array<{
-    id: number;
-    startup: string;
-    founder: string;
-    stage: string;
-    status: string;
-    date: string;
-  }>;
-  topStartups: Array<{
-    id: number;
-    name: string;
-    sector: string;
-    valuation: string;
-    growth: string;
-    status: string;
-  }>;
+  applications: any[];
+  hackathonRegs: any[];
+  incubationApps: any[];
+  loading: boolean;
 }
 
-const AdminOverview = ({ stats, recentApplications, topStartups }: AdminOverviewProps) => {
+const AdminOverview = ({ stats, applications, hackathonRegs, incubationApps, loading }: AdminOverviewProps) => {
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Startups</CardTitle>
-            <Building2 className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-primary">{stats.totalStartups}</div>
-            <p className="text-xs text-muted-foreground">+{stats.monthlyGrowth}% from last month</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Applications</CardTitle>
+            <CardTitle className="text-sm font-medium">Applications</CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">{stats.activeApplications}</div>
-            <p className="text-xs text-muted-foreground">Pending review</p>
+            <div className="text-2xl font-bold text-primary">{stats.totalApplications}</div>
+            <p className="text-xs text-muted-foreground">Program applications</p>
           </CardContent>
         </Card>
-
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Investors</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Hackathon Regs</CardTitle>
+            <Code className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">{stats.totalInvestors}</div>
-            <p className="text-xs text-muted-foreground">Verified partners</p>
+            <div className="text-2xl font-bold text-primary">{stats.totalHackathonRegs}</div>
+            <p className="text-xs text-muted-foreground">Total registrations</p>
           </CardContent>
         </Card>
-
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Deals</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Incubation</CardTitle>
+            <Rocket className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">{stats.totalDeals}</div>
-            <p className="text-xs text-muted-foreground">Live partnerships</p>
+            <div className="text-2xl font-bold text-primary">{stats.totalIncubationApps}</div>
+            <p className="text-xs text-muted-foreground">Incubation apps</p>
           </CardContent>
         </Card>
-
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Community</CardTitle>
+            <CardTitle className="text-sm font-medium">Co-founder</CardTitle>
+            <Building2 className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-primary">{stats.totalCofounderReqs}</div>
+            <p className="text-xs text-muted-foreground">Active requests</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Users</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">5.2K</div>
-            <p className="text-xs text-muted-foreground">Active members</p>
+            <div className="text-2xl font-bold text-primary">{stats.totalUsers}</div>
+            <p className="text-xs text-muted-foreground">Registered users</p>
           </CardContent>
         </Card>
       </div>
@@ -92,50 +85,51 @@ const AdminOverview = ({ stats, recentApplications, topStartups }: AdminOverview
         <Card>
           <CardHeader>
             <CardTitle>Recent Applications</CardTitle>
-            <CardDescription>Latest startup applications for review</CardDescription>
+            <CardDescription>Latest program applications</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {recentApplications.map((app) => (
+              {applications.slice(0, 5).map((app) => (
                 <div key={app.id} className="flex items-center justify-between p-4 border rounded-lg">
                   <div>
-                    <h4 className="font-medium">{app.startup}</h4>
-                    <p className="text-sm text-muted-foreground">{app.founder} • {app.stage}</p>
+                    <h4 className="font-medium">{app.startup_name || app.applicant_name}</h4>
+                    <p className="text-sm text-muted-foreground">{app.applicant_name} • {app.program}</p>
                   </div>
                   <div className="text-right">
-                    <Badge variant={app.status === "Approved" ? "default" : app.status === "Under Review" ? "secondary" : "outline"}>
+                    <Badge variant={app.status === "approved" ? "default" : app.status === "under_review" ? "secondary" : "outline"}>
                       {app.status}
                     </Badge>
-                    <p className="text-xs text-muted-foreground mt-1">{app.date}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{format(new Date(app.created_at), "MMM d, yyyy")}</p>
                   </div>
                 </div>
               ))}
+              {applications.length === 0 && <p className="text-muted-foreground text-center py-4">No applications yet</p>}
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Top Performing Startups</CardTitle>
-            <CardDescription>Based on growth metrics and milestones</CardDescription>
+            <CardTitle>Recent Hackathon Registrations</CardTitle>
+            <CardDescription>Latest hackathon sign-ups</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {topStartups.map((startup, index) => (
-                <div key={startup.id} className="flex items-center space-x-4">
-                  <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                    <span className="text-sm font-bold text-primary">#{index + 1}</span>
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-medium">{startup.name}</h4>
-                    <p className="text-sm text-muted-foreground">{startup.sector} • {startup.valuation}</p>
+              {hackathonRegs.slice(0, 5).map((reg) => (
+                <div key={reg.id} className="flex items-center justify-between p-4 border rounded-lg">
+                  <div>
+                    <h4 className="font-medium">{reg.full_name}</h4>
+                    <p className="text-sm text-muted-foreground">{reg.city || "—"} • {reg.specialization || "General"}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-medium text-green-600">{startup.growth}</p>
-                    <Badge variant="outline">{startup.status}</Badge>
+                    <Badge variant={reg.status === "approved" ? "default" : "outline"}>
+                      {reg.status}
+                    </Badge>
+                    <p className="text-xs text-muted-foreground mt-1">{format(new Date(reg.created_at), "MMM d, yyyy")}</p>
                   </div>
                 </div>
               ))}
+              {hackathonRegs.length === 0 && <p className="text-muted-foreground text-center py-4">No registrations yet</p>}
             </div>
           </CardContent>
         </Card>
