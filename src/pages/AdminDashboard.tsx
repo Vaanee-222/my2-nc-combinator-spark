@@ -1,9 +1,11 @@
+import { useState, useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import AdminOverview from "@/components/dashboard/AdminOverview";
 import StartupManagement from "@/components/dashboard/StartupManagement";
 import ApplicationManagement from "@/components/dashboard/ApplicationManagement";
@@ -13,30 +15,51 @@ import ProgramManagement from "@/components/dashboard/ProgramManagement";
 
 const AdminDashboard = () => {
   const { toast } = useToast();
-  const stats = {
-    totalStartups: 1247,
-    activeApplications: 89,
-    totalInvestors: 156,
-    totalDeals: 234,
-    monthlyGrowth: 12.5
+  const [applications, setApplications] = useState<any[]>([]);
+  const [hackathonRegs, setHackathonRegs] = useState<any[]>([]);
+  const [incubationApps, setIncubationApps] = useState<any[]>([]);
+  const [cofounderReqs, setCofounderReqs] = useState<any[]>([]);
+  const [profiles, setProfiles] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchData = async () => {
+    setLoading(true);
+    const [appsRes, hackRes, incRes, cofRes, profRes] = await Promise.all([
+      supabase.from("applications").select("*").order("created_at", { ascending: false }),
+      supabase.from("hackathon_registrations").select("*").order("created_at", { ascending: false }),
+      supabase.from("incubation_applications").select("*").order("created_at", { ascending: false }),
+      supabase.from("cofounder_requests").select("*").order("created_at", { ascending: false }),
+      supabase.from("profiles").select("*"),
+    ]);
+    setApplications(appsRes.data ?? []);
+    setHackathonRegs(hackRes.data ?? []);
+    setIncubationApps(incRes.data ?? []);
+    setCofounderReqs(cofRes.data ?? []);
+    setProfiles(profRes.data ?? []);
+    setLoading(false);
   };
 
-  const recentApplications = [
-    { id: 1, startup: "AI Healthcare Solutions", founder: "Priya Sharma", stage: "Seed", status: "Under Review", date: "Dec 20, 2024" },
-    { id: 2, startup: "GreenTech Innovations", founder: "Rahul Verma", stage: "Pre-Seed", status: "Approved", date: "Dec 19, 2024" },
-    { id: 3, startup: "EdTech Platform", founder: "Anita Singh", stage: "Series A", status: "Pending", date: "Dec 18, 2024" }
+  useEffect(() => { fetchData(); }, []);
+
+  const stats = {
+    totalApplications: applications.length,
+    totalHackathonRegs: hackathonRegs.length,
+    totalIncubationApps: incubationApps.length,
+    totalCofounderReqs: cofounderReqs.length,
+    totalUsers: profiles.length,
+  };
+
+  // Static data kept for investors/deals tabs
+  const investors = [
+    { id: 1, name: "Sequoia Capital India", checkSize: "₹5-50Cr", portfolio: 45, stage: "Series A+", status: "Active" },
+    { id: 2, name: "Accel Partners", checkSize: "₹2-25Cr", portfolio: 38, stage: "Seed-Series B", status: "Active" },
+    { id: 3, name: "Matrix Partners", checkSize: "₹1-15Cr", portfolio: 52, stage: "Pre-Seed-Series A", status: "Active" },
   ];
 
   const topStartups = [
     { id: 1, name: "AI Healthcare Solutions", sector: "HealthTech", valuation: "₹50Cr", growth: "+45%", status: "Series A" },
     { id: 2, name: "GreenTech Innovations", sector: "CleanTech", valuation: "₹30Cr", growth: "+38%", status: "Seed" },
-    { id: 3, name: "EdTech Platform", sector: "Education", valuation: "₹25Cr", growth: "+32%", status: "Pre-Seed" }
-  ];
-
-  const investors = [
-    { id: 1, name: "Sequoia Capital India", checkSize: "₹5-50Cr", portfolio: 45, stage: "Series A+", status: "Active" },
-    { id: 2, name: "Accel Partners", checkSize: "₹2-25Cr", portfolio: 38, stage: "Seed-Series B", status: "Active" },
-    { id: 3, name: "Matrix Partners", checkSize: "₹1-15Cr", portfolio: 52, stage: "Pre-Seed-Series A", status: "Active" }
+    { id: 3, name: "EdTech Platform", sector: "Education", valuation: "₹25Cr", growth: "+32%", status: "Pre-Seed" },
   ];
 
   return (
@@ -53,198 +76,52 @@ const AdminDashboard = () => {
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList className="grid w-full grid-cols-9">
             <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="startups">Startups</TabsTrigger>
             <TabsTrigger value="applications">Applications</TabsTrigger>
+            <TabsTrigger value="hackathons">Hackathons</TabsTrigger>
+            <TabsTrigger value="incubation">Incubation</TabsTrigger>
+            <TabsTrigger value="cofounders">Co-founders</TabsTrigger>
+            <TabsTrigger value="startups">Startups</TabsTrigger>
             <TabsTrigger value="investors">Investors</TabsTrigger>
-            <TabsTrigger value="deals">Deals</TabsTrigger>
-            <TabsTrigger value="content">Content</TabsTrigger>
             <TabsTrigger value="programs">Programs</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
-            <AdminOverview 
-              stats={stats} 
-              recentApplications={recentApplications} 
-              topStartups={topStartups} 
+            <AdminOverview
+              stats={stats}
+              applications={applications}
+              hackathonRegs={hackathonRegs}
+              incubationApps={incubationApps}
+              loading={loading}
             />
+          </TabsContent>
+
+          <TabsContent value="applications" className="space-y-6">
+            <ApplicationManagement applications={applications} onRefresh={fetchData} />
+          </TabsContent>
+
+          <TabsContent value="hackathons" className="space-y-6">
+            <HackathonManagement registrations={hackathonRegs} onRefresh={fetchData} />
+          </TabsContent>
+
+          <TabsContent value="incubation" className="space-y-6">
+            <IncubationManagement applications={incubationApps} onRefresh={fetchData} />
+          </TabsContent>
+
+          <TabsContent value="cofounders" className="space-y-6">
+            <CofounderManagement requests={cofounderReqs} />
           </TabsContent>
 
           <TabsContent value="startups" className="space-y-6">
             <StartupManagement startups={topStartups} />
           </TabsContent>
 
-          <TabsContent value="applications" className="space-y-6">
-            <ApplicationManagement applications={recentApplications} />
-          </TabsContent>
-
           <TabsContent value="investors" className="space-y-6">
             <InvestorManagement investors={investors} />
           </TabsContent>
 
-          <TabsContent value="deals" className="space-y-6">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold">Deal Management</h2>
-              <Button>
-                <Plus className="mr-2 h-4 w-4" />
-                Create New Deal
-              </Button>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Active Deals</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-primary mb-2">42</div>
-                  <p className="text-sm text-muted-foreground">Currently live deals</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Total Value</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-primary mb-2">₹12.5L</div>
-                  <p className="text-sm text-muted-foreground">Worth of benefits</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Claims This Month</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-primary mb-2">156</div>
-                  <p className="text-sm text-muted-foreground">+23% from last month</p>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="content" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Blog Posts</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-primary mb-2">24</div>
-                  <p className="text-sm text-muted-foreground">Published this month</p>
-                  <Button className="w-full mt-4" variant="outline" onClick={() => {
-                    toast({
-                      title: "Blog Management",
-                      description: "Opening blog management interface...",
-                    });
-                  }}>Manage Blogs</Button>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>News Articles</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-primary mb-2">18</div>
-                  <p className="text-sm text-muted-foreground">Latest updates</p>
-                  <Button className="w-full mt-4" variant="outline" onClick={() => {
-                    toast({
-                      title: "News Management",
-                      description: "Opening news management interface...",
-                    });
-                  }}>Manage News</Button>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Directory</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-primary mb-2">1,247</div>
-                  <p className="text-sm text-muted-foreground">Listed startups</p>
-                  <Button className="w-full mt-4" variant="outline">Manage Directory</Button>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Co-founder Posts</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-primary mb-2">89</div>
-                  <p className="text-sm text-muted-foreground">Active listings</p>
-                  <Button className="w-full mt-4" variant="outline">Manage Posts</Button>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
           <TabsContent value="programs" className="space-y-6">
             <ProgramManagement />
-          </TabsContent>
-
-          <TabsContent value="analytics" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Growth Metrics</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex justify-between">
-                      <span>New Startups</span>
-                      <span className="font-bold text-green-600">+12.5%</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Application Rate</span>
-                      <span className="font-bold text-green-600">+8.3%</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Investor Engagement</span>
-                      <span className="font-bold text-green-600">+15.7%</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Deal Claims</span>
-                      <span className="font-bold text-green-600">+23.1%</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Top Sectors</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <span>FinTech</span>
-                      <div className="flex items-center space-x-2">
-                        <div className="h-2 w-20 bg-muted rounded-full">
-                          <div className="h-2 w-16 bg-primary rounded-full"></div>
-                        </div>
-                        <span className="text-sm">32%</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span>HealthTech</span>
-                      <div className="flex items-center space-x-2">
-                        <div className="h-2 w-20 bg-muted rounded-full">
-                          <div className="h-2 w-12 bg-orange-400 rounded-full"></div>
-                        </div>
-                        <span className="text-sm">24%</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span>EdTech</span>
-                      <div className="flex items-center space-x-2">
-                        <div className="h-2 w-20 bg-muted rounded-full">
-                          <div className="h-2 w-8 bg-green-400 rounded-full"></div>
-                        </div>
-                        <span className="text-sm">18%</span>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">
@@ -252,6 +129,200 @@ const AdminDashboard = () => {
           </TabsContent>
         </Tabs>
       </main>
+    </div>
+  );
+};
+
+// ── Hackathon Management Tab ──
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+const HackathonManagement = ({ registrations, onRefresh }: { registrations: any[]; onRefresh: () => void }) => {
+  const { toast } = useToast();
+  const [filter, setFilter] = useState("all");
+
+  const filtered = filter === "all" ? registrations : registrations.filter(r => r.status === filter);
+
+  const updateStatus = async (id: string, status: string) => {
+    const { error } = await supabase.from("hackathon_registrations").update({ status }).eq("id", id);
+    if (error) { toast({ title: "Error", description: error.message, variant: "destructive" }); return; }
+    toast({ title: "Status Updated", description: `Registration marked as ${status}` });
+    onRefresh();
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">Hackathon Registrations ({registrations.length})</h2>
+        <Select value={filter} onValueChange={setFilter}>
+          <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All</SelectItem>
+            <SelectItem value="pending">Pending</SelectItem>
+            <SelectItem value="approved">Approved</SelectItem>
+            <SelectItem value="rejected">Rejected</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <Card><CardContent className="p-0">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>City</TableHead>
+              <TableHead>College</TableHead>
+              <TableHead>Languages</TableHead>
+              <TableHead>Experience</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filtered.map((reg) => (
+              <TableRow key={reg.id}>
+                <TableCell className="font-medium">{reg.full_name}</TableCell>
+                <TableCell>{reg.email}</TableCell>
+                <TableCell>{reg.city || "—"}</TableCell>
+                <TableCell>{reg.college || "—"}</TableCell>
+                <TableCell className="max-w-[150px] truncate">{reg.programming_languages || "—"}</TableCell>
+                <TableCell>{reg.experience || "—"}</TableCell>
+                <TableCell>
+                  <Badge variant={reg.status === "approved" ? "default" : reg.status === "rejected" ? "destructive" : "secondary"}>
+                    {reg.status}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <div className="flex space-x-1">
+                    <Button size="sm" variant="outline" onClick={() => updateStatus(reg.id, "approved")}>Approve</Button>
+                    <Button size="sm" variant="outline" onClick={() => updateStatus(reg.id, "rejected")}>Reject</Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+            {filtered.length === 0 && (
+              <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">No registrations found</TableCell></TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </CardContent></Card>
+    </div>
+  );
+};
+
+// ── Incubation Management Tab ──
+const IncubationManagement = ({ applications, onRefresh }: { applications: any[]; onRefresh: () => void }) => {
+  const { toast } = useToast();
+  const [filter, setFilter] = useState("all");
+
+  const filtered = filter === "all" ? applications : applications.filter(a => a.status === filter);
+
+  const updateStatus = async (id: string, status: string) => {
+    const { error } = await supabase.from("incubation_applications").update({ status }).eq("id", id);
+    if (error) { toast({ title: "Error", description: error.message, variant: "destructive" }); return; }
+    toast({ title: "Status Updated", description: `Application marked as ${status}` });
+    onRefresh();
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">Incubation Applications ({applications.length})</h2>
+        <Select value={filter} onValueChange={setFilter}>
+          <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All</SelectItem>
+            <SelectItem value="pending">Pending</SelectItem>
+            <SelectItem value="approved">Approved</SelectItem>
+            <SelectItem value="rejected">Rejected</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <Card><CardContent className="p-0">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Founder</TableHead>
+              <TableHead>Startup</TableHead>
+              <TableHead>Industry</TableHead>
+              <TableHead>Stage</TableHead>
+              <TableHead>Team Size</TableHead>
+              <TableHead>Funding</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filtered.map((app) => (
+              <TableRow key={app.id}>
+                <TableCell className="font-medium">{app.founder_name}</TableCell>
+                <TableCell>{app.startup_name || "—"}</TableCell>
+                <TableCell>{app.industry || "—"}</TableCell>
+                <TableCell>{app.stage || "—"}</TableCell>
+                <TableCell>{app.team_size || "—"}</TableCell>
+                <TableCell>{app.funding_status || "—"}</TableCell>
+                <TableCell>
+                  <Badge variant={app.status === "approved" ? "default" : app.status === "rejected" ? "destructive" : "secondary"}>
+                    {app.status}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <div className="flex space-x-1">
+                    <Button size="sm" variant="outline" onClick={() => updateStatus(app.id, "approved")}>Approve</Button>
+                    <Button size="sm" variant="outline" onClick={() => updateStatus(app.id, "rejected")}>Reject</Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+            {filtered.length === 0 && (
+              <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">No applications found</TableCell></TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </CardContent></Card>
+    </div>
+  );
+};
+
+// ── Co-founder Management Tab ──
+const CofounderManagement = ({ requests }: { requests: any[] }) => {
+  return (
+    <div className="space-y-6">
+      <h2 className="text-2xl font-bold">Co-founder Requests ({requests.length})</h2>
+      <Card><CardContent className="p-0">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Title</TableHead>
+              <TableHead>Skills Needed</TableHead>
+              <TableHead>Equity</TableHead>
+              <TableHead>Commitment</TableHead>
+              <TableHead>Location</TableHead>
+              <TableHead>Contact</TableHead>
+              <TableHead>Status</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {requests.map((req) => (
+              <TableRow key={req.id}>
+                <TableCell className="font-medium">{req.title}</TableCell>
+                <TableCell className="max-w-[150px] truncate">{req.skills_needed || "—"}</TableCell>
+                <TableCell>{req.equity_offered || "—"}</TableCell>
+                <TableCell>{req.commitment || "—"}</TableCell>
+                <TableCell>{req.location || "—"}</TableCell>
+                <TableCell>{req.contact_email || "—"}</TableCell>
+                <TableCell>
+                  <Badge variant={req.status === "active" ? "default" : "secondary"}>{req.status}</Badge>
+                </TableCell>
+              </TableRow>
+            ))}
+            {requests.length === 0 && (
+              <TableRow><TableCell colSpan={7} className="text-center py-8 text-muted-foreground">No requests found</TableCell></TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </CardContent></Card>
     </div>
   );
 };
