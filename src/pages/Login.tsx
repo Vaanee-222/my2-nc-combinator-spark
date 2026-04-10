@@ -25,6 +25,8 @@ const Login = () => {
   const { toast } = useToast();
   const { signIn } = useAuth();
 
+  const { userRole } = useAuth();
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
