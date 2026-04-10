@@ -25,15 +25,29 @@ const Login = () => {
   const { toast } = useToast();
   const { signIn } = useAuth();
 
-  const { userRole } = useAuth();
+  const { userRole, user } = useAuth();
+
+  const getDashboardPath = (role: string | null) => {
+    const map: Record<string, string> = {
+      admin: "/admin-dashboard", startup: "/startup-dashboard",
+      investor: "/investor-dashboard", mentor: "/mentor-dashboard",
+      cofounder: "/cofounder-dashboard",
+    };
+    return map[role || ""] || "/user-dashboard";
+  };
+
+  useEffect(() => {
+    if (user && userRole) {
+      navigate(getDashboardPath(userRole), { replace: true });
+    }
+  }, [user, userRole, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     try {
       await signIn(email, password);
-      toast({ title: "Login Successful", description: "Welcome back!" });
-      navigate("/");
+      toast({ title: "Login Successful", description: "Redirecting to dashboard..." });
     } catch (error: any) {
       toast({ title: "Login Failed", description: error.message || "Invalid credentials", variant: "destructive" });
     } finally {
