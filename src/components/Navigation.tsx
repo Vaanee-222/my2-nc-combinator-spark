@@ -15,6 +15,7 @@ const Navigation = () => {
     { name: "Incubation", href: "/incubation" },
     { name: "MVP Lab", href: "/mvp-lab" },
     { name: "INC Lab", href: "/inclab" },
+    { name: "AI Agents", href: "/ai-agents" },
   ];
 
   const getDashboardPath = () => {
