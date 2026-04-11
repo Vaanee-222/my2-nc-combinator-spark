@@ -2,13 +2,14 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { Link } from "react-router-dom";
 import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from "lucide-react";
 
 const Footer = () => {
   return (
     <footer className="bg-muted/30 border-t">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent">
@@ -18,18 +19,10 @@ const Footer = () => {
               India's leading startup accelerator and incubator, empowering entrepreneurs to build the next generation of innovative companies.
             </p>
             <div className="flex space-x-4">
-              <Button variant="ghost" size="icon">
-                <Facebook className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" size="icon">
-                <Twitter className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" size="icon">
-                <Instagram className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" size="icon">
-                <Linkedin className="h-4 w-4" />
-              </Button>
+              <Button variant="ghost" size="icon"><Facebook className="h-4 w-4" /></Button>
+              <Button variant="ghost" size="icon"><Twitter className="h-4 w-4" /></Button>
+              <Button variant="ghost" size="icon"><Instagram className="h-4 w-4" /></Button>
+              <Button variant="ghost" size="icon"><Linkedin className="h-4 w-4" /></Button>
             </div>
           </div>
 
@@ -37,12 +30,12 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Quick Links</h3>
             <div className="space-y-2">
-              <a href="/about" className="block text-sm text-muted-foreground hover:text-primary transition-colors">About Us</a>
-              <a href="/incubation" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Incubation</a>
-              <a href="/hackathon" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Hackathons</a>
-              <a href="/investor-centre" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Investor Centre</a>
-              <a href="/startup-directory" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Startup Directory</a>
-              <a href="/news" className="block text-sm text-muted-foreground hover:text-primary transition-colors">News</a>
+              <Link to="/about" className="block text-sm text-muted-foreground hover:text-primary transition-colors">About Us</Link>
+              <Link to="/incubation" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Incubation</Link>
+              <Link to="/hackathon" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Hackathons</Link>
+              <Link to="/investor-centre" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Investor Centre</Link>
+              <Link to="/startup-directory" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Startup Directory</Link>
+              <Link to="/news" className="block text-sm text-muted-foreground hover:text-primary transition-colors">News</Link>
             </div>
           </div>
 
@@ -50,12 +43,25 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Programs</h3>
             <div className="space-y-2">
-              <a href="/mvp-lab" className="block text-sm text-muted-foreground hover:text-primary transition-colors">MVP Lab</a>
-              <a href="/inclab" className="block text-sm text-muted-foreground hover:text-primary transition-colors">INC Lab</a>
-              <a href="/meet-cofounder" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Meet Co-founder</a>
-              <a href="/resources" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Resources</a>
-              <a href="/blogs" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Blogs</a>
-              <a href="/partnership" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Partnership</a>
+              <Link to="/mvp-lab" className="block text-sm text-muted-foreground hover:text-primary transition-colors">MVP Lab</Link>
+              <Link to="/inclab" className="block text-sm text-muted-foreground hover:text-primary transition-colors">INC Lab</Link>
+              <Link to="/meet-cofounder" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Meet Co-founder</Link>
+              <Link to="/resources" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Resources</Link>
+              <Link to="/blogs" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Blogs</Link>
+              <Link to="/partnership" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Partnership</Link>
+            </div>
+          </div>
+
+          {/* Services */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Services</h3>
+            <div className="space-y-2">
+              <Link to="/subscription" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Subscription & Plans</Link>
+              <Link to="/ai-agents" className="block text-sm text-muted-foreground hover:text-primary transition-colors">AI Agents</Link>
+              <Link to="/deals" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Deals & Offers</Link>
+              <Link to="/cloud-credits" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Cloud Credits</Link>
+              <Link to="/grants-funding" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Grants & Funding</Link>
+              <Link to="/consultation-booking" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Book Consultation</Link>
             </div>
           </div>
 
@@ -94,12 +100,12 @@ const Footer = () => {
             © 2024 Inc Combinator. All rights reserved.
           </p>
           <div className="flex space-x-4">
-            <a href="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+            <Link to="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
               Privacy Policy
-            </a>
-            <a href="/terms-conditions" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+            </Link>
+            <Link to="/terms-conditions" className="text-sm text-muted-foreground hover:text-primary transition-colors">
               Terms & Conditions
-            </a>
+            </Link>
           </div>
         </div>
       </div>

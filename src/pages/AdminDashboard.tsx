@@ -74,7 +74,7 @@ const AdminDashboard = () => {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-9">
+          <TabsList className="grid w-full grid-cols-10">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="applications">Applications</TabsTrigger>
             <TabsTrigger value="hackathons">Hackathons</TabsTrigger>
@@ -83,6 +83,7 @@ const AdminDashboard = () => {
             <TabsTrigger value="startups">Startups</TabsTrigger>
             <TabsTrigger value="investors">Investors</TabsTrigger>
             <TabsTrigger value="programs">Programs</TabsTrigger>
+            <TabsTrigger value="docs">Docs</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
@@ -122,6 +123,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="programs" className="space-y-6">
             <ProgramManagement />
+          </TabsContent>
+
+          <TabsContent value="docs" className="space-y-6">
+            <DocumentationView />
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">
@@ -323,6 +328,78 @@ const CofounderManagement = ({ requests }: { requests: any[] }) => {
           </TableBody>
         </Table>
       </CardContent></Card>
+    </div>
+  );
+};
+
+// ── Documentation View Tab ──
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { FileText, Database, Shield, Key, CreditCard, Bot } from "lucide-react";
+
+const DocumentationView = () => {
+  const sections = [
+    {
+      title: "Architecture",
+      icon: Database,
+      content: `**Tech Stack:** React 18, TypeScript 5, Vite 5, Tailwind CSS v3, shadcn/ui, Lovable Cloud (PostgreSQL, Auth, RLS, Edge Functions)\n\n**State:** React Context (Auth), TanStack React Query\n**Routing:** React Router v6 with role-based protection`,
+    },
+    {
+      title: "Authentication",
+      icon: Key,
+      content: `**Sign Up:** Email/password with role → profile auto-created → role inserted\n**Sign In:** Email/password via Auth\n**Password Reset:** Email link → /reset-password\n**Session:** localStorage, auto-refresh via onAuthStateChange\n\n**Roles:** admin, startup, investor, mentor, cofounder\nRole check via \`has_role()\` security-definer function`,
+    },
+    {
+      title: "Database Tables",
+      icon: Database,
+      content: `| Table | Purpose |\n|---|---|\n| profiles | User profiles (auto-created) |\n| user_roles | Role assignments |\n| applications | Program applications |\n| hackathon_registrations | Hackathon signups |\n| incubation_applications | Incubation program apps |\n| cofounder_requests | Co-founder matching |`,
+    },
+    {
+      title: "Security & RLS",
+      icon: Shield,
+      content: `All tables have Row Level Security enabled.\n\n- Users can only view their own data\n- Admins can view and update all records\n- Auth users can create new records\n- Role checking uses \`has_role()\` to avoid RLS recursion`,
+    },
+    {
+      title: "Demo Accounts",
+      icon: Key,
+      content: `All demo accounts use password: **Demo@1234**\n\n| Email | Role |\n|---|---|\n| admin@incombinator.com | Admin |\n| startup@incombinator.com | Startup |\n| investor@incombinator.com | Investor |\n| mentor@incombinator.com | Mentor |\n| cofounder@incombinator.com | Co-founder |`,
+    },
+    {
+      title: "Subscription Plans",
+      icon: CreditCard,
+      content: `**Membership (Monthly):** Starter $49, Growth $149, Scale $299\n**Subscription (Quarterly):** Launchpad $999, Accelerate $1,399, Unicorn $1,499\n**Services:** Pitch Deck Review, Market Research, Tech Architecture, Legal Setup, Brand Identity`,
+    },
+    {
+      title: "AI Agents",
+      icon: Bot,
+      content: `**Mock VC / Angel:** Pitch practice & valuation feedback\n**AI Startup Lawyer:** Legal guidance on incorporation, equity, compliance\n**GTM Adviser:** Go-to-market strategy, pricing, customer acquisition\n**Startup Buddy:** Brainstorming, mentorship, emotional support\n\nPowered by Lovable AI via Edge Functions.`,
+    },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <h2 className="text-2xl font-bold">Platform Documentation</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {sections.map((section) => {
+          const Icon = section.icon;
+          return (
+            <Card key={section.title}>
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-2">
+                  <Icon className="h-5 w-5 text-primary" />
+                  <CardTitle className="text-base">{section.title}</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <ScrollArea className="max-h-[250px]">
+                  <div className="text-sm text-muted-foreground whitespace-pre-wrap font-mono leading-relaxed">
+                    {section.content}
+                  </div>
+                </ScrollArea>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
     </div>
   );
 };
