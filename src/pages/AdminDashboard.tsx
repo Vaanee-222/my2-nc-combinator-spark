@@ -74,7 +74,7 @@ const AdminDashboard = () => {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-9">
+          <TabsList className="grid w-full grid-cols-10">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="applications">Applications</TabsTrigger>
             <TabsTrigger value="hackathons">Hackathons</TabsTrigger>
@@ -83,6 +83,7 @@ const AdminDashboard = () => {
             <TabsTrigger value="startups">Startups</TabsTrigger>
             <TabsTrigger value="investors">Investors</TabsTrigger>
             <TabsTrigger value="programs">Programs</TabsTrigger>
+            <TabsTrigger value="docs">Docs</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
@@ -122,6 +123,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="programs" className="space-y-6">
             <ProgramManagement />
+          </TabsContent>
+
+          <TabsContent value="docs" className="space-y-6">
+            <DocumentationView />
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">

@@ -50,6 +50,7 @@ import GrantsFunding from "./pages/GrantsFunding";
 import UserDashboard from "./pages/UserDashboard";
 import CofounderDashboard from "./pages/CofounderDashboard";
 import Subscription from "./pages/Subscription";
+import AIAgents from "./pages/AIAgents";
 
 const queryClient = new QueryClient();
 
@@ -101,6 +102,7 @@ const App = () => (
             <Route path="/cloud-credits" element={<CloudCredits />} />
             <Route path="/grants-funding" element={<GrantsFunding />} />
             <Route path="/subscription" element={<Subscription />} />
+            <Route path="/ai-agents" element={<AIAgents />} />
 
             {/* Protected dashboard routes */}
             <Route path="/admin-dashboard" element={<ProtectedRoute allowedRoles={["admin"]}><AdminDashboard /></ProtectedRoute>} />
