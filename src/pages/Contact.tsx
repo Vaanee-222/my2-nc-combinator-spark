@@ -1,5 +1,5 @@
 import Navigation from "@/components/Navigation";
-import { Button } from "@/components/ui/button";
+import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -268,6 +268,7 @@ const Contact = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };
