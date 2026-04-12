@@ -51,6 +51,7 @@ import UserDashboard from "./pages/UserDashboard";
 import CofounderDashboard from "./pages/CofounderDashboard";
 import Subscription from "./pages/Subscription";
 import AIAgents from "./pages/AIAgents";
+import Messages from "./pages/Messages";
 
 const queryClient = new QueryClient();
 
@@ -103,6 +104,7 @@ const App = () => (
             <Route path="/grants-funding" element={<GrantsFunding />} />
             <Route path="/subscription" element={<Subscription />} />
             <Route path="/ai-agents" element={<AIAgents />} />
+            <Route path="/messages" element={<Messages />} />
 
             {/* Protected dashboard routes */}
             <Route path="/admin-dashboard" element={<ProtectedRoute allowedRoles={["admin"]}><AdminDashboard /></ProtectedRoute>} />
