@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, LogIn, UserPlus, LogOut, User } from "lucide-react";
+import { Menu, LogIn, UserPlus, LogOut, User, MessageSquare } from "lucide-react";
 import ApplicationDialog from "./ApplicationDialog";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -57,6 +57,9 @@ const Navigation = () => {
             </ApplicationDialog>
             {user ? (
               <div className="flex items-center space-x-2">
+                <Button variant="ghost" size="icon" asChild>
+                  <Link to="/messages"><MessageSquare className="h-4 w-4" /></Link>
+                </Button>
                 <Button variant="outline" size="sm" asChild>
                   <Link to={getDashboardPath()} className="flex items-center space-x-1">
                     <User className="h-4 w-4" />
