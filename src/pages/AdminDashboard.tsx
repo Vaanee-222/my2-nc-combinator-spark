@@ -12,6 +12,8 @@ import ApplicationManagement from "@/components/dashboard/ApplicationManagement"
 import InvestorManagement from "@/components/dashboard/InvestorManagement";
 import AdminSettings from "@/components/dashboard/AdminSettings";
 import ProgramManagement from "@/components/dashboard/ProgramManagement";
+import AnalyticsDashboard from "@/components/dashboard/AnalyticsDashboard";
+import StartupHealthScore from "@/components/dashboard/StartupHealthScore";
 
 const AdminDashboard = () => {
   const { toast } = useToast();
@@ -74,12 +76,14 @@ const AdminDashboard = () => {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-10">
+          <TabsList className="flex flex-wrap gap-1">
             <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
             <TabsTrigger value="applications">Applications</TabsTrigger>
             <TabsTrigger value="hackathons">Hackathons</TabsTrigger>
             <TabsTrigger value="incubation">Incubation</TabsTrigger>
             <TabsTrigger value="cofounders">Co-founders</TabsTrigger>
+            <TabsTrigger value="health">Health Score</TabsTrigger>
             <TabsTrigger value="startups">Startups</TabsTrigger>
             <TabsTrigger value="investors">Investors</TabsTrigger>
             <TabsTrigger value="programs">Programs</TabsTrigger>
@@ -97,6 +101,16 @@ const AdminDashboard = () => {
             />
           </TabsContent>
 
+          <TabsContent value="analytics" className="space-y-6">
+            <AnalyticsDashboard
+              applications={applications}
+              hackathonRegs={hackathonRegs}
+              incubationApps={incubationApps}
+              cofounderReqs={cofounderReqs}
+              profiles={profiles}
+            />
+          </TabsContent>
+
           <TabsContent value="applications" className="space-y-6">
             <ApplicationManagement applications={applications} onRefresh={fetchData} />
           </TabsContent>
@@ -111,6 +125,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="cofounders" className="space-y-6">
             <CofounderManagement requests={cofounderReqs} />
+          </TabsContent>
+
+          <TabsContent value="health" className="space-y-6">
+            <StartupHealthScore incubationApps={incubationApps} />
           </TabsContent>
 
           <TabsContent value="startups" className="space-y-6">
