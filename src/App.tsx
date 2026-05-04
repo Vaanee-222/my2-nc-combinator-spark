@@ -103,7 +103,7 @@ const App = () => (
             <Route path="/cloud-credits" element={<CloudCredits />} />
             <Route path="/grants-funding" element={<GrantsFunding />} />
             <Route path="/subscription" element={<Subscription />} />
-            <Route path="/ai-agents" element={<AIAgents />} />
+            <Route path="/startup-advisor" element={<AIAgents />} />
             <Route path="/messages" element={<Messages />} />
 
             {/* Protected dashboard routes */}
