@@ -57,7 +57,7 @@ const Footer = () => {
             <h3 className="text-lg font-semibold">Services</h3>
             <div className="space-y-2">
               <Link to="/subscription" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Subscription & Plans</Link>
-              <Link to="/ai-agents" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Startup Advisor</Link>
+              <Link to="/startup-advisor" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Startup Advisor</Link>
               <Link to="/deals" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Deals & Offers</Link>
               <Link to="/cloud-credits" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Cloud Credits</Link>
               <Link to="/grants-funding" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Grants & Funding</Link>
