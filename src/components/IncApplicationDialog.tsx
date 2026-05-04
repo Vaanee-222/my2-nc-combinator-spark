@@ -63,7 +63,7 @@ const IncApplicationDialog = ({ children }: IncApplicationDialogProps) => {
       </DialogTrigger>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Apply to Inc Combinator</DialogTitle>
+          <DialogTitle>Apply to IC Combinator</DialogTitle>
           <DialogDescription>
             Join India's premier startup incubator and accelerate your growth with mentorship, funding, and resources.
           </DialogDescription>

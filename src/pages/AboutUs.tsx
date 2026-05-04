@@ -80,7 +80,7 @@ const AboutUs = () => {
           <div className="container mx-auto px-4">
             <div className="text-center space-y-6 mb-16">
               <Badge variant="secondary" className="bg-primary/10 text-primary text-lg px-4 py-2">
-                About Inc Combinator
+                About IC Combinator
               </Badge>
               <h1 className="text-4xl md:text-6xl font-bold">
                 Empowering{" "}

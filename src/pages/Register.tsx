@@ -48,7 +48,7 @@ const Register = () => {
               <ArrowLeft className="h-4 w-4" />
             </Button>
           </div>
-          <CardDescription>Join Inc Combinator and start your journey</CardDescription>
+          <CardDescription>Join IC Combinator and start your journey</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleRegister} className="space-y-4">

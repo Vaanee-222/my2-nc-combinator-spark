@@ -129,7 +129,7 @@ const ApplicationDialog = ({ children, program = "INClab", title }: ApplicationD
             <Input id="funding" value={formData.funding} onChange={(e) => handleChange("funding", e.target.value)} placeholder="e.g., ₹25L, ₹1Cr" />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="why">Why Inc Combinator? *</Label>
+            <Label htmlFor="why">Why IC Combinator? *</Label>
             <Textarea id="why" value={formData.why} onChange={(e) => handleChange("why", e.target.value)} placeholder="Why do you want to join?" required />
           </div>
           <div className="flex gap-4 pt-4">

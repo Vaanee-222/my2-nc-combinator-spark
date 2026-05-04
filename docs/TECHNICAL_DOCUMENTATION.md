@@ -1,5 +1,5 @@
 
-# Inc Combinator — Technical Documentation
+# IC Combinator — Technical Documentation
 
 ## Version 3.0.0 — Full-Stack Platform with AI Agents, Analytics & Real-Time Messaging
 

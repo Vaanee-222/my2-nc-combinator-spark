@@ -34,7 +34,7 @@ const StartupDashboard = () => {
           <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent mb-2">
             Startup Dashboard
           </h1>
-          <p className="text-muted-foreground">Manage your startup journey with Inc Combinator</p>
+          <p className="text-muted-foreground">Manage your startup journey with IC Combinator</p>
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">

@@ -72,7 +72,7 @@ const AdminDashboard = () => {
           <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent mb-2">
             Admin Dashboard
           </h1>
-          <p className="text-muted-foreground">Manage Inc Combinator ecosystem and operations</p>
+          <p className="text-muted-foreground">Manage IC Combinator ecosystem and operations</p>
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
