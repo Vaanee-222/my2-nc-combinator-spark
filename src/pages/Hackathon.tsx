@@ -132,7 +132,7 @@ const Hackathon = () => {
         {/* Hero Section */}
         <section className="text-center mb-16">
           <h1 className="text-6xl font-bold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent mb-6">
-            Inc Combinator Hackathons
+            IC Combinator Hackathons
           </h1>
           <p className="text-xl text-muted-foreground max-w-4xl mx-auto mb-8">
             Join India's most exciting hackathons where innovation meets opportunity. Code, compete, and create solutions that matter.

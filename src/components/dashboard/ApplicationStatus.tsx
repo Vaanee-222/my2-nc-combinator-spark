@@ -18,7 +18,7 @@ const ApplicationStatus = ({ applicationStatus }: ApplicationStatusProps) => {
       <Card>
         <CardHeader>
           <CardTitle>Application Status</CardTitle>
-          <CardDescription>Track your Inc Combinator application progress</CardDescription>
+          <CardDescription>Track your IC Combinator application progress</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex items-center justify-between">

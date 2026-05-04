@@ -42,7 +42,7 @@ const Navigation = () => {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-sm">IC</span>
             </div>
-            <span className="text-xl font-bold text-primary">Inc Combinator</span>
+            <span className="text-xl font-bold text-primary">IC Combinator</span>
           </Link>
 
           <div className="hidden md:flex items-center space-x-8">

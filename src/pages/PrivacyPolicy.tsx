@@ -166,8 +166,8 @@ const PrivacyPolicy = () => {
             <CardContent>
               <div className="space-y-2 text-muted-foreground">
                 <p>If you have any questions about this Privacy Policy, please contact us:</p>
-                <p><strong>Email:</strong> privacy@inccombinator.com</p>
-                <p><strong>Address:</strong> Inc Combinator, 123 Innovation Street, Bangalore, Karnataka 560001</p>
+                <p><strong>Email:</strong> privacy@iccombinator.com</p>
+                <p><strong>Address:</strong> IC Combinator, 123 Innovation Street, Bangalore, Karnataka 560001</p>
                 <p><strong>Phone:</strong> +91 80 1234 5678</p>
               </div>
             </CardContent>

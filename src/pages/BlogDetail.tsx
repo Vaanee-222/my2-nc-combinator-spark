@@ -244,7 +244,7 @@ The future of Indian startups looks incredibly promising. Those who can combine 
                     <span className="text-primary-foreground font-bold text-sm">IC</span>
                   </div>
                   <span className="text-xl font-bold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent">
-                    Inc Combinator
+                    IC Combinator
                   </span>
                 </div>
                 <p className="text-muted-foreground text-sm">
@@ -295,7 +295,7 @@ The future of Indian startups looks incredibly promising. Those who can combine 
             
             <div className="border-t border-border mt-8 pt-8 text-center">
               <p className="text-sm text-muted-foreground">
-                © 2024 Inc Combinator. Inspired by the vision of transforming India through innovation.
+                © 2024 IC Combinator. Inspired by the vision of transforming India through innovation.
               </p>
             </div>
           </div>

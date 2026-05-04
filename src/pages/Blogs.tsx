@@ -125,7 +125,7 @@ const Blogs = () => {
             Startup Insights & Stories
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Learn from successful founders, industry experts, and Inc Combinator mentors. Get actionable insights to build and scale your startup.
+            Learn from successful founders, industry experts, and IC Combinator mentors. Get actionable insights to build and scale your startup.
           </p>
         </section>
 

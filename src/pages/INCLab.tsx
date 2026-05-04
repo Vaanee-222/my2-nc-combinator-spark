@@ -48,7 +48,7 @@ const INCLab = () => {
     {
       step: "4",
       title: "Final Selection",
-      description: "Welcome to Inc Combinator family",
+      description: "Welcome to IC Combinator family",
       timeline: "1-2 weeks",
       requirements: [
         "Legal documentation",

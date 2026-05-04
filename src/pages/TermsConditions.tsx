@@ -21,7 +21,7 @@ const TermsConditions = () => {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
-                By accessing and using Inc Combinator's platform and services, you accept and agree to be bound by 
+                By accessing and using IC Combinator's platform and services, you accept and agree to be bound by 
                 the terms and provision of this agreement. If you do not agree to these terms, you should not use 
                 our services.
               </p>
@@ -34,7 +34,7 @@ const TermsConditions = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-muted-foreground">
-                Inc Combinator provides an accelerator platform that offers:
+                IC Combinator provides an accelerator platform that offers:
               </p>
               <ul className="list-disc list-inside text-muted-foreground space-y-2">
                 <li>Startup incubation and acceleration programs</li>
@@ -72,13 +72,13 @@ const TermsConditions = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-muted-foreground">
-                Participation in Inc Combinator programs is subject to an application and selection process:
+                Participation in IC Combinator programs is subject to an application and selection process:
               </p>
               <ul className="list-disc list-inside text-muted-foreground space-y-2">
                 <li>Applications must be complete and accurate</li>
-                <li>Selection decisions are at Inc Combinator's sole discretion</li>
+                <li>Selection decisions are at IC Combinator's sole discretion</li>
                 <li>No guarantee of acceptance into any program</li>
-                <li>Application materials become property of Inc Combinator</li>
+                <li>Application materials become property of IC Combinator</li>
                 <li>We reserve the right to verify all information provided</li>
               </ul>
             </CardContent>
@@ -93,7 +93,7 @@ const TermsConditions = () => {
                 <h4 className="font-semibold mb-2">Our Content:</h4>
                 <p className="text-muted-foreground mb-4">
                   All content on our platform, including text, graphics, logos, and software, is owned by 
-                  Inc Combinator and protected by copyright and trademark laws.
+                  IC Combinator and protected by copyright and trademark laws.
                 </p>
               </div>
               <div>
@@ -112,7 +112,7 @@ const TermsConditions = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <p className="text-muted-foreground">Participation in Inc Combinator programs involves:</p>
+                <p className="text-muted-foreground">Participation in IC Combinator programs involves:</p>
                 <ul className="list-disc list-inside text-muted-foreground space-y-2">
                   <li>Commitment to program duration and requirements</li>
                   <li>Participation in mentorship sessions and workshops</li>
@@ -160,7 +160,7 @@ const TermsConditions = () => {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
-                Inc Combinator provides services "as is" without warranties. We are not liable for any 
+                IC Combinator provides services "as is" without warranties. We are not liable for any 
                 indirect, incidental, or consequential damages arising from your use of our services. 
                 Our total liability is limited to the amount paid for services.
               </p>
@@ -229,8 +229,8 @@ const TermsConditions = () => {
             <CardContent>
               <div className="space-y-2 text-muted-foreground">
                 <p>For questions about these Terms & Conditions, contact us:</p>
-                <p><strong>Email:</strong> legal@inccombinator.com</p>
-                <p><strong>Address:</strong> Inc Combinator, 123 Innovation Street, Bangalore, Karnataka 560001</p>
+                <p><strong>Email:</strong> legal@iccombinator.com</p>
+                <p><strong>Address:</strong> IC Combinator, 123 Innovation Street, Bangalore, Karnataka 560001</p>
                 <p><strong>Phone:</strong> +91 80 1234 5678</p>
               </div>
             </CardContent>

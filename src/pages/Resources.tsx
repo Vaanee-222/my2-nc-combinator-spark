@@ -302,7 +302,7 @@ const Resources = () => {
                 <CardHeader>
                   <CardTitle>Start Your Application</CardTitle>
                   <CardDescription>
-                    Ready to join Inc Combinator? Start your application process here
+                    Ready to join IC Combinator? Start your application process here
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -332,7 +332,7 @@ const Resources = () => {
           </p>
           <div className="flex justify-center space-x-4">
             <Button size="lg" className="bg-gradient-to-r from-primary to-orange-400 hover:shadow-orange-glow" onClick={() => navigate('/incubation')}>
-              Join Inc Combinator
+              Join IC Combinator
             </Button>
             <Button variant="outline" size="lg" onClick={() => navigate('/contact')}>
               Contact Support
