@@ -14,6 +14,10 @@ import AdminSettings from "@/components/dashboard/AdminSettings";
 import ProgramManagement from "@/components/dashboard/ProgramManagement";
 import AnalyticsDashboard from "@/components/dashboard/AnalyticsDashboard";
 import StartupHealthScore from "@/components/dashboard/StartupHealthScore";
+import EmailManagement from "@/components/dashboard/EmailManagement";
+import ConfigurationPanel from "@/components/dashboard/ConfigurationPanel";
+import ACLManagement from "@/components/dashboard/ACLManagement";
+import UserManagement from "@/components/dashboard/UserManagement";
 
 const AdminDashboard = () => {
   const { toast } = useToast();
