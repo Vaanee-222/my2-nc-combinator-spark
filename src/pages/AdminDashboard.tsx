@@ -151,6 +151,22 @@ const AdminDashboard = () => {
             <ProgramManagement />
           </TabsContent>
 
+          <TabsContent value="users" className="space-y-6">
+            <UserManagement />
+          </TabsContent>
+
+          <TabsContent value="emails" className="space-y-6">
+            <EmailManagement />
+          </TabsContent>
+
+          <TabsContent value="acl" className="space-y-6">
+            <ACLManagement />
+          </TabsContent>
+
+          <TabsContent value="config" className="space-y-6">
+            <ConfigurationPanel />
+          </TabsContent>
+
           <TabsContent value="docs" className="space-y-6">
             <DocumentationView />
           </TabsContent>
