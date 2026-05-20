@@ -57,6 +57,8 @@ const CofounderDashboard = lazy(() => import("./pages/CofounderDashboard"));
 const Subscription = lazy(() => import("./pages/Subscription"));
 const AIAgents = lazy(() => import("./pages/AIAgents"));
 const Messages = lazy(() => import("./pages/Messages"));
+const Partners = lazy(() => import("./pages/Partners"));
+
 
 // Prefetch /startup-advisor chunk on idle
 if (typeof window !== "undefined") {
@@ -99,6 +101,8 @@ const App = () => (
               <Route path="/inclab" element={<INCLab />} />
               <Route path="/resources" element={<Resources />} />
               <Route path="/partnership" element={<Partnership />} />
+              <Route path="/partners" element={<Partners />} />
+
               <Route path="/about" element={<AboutUs />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/blog/:id" element={<BlogDetail />} />

@@ -2,60 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
-import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, Globe2 } from "lucide-react";
-
-const partnerRegions = [
-  {
-    region: "India",
-    flag: "🇮🇳",
-    description: "Headquarters & primary operations",
-    partners: [
-      { name: "DJ Partners & Consulting", note: "Strategy & advisory" },
-      { name: "Bengaluru Innovation Hub", note: "Tech ecosystem" },
-      { name: "Mumbai VC Network", note: "Early-stage capital" },
-    ],
-  },
-  {
-    region: "Middle East",
-    flag: "🇦🇪",
-    description: "Dubai & Oman — Gulf expansion",
-    partners: [
-      { name: "Dubai Future Foundation", note: "Govt. innovation" },
-      { name: "Oman Tech Fund", note: "Sovereign investment" },
-      { name: "DIFC Innovation Hub", note: "Fintech & scale-ups" },
-    ],
-  },
-  {
-    region: "Europe",
-    flag: "🇪🇺",
-    description: "United Kingdom & Switzerland",
-    partners: [
-      { name: "London Tech Bridge", note: "UK market entry" },
-      { name: "Swiss Startup Association", note: "Deep-tech & R&D" },
-      { name: "Zurich Capital Partners", note: "Growth funding" },
-    ],
-  },
-  {
-    region: "Asia",
-    flag: "🌏",
-    description: "Singapore & Hong Kong",
-    partners: [
-      { name: "Singapore Enterprise Hub", note: "APAC HQ partner" },
-      { name: "Hong Kong Cyberport", note: "Tech accelerator" },
-      { name: "SEA Founders Network", note: "Regional founders" },
-    ],
-  },
-  {
-    region: "North America",
-    flag: "🇺🇸",
-    description: "USA & Canada",
-    partners: [
-      { name: "Silicon Valley Connect", note: "Bay Area access" },
-      { name: "NYC Venture Alliance", note: "East Coast capital" },
-      { name: "Toronto Innovation Council", note: "Canadian ecosystem" },
-    ],
-  },
-];
+import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -83,7 +30,7 @@ const Footer = () => {
             <h3 className="text-lg font-semibold">Quick Links</h3>
             <div className="space-y-2">
               <Link to="/about" className="block text-sm text-muted-foreground hover:text-primary transition-colors">About Us</Link>
-              <Link to="/partnership" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Partners</Link>
+              <Link to="/partners" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Partners</Link>
               <Link to="/hackathon" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Hackathons</Link>
               <Link to="/investor-centre" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Investor Centre</Link>
               <Link to="/startup-directory" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Startup Directory</Link>
@@ -142,54 +89,6 @@ const Footer = () => {
                 <Button size="sm">Subscribe</Button>
               </div>
             </div>
-          </div>
-        </div>
-
-        <Separator className="my-10" />
-
-        {/* Global Partners Section */}
-        <div className="space-y-6">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <Globe2 className="h-5 w-5 text-primary" />
-                <h3 className="text-xl font-bold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent">
-                  Our Global Partners
-                </h3>
-              </div>
-              <p className="text-sm text-muted-foreground max-w-2xl">
-                A trusted network of strategic partners, accelerators, and investors across five regions — helping our founders go global from day one.
-              </p>
-            </div>
-            <Link
-              to="/partnership"
-              className="text-sm font-medium text-primary hover:underline self-start md:self-auto"
-            >
-              Become a Partner →
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {partnerRegions.map((r) => (
-              <div
-                key={r.region}
-                className="rounded-xl border border-border/60 bg-background/40 p-4 hover:border-primary/40 hover:bg-background/70 transition-colors"
-              >
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-lg" aria-hidden>{r.flag}</span>
-                  <h4 className="text-sm font-semibold">{r.region}</h4>
-                </div>
-                <p className="text-xs text-muted-foreground mb-3">{r.description}</p>
-                <ul className="space-y-2">
-                  {r.partners.map((p) => (
-                    <li key={p.name} className="text-xs">
-                      <div className="font-medium text-foreground/90">{p.name}</div>
-                      <div className="text-muted-foreground">{p.note}</div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
           </div>
         </div>
 

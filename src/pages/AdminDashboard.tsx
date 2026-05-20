@@ -19,6 +19,8 @@ import ConfigurationPanel from "@/components/dashboard/ConfigurationPanel";
 import ACLManagement from "@/components/dashboard/ACLManagement";
 import UserManagement from "@/components/dashboard/UserManagement";
 import HeaderScripts from "@/components/dashboard/HeaderScripts";
+import PartnerManagement from "@/components/dashboard/PartnerManagement";
+
 
 const AdminDashboard = () => {
   const { toast } = useToast();
@@ -93,6 +95,8 @@ const AdminDashboard = () => {
             <TabsTrigger value="investors">Investors</TabsTrigger>
             <TabsTrigger value="programs">Programs</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
+            <TabsTrigger value="partners">Partners</TabsTrigger>
+
             <TabsTrigger value="emails">Emails</TabsTrigger>
             <TabsTrigger value="acl">ACL</TabsTrigger>
             <TabsTrigger value="config">Config</TabsTrigger>
@@ -156,6 +160,11 @@ const AdminDashboard = () => {
           <TabsContent value="users" className="space-y-6">
             <UserManagement />
           </TabsContent>
+
+          <TabsContent value="partners" className="space-y-6">
+            <PartnerManagement />
+          </TabsContent>
+
 
           <TabsContent value="emails" className="space-y-6">
             <EmailManagement />
