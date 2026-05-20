@@ -19,6 +19,8 @@ import ConfigurationPanel from "@/components/dashboard/ConfigurationPanel";
 import ACLManagement from "@/components/dashboard/ACLManagement";
 import UserManagement from "@/components/dashboard/UserManagement";
 import HeaderScripts from "@/components/dashboard/HeaderScripts";
+import PartnerManagement from "@/components/dashboard/PartnerManagement";
+
 
 const AdminDashboard = () => {
   const { toast } = useToast();
