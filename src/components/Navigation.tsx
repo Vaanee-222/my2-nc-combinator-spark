@@ -31,14 +31,8 @@ const Navigation = () => {
     { name: "INC Lab", href: "/inclab" },
   ];
 
-  const moreItems = [
-    { name: "Startup Directory", href: "/startup-directory" },
-    { name: "Investor Centre", href: "/investor-centre" },
-    { name: "Meet Co-founder", href: "/meet-cofounder" },
-    { name: "Resources", href: "/resources" },
-    { name: "Blogs", href: "/blogs" },
-    { name: "News", href: "/news" },
-  ];
+
+
 
   const getDashboardPath = () => {
     const map: Record<string, string> = {
@@ -94,24 +88,8 @@ const Navigation = () => {
               </Link>
             ))}
 
-            {/* More dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200 flex items-center gap-1">
-                  More <ChevronDown className="h-3.5 w-3.5" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
-                {moreItems.map((item) => (
-                  <DropdownMenuItem key={item.name} asChild>
-                    <Link to={item.href} className="w-full cursor-pointer">
-                      {item.name}
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
           </div>
+
 
           {/* Right side actions */}
           <div className="hidden lg:flex items-center space-x-2">
@@ -172,18 +150,8 @@ const Navigation = () => {
                 {item.name}
               </Link>
             ))}
-            <div className="border-t border-border/50 my-2 pt-2">
-              {moreItems.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className="block px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </div>
+            <div className="border-t border-border/50 my-2 pt-2" />
+
             <div className="border-t border-border/50 pt-3 flex flex-col gap-2">
               {user ? (
                 <>
