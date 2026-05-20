@@ -161,6 +161,11 @@ const AdminDashboard = () => {
             <UserManagement />
           </TabsContent>
 
+          <TabsContent value="partners" className="space-y-6">
+            <PartnerManagement />
+          </TabsContent>
+
+
           <TabsContent value="emails" className="space-y-6">
             <EmailManagement />
           </TabsContent>
