@@ -31,14 +31,8 @@ const Navigation = () => {
     { name: "INC Lab", href: "/inclab" },
   ];
 
-  const moreItems = [
-    { name: "Startup Directory", href: "/startup-directory" },
-    { name: "Investor Centre", href: "/investor-centre" },
-    { name: "Meet Co-founder", href: "/meet-cofounder" },
-    { name: "Resources", href: "/resources" },
-    { name: "Blogs", href: "/blogs" },
-    { name: "News", href: "/news" },
-  ];
+
+
 
   const getDashboardPath = () => {
     const map: Record<string, string> = {
