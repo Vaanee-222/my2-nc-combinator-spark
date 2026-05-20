@@ -95,6 +95,8 @@ const AdminDashboard = () => {
             <TabsTrigger value="investors">Investors</TabsTrigger>
             <TabsTrigger value="programs">Programs</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
+            <TabsTrigger value="partners">Partners</TabsTrigger>
+
             <TabsTrigger value="emails">Emails</TabsTrigger>
             <TabsTrigger value="acl">ACL</TabsTrigger>
             <TabsTrigger value="config">Config</TabsTrigger>
