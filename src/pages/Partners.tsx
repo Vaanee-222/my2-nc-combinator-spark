@@ -6,6 +6,7 @@ import { Globe2, ExternalLink, Building2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface Partner {
   id: string;
@@ -29,6 +30,7 @@ interface Region {
 const Partners = () => {
   const [regions, setRegions] = useState<Region[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState<(Partner & { regionName?: string; regionFlag?: string | null }) | null>(null);
 
   useEffect(() => {
     const load = async () => {
@@ -91,11 +93,23 @@ const Partners = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {region.partners.map((p) => (
-                    <Card key={p.id} className="p-5 hover:border-primary/40 transition-colors">
+                    <Card
+                      key={p.id}
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => setSelected({ ...p, regionName: region.name, regionFlag: region.flag })}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          setSelected({ ...p, regionName: region.name, regionFlag: region.flag });
+                        }
+                      }}
+                      className="p-5 cursor-pointer hover:border-primary/40 hover:shadow-md transition-all"
+                    >
                       <div className="flex items-start gap-3 mb-2">
-                        <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                        <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0 overflow-hidden">
                           {p.logo_url ? (
-                            <img src={p.logo_url} alt={p.name} className="w-full h-full object-contain rounded-lg" />
+                            <img src={p.logo_url} alt={p.name} className="w-full h-full object-contain" />
                           ) : (
                             <Building2 className="h-5 w-5" />
                           )}
@@ -108,16 +122,20 @@ const Partners = () => {
                       {p.description && (
                         <p className="text-sm text-muted-foreground mt-2 line-clamp-3">{p.description}</p>
                       )}
-                      {p.website_url && (
-                        <a
-                          href={p.website_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-xs text-primary mt-3 hover:underline"
-                        >
-                          Visit website <ExternalLink className="h-3 w-3" />
-                        </a>
-                      )}
+                      <div className="flex items-center justify-between mt-3">
+                        <span className="text-xs text-primary hover:underline">View details →</span>
+                        {p.website_url && (
+                          <a
+                            href={p.website_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary"
+                          >
+                            Website <ExternalLink className="h-3 w-3" />
+                          </a>
+                        )}
+                      </div>
                     </Card>
                   ))}
                 </div>
@@ -139,6 +157,53 @@ const Partners = () => {
           </div>
         </section>
       </main>
+
+      {/* Partner detail dialog */}
+      <Dialog open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center overflow-hidden shrink-0">
+                {selected?.logo_url ? (
+                  <img src={selected.logo_url} alt={selected.name} className="w-full h-full object-contain" />
+                ) : (
+                  <Building2 className="h-6 w-6" />
+                )}
+              </div>
+              <div className="min-w-0">
+                <div className="truncate">{selected?.name}</div>
+                {selected?.regionName && (
+                  <div className="text-xs font-normal text-muted-foreground flex items-center gap-1.5 mt-0.5">
+                    <span>{selected.regionFlag}</span> {selected.regionName}
+                  </div>
+                )}
+              </div>
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 text-sm">
+            {selected?.note && (
+              <div>
+                <div className="text-xs uppercase tracking-wide text-muted-foreground mb-1">Focus</div>
+                <p>{selected.note}</p>
+              </div>
+            )}
+            {selected?.description && (
+              <div>
+                <div className="text-xs uppercase tracking-wide text-muted-foreground mb-1">About</div>
+                <p className="text-muted-foreground whitespace-pre-line">{selected.description}</p>
+              </div>
+            )}
+            {selected?.website_url && (
+              <Button asChild variant="outline" className="w-full">
+                <a href={selected.website_url} target="_blank" rel="noopener noreferrer">
+                  Visit website <ExternalLink className="h-3.5 w-3.5 ml-1.5" />
+                </a>
+              </Button>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <Footer />
     </div>
   );

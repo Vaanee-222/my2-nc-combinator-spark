@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Pencil, Trash2, ChevronUp, ChevronDown, Building2 } from "lucide-react";
+import { Plus, Pencil, Trash2, ChevronUp, ChevronDown, Building2, Upload, Loader2 } from "lucide-react";
 
 interface Region {
   id: string;
@@ -59,6 +59,30 @@ const PartnerManagement = () => {
 
   const [partnerDialog, setPartnerDialog] = useState(false);
   const [editingPartner, setEditingPartner] = useState<Partial<Partner>>(emptyPartner);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
+
+  const handleLogoUpload = async (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      toast({ title: "Only image files allowed", variant: "destructive" });
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      toast({ title: "Image must be under 2MB", variant: "destructive" });
+      return;
+    }
+    setUploadingLogo(true);
+    const ext = file.name.split(".").pop() || "png";
+    const path = `${crypto.randomUUID()}.${ext}`;
+    const { error } = await supabase.storage.from("partner-logos").upload(path, file, { upsert: false });
+    if (error) {
+      toast({ title: "Upload failed", description: error.message, variant: "destructive" });
+    } else {
+      const { data } = supabase.storage.from("partner-logos").getPublicUrl(path);
+      setEditingPartner((prev) => ({ ...prev, logo_url: data.publicUrl }));
+      toast({ title: "Logo uploaded" });
+    }
+    setUploadingLogo(false);
+  };
 
   const load = async () => {
     setLoading(true);
@@ -344,8 +368,42 @@ const PartnerManagement = () => {
               <Input value={editingPartner.website_url ?? ""} onChange={(e) => setEditingPartner({ ...editingPartner, website_url: e.target.value })} placeholder="https://" />
             </div>
             <div>
-              <Label>Logo URL</Label>
-              <Input value={editingPartner.logo_url ?? ""} onChange={(e) => setEditingPartner({ ...editingPartner, logo_url: e.target.value })} placeholder="https://" />
+              <Label>Logo</Label>
+              <div className="flex items-start gap-3 mt-1">
+                <div className="w-16 h-16 rounded-lg border bg-muted/30 flex items-center justify-center overflow-hidden shrink-0">
+                  {editingPartner.logo_url ? (
+                    <img src={editingPartner.logo_url} alt="Logo preview" className="w-full h-full object-contain" />
+                  ) : (
+                    <Building2 className="h-6 w-6 text-muted-foreground" />
+                  )}
+                </div>
+                <div className="flex-1 space-y-2">
+                  <div className="flex gap-2">
+                    <Button type="button" size="sm" variant="outline" disabled={uploadingLogo} asChild>
+                      <label className="cursor-pointer">
+                        {uploadingLogo ? <Loader2 className="h-3.5 w-3.5 mr-1 animate-spin" /> : <Upload className="h-3.5 w-3.5 mr-1" />}
+                        Upload
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => e.target.files?.[0] && handleLogoUpload(e.target.files[0])}
+                        />
+                      </label>
+                    </Button>
+                    {editingPartner.logo_url && (
+                      <Button type="button" size="sm" variant="ghost" onClick={() => setEditingPartner({ ...editingPartner, logo_url: "" })}>
+                        Remove
+                      </Button>
+                    )}
+                  </div>
+                  <Input
+                    value={editingPartner.logo_url ?? ""}
+                    onChange={(e) => setEditingPartner({ ...editingPartner, logo_url: e.target.value })}
+                    placeholder="…or paste image URL"
+                  />
+                </div>
+              </div>
             </div>
             <div>
               <Label>Description</Label>
