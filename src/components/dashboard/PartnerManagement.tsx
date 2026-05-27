@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Pencil, Trash2, ChevronUp, ChevronDown, Building2 } from "lucide-react";
+import { Plus, Pencil, Trash2, ChevronUp, ChevronDown, Building2, Upload, Loader2 } from "lucide-react";
 
 interface Region {
   id: string;
