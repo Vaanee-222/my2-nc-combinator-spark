@@ -157,6 +157,53 @@ const Partners = () => {
           </div>
         </section>
       </main>
+
+      {/* Partner detail dialog */}
+      <Dialog open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center overflow-hidden shrink-0">
+                {selected?.logo_url ? (
+                  <img src={selected.logo_url} alt={selected.name} className="w-full h-full object-contain" />
+                ) : (
+                  <Building2 className="h-6 w-6" />
+                )}
+              </div>
+              <div className="min-w-0">
+                <div className="truncate">{selected?.name}</div>
+                {selected?.regionName && (
+                  <div className="text-xs font-normal text-muted-foreground flex items-center gap-1.5 mt-0.5">
+                    <span>{selected.regionFlag}</span> {selected.regionName}
+                  </div>
+                )}
+              </div>
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 text-sm">
+            {selected?.note && (
+              <div>
+                <div className="text-xs uppercase tracking-wide text-muted-foreground mb-1">Focus</div>
+                <p>{selected.note}</p>
+              </div>
+            )}
+            {selected?.description && (
+              <div>
+                <div className="text-xs uppercase tracking-wide text-muted-foreground mb-1">About</div>
+                <p className="text-muted-foreground whitespace-pre-line">{selected.description}</p>
+              </div>
+            )}
+            {selected?.website_url && (
+              <Button asChild variant="outline" className="w-full">
+                <a href={selected.website_url} target="_blank" rel="noopener noreferrer">
+                  Visit website <ExternalLink className="h-3.5 w-3.5 ml-1.5" />
+                </a>
+              </Button>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <Footer />
     </div>
   );
