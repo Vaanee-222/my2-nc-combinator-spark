@@ -30,6 +30,7 @@ interface Region {
 const Partners = () => {
   const [regions, setRegions] = useState<Region[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState<(Partner & { regionName?: string; regionFlag?: string | null }) | null>(null);
 
   useEffect(() => {
     const load = async () => {
