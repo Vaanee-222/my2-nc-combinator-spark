@@ -59,6 +59,30 @@ const PartnerManagement = () => {
 
   const [partnerDialog, setPartnerDialog] = useState(false);
   const [editingPartner, setEditingPartner] = useState<Partial<Partner>>(emptyPartner);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
+
+  const handleLogoUpload = async (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      toast({ title: "Only image files allowed", variant: "destructive" });
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      toast({ title: "Image must be under 2MB", variant: "destructive" });
+      return;
+    }
+    setUploadingLogo(true);
+    const ext = file.name.split(".").pop() || "png";
+    const path = `${crypto.randomUUID()}.${ext}`;
+    const { error } = await supabase.storage.from("partner-logos").upload(path, file, { upsert: false });
+    if (error) {
+      toast({ title: "Upload failed", description: error.message, variant: "destructive" });
+    } else {
+      const { data } = supabase.storage.from("partner-logos").getPublicUrl(path);
+      setEditingPartner((prev) => ({ ...prev, logo_url: data.publicUrl }));
+      toast({ title: "Logo uploaded" });
+    }
+    setUploadingLogo(false);
+  };
 
   const load = async () => {
     setLoading(true);
