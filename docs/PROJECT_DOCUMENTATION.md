@@ -1,250 +1,253 @@
+# IC Combinator — Project Documentation
 
-# INCombinator Platform — Project Documentation
-
-**Live Preview**: https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app  
-**Version**: 3.0.0  
-**Last Updated**: April 12, 2026
-
----
-
-## Platform Overview
-
-INCombinator is a full-stack startup ecosystem platform connecting entrepreneurs, investors, mentors, and co-founders. It provides incubation programs, hackathons, co-founder matching, AI-powered advisors, real-time messaging, analytics, and subscription-based monetization — all backed by Lovable Cloud with PostgreSQL, authentication, Row-Level Security, and Edge Functions.
+**Version**: 4.0.0
+**Last Updated**: May 27, 2026
+**Live Preview**: https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app
 
 ---
 
-## Quick Access Links
+## 1. Executive Summary
 
-### Public Pages
-
-| Page | URL |
-|------|-----|
-| Homepage | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/ |
-| Hackathon | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/hackathon |
-| Incubation | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/incubation |
-| MVP Lab | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/mvp-lab |
-| INC Lab | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/inclab |
-| Resources | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/resources |
-| Partnership | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/partnership |
-| About Us | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/about |
-| Contact | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/contact |
-| Startup Directory | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/startup-directory |
-| Meet Co-founder | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/meet-cofounder |
-| Investor Centre | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/investor-centre |
-| Deals | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/deals |
-| Blogs | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/blogs |
-| News | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/news |
-| Success Stories | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/success-stories |
-| Current Cohort | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/current-cohort |
-| Featured Startups | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/featured-startups |
-| Philosophy | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/philosophy |
-| Cloud Credits | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/cloud-credits |
-| Grants & Funding | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/grants-funding |
-| Become a Mentor | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/become-mentor |
-| Past Events | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/past-events |
-| Consultation Booking | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/consultation-booking |
-| Program Details | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/program-details |
-| All Applications | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/all-applications |
-| Requirements | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/requirements |
-| Privacy Policy | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/privacy-policy |
-| Terms & Conditions | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/terms-conditions |
-
-### Services & Tools
-
-| Page | URL |
-|------|-----|
-| Subscription & Pricing | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/subscription |
-| AI Agents (VC, Lawyer, GTM, Buddy) | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/ai-agents |
-| Messages (Real-time) | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/messages |
-
-### Authentication
-
-| Page | URL |
-|------|-----|
-| Login | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/login |
-| Register | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/register |
-| Forgot Password | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/forgot-password |
-| Reset Password | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/reset-password |
-
-### Protected Dashboards (Login Required)
-
-| Dashboard | Role | URL |
-|-----------|------|-----|
-| Admin | admin | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/admin-dashboard |
-| Startup | startup | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/startup-dashboard |
-| Investor | investor | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/investor-dashboard |
-| Mentor | mentor | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/mentor-dashboard |
-| Co-founder | cofounder | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/cofounder-dashboard |
-| General User | any | https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/user-dashboard |
+IC Combinator (Inc Combinator) is a YC-inspired, India-rooted, globally-networked startup ecosystem platform. It connects **founders, investors, mentors, co-founders, and ecosystem partners** through a single full-stack product covering incubation, hackathons, AI advisory, real-time messaging, analytics, partner directories, and tiered monetization — all powered by Lovable Cloud (PostgreSQL, Auth, RLS, Edge Functions, Realtime, Storage).
 
 ---
 
-## Demo Accounts
+## 2. Business Scope
 
-All demo accounts use the password: **`Demo@1234`**
+### 2.1 Vision
+Become the default operating system for early-stage founders in India and emerging markets — bridging local execution with a global support network across the Middle East, Europe, Asia, and North America.
 
-| Role | Email | Dashboard |
-|------|-------|-----------|
-| Admin | admin@incombinator.com | Full platform management, analytics, AI health scoring, documentation |
-| Startup | startup@incombinator.com | Application tracking, metrics, profile management |
-| Investor | investor@incombinator.com | Portfolio management, blog management, settings |
-| Mentor | mentor@incombinator.com | Consultation management, mentee tracking |
-| Co-founder | cofounder@incombinator.com | Co-founder matching, event participation |
+### 2.2 Mission
+- Lower the cost and time to launch a venture from idea → MVP → funded company.
+- Provide on-demand expert advice (legal, GTM, VC, technical) through AI + human mentors.
+- Connect founders with capital, talent, customers, and cross-border partners.
+- Monetize through transparent memberships, subscriptions, and à-la-carte services.
 
-Quick-fill buttons on the [Login page](https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/login) auto-populate credentials.
+### 2.3 Target Users
 
----
+| Segment | Need addressed |
+|---|---|
+| Aspiring founders | Co-founder match, ideation, MVP Lab, mentorship |
+| Early-stage startups | Incubation, investor intros, GTM, legal, fundraising |
+| Investors | Curated deal flow, portfolio tracking, health scoring |
+| Mentors / Advisors | Structured engagements, consultation booking |
+| Ecosystem partners | Cross-region collaboration, co-branded programs |
 
-## Core Features
+### 2.4 Revenue Streams
+1. **Membership tiers** (Startup) — Founder, Scale-Up, Unicorn (monthly).
+2. **Subscriptions** (All users) — Starter, Growth, Enterprise (quarterly).
+3. **One-time services** — Pitch decks, market research, legal & technical advisory.
+4. **Partner programs** — Regional partners, accelerators, corporate sponsors.
+5. **Event monetization** — Hackathons, demo days, mixers.
 
-### 1. Authentication & RBAC
-- Email/password signup with role selection (admin, startup, investor, mentor, cofounder)
-- Auto-profile creation via database trigger
-- Role-based dashboard redirection
-- Password reset via email link
-- Protected routes with `ProtectedRoute` component
-- Session persistence with auto-refresh
-
-### 2. Admin Dashboard (11 Tabs)
-- **Overview**: Summary statistics and recent activity
-- **Startups**: Startup listing and management
-- **Applications**: Real-time application review with status management (pending/approved/rejected)
-- **Analytics**: Recharts-powered charts — 30-day trends, status distribution, conversion rates
-- **Health Score**: AI-powered startup readiness assessment (5 dimensions, 0–100 each)
-- **Investors**: Investor relationship management
-- **Programs**: Program CRUD operations
-- **Blogs**: Blog content management
-- **Portfolio**: Portfolio company tracking
-- **Settings**: Platform configuration
-- **Docs**: In-app technical documentation reference
-
-### 3. Incubation Programs
-- **MVP Lab** ([/mvp-lab](https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/mvp-lab)): Minimum Viable Product development support
-- **INC Lab** ([/inclab](https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/inclab)): Advanced incubation with mentorship
-- Multi-field application form (founder info, startup details, funding status, pitch deck)
-- Status tracking: pending → approved/rejected
-
-### 4. Hackathon Platform
-- Event listing and individual detail pages ([/hackathon](https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/hackathon))
-- Registration form: personal info, technical skills, experience level
-- Admin review and status management
-
-### 5. Co-founder Matching
-- Post co-founder requests with skills needed, equity offered, commitment level ([/meet-cofounder](https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/meet-cofounder))
-- Public browse of all active requests
-- Contact via email or in-app messaging
-
-### 6. AI Agents ([/ai-agents](https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/ai-agents))
-Four specialized AI advisors powered by Lovable AI Gateway:
-
-| Agent | Purpose |
-|-------|---------|
-| Mock VC / Angel | Pitch practice, valuation feedback, fundraising strategy |
-| AI Startup Lawyer | Term sheets, equity splits, IP protection, compliance |
-| GTM Adviser | Market entry, pricing, distribution, growth channels |
-| Startup Buddy | Ideation, team building, product-market fit, motivation |
-
-### 7. In-App Messaging ([/messages](https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/messages))
-- Real-time messaging via Supabase Realtime
-- User search across all platform profiles
-- Read receipts
-- Message icon in global navigation
-
-### 8. Subscription & Monetization ([/subscription](https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/subscription))
-
-**Membership** (Startup-only, Monthly):
-- Founder $49/mo — Community, webinars, directory listing
-- Scale-Up $149/mo — Mentor matching, investor directory, pitch practice
-- Unicorn $299/mo — Unlimited mentors, investor intros, deal room
-
-**Subscription** (All Users, Quarterly):
-- Starter $999/qtr — 2 investor intros/mo, mixer access, MVP tech support (5h)
-- Growth $1,399/qtr — 5 investor intros/mo, media coverage, legal due diligence, GTM consulting
-- Enterprise $1,499/qtr — Unlimited intros, CTO advisor (20h), fundraising strategy, account manager
-
-**Services** (One-time):
-- Pitch Deck Design $500, Market Research $1,200, Legal Advisory $800, Technical Consulting $1,500
-
-**Payment**: Demo test gateway with pre-filled card `4242 4242 4242 4242`
-
-### 9. Analytics Dashboard (Admin)
-- 30-day application trend area charts
-- Status distribution bar charts
-- Program conversion rate analysis
-- Aggregated stats for hackathons and incubation
-
-### 10. AI Startup Health Scoring (Admin)
-- Five-dimension assessment: Market Opportunity, Team Strength, Product Readiness, Business Model, Fundability
-- Each dimension scored 0–100 with AI-generated insights
-- Edge function powered by Lovable AI Gateway
-
-### 11. Resource Center ([/resources](https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/resources))
-- Startup toolkits and templates
-- Industry reports and market research
-- Legal and compliance documentation
-- Technical guides
-- Grant and funding opportunity listings ([/grants-funding](https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/grants-funding))
-- Cloud credits info ([/cloud-credits](https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/cloud-credits))
+### 2.5 Differentiators
+- AI-powered advisors (Mock VC, Lawyer, GTM, Buddy) at zero per-message cost via Lovable AI Gateway.
+- AI startup health scoring across 5 dimensions for objective readiness.
+- Cross-region partner network with a dedicated public Partners directory.
+- Dynamic admin-managed content (Partners, Email templates, Header scripts, ACL, Configuration) — no code redeploys for everyday changes.
 
 ---
 
-## Database Schema
+## 3. Feature List
 
-### Tables (7 total)
+### 3.1 Public / Marketing
+- Homepage hero, philosophy, weekly showcase, program overview.
+- Program pages: MVP Lab, INC Lab, Incubation, Hackathon (+ detail), Past Events.
+- Discovery: Startup Directory, Featured Startups, Current Cohort, Success Stories.
+- Knowledge: Blogs (+ detail), News (+ detail), Resources, Cloud Credits, Grants & Funding.
+- Network: **Partners directory** with click-through **Partner detail modal** (logo, region, focus, full description, website link).
+- Engagement: Partnership, Become a Mentor, Consultation Booking, About, Contact.
+- Legal: Privacy Policy, Terms & Conditions, Requirements.
 
-| Table | Purpose | Records |
-|-------|---------|---------|
-| `profiles` | User profiles (auto-created on signup) | Per-user |
-| `user_roles` | Role assignments (RBAC) | Per-user |
-| `applications` | Program applications | User-submitted |
-| `hackathon_registrations` | Hackathon signups | User-submitted |
-| `incubation_applications` | Incubation applications | User-submitted |
-| `cofounder_requests` | Co-founder matching posts | User-submitted |
-| `messages` | In-app messaging (realtime) | Per-conversation |
+### 3.2 Authentication & RBAC
+- Email/password signup, role selection at signup (admin, startup, investor, mentor, cofounder).
+- Auto profile creation via `handle_new_user` trigger.
+- Roles stored in dedicated `user_roles` table + `has_role()` security-definer function — no privilege escalation.
+- Protected routes, password reset, session persistence.
+- ACL Management UI in Admin Dashboard for role/feature mapping.
 
-### Security
-- All tables have Row-Level Security (RLS) enabled
-- `has_role()` SECURITY DEFINER function prevents RLS recursion
-- Users can only access their own data
-- Admins can manage all submissions
-- Profiles and cofounder requests are publicly readable
-- Messages restricted to sender/receiver only
+### 3.3 Applications & Forms
+- Unified `ApplicationDialog` pattern reused across MVP Lab, INC Lab, Incubation, Hackathon, Cofounder, Pitch Submission, Investment, Startup Profile, Consultation.
+- Tables: `applications`, `incubation_applications`, `hackathon_registrations`, `cofounder_requests`.
+- Status lifecycle: pending → approved / rejected (admin-controlled).
+
+### 3.4 Admin Dashboard
+Tabs: Overview, Startups, Applications, Analytics, Health Score, Investors, Programs, Blogs, Portfolio, **Partners**, **Email**, **Configuration**, **ACL**, **Header Scripts**, **Users**, Settings, Docs.
+
+### 3.5 Partners (NEW)
+- Public `/partners` page grouped by region with hero, region cards, partner cards.
+- **Partner detail modal** with logo, region context, focus note, full description, website CTA.
+- Admin `PartnerManagement` to:
+  - CRUD regions (name, flag emoji, description, sort order, active toggle).
+  - CRUD partners (region, name, note, description, website URL).
+  - **Upload partner logos** directly (image file → `partner-logos` public Storage bucket) or paste any URL.
+  - Reorder via up/down controls; soft-disable via active toggle.
+
+### 3.6 Email Management
+- Templates for: Booking Confirmed, Verify Email, Welcome, Invoice, Application Status, Custom broadcasts.
+- Admin trigger panel to send transactional or campaign emails per audience.
+
+### 3.7 Configuration Panel
+Categorized settings: General, Auth, AI Models, SMS/Email, Payments, API Keys — managed without code changes.
+
+### 3.8 Header Scripts
+Admin-managed `<head>` injection (GA4, GTM, Facebook Pixel quick presets + custom HTML) with strict sanitization whitelist (tags + attributes), `on*` and `javascript:` stripping, and live sanitized preview.
+
+### 3.9 AI Advisory (Startup Advisor)
+Route `/startup-advisor` (legacy `/ai-agents`) — 4 agents via `ai-agent-chat` edge function on Lovable AI Gateway (google/gemini-2.5-flash):
+- Mock VC / Angel
+- AI Startup Lawyer
+- GTM Adviser
+- Startup Buddy
+
+### 3.10 Real-Time Messaging
+- `/messages` page, Supabase Realtime channel on `messages` table.
+- Inbox, user search, read receipts, unread badge in nav.
+
+### 3.11 AI Startup Health Score
+Admin tab. Edge function `startup-health-score` scores 5 dimensions 0–100: Market Opportunity, Team Strength, Product Readiness, Business Model, Fundability.
+
+### 3.12 Analytics
+Recharts: 30-day application trends, status distribution, program conversion rates, hackathon & incubation aggregates.
+
+### 3.13 Monetization
+`/subscription` page with Membership, Subscription, Services tiers. Mock payment dialog (test card `4242 4242 4242 4242`).
+
+### 3.14 Reliability
+- `ErrorBoundary` with retry UI, toast on trigger, HTTP-status-aware friendly messaging, automatic re-fetch (no full page reload) for transient 412 / preview infrastructure errors.
+- Route-level code splitting (`React.lazy`) + prefetch for `/startup-advisor`.
+- Vitest suite covering ErrorBoundary + route fallback.
 
 ---
 
-## Tech Stack Summary
+## 4. URL List
+
+### 4.1 Public
+| Page | Path |
+|---|---|
+| Homepage | `/` |
+| Hackathon | `/hackathon` |
+| Hackathon Detail | `/hackathon/:id` |
+| Incubation | `/incubation` |
+| MVP Lab | `/mvp-lab` |
+| INC Lab | `/inclab` |
+| Resources | `/resources` |
+| Partnership | `/partnership` |
+| **Partners** | `/partners` |
+| About Us | `/about` |
+| Contact | `/contact` |
+| Startup Directory | `/startup-directory` |
+| Startup Profile | `/startup/:id` |
+| Meet Co-founder | `/meet-cofounder` |
+| Investor Centre | `/investor-centre` |
+| Investor Profile | `/investor/:id` |
+| Deals | `/deals` |
+| Blogs / Detail | `/blogs`, `/blogs/:id` |
+| News / Detail | `/news`, `/news/:id` |
+| Success Stories | `/success-stories` |
+| Current Cohort | `/current-cohort` |
+| Featured Startups | `/featured-startups` |
+| Philosophy | `/philosophy` |
+| Cloud Credits | `/cloud-credits` |
+| Grants & Funding | `/grants-funding` |
+| Become a Mentor | `/become-mentor` |
+| Past Events | `/past-events` |
+| Consultation Booking | `/consultation-booking` |
+| Program Details | `/program-details` |
+| All Applications | `/all-applications` |
+| Requirements | `/requirements` |
+| Privacy Policy | `/privacy-policy` |
+| Terms & Conditions | `/terms-conditions` |
+
+### 4.2 Services & Tools
+| Page | Path |
+|---|---|
+| Subscription & Pricing | `/subscription` |
+| Startup Advisor (AI Agents) | `/startup-advisor` |
+| Messages | `/messages` |
+
+### 4.3 Authentication
+| Page | Path |
+|---|---|
+| Login | `/login` |
+| Register | `/register` |
+| Forgot Password | `/forgot-password` |
+| Reset Password | `/reset-password` |
+
+### 4.4 Protected Dashboards
+| Dashboard | Role | Path |
+|---|---|---|
+| Admin | admin | `/admin-dashboard` |
+| Startup | startup | `/startup-dashboard` |
+| Investor | investor | `/investor-dashboard` |
+| Mentor | mentor | `/mentor-dashboard` |
+| Co-founder | cofounder | `/cofounder-dashboard` |
+| General User | any | `/user-dashboard` |
+
+---
+
+## 5. Demo Credentials
+Password for all demo accounts: **`Demo@1234`**
+
+| Role | Email |
+|---|---|
+| Admin | admin@incombinator.com |
+| Startup | startup@incombinator.com |
+| Investor | investor@incombinator.com |
+| Mentor | mentor@incombinator.com |
+| Co-founder | cofounder@incombinator.com |
+
+---
+
+## 6. Database Schema
+
+| Table | Purpose |
+|---|---|
+| `profiles` | User profile (trigger-created) |
+| `user_roles` | RBAC role assignments |
+| `applications` | Generic program applications |
+| `incubation_applications` | Incubation-specific applications |
+| `hackathon_registrations` | Hackathon signups |
+| `cofounder_requests` | Co-founder matching posts |
+| `messages` | Realtime in-app messaging |
+| `partner_regions` | Partner regions (name, flag, description, sort_order, active) |
+| `partners` | Partner entries (region_id, name, note, description, website_url, logo_url, sort_order, active) |
+
+**Storage buckets**: `partner-logos` (public — admin write via RLS).
+
+All tables enforce RLS. Admin-only writes via `has_role(auth.uid(), 'admin')`. Messages restricted to sender/receiver.
+
+---
+
+## 7. Edge Functions
+| Function | Purpose |
+|---|---|
+| `ai-agent-chat` | Multi-agent AI advisor chat (Lovable AI Gateway) |
+| `startup-health-score` | 5-dimension AI scoring |
+| `seed-demo-data` | Seed demo accounts and sample content |
+
+---
+
+## 8. Tech Stack
 
 | Layer | Technology |
-|-------|-----------|
+|---|---|
 | Frontend | React 18 + TypeScript 5 + Vite 5 |
-| Styling | Tailwind CSS v3 + shadcn/ui |
+| Styling | Tailwind CSS v3 + shadcn/ui (semantic tokens, dark mode + orange accents) |
 | State | React Context + TanStack React Query |
-| Routing | React Router v6 |
+| Routing | React Router v6 with `React.lazy` code-splitting |
 | Charts | Recharts |
 | Forms | React Hook Form + Zod |
-| Backend | Lovable Cloud (PostgreSQL, Auth, RLS, Edge Functions, Realtime) |
+| Backend | Lovable Cloud (PostgreSQL, Auth, RLS, Edge Functions, Realtime, Storage) |
 | AI | Lovable AI Gateway (google/gemini-2.5-flash) |
-| Icons | Lucide React |
+| Testing | Vitest + Testing Library |
 | Notifications | Sonner |
 
 ---
 
-## Edge Functions (Backend)
+## 9. Contact
+- Development: dev@incombinator.com
+- Business: business@incombinator.com
+- Support: support@incombinator.com
 
-| Function | Purpose |
-|----------|---------|
-| `ai-agent-chat` | AI agent conversations (VC, Lawyer, GTM, Buddy) |
-| `startup-health-score` | AI-powered startup readiness assessment |
-| `seed-demo-data` | Seed demo accounts and sample data |
-
----
-
-## Contact & Support
-
-- Development Team: dev@incombinator.com
-- Business Inquiries: business@incombinator.com
-- Platform Support: support@incombinator.com
-
----
-
-*This documentation is also accessible in-app via the Admin Dashboard → Docs tab.*
+*Mirrored in-app via Admin Dashboard → Docs tab.*
