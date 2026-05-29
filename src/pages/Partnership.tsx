@@ -61,7 +61,7 @@ const Partnership = () => {
               </Badge>
               <h1 className="text-5xl md:text-7xl font-bold leading-tight">
                 Partner with{" "}
-                <span className="bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent animate-glow-pulse">
+                <span className="bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent">
                   Innovation
                 </span>
               </h1>
