@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Users, Calendar, ArrowDown } from "lucide-react";
-import ApplicationDialog from "@/components/ApplicationDialog";
+import InclabApplicationDialog from "@/components/InclabApplicationDialog";
 import { Link } from "react-router-dom";
 
 const INCLab = () => {
@@ -169,15 +169,13 @@ const INCLab = () => {
             </div>
 
             <div className="flex flex-col md:flex-row gap-4 justify-center items-center pt-4">
-              <ApplicationDialog
-                type="inclab"
+              <InclabApplicationDialog
                 title="Apply to INCLab"
-                description="Start your application to join India's most selective startup accelerator"
               >
                 <Button variant="hero" size="lg" className="text-lg px-8 py-6">
                   Start Application
                 </Button>
-              </ApplicationDialog>
+              </InclabApplicationDialog>
               <Link to="/requirements">
                 <Button variant="outline" size="lg" className="text-lg px-8 py-6">
                   View Requirements
@@ -264,15 +262,13 @@ const INCLab = () => {
                   <div className="text-4xl font-bold text-primary">15</div>
                   <div className="text-muted-foreground">Spots Available</div>
                 </div>
-                <ApplicationDialog
-                  type="inclab"
+                <InclabApplicationDialog
                   title="Apply to INCLab"
-                  description="Join the most selective startup accelerator in India"
                 >
                   <Button variant="hero" size="lg" className="text-lg px-8 py-6">
                     Apply Now
                   </Button>
-                </ApplicationDialog>
+                </InclabApplicationDialog>
                 <p className="text-sm text-muted-foreground">
                   Application takes ~5 minutes
                 </p>
@@ -337,15 +333,13 @@ const INCLab = () => {
             <p className="text-muted-foreground mb-4">
               Join these exceptional founders in building India's next unicorns
             </p>
-            <ApplicationDialog
-              type="inclab"
+            <InclabApplicationDialog
               title="Apply to Next Cohort"
-              description="Join our next cohort of exceptional startups"
             >
               <Button variant="hero" size="lg">
                 Apply for Next Cohort
               </Button>
-            </ApplicationDialog>
+            </InclabApplicationDialog>
           </div>
         </div>
       </section>
@@ -439,15 +433,13 @@ const INCLab = () => {
                 <p className="text-muted-foreground">
                   Investment, credits, mentorship, and resources combined
                 </p>
-                <ApplicationDialog
-                  type="inclab"
+                <InclabApplicationDialog
                   title="Start Your INCLab Application"
-                  description="Begin your journey with India's premier startup accelerator"
                 >
                   <Button variant="hero" size="lg" className="mt-4">
                     Start Your Application
                   </Button>
-                </ApplicationDialog>
+                </InclabApplicationDialog>
               </div>
             </Card>
           </div>

@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { lazy, Suspense } from "react";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { useAnalyticsPageViews } from "@/hooks/useAnalyticsPageViews";
 
 // Eager-loaded core routes
 import Index from "./pages/Index";
@@ -58,6 +59,8 @@ const Subscription = lazy(() => import("./pages/Subscription"));
 const AIAgents = lazy(() => import("./pages/AIAgents"));
 const Messages = lazy(() => import("./pages/Messages"));
 const Partners = lazy(() => import("./pages/Partners"));
+const MonthlyTop10 = lazy(() => import("./pages/MonthlyTop10"));
+const QuarterlyTop5 = lazy(() => import("./pages/QuarterlyTop5"));
 
 
 // Prefetch /startup-advisor chunk on idle
@@ -85,7 +88,17 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <Suspense fallback={<PageLoader />}>
+          <AppRoutes />
+        </AuthProvider>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
+
+const AppRoutes = () => {
+  useAnalyticsPageViews();
+  return (
+    <Suspense fallback={<PageLoader />}>
             <Routes>
               {/* Public routes */}
               <Route path="/" element={<Index />} />
@@ -102,6 +115,8 @@ const App = () => (
               <Route path="/resources" element={<Resources />} />
               <Route path="/partnership" element={<Partnership />} />
               <Route path="/partners" element={<Partners />} />
+              <Route path="/monthly-top-10" element={<MonthlyTop10 />} />
+              <Route path="/quarterly-top-5" element={<QuarterlyTop5 />} />
 
               <Route path="/about" element={<AboutUs />} />
               <Route path="/contact" element={<Contact />} />
@@ -143,10 +158,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
-        </AuthProvider>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+  );
+};
 
 export default App;

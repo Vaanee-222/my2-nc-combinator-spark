@@ -20,6 +20,7 @@ import ACLManagement from "@/components/dashboard/ACLManagement";
 import UserManagement from "@/components/dashboard/UserManagement";
 import HeaderScripts from "@/components/dashboard/HeaderScripts";
 import PartnerManagement from "@/components/dashboard/PartnerManagement";
+import InclabApplications from "@/components/dashboard/InclabApplications";
 
 
 const AdminDashboard = () => {
@@ -89,6 +90,7 @@ const AdminDashboard = () => {
             <TabsTrigger value="applications">Applications</TabsTrigger>
             <TabsTrigger value="hackathons">Hackathons</TabsTrigger>
             <TabsTrigger value="incubation">Incubation</TabsTrigger>
+            <TabsTrigger value="inclab">INC Lab</TabsTrigger>
             <TabsTrigger value="cofounders">Co-founders</TabsTrigger>
             <TabsTrigger value="health">Health Score</TabsTrigger>
             <TabsTrigger value="startups">Startups</TabsTrigger>
@@ -135,6 +137,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="incubation" className="space-y-6">
             <IncubationManagement applications={incubationApps} onRefresh={fetchData} />
+          </TabsContent>
+
+          <TabsContent value="inclab" className="space-y-6">
+            <InclabApplications />
           </TabsContent>
 
           <TabsContent value="cofounders" className="space-y-6">

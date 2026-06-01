@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, LogIn, UserPlus, LogOut, User, MessageSquare, ChevronDown } from "lucide-react";
 import ApplicationDialog from "./ApplicationDialog";
+import GlobalSearch from "./GlobalSearch";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   DropdownMenu,
@@ -93,6 +94,7 @@ const Navigation = () => {
 
           {/* Right side actions */}
           <div className="hidden lg:flex items-center space-x-2">
+            <GlobalSearch />
             <ApplicationDialog>
               <Button variant="hero" size="sm" className="font-semibold shadow-md hover:shadow-lg transition-shadow">
                 Apply Now
@@ -130,9 +132,12 @@ const Navigation = () => {
           </div>
 
           {/* Mobile toggle */}
-          <button className="lg:hidden p-2 rounded-lg hover:bg-muted/50 transition-colors" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+          <div className="lg:hidden flex items-center gap-1">
+            <GlobalSearch />
+            <button className="p-2 rounded-lg hover:bg-muted/50 transition-colors" onClick={() => setIsOpen(!isOpen)}>
+              {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile menu */}

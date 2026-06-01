@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { trackEvent } from "@/lib/analytics";
 
 interface ApplicationDialogProps {
   children: React.ReactNode;
@@ -56,6 +57,7 @@ const ApplicationDialog = ({ children, program = "INClab", title }: ApplicationD
 
       if (error) throw error;
 
+      trackEvent("application_submitted", { program, startup_name: formData.startupName });
       toast({ title: "Application Submitted! 🚀", description: `Your application to ${program} has been submitted successfully.` });
       setOpen(false);
       setFormData({ firstName: "", lastName: "", email: "", phone: "", startupName: "", stage: "", problem: "", solution: "", market: "", traction: "", funding: "", why: "" });
