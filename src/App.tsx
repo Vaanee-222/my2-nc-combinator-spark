@@ -156,10 +156,7 @@ const AppRoutes = () => {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
-        </AuthProvider>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+  );
+};
 
 export default App;
