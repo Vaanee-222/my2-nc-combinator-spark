@@ -155,6 +155,81 @@ export type Database = {
         }
         Relationships: []
       }
+      inclab_applications: {
+        Row: {
+          admin_notes: string | null
+          created_at: string
+          email: string
+          founder_name: string
+          funding_ask: string | null
+          id: string
+          industry: string | null
+          market: string | null
+          phone: string | null
+          pitch_deck_url: string | null
+          problem: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          solution: string | null
+          stage: string | null
+          startup_name: string | null
+          status: string
+          team_size: string | null
+          traction: string | null
+          updated_at: string
+          user_id: string
+          why_inclab: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string
+          email: string
+          founder_name: string
+          funding_ask?: string | null
+          id?: string
+          industry?: string | null
+          market?: string | null
+          phone?: string | null
+          pitch_deck_url?: string | null
+          problem?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          solution?: string | null
+          stage?: string | null
+          startup_name?: string | null
+          status?: string
+          team_size?: string | null
+          traction?: string | null
+          updated_at?: string
+          user_id: string
+          why_inclab?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string
+          email?: string
+          founder_name?: string
+          funding_ask?: string | null
+          id?: string
+          industry?: string | null
+          market?: string | null
+          phone?: string | null
+          pitch_deck_url?: string | null
+          problem?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          solution?: string | null
+          stage?: string | null
+          startup_name?: string | null
+          status?: string
+          team_size?: string | null
+          traction?: string | null
+          updated_at?: string
+          user_id?: string
+          why_inclab?: string | null
+        }
+        Relationships: []
+      }
       incubation_applications: {
         Row: {
           created_at: string
