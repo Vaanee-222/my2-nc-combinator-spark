@@ -170,9 +170,7 @@ const INCLab = () => {
 
             <div className="flex flex-col md:flex-row gap-4 justify-center items-center pt-4">
               <InclabApplicationDialog
-                type="inclab"
                 title="Apply to INCLab"
-                description="Start your application to join India's most selective startup accelerator"
               >
                 <Button variant="hero" size="lg" className="text-lg px-8 py-6">
                   Start Application
@@ -265,9 +263,7 @@ const INCLab = () => {
                   <div className="text-muted-foreground">Spots Available</div>
                 </div>
                 <InclabApplicationDialog
-                  type="inclab"
                   title="Apply to INCLab"
-                  description="Join the most selective startup accelerator in India"
                 >
                   <Button variant="hero" size="lg" className="text-lg px-8 py-6">
                     Apply Now
@@ -338,9 +334,7 @@ const INCLab = () => {
               Join these exceptional founders in building India's next unicorns
             </p>
             <InclabApplicationDialog
-              type="inclab"
               title="Apply to Next Cohort"
-              description="Join our next cohort of exceptional startups"
             >
               <Button variant="hero" size="lg">
                 Apply for Next Cohort
@@ -440,9 +434,7 @@ const INCLab = () => {
                   Investment, credits, mentorship, and resources combined
                 </p>
                 <InclabApplicationDialog
-                  type="inclab"
                   title="Start Your INCLab Application"
-                  description="Begin your journey with India's premier startup accelerator"
                 >
                   <Button variant="hero" size="lg" className="mt-4">
                     Start Your Application
