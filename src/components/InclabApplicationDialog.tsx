@@ -62,7 +62,7 @@ const InclabApplicationDialog = ({ children, title = "Apply to INC Lab" }: Props
     }
     setSubmitting(true);
     try {
-      const { error } = await supabase.from("inclab_applications").insert({
+      const payload: any = {
         user_id: user.id,
         ...parsed.data,
         phone: parsed.data.phone || null,
@@ -74,7 +74,8 @@ const InclabApplicationDialog = ({ children, title = "Apply to INC Lab" }: Props
         funding_ask: parsed.data.funding_ask || null,
         pitch_deck_url: parsed.data.pitch_deck_url || null,
         status: "pending",
-      });
+      };
+      const { error } = await (supabase as any).from("inclab_applications").insert(payload);
       if (error) throw error;
       trackEvent("application_submitted", { program: "INClab", startup_name: parsed.data.startup_name || "" });
       toast({ title: "Application submitted! 🚀", description: "Our team will review and get back within 1-2 weeks." });
