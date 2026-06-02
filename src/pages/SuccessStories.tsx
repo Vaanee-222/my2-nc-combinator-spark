@@ -79,7 +79,7 @@ const SuccessStories = () => {
   const programStats = [
     { program: "Incubation", startups: 45, funding: "₹120 Cr", success: "87%" },
     { program: "MVP Lab", startups: 78, funding: "₹85 Cr", success: "82%" },
-    { program: "INC Lab", startups: 32, funding: "₹65 Cr", success: "90%" },
+    { program: "Xi Lab", startups: 32, funding: "₹65 Cr", success: "90%" },
     { program: "Hackathon", startups: 25, funding: "₹40 Cr", success: "75%" }
   ];
 

@@ -48,7 +48,7 @@ const INCLab = () => {
     {
       step: "4",
       title: "Final Selection",
-      description: "Welcome to IC Combinator family",
+      description: "Welcome to Xi Combinator family",
       timeline: "1-2 weeks",
       requirements: [
         "Legal documentation",
@@ -157,7 +157,7 @@ const INCLab = () => {
                 🎯 Apply. Build. Scale.
               </Badge>
               <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-                INClab:{" "}
+                Xi Lab:{" "}
                 <span className="bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent">
                   Your Gateway
                 </span>
@@ -168,9 +168,9 @@ const INCLab = () => {
               </p>
             </div>
 
-            <div className="flex flex-col md:flex-row gap-4 justify-center items-center pt-4">
+            <div className="flex flex-col md:flex-row gap-4 justify-center items-center pt-4 flex-wrap">
               <InclabApplicationDialog
-                title="Apply to INCLab"
+                title="Apply to Xi Lab"
               >
                 <Button variant="hero" size="lg" className="text-lg px-8 py-6">
                   Start Application
@@ -179,6 +179,16 @@ const INCLab = () => {
               <Link to="/requirements">
                 <Button variant="outline" size="lg" className="text-lg px-8 py-6">
                   View Requirements
+                </Button>
+              </Link>
+              <Link to="/monthly-top-10">
+                <Button variant="outline" size="lg" className="text-lg px-8 py-6">
+                  Monthly Top 10
+                </Button>
+              </Link>
+              <Link to="/quarterly-top-5">
+                <Button variant="outline" size="lg" className="text-lg px-8 py-6">
+                  Quarterly Top 5
                 </Button>
               </Link>
             </div>
@@ -263,7 +273,7 @@ const INCLab = () => {
                   <div className="text-muted-foreground">Spots Available</div>
                 </div>
                 <InclabApplicationDialog
-                  title="Apply to INCLab"
+                  title="Apply to Xi Lab"
                 >
                   <Button variant="hero" size="lg" className="text-lg px-8 py-6">
                     Apply Now
@@ -434,7 +444,7 @@ const INCLab = () => {
                   Investment, credits, mentorship, and resources combined
                 </p>
                 <InclabApplicationDialog
-                  title="Start Your INCLab Application"
+                  title="Start Your Xi Lab Application"
                 >
                   <Button variant="hero" size="lg" className="mt-4">
                     Start Your Application

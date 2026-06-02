@@ -1,5 +1,5 @@
 
-# IC Combinator — Technical Documentation
+# Xi Combinator — Technical Documentation
 
 ## Version 3.0.0 — Full-Stack Platform with AI Agents, Analytics & Real-Time Messaging
 
@@ -118,7 +118,7 @@ Quick-fill buttons on the login page auto-populate credentials for each role.
 | `/hackathon/:id` | HackathonDetail | Individual hackathon detail | — |
 | `/incubation` | Incubation | Incubation program details + application | [Open](https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/incubation) |
 | `/mvp-lab` | MVPLab | MVP Lab program page | [Open](https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/mvp-lab) |
-| `/inclab` | INCLab | INC Lab program page | [Open](https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/inclab) |
+| `/inclab` | INCLab | Xi Lab program page | [Open](https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/inclab) |
 | `/resources` | Resources | Resource downloads and guides | [Open](https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/resources) |
 | `/partnership` | Partnership | Partnership opportunities | [Open](https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/partnership) |
 | `/about` | AboutUs | About page with advisory board | [Open](https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app/about) |

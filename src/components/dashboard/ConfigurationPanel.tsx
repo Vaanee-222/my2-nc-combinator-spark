@@ -50,11 +50,11 @@ const ConfigurationPanel = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Platform Name</Label>
-                  <Input defaultValue="IC Combinator" />
+                  <Input defaultValue="Xi Combinator" />
                 </div>
                 <div className="space-y-2">
                   <Label>Support Email</Label>
-                  <Input defaultValue="support@iccombinator.com" />
+                  <Input defaultValue="support@xicombinator.com" />
                 </div>
                 <div className="space-y-2">
                   <Label>Default Language</Label>
@@ -208,15 +208,15 @@ const ConfigurationPanel = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Sender Name</Label>
-                  <Input defaultValue="IC Combinator" />
+                  <Input defaultValue="Xi Combinator" />
                 </div>
                 <div className="space-y-2">
                   <Label>Sender Email</Label>
-                  <Input defaultValue="noreply@iccombinator.com" />
+                  <Input defaultValue="noreply@xicombinator.com" />
                 </div>
                 <div className="space-y-2">
                   <Label>Reply-To Email</Label>
-                  <Input defaultValue="support@iccombinator.com" />
+                  <Input defaultValue="support@xicombinator.com" />
                 </div>
                 <div className="space-y-2">
                   <Label>Email Provider</Label>
@@ -310,7 +310,7 @@ const ConfigurationPanel = () => {
                 </div>
                 <div className="space-y-2">
                   <Label>Webhook URL</Label>
-                  <Input readOnly defaultValue="https://api.iccombinator.com/webhooks/payment" />
+                  <Input readOnly defaultValue="https://api.xicombinator.com/webhooks/payment" />
                 </div>
               </div>
               <Button onClick={() => handleSave("Payment")} className="w-full"><Save className="h-4 w-4 mr-1" /> Save Payment Settings</Button>

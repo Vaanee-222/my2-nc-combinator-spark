@@ -24,7 +24,7 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email",
-      details: ["hello@iccombinator.in", "partnerships@iccombinator.in"]
+      details: ["hello@xicombinator.in", "partnerships@xicombinator.in"]
     },
     {
       icon: Clock,
@@ -62,7 +62,7 @@ const Contact = () => {
 
   const faqs = [
     {
-      question: "How can I apply to IC Combinator programs?",
+      question: "How can I apply to Xi Combinator programs?",
       answer: "You can apply through our online application form available on each program page. The process typically takes 2-3 weeks for review."
     },
     {

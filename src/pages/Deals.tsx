@@ -39,7 +39,7 @@ const Deals = () => {
       validUntil: "Jan 15, 2025",
       claimed: 78,
       totalSlots: 150,
-      requirements: ["IC Combinator member", "Team size < 50"],
+      requirements: ["Xi Combinator member", "Team size < 50"],
       logo: "📝"
     },
     {
@@ -279,7 +279,7 @@ const Deals = () => {
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold text-primary">1</span>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Apply to IC Combinator</h3>
+              <h3 className="text-xl font-semibold mb-2">Apply to Xi Combinator</h3>
               <p className="text-muted-foreground">Join our accelerator program to unlock exclusive partner deals</p>
             </div>
             <div className="text-center">
@@ -303,7 +303,7 @@ const Deals = () => {
         <section className="text-center py-16 bg-gradient-to-r from-primary/10 to-orange-400/10 rounded-3xl">
           <h2 className="text-3xl font-bold mb-4">Ready to Save Thousands?</h2>
           <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join IC Combinator today and get instant access to our exclusive deal marketplace worth over ₹25 lakhs.
+            Join Xi Combinator today and get instant access to our exclusive deal marketplace worth over ₹25 lakhs.
           </p>
           <Button size="lg" className="bg-gradient-to-r from-primary to-orange-400 hover:shadow-orange-glow mr-4">
             Apply Now
@@ -322,7 +322,7 @@ const Deals = () => {
                 <span>{selectedDeal?.title || selectedDeal?.company + ' Deal'}</span>
               </DialogTitle>
               <DialogDescription>
-                Exclusive deal for IC Combinator members
+                Exclusive deal for Xi Combinator members
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
@@ -340,7 +340,7 @@ const Deals = () => {
               </div>
               <div className="border-t pt-4">
                 <p className="text-sm text-muted-foreground mb-4">
-                  This is an exclusive deal available only to IC Combinator members. Click claim to activate this offer.
+                  This is an exclusive deal available only to Xi Combinator members. Click claim to activate this offer.
                 </p>
               </div>
             </div>

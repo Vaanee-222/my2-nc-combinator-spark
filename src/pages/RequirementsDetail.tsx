@@ -127,7 +127,7 @@ const RequirementsDetail = () => {
             onClick={() => navigate('/inclab')}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to INClab
+            Back to Xi Lab
           </Button>
 
           {/* Header */}
@@ -136,7 +136,7 @@ const RequirementsDetail = () => {
               📋 Application Requirements
             </Badge>
             <h1 className="text-4xl md:text-5xl font-bold">
-              INClab Application{" "}
+              Xi Lab Application{" "}
               <span className="bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent">
                 Requirements
               </span>
@@ -299,7 +299,7 @@ const RequirementsDetail = () => {
                   </Button>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Questions? Email us at applications@iccombinator.com
+                  Questions? Email us at applications@xicombinator.com
                 </p>
               </div>
             </CardContent>
@@ -316,7 +316,7 @@ const RequirementsDetail = () => {
                     <span className="text-primary-foreground font-bold text-sm">IC</span>
                   </div>
                   <span className="text-xl font-bold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent">
-                    IC Combinator
+                    Xi Combinator
                   </span>
                 </div>
                 <p className="text-muted-foreground text-sm">
@@ -330,7 +330,7 @@ const RequirementsDetail = () => {
                   <a href="/mvp-lab" className="block text-muted-foreground hover:text-primary cursor-pointer">MVP Lab</a>
                   <a href="/incubation" className="block text-muted-foreground hover:text-primary cursor-pointer">Incubation</a>
                   <a href="/hackathon" className="block text-muted-foreground hover:text-primary cursor-pointer">Hackathon Track</a>
-                  <a href="/inclab" className="block text-muted-foreground hover:text-primary cursor-pointer">INClab</a>
+                  <a href="/inclab" className="block text-muted-foreground hover:text-primary cursor-pointer">Xi Lab</a>
                 </div>
               </div>
               
@@ -367,7 +367,7 @@ const RequirementsDetail = () => {
             
             <div className="border-t border-border mt-8 pt-8 text-center">
               <p className="text-sm text-muted-foreground">
-                © 2024 IC Combinator. Inspired by the vision of transforming India through innovation.
+                © 2024 Xi Combinator. Inspired by the vision of transforming India through innovation.
               </p>
             </div>
           </div>

@@ -100,7 +100,7 @@ const StartupProfileDialog = ({ open, onOpenChange, startup, onConnect }: Startu
                 <div className="mt-4 p-4 bg-muted rounded-lg">
                   <h4 className="font-medium mb-2">About the Company</h4>
                   <p className="text-sm text-muted-foreground">
-                    {startup.description} This startup is part of the IC Combinator portfolio, 
+                    {startup.description} This startup is part of the Xi Combinator portfolio, 
                     working on innovative solutions in the {startup.sector} space.
                   </p>
                 </div>
