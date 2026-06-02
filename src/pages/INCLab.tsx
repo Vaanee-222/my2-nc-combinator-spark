@@ -273,7 +273,7 @@ const INCLab = () => {
                   <div className="text-muted-foreground">Spots Available</div>
                 </div>
                 <InclabApplicationDialog
-                  title="Apply to INCLab"
+                  title="Apply to Xi Lab"
                 >
                   <Button variant="hero" size="lg" className="text-lg px-8 py-6">
                     Apply Now
