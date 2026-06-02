@@ -444,7 +444,7 @@ const INCLab = () => {
                   Investment, credits, mentorship, and resources combined
                 </p>
                 <InclabApplicationDialog
-                  title="Start Your INCLab Application"
+                  title="Start Your Xi Lab Application"
                 >
                   <Button variant="hero" size="lg" className="mt-4">
                     Start Your Application
