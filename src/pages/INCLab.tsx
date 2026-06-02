@@ -168,9 +168,9 @@ const INCLab = () => {
               </p>
             </div>
 
-            <div className="flex flex-col md:flex-row gap-4 justify-center items-center pt-4">
+            <div className="flex flex-col md:flex-row gap-4 justify-center items-center pt-4 flex-wrap">
               <InclabApplicationDialog
-                title="Apply to INCLab"
+                title="Apply to Xi Lab"
               >
                 <Button variant="hero" size="lg" className="text-lg px-8 py-6">
                   Start Application
@@ -179,6 +179,16 @@ const INCLab = () => {
               <Link to="/requirements">
                 <Button variant="outline" size="lg" className="text-lg px-8 py-6">
                   View Requirements
+                </Button>
+              </Link>
+              <Link to="/monthly-top-10">
+                <Button variant="outline" size="lg" className="text-lg px-8 py-6">
+                  Monthly Top 10
+                </Button>
+              </Link>
+              <Link to="/quarterly-top-5">
+                <Button variant="outline" size="lg" className="text-lg px-8 py-6">
+                  Quarterly Top 5
                 </Button>
               </Link>
             </div>
