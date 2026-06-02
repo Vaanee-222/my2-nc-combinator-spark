@@ -66,7 +66,7 @@ const Navigation = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2.5 group">
             <div className="w-9 h-9 bg-gradient-to-br from-primary to-orange-500 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-primary/25 transition-shadow">
-              <span className="text-white font-bold text-sm tracking-tight">IC</span>
+              <span className="text-white font-bold text-sm tracking-tight">Xi</span>
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-primary to-orange-500 bg-clip-text text-transparent">
               Xi Combinator
