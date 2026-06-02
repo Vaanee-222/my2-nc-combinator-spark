@@ -1,4 +1,4 @@
-# IC Combinator — Project Documentation
+# Xi Combinator — Project Documentation
 
 **Version**: 4.0.0
 **Last Updated**: May 27, 2026
@@ -8,7 +8,7 @@
 
 ## 1. Executive Summary
 
-IC Combinator (Inc Combinator) is a YC-inspired, India-rooted, globally-networked startup ecosystem platform. It connects **founders, investors, mentors, co-founders, and ecosystem partners** through a single full-stack product covering incubation, hackathons, AI advisory, real-time messaging, analytics, partner directories, and tiered monetization — all powered by Lovable Cloud (PostgreSQL, Auth, RLS, Edge Functions, Realtime, Storage).
+Xi Combinator (Inc Combinator) is a YC-inspired, India-rooted, globally-networked startup ecosystem platform. It connects **founders, investors, mentors, co-founders, and ecosystem partners** through a single full-stack product covering incubation, hackathons, AI advisory, real-time messaging, analytics, partner directories, and tiered monetization — all powered by Lovable Cloud (PostgreSQL, Auth, RLS, Edge Functions, Realtime, Storage).
 
 ---
 
@@ -52,7 +52,7 @@ Become the default operating system for early-stage founders in India and emergi
 
 ### 3.1 Public / Marketing
 - Homepage hero, philosophy, weekly showcase, program overview.
-- Program pages: MVP Lab, INC Lab, Incubation, Hackathon (+ detail), Past Events.
+- Program pages: MVP Lab, Xi Lab, Incubation, Hackathon (+ detail), Past Events.
 - Discovery: Startup Directory, Featured Startups, Current Cohort, Success Stories.
 - Knowledge: Blogs (+ detail), News (+ detail), Resources, Cloud Credits, Grants & Funding.
 - Network: **Partners directory** with click-through **Partner detail modal** (logo, region, focus, full description, website link).
@@ -67,7 +67,7 @@ Become the default operating system for early-stage founders in India and emergi
 - ACL Management UI in Admin Dashboard for role/feature mapping.
 
 ### 3.3 Applications & Forms
-- Unified `ApplicationDialog` pattern reused across MVP Lab, INC Lab, Incubation, Hackathon, Cofounder, Pitch Submission, Investment, Startup Profile, Consultation.
+- Unified `ApplicationDialog` pattern reused across MVP Lab, Xi Lab, Incubation, Hackathon, Cofounder, Pitch Submission, Investment, Startup Profile, Consultation.
 - Tables: `applications`, `incubation_applications`, `hackathon_registrations`, `cofounder_requests`.
 - Status lifecycle: pending → approved / rejected (admin-controlled).
 
@@ -130,7 +130,7 @@ Recharts: 30-day application trends, status distribution, program conversion rat
 | Hackathon Detail | `/hackathon/:id` |
 | Incubation | `/incubation` |
 | MVP Lab | `/mvp-lab` |
-| INC Lab | `/inclab` |
+| Xi Lab | `/inclab` |
 | Resources | `/resources` |
 | Partnership | `/partnership` |
 | **Partners** | `/partners` |

@@ -63,7 +63,7 @@ const Partners = () => {
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto text-base">
             A trusted network of accelerators, investors, consultants, and ecosystem partners spanning five regions —
-            helping IC Combinator founders scale beyond borders from day one.
+            helping Xi Combinator founders scale beyond borders from day one.
           </p>
         </section>
 
@@ -147,7 +147,7 @@ const Partners = () => {
         {/* CTA */}
         <section className="container mx-auto px-4 pb-20">
           <div className="rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 to-orange-500/5 p-8 md:p-12 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold mb-3">Become an IC Combinator Partner</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-3">Become an Xi Combinator Partner</h2>
             <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
               Join our global network to co-build the next generation of breakout startups across regions.
             </p>

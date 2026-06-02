@@ -24,7 +24,7 @@ const schema = z.object({
   market: z.string().trim().min(10).max(2000),
   traction: z.string().trim().max(2000).optional().or(z.literal("")),
   funding_ask: z.string().trim().max(100).optional().or(z.literal("")),
-  why_inclab: z.string().trim().min(20, "Tell us why INClab").max(2000),
+  why_inclab: z.string().trim().min(20, "Tell us why Xi Lab").max(2000),
   pitch_deck_url: z.string().trim().url("Must be a valid URL").max(500).optional().or(z.literal("")),
 });
 
@@ -33,7 +33,7 @@ interface Props {
   title?: string;
 }
 
-const InclabApplicationDialog = ({ children, title = "Apply to INC Lab" }: Props) => {
+const InclabApplicationDialog = ({ children, title = "Apply to Xi Lab" }: Props) => {
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const { user } = useAuth();
@@ -77,7 +77,7 @@ const InclabApplicationDialog = ({ children, title = "Apply to INC Lab" }: Props
       };
       const { error } = await (supabase as any).from("inclab_applications").insert(payload);
       if (error) throw error;
-      trackEvent("application_submitted", { program: "INClab", startup_name: parsed.data.startup_name || "" });
+      trackEvent("application_submitted", { program: "Xi Lab", startup_name: parsed.data.startup_name || "" });
       toast({ title: "Application submitted! 🚀", description: "Our team will review and get back within 1-2 weeks." });
       setOpen(false);
       setForm({ founder_name: "", email: "", phone: "", startup_name: "", stage: "", industry: "", team_size: "", problem: "", solution: "", market: "", traction: "", funding_ask: "", why_inclab: "", pitch_deck_url: "" });
@@ -145,7 +145,7 @@ const InclabApplicationDialog = ({ children, title = "Apply to INC Lab" }: Props
             <div className="space-y-2"><Label>Pitch Deck URL</Label><Input value={form.pitch_deck_url} onChange={(e) => set("pitch_deck_url", e.target.value)} placeholder="https://…" /></div>
           </div>
 
-          <div className="space-y-2"><Label>Why INC Lab? *</Label><Textarea rows={3} value={form.why_inclab} onChange={(e) => set("why_inclab", e.target.value)} required /></div>
+          <div className="space-y-2"><Label>Why Xi Lab? *</Label><Textarea rows={3} value={form.why_inclab} onChange={(e) => set("why_inclab", e.target.value)} required /></div>
 
           <div className="flex gap-3 pt-2">
             <Button type="button" variant="outline" onClick={() => setOpen(false)} className="flex-1">Cancel</Button>

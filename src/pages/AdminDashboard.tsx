@@ -80,7 +80,7 @@ const AdminDashboard = () => {
           <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent mb-2">
             Admin Dashboard
           </h1>
-          <p className="text-muted-foreground">Manage IC Combinator ecosystem and operations</p>
+          <p className="text-muted-foreground">Manage Xi Combinator ecosystem and operations</p>
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
@@ -90,7 +90,7 @@ const AdminDashboard = () => {
             <TabsTrigger value="applications">Applications</TabsTrigger>
             <TabsTrigger value="hackathons">Hackathons</TabsTrigger>
             <TabsTrigger value="incubation">Incubation</TabsTrigger>
-            <TabsTrigger value="inclab">INC Lab</TabsTrigger>
+            <TabsTrigger value="inclab">Xi Lab</TabsTrigger>
             <TabsTrigger value="cofounders">Co-founders</TabsTrigger>
             <TabsTrigger value="health">Health Score</TabsTrigger>
             <TabsTrigger value="startups">Startups</TabsTrigger>

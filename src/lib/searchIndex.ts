@@ -8,7 +8,7 @@ export type SearchEntry = {
 
 export const searchIndex: SearchEntry[] = [
   // Programs
-  { title: "INC Lab", path: "/inclab", description: "Flagship accelerator program with funding, mentorship and resources.", keywords: ["accelerator", "inclab", "apply", "cohort", "funding"], category: "Programs" },
+  { title: "Xi Lab", path: "/inclab", description: "Flagship accelerator program with funding, mentorship and resources.", keywords: ["accelerator", "inclab", "apply", "cohort", "funding"], category: "Programs" },
   { title: "MVP Lab", path: "/mvp-lab", description: "Build your MVP with our tech team in 90 days.", keywords: ["mvp", "prototype", "build", "product", "tech"], category: "Programs" },
   { title: "Incubation", path: "/incubation", description: "Long-term incubation program with workspace and support.", keywords: ["incubation", "incubator", "early stage"], category: "Programs" },
   { title: "Hackathon", path: "/hackathon", description: "Compete in our flagship hackathons across India.", keywords: ["hackathon", "compete", "code", "event"], category: "Programs" },
@@ -42,11 +42,11 @@ export const searchIndex: SearchEntry[] = [
   { title: "Program Details", path: "/program-details", description: "Detailed breakdown of our programs.", keywords: ["program", "details"], category: "Resources" },
 
   // Company
-  { title: "About Us", path: "/about", description: "Learn about IC Combinator.", keywords: ["about", "team", "company"], category: "Company" },
+  { title: "About Us", path: "/about", description: "Learn about Xi Combinator.", keywords: ["about", "team", "company"], category: "Company" },
   { title: "Contact", path: "/contact", description: "Get in touch with the IC team.", keywords: ["contact", "support", "email"], category: "Company" },
   { title: "Subscription & Plans", path: "/subscription", description: "Membership and subscription tiers.", keywords: ["subscription", "pricing", "membership", "plans"], category: "Company" },
   { title: "Privacy Policy", path: "/privacy-policy", description: "How we handle your data.", keywords: ["privacy", "data", "gdpr"], category: "Company" },
-  { title: "Terms & Conditions", path: "/terms-conditions", description: "Terms of using IC Combinator.", keywords: ["terms", "conditions", "legal"], category: "Company" },
+  { title: "Terms & Conditions", path: "/terms-conditions", description: "Terms of using Xi Combinator.", keywords: ["terms", "conditions", "legal"], category: "Company" },
 
   // Account
   { title: "Login", path: "/login", description: "Sign in to your account.", keywords: ["login", "signin", "sign in"], category: "Account" },

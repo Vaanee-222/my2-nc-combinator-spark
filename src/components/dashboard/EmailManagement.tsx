@@ -13,13 +13,13 @@ import { Mail, Send, FileText, Bell, Eye, Copy, Plus, Clock, CheckCircle, XCircl
 import { useToast } from "@/hooks/use-toast";
 
 const emailTemplates = [
-  { id: "welcome", name: "Welcome Email", subject: "Welcome to IC Combinator!", category: "onboarding", status: "active", lastEdited: "2026-05-01" },
+  { id: "welcome", name: "Welcome Email", subject: "Welcome to Xi Combinator!", category: "onboarding", status: "active", lastEdited: "2026-05-01" },
   { id: "verify", name: "Verify Email", subject: "Verify your email address", category: "auth", status: "active", lastEdited: "2026-04-28" },
   { id: "booking-confirmed", name: "Booking Confirmed", subject: "Your booking is confirmed", category: "booking", status: "active", lastEdited: "2026-04-25" },
   { id: "application-received", name: "Application Received", subject: "We received your application", category: "application", status: "active", lastEdited: "2026-04-20" },
   { id: "application-approved", name: "Application Approved", subject: "Congratulations! You're accepted", category: "application", status: "active", lastEdited: "2026-04-18" },
   { id: "application-rejected", name: "Application Rejected", subject: "Application Update", category: "application", status: "draft", lastEdited: "2026-04-15" },
-  { id: "invoice", name: "Invoice", subject: "Your invoice from IC Combinator", category: "billing", status: "active", lastEdited: "2026-04-10" },
+  { id: "invoice", name: "Invoice", subject: "Your invoice from Xi Combinator", category: "billing", status: "active", lastEdited: "2026-04-10" },
   { id: "password-reset", name: "Password Reset", subject: "Reset your password", category: "auth", status: "active", lastEdited: "2026-04-08" },
   { id: "mentor-assigned", name: "Mentor Assigned", subject: "A mentor has been assigned to you", category: "notification", status: "active", lastEdited: "2026-04-05" },
   { id: "event-reminder", name: "Event Reminder", subject: "Upcoming event reminder", category: "notification", status: "draft", lastEdited: "2026-04-01" },

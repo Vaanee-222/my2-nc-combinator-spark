@@ -48,7 +48,7 @@ const INCLab = () => {
     {
       step: "4",
       title: "Final Selection",
-      description: "Welcome to IC Combinator family",
+      description: "Welcome to Xi Combinator family",
       timeline: "1-2 weeks",
       requirements: [
         "Legal documentation",
@@ -157,7 +157,7 @@ const INCLab = () => {
                 🎯 Apply. Build. Scale.
               </Badge>
               <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-                INClab:{" "}
+                Xi Lab:{" "}
                 <span className="bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent">
                   Your Gateway
                 </span>

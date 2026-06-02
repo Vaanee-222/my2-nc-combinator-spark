@@ -13,7 +13,7 @@ const routeLabels: Record<string, string> = {
   "hackathon": "Hackathon",
   "incubation": "Incubation",
   "mvp-lab": "MVP Lab",
-  "inclab": "INC Lab",
+  "inclab": "Xi Lab",
   "resources": "Resources",
   "partnership": "Partnership",
   "about": "About Us",

@@ -124,7 +124,7 @@ const StartupDirectory = () => {
             Startup Directory
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Discover India's most promising startups backed by IC Combinator. Connect with innovative founders building solutions for India's biggest challenges.
+            Discover India's most promising startups backed by Xi Combinator. Connect with innovative founders building solutions for India's biggest challenges.
           </p>
         </section>
 
@@ -304,11 +304,11 @@ const StartupDirectory = () => {
         <section className="text-center py-16 mt-16 bg-gradient-to-r from-primary/10 to-orange-400/10 rounded-3xl">
           <h2 className="text-3xl font-bold mb-4">Want to be Featured?</h2>
           <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join IC Combinator and get your startup featured in our directory. Connect with investors, mentors, and fellow entrepreneurs.
+            Join Xi Combinator and get your startup featured in our directory. Connect with investors, mentors, and fellow entrepreneurs.
           </p>
           <IncApplicationDialog>
             <Button size="lg" className="bg-gradient-to-r from-primary to-orange-400 hover:shadow-orange-glow">
-              Apply to IC Combinator
+              Apply to Xi Combinator
             </Button>
           </IncApplicationDialog>
         </section>

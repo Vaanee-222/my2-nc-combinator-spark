@@ -29,7 +29,7 @@ const Navigation = () => {
     { name: "Hackathon", href: "/hackathon" },
     { name: "Incubation", href: "/incubation" },
     { name: "MVP Lab", href: "/mvp-lab" },
-    { name: "INC Lab", href: "/inclab" },
+    { name: "Xi Lab", href: "/inclab" },
   ];
 
 
@@ -69,7 +69,7 @@ const Navigation = () => {
               <span className="text-white font-bold text-sm tracking-tight">IC</span>
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-primary to-orange-500 bg-clip-text text-transparent">
-              IC Combinator
+              Xi Combinator
             </span>
           </Link>
 

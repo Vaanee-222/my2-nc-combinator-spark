@@ -10,7 +10,7 @@ const Hero = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
-        <img src={heroImage} alt="IC Combinator Hero" className="w-full h-full object-cover" />
+        <img src={heroImage} alt="Xi Combinator Hero" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/85 to-background"></div>
       </div>
 
@@ -38,9 +38,9 @@ const Hero = () => {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-          <ApplicationDialog program="INClab">
+          <ApplicationDialog program="Xi Lab">
             <Button variant="hero" size="lg" className="text-lg px-8 py-6 font-semibold">
-              Apply to INClab
+              Apply to Xi Lab
             </Button>
           </ApplicationDialog>
           <Link to="/current-cohort">

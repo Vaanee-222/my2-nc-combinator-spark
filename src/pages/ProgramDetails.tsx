@@ -103,7 +103,7 @@ const ProgramDetails = () => {
     },
     {
       id: "inc-lab",
-      name: "INC Lab",
+      name: "Xi Lab",
       description: "Research and development for innovative solutions",
       duration: "3-12 Months",
       participants: "10-15 projects",

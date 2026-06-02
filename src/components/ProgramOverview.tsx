@@ -130,7 +130,7 @@ const ProgramOverview = () => {
                   Learn About Our Philosophy
                 </Button>
               </Link>
-              <ApplicationDialog program="IC Combinator">
+              <ApplicationDialog program="Xi Combinator">
                 <Button variant="hero" size="lg">
                   Start Your Application
                 </Button>

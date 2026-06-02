@@ -202,7 +202,7 @@ const Subscription = () => {
             Invest in Your Startup's <span className="text-primary">Growth</span>
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Choose the plan that fits your stage. All plans include access to the IC Combinator community.
+            Choose the plan that fits your stage. All plans include access to the Xi Combinator community.
           </p>
         </div>
 

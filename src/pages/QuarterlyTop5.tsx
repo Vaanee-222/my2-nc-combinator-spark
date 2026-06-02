@@ -32,7 +32,7 @@ const QuarterlyTop5 = () => {
               Quarterly <span className="bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent">Top 5 Cohort</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              The 5 startups that emerge from each quarter's monthly selections — these are the founders who advance into the IC Combinator cohort.
+              The 5 startups that emerge from each quarter's monthly selections — these are the founders who advance into the Xi Combinator cohort.
             </p>
           </div>
         </section>

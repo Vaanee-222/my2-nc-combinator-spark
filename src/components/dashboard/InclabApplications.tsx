@@ -45,7 +45,7 @@ const InclabApplications = () => {
       status, admin_notes: admin_notes ?? undefined, reviewed_by: user?.id, reviewed_at: new Date().toISOString(),
     }).eq("id", id);
     if (error) { toast({ title: "Error", description: error.message, variant: "destructive" }); return; }
-    trackEvent("application_status_changed", { program: "INClab", new_status: status });
+    trackEvent("application_status_changed", { program: "Xi Lab", new_status: status });
     toast({ title: "Updated", description: `Application marked ${status}` });
     setSelected(null);
     fetchApps();
@@ -57,7 +57,7 @@ const InclabApplications = () => {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-2xl font-bold">INC Lab Applications ({apps.length})</h2>
+        <h2 className="text-2xl font-bold">Xi Lab Applications ({apps.length})</h2>
         <Select value={filter} onValueChange={setFilter}>
           <SelectTrigger className="w-44"><SelectValue /></SelectTrigger>
           <SelectContent>
@@ -118,7 +118,7 @@ const InclabApplications = () => {
               <Field label="Solution" value={selected.solution} multiline />
               <Field label="Market" value={selected.market} multiline />
               <Field label="Traction" value={selected.traction} multiline />
-              <Field label="Why INC Lab" value={selected.why_inclab} multiline />
+              <Field label="Why Xi Lab" value={selected.why_inclab} multiline />
               {selected.pitch_deck_url && (
                 <div>
                   <div className="text-xs font-medium text-muted-foreground mb-1">Pitch Deck</div>

@@ -12,7 +12,7 @@ const Footer = () => {
           {/* Company Info */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent">
-              IC Combinator
+              Xi Combinator
             </h3>
             <p className="text-sm text-muted-foreground">
               India's leading startup accelerator and incubator, empowering entrepreneurs to build the next generation of innovative companies.
@@ -43,7 +43,7 @@ const Footer = () => {
             <h3 className="text-lg font-semibold">Programs</h3>
             <div className="space-y-2">
               <Link to="/mvp-lab" className="block text-sm text-muted-foreground hover:text-primary transition-colors">MVP Lab</Link>
-              <Link to="/inclab" className="block text-sm text-muted-foreground hover:text-primary transition-colors">INC Lab</Link>
+              <Link to="/inclab" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Xi Lab</Link>
               <Link to="/meet-cofounder" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Meet Co-founder</Link>
               <Link to="/resources" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Resources</Link>
               <Link to="/blogs" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Blogs</Link>
@@ -76,7 +76,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <Mail className="h-4 w-4" />
-                <span>hello@iccombinator.com</span>
+                <span>hello@xicombinator.com</span>
               </div>
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <Phone className="h-4 w-4" />
@@ -98,7 +98,7 @@ const Footer = () => {
 
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <p className="text-sm text-muted-foreground">
-            © 2024 IC Combinator. All rights reserved.
+            © 2024 Xi Combinator. All rights reserved.
           </p>
           <div className="flex space-x-4">
             <Link to="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary transition-colors">

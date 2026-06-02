@@ -15,7 +15,7 @@ const News = () => {
     excerpt: "The Indian startup ecosystem shows remarkable resilience with highest quarterly funding in 2024.",
     category: "Funding",
     time: "2 hours ago",
-    source: "IC Combinator Research",
+    source: "Xi Combinator Research",
     urgent: true
   };
 
