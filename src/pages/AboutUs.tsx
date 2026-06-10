@@ -4,9 +4,10 @@ import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Users, Target, Award, Globe, Heart, Lightbulb, TrendingUp, Shield } from "lucide-react";
+import { Users, Target, Award, Globe, Heart, Lightbulb, Linkedin } from "lucide-react";
 import ApplicationDialog from "@/components/ApplicationDialog";
 import { Link } from "react-router-dom";
+import { advisoryBoard, type AdvisorTier } from "@/data/advisoryBoard";
 
 const AboutUs = () => {
   const values = [
@@ -32,42 +33,13 @@ const AboutUs = () => {
     }
   ];
 
-  const advisoryBoard = [
-    {
-      name: "Dr. Priya Nair",
-      role: "Former VP Engineering, Google India",
-      expertise: "AI/ML, Product Development",
-      image: "/placeholder.svg",
-      description: "20+ years leading tech teams at scale"
-    },
-    {
-      name: "Rajesh Kumar",
-      role: "Founder & CEO, TechFlow Ventures",
-      expertise: "Venture Capital, Growth Strategy",
-      image: "/placeholder.svg",
-      description: "Invested in 50+ successful startups"
-    },
-    {
-      name: "Anitha Reddy",
-      role: "Former Director, Microsoft India",
-      expertise: "Enterprise Sales, B2B Strategy",
-      image: "/placeholder.svg",
-      description: "Built enterprise divisions from ground up"
-    },
-    {
-      name: "Vikram Singh",
-      role: "Serial Entrepreneur",
-      expertise: "Healthcare, FinTech",
-      image: "/placeholder.svg",
-      description: "3 successful exits, $500M+ value created"
-    }
-  ];
+  const tiers: AdvisorTier[] = ["Founding Advisors", "Strategic Advisors", "Regional Partners", "Industry Experts"];
 
   const stats = [
     { number: "500+", label: "Startups Mentored" },
-    { number: "₹100Cr+", label: "Funding Raised" },
-    { number: "50+", label: "Industry Partners" },
-    { number: "95%", label: "Success Rate" }
+    { number: "$120M+", label: "Funding Raised" },
+    { number: "50+", label: "Global Partners" },
+    { number: "30+", label: "Countries" }
   ];
 
   return (
@@ -89,8 +61,8 @@ const AboutUs = () => {
                 </span>
               </h1>
               <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-                We're India's premier startup accelerator, dedicated to transforming innovative ideas 
-                into market-ready products and scalable businesses.
+                A global startup accelerator transforming bold ideas into market-ready products
+                and scalable businesses — across every continent.
               </p>
             </div>
 
