@@ -147,31 +147,57 @@ const AboutUs = () => {
         <section className="py-20">
           <div className="container mx-auto px-4">
             <div className="text-center space-y-4 mb-16">
+              <Badge variant="secondary" className="bg-primary/10 text-primary">Global Network</Badge>
               <h2 className="text-3xl md:text-4xl font-bold">Advisory Board</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Guidance from industry leaders and experts who shape our strategic direction.
+                Operators, investors, and industry experts from across 12+ countries guiding Xi Combinator founders.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-              {advisoryBoard.map((advisor, index) => (
-                <Card key={index} className="p-6 bg-card-gradient border-border text-center">
-                  <div className="space-y-4">
-                    <div className="w-20 h-20 bg-muted rounded-full mx-auto flex items-center justify-center">
-                      <Users className="w-8 h-8 text-muted-foreground" />
-                    </div>
-                    <div className="space-y-2">
-                      <h3 className="text-lg font-semibold">{advisor.name}</h3>
-                      <p className="text-sm text-primary font-medium">{advisor.role}</p>
-                      <p className="text-xs text-muted-foreground">{advisor.expertise}</p>
-                      <p className="text-xs text-muted-foreground italic">{advisor.description}</p>
-                    </div>
+            {tiers.map((tier) => {
+              const members = advisoryBoard.filter((a) => a.tier === tier);
+              if (!members.length) return null;
+              return (
+                <div key={tier} className="mb-12">
+                  <div className="flex items-center gap-3 mb-6">
+                    <h3 className="text-xl font-semibold">{tier}</h3>
+                    <div className="h-px flex-1 bg-border" />
+                    <span className="text-xs text-muted-foreground">{members.length} members</span>
                   </div>
-                </Card>
-              ))}
-            </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {members.map((advisor) => (
+                      <Card key={advisor.name} className="p-6 bg-card-gradient border-border text-center hover:border-primary/40 transition-colors">
+                        <div className="space-y-3">
+                          <div className="w-20 h-20 bg-primary/10 rounded-full mx-auto flex items-center justify-center">
+                            <Users className="w-8 h-8 text-primary" />
+                          </div>
+                          <div className="space-y-1">
+                            <h4 className="text-base font-semibold">{advisor.name}</h4>
+                            <p className="text-xs text-primary font-medium">{advisor.role}</p>
+                            <p className="text-xs text-muted-foreground">{advisor.company}</p>
+                            <p className="text-[11px] text-muted-foreground flex items-center justify-center gap-1">
+                              <Globe className="h-3 w-3" /> {advisor.country}
+                            </p>
+                            <p className="text-xs text-muted-foreground italic pt-1">{advisor.description}</p>
+                          </div>
+                          <a
+                            href={advisor.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline"
+                          >
+                            <Linkedin className="h-3.5 w-3.5" /> LinkedIn
+                          </a>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </section>
+
 
         {/* Join Our Mission */}
         <section className="py-20 bg-muted/5">
