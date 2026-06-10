@@ -8,7 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { TrendingUp, Award, Users, Target, Calendar, Play, CheckCircle } from "lucide-react";
+import { TrendingUp, Award, Target, Calendar, CheckCircle, Coins, Landmark, HandCoins, Trophy, ArrowRight } from "lucide-react";
+import ApplicationDialog from "@/components/ApplicationDialog";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -19,15 +20,15 @@ const GrantsFunding = () => {
   const grants = [
     {
       id: 1,
-      name: "Ratan Tata Innovation Grant",
-      amount: "₹50,00,000",
+      name: "Global Innovation Grant",
+      amount: "$600,000",
       type: "Innovation Grant",
       focus: "Social Impact & Innovation",
-      deadline: "March 31, 2025",
+      deadline: "March 31, 2026",
       status: "Open",
       eligibility: [
         "Startups working on social impact solutions",
-        "Revenue less than ₹10 Cr",
+        "Revenue less than $1.2M",
         "Team of 2-10 members",
         "Innovative technology solution"
       ],
@@ -42,11 +43,11 @@ const GrantsFunding = () => {
     },
     {
       id: 2,
-      name: "Women Entrepreneur Grant",
-      amount: "₹25,00,000",
+      name: "Women Founders Grant",
+      amount: "$300,000",
       type: "Diversity Grant",
       focus: "Women-led Startups",
-      deadline: "June 15, 2025",
+      deadline: "June 15, 2026",
       status: "Open",
       eligibility: [
         "At least 51% women ownership",
@@ -65,21 +66,21 @@ const GrantsFunding = () => {
     },
     {
       id: 3,
-      name: "Rural Innovation Grant",
-      amount: "₹30,00,000",
+      name: "Emerging Markets Grant",
+      amount: "$360,000",
       type: "Impact Grant",
-      focus: "Rural Market Solutions",
-      deadline: "September 30, 2025",
+      focus: "Emerging-Market Solutions",
+      deadline: "September 30, 2026",
       status: "Open",
       eligibility: [
-        "Solutions for rural markets",
-        "Direct impact on rural communities",
+        "Solutions for emerging markets",
+        "Direct community impact",
         "Sustainable business model",
         "Local team presence"
       ],
       benefits: [
         "Grant funding",
-        "Rural market access",
+        "Emerging-market access",
         "Government liaison support",
         "Distribution network access"
       ],
@@ -89,10 +90,10 @@ const GrantsFunding = () => {
     {
       id: 4,
       name: "Deep Tech Innovation Grant",
-      amount: "₹1,00,00,000",
+      amount: "$1,200,000",
       type: "Technology Grant",
-      focus: "AI/ML/Blockchain/IoT",
-      deadline: "December 31, 2025",
+      focus: "AI / ML / Blockchain / IoT",
+      deadline: "December 31, 2026",
       status: "Open",
       eligibility: [
         "Deep technology focus",
@@ -114,24 +115,24 @@ const GrantsFunding = () => {
   const successStories = [
     {
       company: "GreenTech Solutions",
-      grant: "Rural Innovation Grant",
-      amount: "₹30L",
+      grant: "Emerging Markets Grant",
+      amount: "$360K",
       impact: "Helped 50,000+ farmers increase crop yield by 40%",
-      currentValuation: "₹25 Cr"
+      currentValuation: "$3M"
     },
     {
       company: "HealthForAll",
-      grant: "Ratan Tata Innovation Grant", 
-      amount: "₹50L",
+      grant: "Global Innovation Grant",
+      amount: "$600K",
       impact: "Providing healthcare to 100+ remote villages",
-      currentValuation: "₹40 Cr"
+      currentValuation: "$4.8M"
     },
     {
       company: "EduWomen",
-      grant: "Women Entrepreneur Grant",
-      amount: "₹25L", 
+      grant: "Women Founders Grant",
+      amount: "$300K",
       impact: "Trained 10,000+ women in digital skills",
-      currentValuation: "₹15 Cr"
+      currentValuation: "$1.8M"
     }
   ];
 
@@ -165,35 +166,36 @@ const GrantsFunding = () => {
             Access non-dilutive funding opportunities designed to accelerate your startup journey. 
             Multiple grant programs supporting innovation across sectors.
           </p>
-          <div className="flex justify-center space-x-4">
-            <Badge variant="secondary" className="bg-primary/10 text-primary text-lg px-4 py-2">
-              💰 ₹2Cr+ Available
+          <div className="flex justify-center flex-wrap gap-3">
+            <Badge variant="secondary" className="bg-primary/10 text-primary text-base px-4 py-2 inline-flex items-center gap-2">
+              <Coins className="h-4 w-4" /> $2.4M+ Available
             </Badge>
-            <Badge variant="secondary" className="bg-primary/10 text-primary text-lg px-4 py-2">
-              🎯 Multiple Programs
+            <Badge variant="secondary" className="bg-primary/10 text-primary text-base px-4 py-2 inline-flex items-center gap-2">
+              <Target className="h-4 w-4" /> Multiple Programs
             </Badge>
           </div>
         </section>
 
         {/* Video Introduction */}
         <section className="mb-16">
-          <Card className="bg-gradient-to-r from-primary/10 to-orange-400/10 border-border">
+          <Card className="bg-gradient-to-r from-primary/10 to-orange-400/10 border-border overflow-hidden">
             <CardHeader className="text-center">
               <CardTitle className="text-2xl">Grant Program Overview</CardTitle>
               <CardDescription>Learn about our funding opportunities and application process</CardDescription>
             </CardHeader>
-            <CardContent className="text-center">
-              <div className="aspect-video bg-muted rounded-lg flex items-center justify-center mb-4">
-                <div className="text-center space-y-4">
-                  <Play className="h-16 w-16 text-primary mx-auto" />
-                  <p className="text-muted-foreground">Grant Program Overview Video</p>
-                  <Button variant="outline">
-                    Watch Now (5 min)
-                  </Button>
-                </div>
+            <CardContent>
+              <div className="aspect-video w-full rounded-lg overflow-hidden bg-black">
+                <iframe
+                  className="w-full h-full"
+                  src="https://www.youtube.com/embed/RFN47c9HZAc"
+                  title="Grant Program Overview"
+                  frameBorder={0}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
               </div>
-              <p className="text-sm text-muted-foreground">
-                Watch this comprehensive guide to understand our grant programs, eligibility criteria, and application process
+              <p className="text-sm text-muted-foreground text-center mt-4">
+                A comprehensive guide to grant programs, eligibility criteria, and the application process.
               </p>
             </CardContent>
           </Card>
@@ -210,7 +212,9 @@ const GrantsFunding = () => {
                     <Badge variant={grant.status === "Open" ? "default" : "secondary"}>
                       {grant.status}
                     </Badge>
-                    <div className="text-2xl">💰</div>
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                      <HandCoins className="h-5 w-5" />
+                    </div>
                   </div>
                   <CardTitle className="text-xl">{grant.name}</CardTitle>
                   <div className="text-3xl font-bold text-primary mb-2">{grant.amount}</div>
@@ -265,9 +269,11 @@ const GrantsFunding = () => {
                     <p className="text-xs text-muted-foreground mb-3">
                       <strong>Application Cycle:</strong> {grant.applicationProcess}
                     </p>
-                    <Button className="w-full" disabled={grant.status !== "Open"}>
-                      {grant.status === "Open" ? "Apply Now" : "Applications Closed"}
-                    </Button>
+                    <ApplicationDialog program={`Grant: ${grant.name}`}>
+                      <Button className="w-full" disabled={grant.status !== "Open"}>
+                        {grant.status === "Open" ? "Apply Now" : "Applications Closed"}
+                      </Button>
+                    </ApplicationDialog>
                   </div>
                 </CardContent>
               </Card>
@@ -465,15 +471,17 @@ const GrantsFunding = () => {
         <section className="text-center py-16 bg-gradient-to-r from-primary/10 to-orange-400/10 rounded-3xl">
           <h2 className="text-3xl font-bold mb-4">Ready to Fund Your Innovation?</h2>
           <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Don't let funding be a barrier to your startup success. Apply for our grant programs 
+            Don't let funding be a barrier to your startup success. Apply for our grant programs
             and get the non-dilutive funding you need to scale your impact.
           </p>
-          <div className="flex justify-center space-x-4">
-            <Button size="lg" className="bg-gradient-to-r from-primary to-orange-400 hover:shadow-orange-glow">
-              Apply for Grants
-            </Button>
-            <Button variant="outline" size="lg">
-              Schedule Consultation
+          <div className="flex justify-center flex-wrap gap-4">
+            <ApplicationDialog program="Grants & Funding">
+              <Button size="lg" variant="hero">
+                Apply for Grants <ArrowRight className="h-4 w-4 ml-2" />
+              </Button>
+            </ApplicationDialog>
+            <Button variant="outline" size="lg" asChild>
+              <a href="/consultation-booking">Schedule Consultation</a>
             </Button>
           </div>
         </section>
