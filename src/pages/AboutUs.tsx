@@ -4,9 +4,10 @@ import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Users, Target, Award, Globe, Heart, Lightbulb, TrendingUp, Shield } from "lucide-react";
+import { Users, Target, Award, Globe, Heart, Lightbulb, Linkedin } from "lucide-react";
 import ApplicationDialog from "@/components/ApplicationDialog";
 import { Link } from "react-router-dom";
+import { advisoryBoard, type AdvisorTier } from "@/data/advisoryBoard";
 
 const AboutUs = () => {
   const values = [
@@ -32,42 +33,13 @@ const AboutUs = () => {
     }
   ];
 
-  const advisoryBoard = [
-    {
-      name: "Dr. Priya Nair",
-      role: "Former VP Engineering, Google India",
-      expertise: "AI/ML, Product Development",
-      image: "/placeholder.svg",
-      description: "20+ years leading tech teams at scale"
-    },
-    {
-      name: "Rajesh Kumar",
-      role: "Founder & CEO, TechFlow Ventures",
-      expertise: "Venture Capital, Growth Strategy",
-      image: "/placeholder.svg",
-      description: "Invested in 50+ successful startups"
-    },
-    {
-      name: "Anitha Reddy",
-      role: "Former Director, Microsoft India",
-      expertise: "Enterprise Sales, B2B Strategy",
-      image: "/placeholder.svg",
-      description: "Built enterprise divisions from ground up"
-    },
-    {
-      name: "Vikram Singh",
-      role: "Serial Entrepreneur",
-      expertise: "Healthcare, FinTech",
-      image: "/placeholder.svg",
-      description: "3 successful exits, $500M+ value created"
-    }
-  ];
+  const tiers: AdvisorTier[] = ["Founding Advisors", "Strategic Advisors", "Regional Partners", "Industry Experts"];
 
   const stats = [
     { number: "500+", label: "Startups Mentored" },
-    { number: "₹100Cr+", label: "Funding Raised" },
-    { number: "50+", label: "Industry Partners" },
-    { number: "95%", label: "Success Rate" }
+    { number: "$120M+", label: "Funding Raised" },
+    { number: "50+", label: "Global Partners" },
+    { number: "30+", label: "Countries" }
   ];
 
   return (
@@ -89,8 +61,8 @@ const AboutUs = () => {
                 </span>
               </h1>
               <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-                We're India's premier startup accelerator, dedicated to transforming innovative ideas 
-                into market-ready products and scalable businesses.
+                A global startup accelerator transforming bold ideas into market-ready products
+                and scalable businesses — across every continent.
               </p>
             </div>
 
@@ -175,31 +147,57 @@ const AboutUs = () => {
         <section className="py-20">
           <div className="container mx-auto px-4">
             <div className="text-center space-y-4 mb-16">
+              <Badge variant="secondary" className="bg-primary/10 text-primary">Global Network</Badge>
               <h2 className="text-3xl md:text-4xl font-bold">Advisory Board</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Guidance from industry leaders and experts who shape our strategic direction.
+                Operators, investors, and industry experts from across 12+ countries guiding Xi Combinator founders.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-              {advisoryBoard.map((advisor, index) => (
-                <Card key={index} className="p-6 bg-card-gradient border-border text-center">
-                  <div className="space-y-4">
-                    <div className="w-20 h-20 bg-muted rounded-full mx-auto flex items-center justify-center">
-                      <Users className="w-8 h-8 text-muted-foreground" />
-                    </div>
-                    <div className="space-y-2">
-                      <h3 className="text-lg font-semibold">{advisor.name}</h3>
-                      <p className="text-sm text-primary font-medium">{advisor.role}</p>
-                      <p className="text-xs text-muted-foreground">{advisor.expertise}</p>
-                      <p className="text-xs text-muted-foreground italic">{advisor.description}</p>
-                    </div>
+            {tiers.map((tier) => {
+              const members = advisoryBoard.filter((a) => a.tier === tier);
+              if (!members.length) return null;
+              return (
+                <div key={tier} className="mb-12">
+                  <div className="flex items-center gap-3 mb-6">
+                    <h3 className="text-xl font-semibold">{tier}</h3>
+                    <div className="h-px flex-1 bg-border" />
+                    <span className="text-xs text-muted-foreground">{members.length} members</span>
                   </div>
-                </Card>
-              ))}
-            </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {members.map((advisor) => (
+                      <Card key={advisor.name} className="p-6 bg-card-gradient border-border text-center hover:border-primary/40 transition-colors">
+                        <div className="space-y-3">
+                          <div className="w-20 h-20 bg-primary/10 rounded-full mx-auto flex items-center justify-center">
+                            <Users className="w-8 h-8 text-primary" />
+                          </div>
+                          <div className="space-y-1">
+                            <h4 className="text-base font-semibold">{advisor.name}</h4>
+                            <p className="text-xs text-primary font-medium">{advisor.role}</p>
+                            <p className="text-xs text-muted-foreground">{advisor.company}</p>
+                            <p className="text-[11px] text-muted-foreground flex items-center justify-center gap-1">
+                              <Globe className="h-3 w-3" /> {advisor.country}
+                            </p>
+                            <p className="text-xs text-muted-foreground italic pt-1">{advisor.description}</p>
+                          </div>
+                          <a
+                            href={advisor.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline"
+                          >
+                            <Linkedin className="h-3.5 w-3.5" /> LinkedIn
+                          </a>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </section>
+
 
         {/* Join Our Mission */}
         <section className="py-20 bg-muted/5">

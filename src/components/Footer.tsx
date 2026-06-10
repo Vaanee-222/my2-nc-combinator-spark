@@ -15,7 +15,7 @@ const Footer = () => {
               Xi Combinator
             </h3>
             <p className="text-sm text-muted-foreground">
-              India's leading startup accelerator and incubator, empowering entrepreneurs to build the next generation of innovative companies.
+              A global startup accelerator and incubator empowering founders across continents to build the next generation of breakout companies.
             </p>
             <div className="flex space-x-4">
               <Button variant="ghost" size="icon"><Facebook className="h-4 w-4" /></Button>
@@ -72,7 +72,7 @@ const Footer = () => {
             <div className="space-y-2">
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <MapPin className="h-4 w-4" />
-                <span>Bangalore, Karnataka, India</span>
+                <span>San Francisco · Bangalore · Singapore</span>
               </div>
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <Mail className="h-4 w-4" />
@@ -80,7 +80,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <Phone className="h-4 w-4" />
-                <span>+91 98765 43210</span>
+                <span>+1 (415) 555-0142</span>
               </div>
             </div>
 
@@ -98,7 +98,7 @@ const Footer = () => {
 
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <p className="text-sm text-muted-foreground">
-            © 2024 Xi Combinator. All rights reserved.
+            © {new Date().getFullYear()} Xi Combinator. All rights reserved.
           </p>
           <div className="flex space-x-4">
             <Link to="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
