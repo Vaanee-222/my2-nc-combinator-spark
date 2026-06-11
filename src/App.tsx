@@ -122,6 +122,7 @@ const AppRoutes = () => {
 
               <Route path="/about" element={<AboutUs />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/blog/:slug" element={<BlogDetail />} />
               <Route path="/blog/:id" element={<BlogDetail />} />
               <Route path="/requirements" element={<RequirementsDetail />} />
               <Route path="/startup-directory" element={<StartupDirectory />} />
