@@ -39,7 +39,7 @@ export const monthlyTop10: CohortStartup[] = months.flatMap((m, mi) =>
     description: n[2],
     category: categories[(i + mi) % categories.length],
     stage: stages[i % stages.length],
-    traction: ["$10L MRR", "5K users", "12 pilots", "$50L ARR", "2K paying users"][i % 5],
+    traction: ["$12K MRR", "5K users", "12 pilots", "$60K ARR", "2K paying users"][i % 5],
     status: i < 5 ? "Selected" : "Under Review",
     period: m,
   }))
@@ -55,7 +55,7 @@ export const quarterlyTop5: CohortStartup[] = quarters.flatMap((q, qi) =>
     description: n[2],
     category: categories[(i + qi * 2) % categories.length],
     stage: stages[(i + 1) % stages.length],
-    traction: ["$1Cr ARR", "50K users", "100+ enterprise customers", "$2Cr GMV", "30 active pilots"][i],
+    traction: ["$125K ARR", "50K users", "100+ enterprise customers", "$250K GMV", "30 active pilots"][i],
     status: "Advanced",
     period: q,
     highlight: ["10x QoQ", "Profitable", "Backed by 3 VCs", "Govt. tender win", "Featured in YourStory"][i],

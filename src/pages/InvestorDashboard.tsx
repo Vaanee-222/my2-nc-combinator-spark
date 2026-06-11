@@ -31,8 +31,8 @@ const InvestorDashboard = () => {
       id: 1,
       company: "TechFlow Solutions",
       sector: "FinTech",
-      investmentAmount: "$2.5 Cr",
-      currentValuation: "$15 Cr",
+      investmentAmount: "$300K",
+      currentValuation: "$1.8M",
       investmentDate: "Jan 2023",
       stage: "Series A",
       status: "Active",
@@ -42,8 +42,8 @@ const InvestorDashboard = () => {
       id: 2,
       company: "HealthCare AI",
       sector: "HealthTech",
-      investmentAmount: "$1.8 Cr",
-      currentValuation: "$12 Cr",
+      investmentAmount: "$220K",
+      currentValuation: "$1.5M",
       investmentDate: "Mar 2023",
       stage: "Seed",
       status: "Active",
@@ -53,7 +53,7 @@ const InvestorDashboard = () => {
       id: 3,
       company: "EduNext Platform",
       sector: "EdTech",
-      investmentAmount: "$3.2 Cr",
+      investmentAmount: "$385K",
       currentValuation: "$18 Cr",
       investmentDate: "Dec 2022",
       stage: "Series A",
@@ -72,7 +72,7 @@ const InvestorDashboard = () => {
       progress: 75,
       foundedYear: 2022,
       team: 12,
-      revenue: "$50L ARR"
+      revenue: "$60K ARR"
     },
     {
       id: 2,
@@ -83,12 +83,12 @@ const InvestorDashboard = () => {
       progress: 25,
       foundedYear: 2023,
       team: 8,
-      revenue: "$25L ARR"
+      revenue: "$30K ARR"
     }
   ];
 
   const investmentMetrics = {
-    totalInvested: "$45 Cr",
+    totalInvested: "$5.4M",
     currentPortfolioValue: "$180 Cr",
     averageROI: "285%",
     successRate: "78%"
@@ -271,7 +271,7 @@ const InvestorDashboard = () => {
               <Card className="bg-card-gradient border-border">
                 <CardHeader>
                   <CardTitle>AI-Powered Logistics</CardTitle>
-                  <CardDescription>Series A • $8 Cr • LogisTech</CardDescription>
+                  <CardDescription>Series A • $1M • LogisTech</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -292,7 +292,7 @@ const InvestorDashboard = () => {
               <Card className="bg-card-gradient border-border">
                 <CardHeader>
                   <CardTitle>MedTech Innovation</CardTitle>
-                  <CardDescription>Seed • $3 Cr • HealthFlow</CardDescription>
+                  <CardDescription>Seed • $360K • HealthFlow</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">

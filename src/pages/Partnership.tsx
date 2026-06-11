@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -7,57 +8,58 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Handshake, Building, Users, Globe, TrendingUp, Award } from "lucide-react";
+import { Building, Users, Globe, TrendingUp, Building2 } from "lucide-react";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { supabase } from "@/integrations/supabase/client";
+import { Link } from "react-router-dom";
+
+interface PartnerRow {
+  id: string;
+  name: string;
+  note: string | null;
+  description: string | null;
+  logo_url: string | null;
+  website_url: string | null;
+  partnership_tier: string | null;
+}
 
 const Partnership = () => {
-  const partnershipTypes = [
-    {
-      title: "Corporate Innovation",
-      icon: Building,
-      description: "Partner with startups to drive innovation in your industry",
-      benefits: ["Access to cutting-edge solutions", "Fast-track R&D", "Startup pipeline", "Innovation workshops"]
-    },
-    {
-      title: "Venture Partnership",
-      icon: TrendingUp,
-      description: "Co-invest in promising startups with us",
-      benefits: ["Deal flow access", "Due diligence support", "Co-investment opportunities", "Portfolio support"]
-    },
-    {
-      title: "Technology Integration",
-      icon: Globe,
-      description: "Integrate your platform with our startup ecosystem",
-      benefits: ["API partnerships", "White-label solutions", "Technical integration", "Developer support"]
-    },
-    {
-      title: "Mentorship Program",
-      icon: Users,
-      description: "Share expertise with next-gen entrepreneurs",
-      benefits: ["Industry recognition", "Talent pipeline", "Innovation insights", "Networking opportunities"]
-    }
-  ];
+  const [partners, setPartners] = useState<PartnerRow[]>([]);
 
-  const currentPartners = [
-    { name: "Microsoft", type: "Cloud Partner", logo: "" },
-    { name: "AWS", type: "Infrastructure", logo: "" },
-    { name: "Google", type: "Technology", logo: "" },
-    { name: "HDFC Bank", type: "Financial", logo: "" },
-    { name: "TCS", type: "Enterprise", logo: "" },
-    { name: "Flipkart", type: "E-commerce", logo: "" }
+  useEffect(() => {
+    (async () => {
+      const { data } = await (supabase as any)
+        .from("partners")
+        .select("id,name,note,description,logo_url,website_url,partnership_tier")
+        .eq("is_active", true)
+        .order("sort_order");
+      if (data) setPartners(data as PartnerRow[]);
+    })();
+  }, []);
+
+  const partnershipTypes = [
+    { title: "Corporate Innovation", icon: Building, description: "Partner with startups to drive innovation in your industry",
+      benefits: ["Access to cutting-edge solutions", "Fast-track R&D", "Startup pipeline", "Innovation workshops"] },
+    { title: "Venture Partnership", icon: TrendingUp, description: "Co-invest in promising startups with us",
+      benefits: ["Deal flow access", "Due diligence support", "Co-investment opportunities", "Portfolio support"] },
+    { title: "Technology Integration", icon: Globe, description: "Integrate your platform with our startup ecosystem",
+      benefits: ["API partnerships", "White-label solutions", "Technical integration", "Developer support"] },
+    { title: "Mentorship Program", icon: Users, description: "Share expertise with next-gen entrepreneurs",
+      benefits: ["Industry recognition", "Talent pipeline", "Innovation insights", "Networking opportunities"] },
   ];
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
-      {/* Hero Section */}
+
+      {/* Hero */}
       <section className="pt-20 pb-16 bg-hero-gradient relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/80 to-background/95"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center space-y-8 animate-fade-in">
             <div className="space-y-4">
               <Badge variant="secondary" className="bg-primary/10 text-primary text-lg px-4 py-2">
-                 Strategic Partnerships
+                Strategic Partnerships
               </Badge>
               <h1 className="text-5xl md:text-7xl font-bold leading-tight">
                 Partner with{" "}
@@ -66,7 +68,7 @@ const Partnership = () => {
                 </span>
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-                Join forces with India's most promising startups. Drive innovation, 
+                Join forces with the world's most promising startups. Drive innovation,
                 access new markets, and shape the future together.
               </p>
             </div>
@@ -86,7 +88,7 @@ const Partnership = () => {
               </Card>
               <Card className="p-6 bg-card-gradient border-border">
                 <div className="text-center space-y-2">
-                  <div className="text-3xl font-bold text-primary">$100Cr+</div>
+                  <div className="text-3xl font-bold text-primary">$12M+</div>
                   <div className="text-muted-foreground">Partnership Value</div>
                 </div>
               </Card>
@@ -134,26 +136,51 @@ const Partnership = () => {
         </div>
       </section>
 
-      {/* Current Partners */}
+      {/* Partners Carousel — DB driven */}
       <section className="py-20 bg-muted/5">
         <div className="container mx-auto px-4">
-          <div className="text-center space-y-4 mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold">Our Partners</h2>
+          <div className="text-center space-y-4 mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold">Our Global Partners</h2>
             <p className="text-xl text-muted-foreground">
-              Trusted by leading companies across industries
+              Trusted by leading organizations across regions and industries
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-6 max-w-6xl mx-auto">
-            {currentPartners.map((partner, index) => (
-              <Card key={index} className="p-6 bg-card-gradient border-border text-center hover:shadow-orange-glow transition-all duration-300">
-                <div className="space-y-2">
-                  <div className="text-3xl">{partner.logo}</div>
-                  <h3 className="font-bold text-sm">{partner.name}</h3>
-                  <Badge variant="outline" className="text-xs">{partner.type}</Badge>
-                </div>
-              </Card>
-            ))}
+          {partners.length === 0 ? (
+            <p className="text-center text-muted-foreground">Loading partners…</p>
+          ) : (
+            <Carousel opts={{ align: "start", loop: true }} className="max-w-6xl mx-auto">
+              <CarouselContent className="-ml-3">
+                {partners.map((p) => (
+                  <CarouselItem key={p.id} className="pl-3 basis-1/2 md:basis-1/3 lg:basis-1/4">
+                    <Card className="p-5 h-full bg-card-gradient border-border text-center hover:shadow-orange-glow transition-all duration-300 flex flex-col items-center justify-between gap-3">
+                      <div className="w-16 h-16 rounded-xl bg-primary/10 text-primary flex items-center justify-center overflow-hidden">
+                        {p.logo_url ? (
+                          <img src={p.logo_url} alt={p.name} className="w-full h-full object-contain" />
+                        ) : (
+                          <Building2 className="h-7 w-7" />
+                        )}
+                      </div>
+                      <h3 className="font-bold text-sm leading-tight line-clamp-2">{p.name}</h3>
+                      {p.partnership_tier && (
+                        <Badge variant="outline" className="text-xs">{p.partnership_tier}</Badge>
+                      )}
+                      {p.note && (
+                        <p className="text-xs text-muted-foreground line-clamp-2">{p.note}</p>
+                      )}
+                    </Card>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          )}
+
+          <div className="text-center mt-8">
+            <Button asChild variant="outline">
+              <Link to="/partners">View all partners →</Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -179,9 +206,7 @@ const Partnership = () => {
                   <div>
                     <Label htmlFor="industry">Industry *</Label>
                     <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select industry" />
-                      </SelectTrigger>
+                      <SelectTrigger><SelectValue placeholder="Select industry" /></SelectTrigger>
                       <SelectContent>
                         <SelectItem value="fintech">FinTech</SelectItem>
                         <SelectItem value="healthcare">Healthcare</SelectItem>
@@ -207,9 +232,7 @@ const Partnership = () => {
                   <div>
                     <Label htmlFor="partnershipType">Partnership Type *</Label>
                     <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select type" />
-                      </SelectTrigger>
+                      <SelectTrigger><SelectValue placeholder="Select type" /></SelectTrigger>
                       <SelectContent>
                         <SelectItem value="corporate">Corporate Innovation</SelectItem>
                         <SelectItem value="venture">Venture Partnership</SelectItem>
@@ -222,37 +245,12 @@ const Partnership = () => {
 
                 <div>
                   <Label htmlFor="companyDetails">Company Details *</Label>
-                  <Textarea
-                    id="companyDetails"
-                    placeholder="Brief description of your company, size, and key business areas"
-                    rows={3}
-                    required
-                  />
+                  <Textarea id="companyDetails" placeholder="Brief description of your company, size, and key business areas" rows={3} required />
                 </div>
 
                 <div>
                   <Label htmlFor="partnershipGoals">Partnership Goals *</Label>
-                  <Textarea
-                    id="partnershipGoals"
-                    placeholder="What do you hope to achieve through this partnership? What value can you bring?"
-                    rows={4}
-                    required
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="timeline">Preferred Timeline</Label>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="When would you like to start?" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="immediate">Immediately</SelectItem>
-                      <SelectItem value="1month">Within 1 month</SelectItem>
-                      <SelectItem value="3months">Within 3 months</SelectItem>
-                      <SelectItem value="6months">Within 6 months</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Textarea id="partnershipGoals" placeholder="What do you hope to achieve through this partnership? What value can you bring?" rows={4} required />
                 </div>
 
                 <div className="flex gap-4 pt-4">

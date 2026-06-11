@@ -18,9 +18,9 @@ const PortfolioManagement = () => {
       id: 1,
       name: "TechFlow Solutions",
       sector: "FinTech",
-      investmentAmount: "$2.5 Cr",
+      investmentAmount: "$300K",
       investmentDate: "Jan 2023",
-      currentValuation: "$15 Cr",
+      currentValuation: "$1.8M",
       ownership: "15%",
       stage: "Series A",
       status: "Active",
@@ -30,9 +30,9 @@ const PortfolioManagement = () => {
       id: 2,
       name: "HealthCare AI",
       sector: "HealthTech",
-      investmentAmount: "$1.8 Cr",
+      investmentAmount: "$220K",
       investmentDate: "Mar 2023",
-      currentValuation: "$12 Cr",
+      currentValuation: "$1.5M",
       ownership: "12%",
       stage: "Seed",
       status: "Active",
@@ -42,7 +42,7 @@ const PortfolioManagement = () => {
       id: 3,
       name: "EduNext Platform",
       sector: "EdTech",
-      investmentAmount: "$3.2 Cr",
+      investmentAmount: "$385K",
       investmentDate: "Dec 2022",
       currentValuation: "$18 Cr",
       ownership: "18%",
@@ -53,9 +53,9 @@ const PortfolioManagement = () => {
   ];
 
   const availableStartups = [
-    { id: 1, name: "GreenTech Solutions", sector: "CleanTech", stage: "Seed", seeking: "$2 Cr" },
-    { id: 2, name: "AI Robotics Co", sector: "AI/ML", stage: "Pre-Seed", seeking: "$1.5 Cr" },
-    { id: 3, name: "Smart Logistics", sector: "Logistics", stage: "Series A", seeking: "$5 Cr" }
+    { id: 1, name: "GreenTech Solutions", sector: "CleanTech", stage: "Seed", seeking: "$250K" },
+    { id: 2, name: "AI Robotics Co", sector: "AI/ML", stage: "Pre-Seed", seeking: "$180K" },
+    { id: 3, name: "Smart Logistics", sector: "Logistics", stage: "Series A", seeking: "$600K" }
   ];
 
   const handleAddToPortfolio = (startupId: number) => {
@@ -140,7 +140,7 @@ const PortfolioManagement = () => {
                   <div className="grid grid-cols-3 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="investment-amount">Investment Amount</Label>
-                      <Input id="investment-amount" placeholder="$2.5 Cr" />
+                      <Input id="investment-amount" placeholder="$300K" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="ownership">Ownership %</Label>
@@ -179,7 +179,7 @@ const PortfolioManagement = () => {
             <div className="flex items-center space-x-2">
               <DollarSign className="h-8 w-8 text-green-500" />
               <div>
-                <p className="text-2xl font-bold">$45 Cr</p>
+                <p className="text-2xl font-bold">$5.4M</p>
                 <p className="text-xs text-muted-foreground">Total Invested</p>
               </div>
             </div>

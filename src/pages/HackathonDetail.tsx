@@ -19,7 +19,7 @@ const HackathonDetail = () => {
     location: "Bangalore, India",
     venue: "Indian Institute of Science (IISc)",
     theme: "Artificial Intelligence & Machine Learning",
-    prizePool: "$10 Lakhs",
+    prizePool: "$12Kakhs",
     participants: "500+",
     status: "Registration Open",
     description: "Build AI solutions for real-world problems in healthcare, education, and sustainability.",

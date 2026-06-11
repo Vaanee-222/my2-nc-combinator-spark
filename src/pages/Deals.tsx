@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Clock, Tag, Zap, Cloud, Mail, CreditCard, Users, Star } from "lucide-react";
+import { Clock, Tag, Zap, Cloud, Mail, CreditCard, Users, Star, Building2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 
@@ -84,7 +84,7 @@ const Deals = () => {
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-3">
-            <div className="text-2xl">{deal.logo}</div>
+            <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0"><Building2 className="h-5 w-5" /></div>
             <div>
               <CardTitle className="text-lg">{deal.title || `${deal.company} Deal`}</CardTitle>
               <CardDescription>{deal.company}</CardDescription>
@@ -165,7 +165,7 @@ const Deals = () => {
           </p>
           <div className="flex justify-center space-x-4">
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary">$25L+</div>
+              <div className="text-3xl font-bold text-primary">$30K+</div>
               <p className="text-sm text-muted-foreground">Total Value</p>
             </div>
             <div className="text-center">
@@ -238,7 +238,7 @@ const Deals = () => {
               <Card className="hover:shadow-lg transition-all duration-300">
                 <CardHeader>
                   <div className="flex items-center space-x-3">
-                    <div className="text-2xl"></div>
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center"><Mail className="h-5 w-5" /></div>
                     <div>
                       <CardTitle className="text-lg">Email Marketing Suite</CardTitle>
                       <CardDescription>Mailchimp, SendGrid, ConvertKit</CardDescription>
@@ -254,7 +254,7 @@ const Deals = () => {
               <Card className="hover:shadow-lg transition-all duration-300">
                 <CardHeader>
                   <div className="flex items-center space-x-3">
-                    <div className="text-2xl"></div>
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center"><Zap className="h-5 w-5" /></div>
                     <div>
                       <CardTitle className="text-lg">Analytics & Tracking</CardTitle>
                       <CardDescription>Google Analytics, Mixpanel, Hotjar</CardDescription>
@@ -318,7 +318,7 @@ const Deals = () => {
           <DialogContent className="max-w-2xl">
             <DialogHeader>
               <DialogTitle className="flex items-center space-x-3">
-                <span className="text-2xl">{selectedDeal?.logo}</span>
+                <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center"><Building2 className="h-5 w-5" /></div>
                 <span>{selectedDeal?.title || selectedDeal?.company + ' Deal'}</span>
               </DialogTitle>
               <DialogDescription>

@@ -118,12 +118,12 @@ const CloudCredits = () => {
             Cloud Credits & Infrastructure
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Access enterprise-grade cloud infrastructure worth $25L+ completely free. 
+            Access enterprise-grade cloud infrastructure worth $30K+ completely free. 
             Build, scale, and deploy your startup without infrastructure costs.
           </p>
           <div className="flex justify-center space-x-4">
             <Badge variant="secondary" className="bg-primary/10 text-primary text-lg px-4 py-2">
-               $25L+ Value
+               $30K+ Value
             </Badge>
             <Badge variant="secondary" className="bg-primary/10 text-primary text-lg px-4 py-2">
                12 Months Free
@@ -286,7 +286,7 @@ const CloudCredits = () => {
         <section className="text-center py-16 bg-gradient-to-r from-primary/10 to-orange-400/10 rounded-3xl">
           <h2 className="text-3xl font-bold mb-4">Ready to Build on Enterprise Infrastructure?</h2>
           <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join MVP Lab today and get instant access to $25L+ worth of cloud credits and development tools.
+            Join MVP Lab today and get instant access to $30K+ worth of cloud credits and development tools.
           </p>
           <div className="flex justify-center space-x-4">
             <Button size="lg" className="bg-gradient-to-r from-primary to-orange-400 hover:shadow-orange-glow">

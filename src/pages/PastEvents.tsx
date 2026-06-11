@@ -46,7 +46,7 @@ const PastEvents = () => {
       participants: 380,
       teams: 95,
       theme: "Financial Technology & Blockchain",
-      prizePool: "$10 Lakhs",
+      prizePool: "$12Kakhs",
       winner: "CryptoSecure - Blockchain Security Platform",
       status: "completed",
       highlights: [
@@ -171,7 +171,7 @@ const PastEvents = () => {
               <Trophy className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-primary">$2Cr+</div>
+              <div className="text-3xl font-bold text-primary">$250K+</div>
               <p className="text-xs text-muted-foreground">Total distributed</p>
             </CardContent>
           </Card>

@@ -11,13 +11,13 @@ const ProgramOverview = () => {
       title: "MVP Lab",
       description: "Complete product development support with cloud credits, mentorship, and funding opportunities",
       features: [
-        "$10L AWS & GCP Credits",
+        "$12K AWS & GCP Credits",
         "1:1 Technical Mentorship",
         "Product-Market Fit Validation",
         "Go-to-Market Strategy"
       ],
       duration: "3 months",
-      investment: "$25L for 8% equity"
+      investment: "$30K for 8% equity"
     },
     {
       title: "Incubation Program",
@@ -29,7 +29,7 @@ const ProgramOverview = () => {
         "International Expansion"
       ],
       duration: "6 months",
-      investment: "$1Cr for 12% equity"
+      investment: "$125K for 12% equity"
     },
     {
       title: "Hackathon Winners Track",

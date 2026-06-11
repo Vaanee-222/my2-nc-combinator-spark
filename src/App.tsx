@@ -35,6 +35,7 @@ const StartupProfile = lazy(() => import("./pages/StartupProfile"));
 const Deals = lazy(() => import("./pages/Deals"));
 const Blogs = lazy(() => import("./pages/Blogs"));
 const News = lazy(() => import("./pages/News"));
+const NewsDetailPage = lazy(() => import("./pages/NewsDetailPage"));
 const MeetCofounder = lazy(() => import("./pages/MeetCofounder"));
 const InvestorCentre = lazy(() => import("./pages/InvestorCentre"));
 const InvestorProfile = lazy(() => import("./pages/InvestorProfile"));
@@ -121,6 +122,7 @@ const AppRoutes = () => {
 
               <Route path="/about" element={<AboutUs />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/blog/:slug" element={<BlogDetail />} />
               <Route path="/blog/:id" element={<BlogDetail />} />
               <Route path="/requirements" element={<RequirementsDetail />} />
               <Route path="/startup-directory" element={<StartupDirectory />} />
@@ -128,6 +130,7 @@ const AppRoutes = () => {
               <Route path="/deals" element={<Deals />} />
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/news" element={<News />} />
+              <Route path="/news/:slug" element={<NewsDetailPage />} />
               <Route path="/meet-cofounder" element={<MeetCofounder />} />
               <Route path="/investor-centre" element={<InvestorCentre />} />
               <Route path="/investor-profile/:id" element={<InvestorProfile />} />

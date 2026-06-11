@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Clock, TrendingUp, DollarSign, Building2, Search, ExternalLink, Newspaper } from "lucide-react";
-import NewsDetail from "@/components/NewsDetail";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { NEWS_2026 } from "@/data/news2026";
 
@@ -95,9 +95,7 @@ const News = () => {
                   <Badge variant="outline">{breaking.category}</Badge>
                   <span className="text-sm text-muted-foreground">{breaking.source}</span>
                 </div>
-                <NewsDetail news={breaking as any}>
-                  <Button size="sm">Read Full Story <ExternalLink className="ml-2 h-3 w-3" /></Button>
-                </NewsDetail>
+                <Button asChild size="sm"><Link to={`/news/${breaking.slug}`}>Read Full Story <ExternalLink className="ml-2 h-3 w-3" /></Link></Button>
               </div>
             </CardContent>
           </Card>
@@ -123,7 +121,7 @@ const News = () => {
                     <span>{s.source}</span>
                     <div className="flex items-center space-x-1"><Clock className="h-3 w-3" /><span>{fmtTime(s.published_at)}</span></div>
                   </div>
-                  <NewsDetail news={s as any}><Button className="w-full" variant="outline">Read More</Button></NewsDetail>
+                  <Button asChild className="w-full" variant="outline"><Link to={`/news/${s.slug}`}>Read More</Link></Button>
                 </CardContent>
               </Card>
             ))}
@@ -157,9 +155,7 @@ const News = () => {
                           {n.impact && <><span>•</span><Badge variant="outline" className="text-xs">{n.impact} Impact</Badge></>}
                         </div>
                       </div>
-                      <NewsDetail news={n as any}>
-                        <Button variant="outline" size="sm">Details</Button>
-                      </NewsDetail>
+                      <Button asChild variant="outline" size="sm"><Link to={`/news/${n.slug}`}>Details</Link></Button>
                     </div>
                   </CardContent>
                 </Card>

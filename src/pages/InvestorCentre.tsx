@@ -26,7 +26,7 @@ const InvestorCentre = () => {
       id: 1,
       name: "Sequoia Capital India",
       type: "Venture Capital",
-      checkSize: "$5Cr - $50Cr",
+      checkSize: "$600K - $6M",
       stage: "Series A, Series B, Series C",
       portfolio: 45,
       sectors: ["FinTech", "HealthTech", "Enterprise Software"],
@@ -43,7 +43,7 @@ const InvestorCentre = () => {
       id: 2,
       name: "Accel Partners India",
       type: "Venture Capital",
-      checkSize: "$2Cr - $25Cr",
+      checkSize: "$250K - $3M",
       stage: "Seed, Series A, Series B",
       portfolio: 38,
       sectors: ["SaaS", "Mobility", "Consumer Internet"],
@@ -60,7 +60,7 @@ const InvestorCentre = () => {
       id: 3,
       name: "Matrix Partners India",
       type: "Venture Capital",
-      checkSize: "$1Cr - $15Cr",
+      checkSize: "$125K - $1.8M",
       stage: "Pre-Seed, Seed, Series A",
       portfolio: 52,
       sectors: ["B2B SaaS", "FinTech", "HealthTech"],
@@ -80,7 +80,7 @@ const InvestorCentre = () => {
       id: 4,
       name: "Blume Ventures",
       type: "Early Stage VC",
-      checkSize: "$50L - $10Cr",
+      checkSize: "$60K - $1.2M",
       stage: "Pre-Seed, Seed",
       portfolio: 156,
       sectors: ["Consumer", "Enterprise", "Gaming"],
@@ -91,7 +91,7 @@ const InvestorCentre = () => {
       id: 5,
       name: "Kalaari Capital",
       type: "Venture Capital",
-      checkSize: "$1Cr - $20Cr",
+      checkSize: "$125K - $2.5M",
       stage: "Seed, Series A",
       portfolio: 68,
       sectors: ["SaaS", "FinTech", "DeepTech"],
@@ -102,7 +102,7 @@ const InvestorCentre = () => {
       id: 6,
       name: "Nexus Venture Partners",
       type: "Venture Capital",
-      checkSize: "$2Cr - $30Cr",
+      checkSize: "$250K - $3.6M",
       stage: "Series A, Series B",
       portfolio: 42,
       sectors: ["Enterprise", "Consumer", "Healthcare"],
@@ -113,7 +113,7 @@ const InvestorCentre = () => {
       id: 7,
       name: "Lightspeed India",
       type: "Venture Capital",
-      checkSize: "$3Cr - $40Cr",
+      checkSize: "$360K - $5M",
       stage: "Series A, Series B, Series C",
       portfolio: 35,
       sectors: ["Enterprise", "Consumer", "FinTech"],
@@ -124,7 +124,7 @@ const InvestorCentre = () => {
       id: 8,
       name: "Elevation Capital",
       type: "Venture Capital",
-      checkSize: "$5Cr - $50Cr",
+      checkSize: "$600K - $6M",
       stage: "Series A, Series B, Growth",
       portfolio: 28,
       sectors: ["Consumer Internet", "SaaS", "FinTech"],
@@ -138,7 +138,7 @@ const InvestorCentre = () => {
       id: 9,
       name: "Ratan Tata",
       type: "Angel Investor",
-      checkSize: "$25L - $2Cr",
+      checkSize: "$30K - $250K",
       sectors: ["Consumer", "HealthTech", "Automotive"],
       investments: "100+",
       notable: ["Ola", "Paytm", "Urban Company"],
@@ -148,7 +148,7 @@ const InvestorCentre = () => {
       id: 10,
       name: "Kunal Bahl",
       type: "Angel Investor",
-      checkSize: "$10L - $1Cr",
+      checkSize: "$12K - $125K",
       sectors: ["E-commerce", "B2B", "Consumer"],
       investments: "50+",
       notable: ["Snapdeal Co-founder", "Multiple investments"],
@@ -158,7 +158,7 @@ const InvestorCentre = () => {
       id: 11,
       name: "Binny Bansal",
       type: "Angel Investor",
-      checkSize: "$15L - $1.5Cr",
+      checkSize: "$18K - $180K",
       sectors: ["E-commerce", "Logistics", "B2B"],
       investments: "40+",
       notable: ["Flipkart Co-founder", "xto10x"],
@@ -200,7 +200,7 @@ const InvestorCentre = () => {
             Investor Centre
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Connect with India's top investors, VCs, and angels. Find the right funding partner for your startup's growth journey.
+            Connect with leading global investors, VCs, and angels. Find the right funding partner for your startup's growth journey.
           </p>
           <div className="flex justify-center space-x-4">
             <PitchSubmissionDialog>
@@ -232,7 +232,7 @@ const InvestorCentre = () => {
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-primary">$15,000Cr</div>
+              <div className="text-3xl font-bold text-primary">$1.8B</div>
               <p className="text-xs text-muted-foreground">Assets under management</p>
             </CardContent>
           </Card>
@@ -304,10 +304,10 @@ const InvestorCentre = () => {
                       <SelectValue placeholder="Check Size" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="seed">$50L - $5Cr</SelectItem>
-                      <SelectItem value="early">$5Cr - $25Cr</SelectItem>
-                      <SelectItem value="growth">$25Cr - $100Cr</SelectItem>
-                      <SelectItem value="late">$100Cr+</SelectItem>
+                      <SelectItem value="seed">$60K - $600K</SelectItem>
+                      <SelectItem value="early">$600K - $3M</SelectItem>
+                      <SelectItem value="growth">$3M - $12M</SelectItem>
+                      <SelectItem value="late">$12M+</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -325,7 +325,7 @@ const InvestorCentre = () => {
                   <Card key={investor.id} className="hover:shadow-lg transition-all duration-300">
                     <CardHeader>
                       <div className="flex items-start space-x-4">
-                        <div className="text-4xl">{investor.logo}</div>
+                        <div className="w-14 h-14 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0"><Building2 className="h-7 w-7" /></div>
                         <div className="flex-1">
                           <CardTitle className="text-xl">{investor.name}</CardTitle>
                           <CardDescription className="font-medium">{investor.type}</CardDescription>
@@ -414,7 +414,7 @@ const InvestorCentre = () => {
                   <Card key={investor.id} className="hover:shadow-md transition-all duration-300">
                     <CardContent className="pt-6">
                       <div className="flex items-center space-x-4">
-                        <div className="text-3xl">{investor.logo}</div>
+                        <div className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0"><Building2 className="h-6 w-6" /></div>
                         <div className="flex-1">
                           <h3 className="font-semibold text-lg">{investor.name}</h3>
                           <p className="text-primary font-medium">{investor.type}</p>
@@ -466,7 +466,7 @@ const InvestorCentre = () => {
                 <Card key={angel.id} className="hover:shadow-lg transition-all duration-300">
                   <CardHeader>
                     <div className="flex items-center space-x-4">
-                      <div className="text-4xl">{angel.logo}</div>
+                      <div className="w-14 h-14 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0"><Users className="h-7 w-7" /></div>
                       <div>
                         <CardTitle className="text-lg">{angel.name}</CardTitle>
                         <CardDescription>{angel.type}</CardDescription>
@@ -573,7 +573,7 @@ const InvestorCentre = () => {
                   <div className="space-y-4">
                     <div>
                       <label className="text-sm font-medium mb-2 block">Funding Required</label>
-                      <Input placeholder="e.g., $2 Crores" />
+                      <Input placeholder="e.g., $250Kores" />
                     </div>
                     <div>
                       <label className="text-sm font-medium mb-2 block">Monthly Revenue (if any)</label>
@@ -642,7 +642,7 @@ const InvestorCentre = () => {
                 <CardContent className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span>Total Funding</span>
-                    <span className="font-bold text-primary">$8,300Cr</span>
+                    <span className="font-bold text-primary">$1B</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span>Number of Deals</span>
@@ -650,7 +650,7 @@ const InvestorCentre = () => {
                   </div>
                   <div className="flex justify-between items-center">
                     <span>Average Deal Size</span>
-                    <span className="font-bold">$53Cr</span>
+                    <span className="font-bold">$6.4M</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span>QoQ Growth</span>
