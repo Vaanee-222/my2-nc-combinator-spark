@@ -30,7 +30,7 @@ const MentorDashboard = () => {
       startup: "HealthTech Solutions",
       stage: "Seed",
       sector: "HealthTech",
-      nextSession: "Dec 25, 2024",
+      nextSession: "Dec 25, 2026",
       progress: "Fundraising",
       sessionsCompleted: 8,
       status: "Active"
@@ -41,7 +41,7 @@ const MentorDashboard = () => {
       startup: "EduNext Platform",
       stage: "Pre-Seed",
       sector: "EdTech",
-      nextSession: "Dec 27, 2024",
+      nextSession: "Dec 27, 2026",
       progress: "Product Development",
       sessionsCompleted: 5,
       status: "Active"
@@ -52,7 +52,7 @@ const MentorDashboard = () => {
       startup: "FinFlow AI",
       stage: "Series A",
       sector: "FinTech",
-      nextSession: "Dec 30, 2024",
+      nextSession: "Dec 30, 2026",
       progress: "Scaling Team",
       sessionsCompleted: 12,
       status: "Active"
@@ -64,7 +64,7 @@ const MentorDashboard = () => {
       id: 1,
       mentee: "Priya Sharma",
       time: "2:00 PM - 3:00 PM",
-      date: "Dec 25, 2024",
+      date: "Dec 25, 2026",
       topic: "Fundraising Strategy",
       type: "Video Call",
       status: "Confirmed"
@@ -73,7 +73,7 @@ const MentorDashboard = () => {
       id: 2,
       mentee: "Arjun Patel",
       time: "10:00 AM - 11:00 AM",
-      date: "Dec 27, 2024",
+      date: "Dec 27, 2026",
       topic: "Product Roadmap Review",
       type: "In-Person",
       status: "Confirmed"
@@ -87,7 +87,7 @@ const MentorDashboard = () => {
       startup: "GreenTech Solutions",
       sector: "CleanTech",
       stage: "Idea",
-      requestDate: "Dec 20, 2024",
+      requestDate: "Dec 20, 2026",
       challenge: "Need guidance on sustainable technology implementation",
       matchScore: 92
     },
@@ -97,7 +97,7 @@ const MentorDashboard = () => {
       startup: "AI Diagnostics",
       sector: "HealthTech",
       stage: "MVP",
-      requestDate: "Dec 22, 2024",
+      requestDate: "Dec 22, 2026",
       challenge: "Scaling AI models and regulatory compliance",
       matchScore: 88
     }

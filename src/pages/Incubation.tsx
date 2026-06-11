@@ -18,7 +18,7 @@ const Incubation = () => {
       stage: "Idea to MVP",
       description: "Perfect for early-stage startups looking to validate their idea and build their first product.",
       benefits: ["Seed funding up to $30K", "Weekly mentorship", "Product development support", "Market validation"],
-      nextCohort: "March 2025",
+      nextCohort: "March 2026",
       applications: "Open"
     },
     {
@@ -28,7 +28,7 @@ const Incubation = () => {
       stage: "MVP to Scale",
       description: "For startups with proven traction ready to scale their business and expand market reach.",
       benefits: ["Growth funding up to $125K", "Go-to-market strategy", "Investor connections", "International expansion"],
-      nextCohort: "April 2025",
+      nextCohort: "April 2026",
       applications: "Open"
     },
     {
@@ -38,7 +38,7 @@ const Incubation = () => {
       stage: "R&D to Market",
       description: "Specialized program for deep tech startups working on breakthrough technologies.",
       benefits: ["R&D funding up to $250K", "Technical mentorship", "Lab facilities", "Patent support"],
-      nextCohort: "May 2025",
+      nextCohort: "May 2026",
       applications: "Coming Soon"
     }
   ];
