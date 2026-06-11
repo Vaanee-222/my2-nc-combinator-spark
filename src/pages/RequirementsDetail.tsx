@@ -161,7 +161,7 @@ const RequirementsDetail = () => {
               <div className="text-muted-foreground">Month Program</div>
             </Card>
             <Card className="p-6 bg-card-gradient border-border text-center">
-              <div className="text-3xl font-bold text-primary mb-2">₹1Cr+</div>
+              <div className="text-3xl font-bold text-primary mb-2">$1Cr+</div>
               <div className="text-muted-foreground">Value per Startup</div>
             </Card>
           </div>

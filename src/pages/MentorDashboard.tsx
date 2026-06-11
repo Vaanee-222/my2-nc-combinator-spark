@@ -375,7 +375,7 @@ const MentorDashboard = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sm">Funding Raised by Mentees</span>
-                      <span className="font-bold text-primary">₹45 Cr</span>
+                      <span className="font-bold text-primary">$45 Cr</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sm">Jobs Created</span>

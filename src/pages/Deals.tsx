@@ -165,7 +165,7 @@ const Deals = () => {
           </p>
           <div className="flex justify-center space-x-4">
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary">₹25L+</div>
+              <div className="text-3xl font-bold text-primary">$25L+</div>
               <p className="text-sm text-muted-foreground">Total Value</p>
             </div>
             <div className="text-center">
@@ -303,7 +303,7 @@ const Deals = () => {
         <section className="text-center py-16 bg-gradient-to-r from-primary/10 to-orange-400/10 rounded-3xl">
           <h2 className="text-3xl font-bold mb-4">Ready to Save Thousands?</h2>
           <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join Xi Combinator today and get instant access to our exclusive deal marketplace worth over ₹25 lakhs.
+            Join Xi Combinator today and get instant access to our exclusive deal marketplace worth over $25 lakhs.
           </p>
           <Button size="lg" className="bg-gradient-to-r from-primary to-orange-400 hover:shadow-orange-glow mr-4">
             Apply Now

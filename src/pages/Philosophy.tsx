@@ -184,7 +184,7 @@ const Philosophy = () => {
               
               <Card className="p-8 bg-card-gradient border-border text-center">
                 <div className="space-y-4">
-                  <div className="text-4xl font-bold text-primary">₹500Cr+</div>
+                  <div className="text-4xl font-bold text-primary">$500Cr+</div>
                   <div className="text-lg font-semibold">Value Created</div>
                   <div className="text-muted-foreground text-sm">
                     total valuation of startups following our methodology

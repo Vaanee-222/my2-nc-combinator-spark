@@ -86,7 +86,7 @@ const News = () => {
     {
       id: 8,
       title: "Startup India Initiative Launches New Tax Incentive Program",
-      description: "Three-year tax holiday extended to qualifying startups with annual turnover under ₹25 crore.",
+      description: "Three-year tax holiday extended to qualifying startups with annual turnover under $25 crore.",
       impact: "High",
       time: "1 day ago"
     },
@@ -366,7 +366,7 @@ const News = () => {
                     </div>
                     <div className="flex justify-between">
                       <span>Funding Range</span>
-                      <span className="font-medium">₹10L - ₹50L</span>
+                      <span className="font-medium">$10L - $50L</span>
                     </div>
                   </div>
                   <Button className="w-full mt-4">Learn More</Button>

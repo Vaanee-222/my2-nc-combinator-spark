@@ -128,7 +128,7 @@ const ApplicationDialog = ({ children, program = "Xi Lab", title }: ApplicationD
           </div>
           <div className="space-y-2">
             <Label htmlFor="funding">Funding Requirements</Label>
-            <Input id="funding" value={formData.funding} onChange={(e) => handleChange("funding", e.target.value)} placeholder="e.g., ₹25L, ₹1Cr" />
+            <Input id="funding" value={formData.funding} onChange={(e) => handleChange("funding", e.target.value)} placeholder="e.g., $25L, $1Cr" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="why">Why Xi Combinator? *</Label>

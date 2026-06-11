@@ -18,7 +18,7 @@ const InvestorDashboard = () => {
   const investorProfile = {
     name: "Sarah Investment Capital",
     type: "Venture Capital",
-    checkSize: "₹1-5 Cr",
+    checkSize: "$1-5 Cr",
     totalPortfolio: 25,
     activeInvestments: 18,
     successfulExits: 7,
@@ -31,8 +31,8 @@ const InvestorDashboard = () => {
       id: 1,
       company: "TechFlow Solutions",
       sector: "FinTech",
-      investmentAmount: "₹2.5 Cr",
-      currentValuation: "₹15 Cr",
+      investmentAmount: "$2.5 Cr",
+      currentValuation: "$15 Cr",
       investmentDate: "Jan 2023",
       stage: "Series A",
       status: "Active",
@@ -42,8 +42,8 @@ const InvestorDashboard = () => {
       id: 2,
       company: "HealthCare AI",
       sector: "HealthTech",
-      investmentAmount: "₹1.8 Cr",
-      currentValuation: "₹12 Cr",
+      investmentAmount: "$1.8 Cr",
+      currentValuation: "$12 Cr",
       investmentDate: "Mar 2023",
       stage: "Seed",
       status: "Active",
@@ -53,8 +53,8 @@ const InvestorDashboard = () => {
       id: 3,
       company: "EduNext Platform",
       sector: "EdTech",
-      investmentAmount: "₹3.2 Cr",
-      currentValuation: "₹18 Cr",
+      investmentAmount: "$3.2 Cr",
+      currentValuation: "$18 Cr",
       investmentDate: "Dec 2022",
       stage: "Series A",
       status: "Exited",
@@ -67,29 +67,29 @@ const InvestorDashboard = () => {
       id: 1,
       company: "GreenTech Solutions",
       sector: "CleanTech",
-      requestedAmount: "₹4 Cr",
+      requestedAmount: "$4 Cr",
       stage: "Due Diligence",
       progress: 75,
       foundedYear: 2022,
       team: 12,
-      revenue: "₹50L ARR"
+      revenue: "$50L ARR"
     },
     {
       id: 2,
       company: "AI Robotics Co",
       sector: "AI/ML",
-      requestedAmount: "₹6 Cr",
+      requestedAmount: "$6 Cr",
       stage: "Initial Review",
       progress: 25,
       foundedYear: 2023,
       team: 8,
-      revenue: "₹25L ARR"
+      revenue: "$25L ARR"
     }
   ];
 
   const investmentMetrics = {
-    totalInvested: "₹45 Cr",
-    currentPortfolioValue: "₹180 Cr",
+    totalInvested: "$45 Cr",
+    currentPortfolioValue: "$180 Cr",
     averageROI: "285%",
     successRate: "78%"
   };
@@ -271,7 +271,7 @@ const InvestorDashboard = () => {
               <Card className="bg-card-gradient border-border">
                 <CardHeader>
                   <CardTitle>AI-Powered Logistics</CardTitle>
-                  <CardDescription>Series A • ₹8 Cr • LogisTech</CardDescription>
+                  <CardDescription>Series A • $8 Cr • LogisTech</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -292,7 +292,7 @@ const InvestorDashboard = () => {
               <Card className="bg-card-gradient border-border">
                 <CardHeader>
                   <CardTitle>MedTech Innovation</CardTitle>
-                  <CardDescription>Seed • ₹3 Cr • HealthFlow</CardDescription>
+                  <CardDescription>Seed • $3 Cr • HealthFlow</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">

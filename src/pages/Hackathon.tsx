@@ -15,7 +15,7 @@ const Hackathon = () => {
       date: "Feb 15-17, 2025",
       location: "Bangalore, India",
       theme: "Artificial Intelligence & Machine Learning",
-      prizePool: "₹10 Lakhs",
+      prizePool: "$10 Lakhs",
       participants: "500+",
       status: "Registration Open",
       description: "Build AI solutions for real-world problems in healthcare, education, and sustainability.",
@@ -27,7 +27,7 @@ const Hackathon = () => {
       date: "Mar 22-24, 2025",
       location: "Mumbai, India",
       theme: "Financial Technology",
-      prizePool: "₹8 Lakhs",
+      prizePool: "$8 Lakhs",
       participants: "400+",
       status: "Coming Soon",
       description: "Create innovative fintech solutions for banking, payments, and financial inclusion.",
@@ -39,7 +39,7 @@ const Hackathon = () => {
       date: "Apr 5-7, 2025",
       location: "Hyderabad, India",
       theme: "Sustainability & Clean Technology",
-      prizePool: "₹12 Lakhs",
+      prizePool: "$12 Lakhs",
       participants: "600+",
       status: "Coming Soon",
       description: "Develop solutions for environmental challenges and sustainable development.",
@@ -89,17 +89,17 @@ const Hackathon = () => {
   const prizes = [
     {
       position: "1st Place",
-      amount: "₹5,00,000",
+      amount: "$5,00,000",
       benefits: ["Cash Prize", "Incubation Program", "Mentorship", "AWS Credits"]
     },
     {
       position: "2nd Place",
-      amount: "₹3,00,000",
+      amount: "$3,00,000",
       benefits: ["Cash Prize", "Mentorship Program", "Co-working Space", "GitHub Credits"]
     },
     {
       position: "3rd Place",
-      amount: "₹2,00,000",
+      amount: "$2,00,000",
       benefits: ["Cash Prize", "Online Courses", "Startup Resources", "Networking"]
     }
   ];
@@ -109,19 +109,19 @@ const Hackathon = () => {
       year: "2024",
       winner: "HealthAI",
       project: "AI-powered diagnostic assistant for rural healthcare",
-      prize: "₹5,00,000"
+      prize: "$5,00,000"
     },
     {
       year: "2023",
       winner: "EcoTrack",
       project: "IoT-based waste management system for smart cities",
-      prize: "₹4,00,000"
+      prize: "$4,00,000"
     },
     {
       year: "2022",
       winner: "FinanceBot",
       project: "AI chatbot for financial literacy and investment guidance",
-      prize: "₹3,50,000"
+      prize: "$3,50,000"
     }
   ];
 
@@ -167,7 +167,7 @@ const Hackathon = () => {
               <Trophy className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-primary">₹50L+</div>
+              <div className="text-3xl font-bold text-primary">$50L+</div>
               <p className="text-xs text-muted-foreground">Total distributed</p>
             </CardContent>
           </Card>

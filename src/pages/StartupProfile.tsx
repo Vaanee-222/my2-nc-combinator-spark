@@ -22,8 +22,8 @@ const StartupProfile = () => {
     description: "AI-powered crop monitoring system helping farmers increase yield by 40% through precision agriculture and predictive analytics",
     longDescription: "AgriTech Solutions is revolutionizing agriculture through cutting-edge AI technology. Our comprehensive platform provides farmers with real-time crop monitoring, weather predictions, soil analysis, and automated irrigation systems. We've successfully deployed our solution across 5 states, impacting over 50,000 farmers and increasing their average yield by 40%.",
     stage: "Series A",
-    funding: "₹2Cr raised",
-    valuation: "₹15Cr",
+    funding: "$2Cr raised",
+    valuation: "$15Cr",
     impact: "50,000+ farmers impacted",
     location: "Bangalore, India",
     team: 12,
@@ -34,13 +34,13 @@ const StartupProfile = () => {
     logo: "/placeholder.svg",
     images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
     metrics: {
-      revenue: "₹50L ARR",
+      revenue: "$50L ARR",
       growth: "300% YoY",
       customers: "10K+",
       retention: "95%"
     },
     milestones: [
-      { date: "2024-01", title: "Series A Funding", description: "Raised ₹2Cr from leading VCs" },
+      { date: "2024-01", title: "Series A Funding", description: "Raised $2Cr from leading VCs" },
       { date: "2023-12", title: "50K Farmers", description: "Reached 50,000 farmers milestone" },
       { date: "2023-06", title: "Multi-state Expansion", description: "Expanded to 5 states across India" },
       { date: "2023-01", title: "Product Launch", description: "Launched AI-powered crop monitoring system" }

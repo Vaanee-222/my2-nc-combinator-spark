@@ -19,7 +19,7 @@ const HackathonDetail = () => {
     location: "Bangalore, India",
     venue: "Indian Institute of Science (IISc)",
     theme: "Artificial Intelligence & Machine Learning",
-    prizePool: "₹10 Lakhs",
+    prizePool: "$10 Lakhs",
     participants: "500+",
     status: "Registration Open",
     description: "Build AI solutions for real-world problems in healthcare, education, and sustainability.",
@@ -46,9 +46,9 @@ const HackathonDetail = () => {
       { name: "Open Innovation", description: "Creative AI applications in any domain" },
     ],
     prizes: [
-      { position: "1st Place", amount: "₹5,00,000", benefits: ["Cash Prize", "Incubation Program", "Mentorship"] },
-      { position: "2nd Place", amount: "₹3,00,000", benefits: ["Cash Prize", "Mentorship Program", "Co-working Space"] },
-      { position: "3rd Place", amount: "₹2,00,000", benefits: ["Cash Prize", "Online Courses", "Startup Resources"] },
+      { position: "1st Place", amount: "$5,00,000", benefits: ["Cash Prize", "Incubation Program", "Mentorship"] },
+      { position: "2nd Place", amount: "$3,00,000", benefits: ["Cash Prize", "Mentorship Program", "Co-working Space"] },
+      { position: "3rd Place", amount: "$2,00,000", benefits: ["Cash Prize", "Online Courses", "Startup Resources"] },
     ],
     judges: [
       { name: "Dr. Priya Sharma", title: "AI Research Director, Microsoft India" },

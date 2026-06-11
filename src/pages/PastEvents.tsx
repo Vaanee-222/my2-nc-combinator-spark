@@ -17,19 +17,19 @@ const PastEvents = () => {
       participants: 450,
       teams: 112,
       theme: "Artificial Intelligence & Machine Learning",
-      prizePool: "₹8 Lakhs",
+      prizePool: "$8 Lakhs",
       winner: "MediAI - Smart Diagnostic Platform",
       status: "completed",
       highlights: [
         "48-hour intensive coding marathon",
         "Mentorship from industry experts",
-        "₹8L+ in prizes and awards",
+        "$8L+ in prizes and awards",
         "Partnership opportunities with tech giants"
       ],
       winners: [
-        { position: "1st", team: "MediAI", prize: "₹3L", solution: "AI-powered medical diagnosis" },
-        { position: "2nd", team: "EcoTrack", prize: "₹2L", solution: "Environmental monitoring system" },
-        { position: "3rd", team: "FinBot", prize: "₹1.5L", solution: "Personal finance AI assistant" }
+        { position: "1st", team: "MediAI", prize: "$3L", solution: "AI-powered medical diagnosis" },
+        { position: "2nd", team: "EcoTrack", prize: "$2L", solution: "Environmental monitoring system" },
+        { position: "3rd", team: "FinBot", prize: "$1.5L", solution: "Personal finance AI assistant" }
       ],
       sponsors: ["Microsoft", "Google", "AWS"],
       mediaLinks: {
@@ -46,7 +46,7 @@ const PastEvents = () => {
       participants: 380,
       teams: 95,
       theme: "Financial Technology & Blockchain",
-      prizePool: "₹10 Lakhs",
+      prizePool: "$10 Lakhs",
       winner: "CryptoSecure - Blockchain Security Platform",
       status: "completed",
       highlights: [
@@ -56,9 +56,9 @@ const PastEvents = () => {
         "Investor pitch opportunities"
       ],
       winners: [
-        { position: "1st", team: "CryptoSecure", prize: "₹4L", solution: "Blockchain security platform" },
-        { position: "2nd", team: "PayEasy", prize: "₹3L", solution: "Digital payment solution" },
-        { position: "3rd", team: "LoanBot", prize: "₹2L", solution: "AI loan processing system" }
+        { position: "1st", team: "CryptoSecure", prize: "$4L", solution: "Blockchain security platform" },
+        { position: "2nd", team: "PayEasy", prize: "$3L", solution: "Digital payment solution" },
+        { position: "3rd", team: "LoanBot", prize: "$2L", solution: "AI loan processing system" }
       ],
       sponsors: ["HDFC Bank", "Paytm", "Razorpay"],
       mediaLinks: {
@@ -75,7 +75,7 @@ const PastEvents = () => {
       participants: 320,
       teams: 80,
       theme: "Sustainability & Clean Technology",
-      prizePool: "₹6 Lakhs",
+      prizePool: "$6 Lakhs",
       winner: "GreenEnergy - Solar Optimization System",
       status: "completed",
       highlights: [
@@ -85,9 +85,9 @@ const PastEvents = () => {
         "Sustainability workshops"
       ],
       winners: [
-        { position: "1st", team: "GreenEnergy", prize: "₹2.5L", solution: "Solar panel optimization" },
-        { position: "2nd", team: "WaterPure", prize: "₹2L", solution: "Water purification tech" },
-        { position: "3rd", team: "AirClean", prize: "₹1.5L", solution: "Air pollution monitoring" }
+        { position: "1st", team: "GreenEnergy", prize: "$2.5L", solution: "Solar panel optimization" },
+        { position: "2nd", team: "WaterPure", prize: "$2L", solution: "Water purification tech" },
+        { position: "3rd", team: "AirClean", prize: "$1.5L", solution: "Air pollution monitoring" }
       ],
       sponsors: ["Tata Power", "Mahindra", "Suzlon"],
       mediaLinks: {
@@ -104,7 +104,7 @@ const PastEvents = () => {
       participants: 280,
       teams: 70,
       theme: "Healthcare Technology & Telemedicine",
-      prizePool: "₹7 Lakhs",
+      prizePool: "$7 Lakhs",
       winner: "TeleMed Pro - Remote Healthcare Platform",
       status: "completed",
       highlights: [
@@ -114,9 +114,9 @@ const PastEvents = () => {
         "Regulatory guidance sessions"
       ],
       winners: [
-        { position: "1st", team: "TeleMed Pro", prize: "₹3L", solution: "Telemedicine platform" },
-        { position: "2nd", team: "DiagnoAI", prize: "₹2.5L", solution: "AI diagnostic tool" },
-        { position: "3rd", team: "HealthTrack", prize: "₹1.5L", solution: "Patient monitoring system" }
+        { position: "1st", team: "TeleMed Pro", prize: "$3L", solution: "Telemedicine platform" },
+        { position: "2nd", team: "DiagnoAI", prize: "$2.5L", solution: "AI diagnostic tool" },
+        { position: "3rd", team: "HealthTrack", prize: "$1.5L", solution: "Patient monitoring system" }
       ],
       sponsors: ["Apollo Hospitals", "Fortis", "Medanta"],
       mediaLinks: {
@@ -171,7 +171,7 @@ const PastEvents = () => {
               <Trophy className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-primary">₹2Cr+</div>
+              <div className="text-3xl font-bold text-primary">$2Cr+</div>
               <p className="text-xs text-muted-foreground">Total distributed</p>
             </CardContent>
           </Card>

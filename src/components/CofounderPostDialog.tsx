@@ -204,7 +204,7 @@ const CofounderPostDialog = ({ children }: CofounderPostDialogProps) => {
               <Label htmlFor="salary">Salary (Optional)</Label>
               <Input
                 id="salary"
-                placeholder="e.g., ₹50,000/month"
+                placeholder="e.g., $50,000/month"
                 value={formData.salary}
                 onChange={(e) => setFormData({...formData, salary: e.target.value})}
               />

@@ -246,7 +246,7 @@ const MeetCofounder = () => {
           </Card>
           <Card>
             <CardContent className="pt-6 text-center">
-              <div className="text-3xl font-bold text-primary mb-2">₹50Cr+</div>
+              <div className="text-3xl font-bold text-primary mb-2">$50Cr+</div>
               <p className="text-sm text-muted-foreground">Total Funding Raised</p>
             </CardContent>
           </Card>
