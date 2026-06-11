@@ -42,7 +42,8 @@ const variantFor = (s: Stage) =>
   s === "accepted" ? "default" : s === "rejected" ? "destructive" : "secondary";
 
 const ApplicationStatusPage = () => {
-  const { user, isAdmin } = useAuth() as any;
+  const { user, userRole } = useAuth() as any;
+  const isAdmin = userRole === "admin";
   const { toast } = useToast();
   const [rows, setRows] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
