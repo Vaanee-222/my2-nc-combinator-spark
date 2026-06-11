@@ -254,7 +254,7 @@ const Deals = () => {
               <Card className="hover:shadow-lg transition-all duration-300">
                 <CardHeader>
                   <div className="flex items-center space-x-3">
-                    <div className="text-2xl"></div>
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center"><Zap className="h-5 w-5" /></div>
                     <div>
                       <CardTitle className="text-lg">Analytics & Tracking</CardTitle>
                       <CardDescription>Google Analytics, Mixpanel, Hotjar</CardDescription>
