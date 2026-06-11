@@ -109,7 +109,7 @@ const Blogs = () => {
                 <div className="flex flex-wrap gap-2 mb-6">
                   {featured.tags.map((t) => <Badge key={t} variant="secondary" className="text-xs">{t}</Badge>)}
                 </div>
-                <BlogDetail blog={featured as any}><Button size="lg">Read Article</Button></BlogDetail>
+                <Button asChild size="lg"><Link to={`/blog/${featured.slug}`}>Read Article</Link></Button>
               </div>
             </div>
           </Card>
