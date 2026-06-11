@@ -318,7 +318,7 @@ const Deals = () => {
           <DialogContent className="max-w-2xl">
             <DialogHeader>
               <DialogTitle className="flex items-center space-x-3">
-                <span className="text-2xl">{selectedDeal?.logo}</span>
+                <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center"><Building2 className="h-5 w-5" /></div>
                 <span>{selectedDeal?.title || selectedDeal?.company + ' Deal'}</span>
               </DialogTitle>
               <DialogDescription>
