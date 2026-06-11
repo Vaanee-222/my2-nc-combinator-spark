@@ -22,7 +22,7 @@ const AllApplications = () => {
       founder: "Rahul Sharma",
       category: "FinTech",
       stage: "MVP",
-      appliedDate: "2024-01-15",
+      appliedDate: "2026-01-15",
       status: "Selected",
       score: 92
     },
@@ -32,7 +32,7 @@ const AllApplications = () => {
       founder: "Priya Patel",
       category: "CleanTech",
       stage: "Early Traction",
-      appliedDate: "2024-01-18",
+      appliedDate: "2026-01-18",
       status: "Selected",
       score: 89
     },
@@ -42,7 +42,7 @@ const AllApplications = () => {
       founder: "Arjun Singh",
       category: "Logistics",
       stage: "Beta",
-      appliedDate: "2024-01-20",
+      appliedDate: "2026-01-20",
       status: "Under Review",
       score: 85
     },
@@ -52,7 +52,7 @@ const AllApplications = () => {
       founder: "Dr. Sneha Reddy",
       category: "HealthTech",
       stage: "Pilot",
-      appliedDate: "2024-01-22",
+      appliedDate: "2026-01-22",
       status: "Selected",
       score: 94
     },
@@ -62,7 +62,7 @@ const AllApplications = () => {
       founder: "Vikash Kumar",
       category: "EdTech",
       stage: "MVP",
-      appliedDate: "2024-01-25",
+      appliedDate: "2026-01-25",
       status: "Under Review",
       score: 82
     },
@@ -72,7 +72,7 @@ const AllApplications = () => {
       founder: "Anjali Verma",
       category: "FoodTech",
       stage: "Idea",
-      appliedDate: "2024-01-28",
+      appliedDate: "2026-01-28",
       status: "Waitlisted",
       score: 78
     },
@@ -82,7 +82,7 @@ const AllApplications = () => {
       founder: "Karan Malhotra",
       category: "CyberSecurity",
       stage: "Pre-seed",
-      appliedDate: "2024-02-01",
+      appliedDate: "2026-02-01",
       status: "Rejected",
       score: 65
     },
@@ -92,7 +92,7 @@ const AllApplications = () => {
       founder: "Rohan Gupta",
       category: "GovTech",
       stage: "MVP",
-      appliedDate: "2024-02-05",
+      appliedDate: "2026-02-05",
       status: "Under Review",
       score: 88
     }

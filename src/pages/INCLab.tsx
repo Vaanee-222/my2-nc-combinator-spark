@@ -239,7 +239,7 @@ const INCLab = () => {
                     </Badge>
                   </div>
                   <h2 className="text-3xl md:text-4xl font-bold">
-                    Q2 2024 Cohort Applications
+                    Q2 2026 Cohort Applications
                   </h2>
                   <p className="text-muted-foreground text-lg">
                     Apply now for our most selective cohort. Only 15 startups 
@@ -250,11 +250,11 @@ const INCLab = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <div className="text-sm text-muted-foreground">Application Deadline</div>
-                    <div className="font-semibold text-primary">April 30, 2024</div>
+                    <div className="font-semibold text-primary">April 30, 2026</div>
                   </div>
                   <div className="space-y-1">
                     <div className="text-sm text-muted-foreground">Program Starts</div>
-                    <div className="font-semibold">June 1, 2024</div>
+                    <div className="font-semibold">June 1, 2026</div>
                   </div>
                   <div className="space-y-1">
                     <div className="text-sm text-muted-foreground">Duration</div>

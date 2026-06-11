@@ -25,11 +25,16 @@ interface Blog {
   is_featured: boolean;
   is_published: boolean;
   published_at: string;
+  cover_image_url: string | null;
+  meta_title: string | null;
+  meta_description: string | null;
+  og_image_url: string | null;
 }
 
 const empty: Partial<Blog> = {
   title: "", slug: "", excerpt: "", content: "", author: "", category: "Founder Playbook",
   tags: [], read_time_minutes: 5, is_featured: false, is_published: true,
+  cover_image_url: "", meta_title: "", meta_description: "", og_image_url: "",
 };
 
 const slugify = (s: string) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -64,6 +69,10 @@ const BlogManagement = () => {
       read_time_minutes: editing.read_time_minutes ?? 5,
       is_featured: editing.is_featured ?? false,
       is_published: editing.is_published ?? true,
+      cover_image_url: editing.cover_image_url || null,
+      meta_title: editing.meta_title || null,
+      meta_description: editing.meta_description || null,
+      og_image_url: editing.og_image_url || null,
     };
     const { error } = editing.id
       ? await (supabase as any).from("blogs").update(payload).eq("id", editing.id)
@@ -149,6 +158,13 @@ const BlogManagement = () => {
             <div><Label>Tags (comma-separated)</Label><Input value={Array.isArray(editing.tags) ? editing.tags.join(", ") : (editing.tags ?? "")} onChange={(e) => setEditing({ ...editing, tags: e.target.value as any })} /></div>
             <div><Label>Excerpt</Label><Textarea rows={2} value={editing.excerpt ?? ""} onChange={(e) => setEditing({ ...editing, excerpt: e.target.value })} /></div>
             <div><Label>Content</Label><Textarea rows={10} value={editing.content ?? ""} onChange={(e) => setEditing({ ...editing, content: e.target.value })} /></div>
+            <div><Label>Cover image URL</Label><Input value={editing.cover_image_url ?? ""} onChange={(e) => setEditing({ ...editing, cover_image_url: e.target.value })} placeholder="https://" /></div>
+            <div className="border-t pt-4 space-y-3">
+              <p className="text-sm font-medium text-muted-foreground">SEO</p>
+              <div><Label>Meta title</Label><Input value={editing.meta_title ?? ""} onChange={(e) => setEditing({ ...editing, meta_title: e.target.value })} placeholder="Defaults to title if blank (max 60 chars)" maxLength={120} /></div>
+              <div><Label>Meta description</Label><Textarea rows={2} value={editing.meta_description ?? ""} onChange={(e) => setEditing({ ...editing, meta_description: e.target.value })} placeholder="Defaults to excerpt if blank (max 160 chars)" maxLength={200} /></div>
+              <div><Label>OG image URL</Label><Input value={editing.og_image_url ?? ""} onChange={(e) => setEditing({ ...editing, og_image_url: e.target.value })} placeholder="https://… (1200x630 recommended)" /></div>
+            </div>
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2"><Switch checked={editing.is_published ?? true} onCheckedChange={(v) => setEditing({ ...editing, is_published: v })} /><Label>Published</Label></div>
               <div className="flex items-center gap-2"><Switch checked={editing.is_featured ?? false} onCheckedChange={(v) => setEditing({ ...editing, is_featured: v })} /><Label>Featured</Label></div>

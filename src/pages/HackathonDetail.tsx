@@ -14,8 +14,8 @@ const HackathonDetail = () => {
   // Mock data - in a real app, this would come from an API
   const hackathonData = {
     id: id || "1",
-    title: "AI Innovation Challenge 2025",
-    date: "Feb 15-17, 2025",
+    title: "AI Innovation Challenge 2026",
+    date: "Feb 15-17, 2026",
     location: "Bangalore, India",
     venue: "Indian Institute of Science (IISc)",
     theme: "Artificial Intelligence & Machine Learning",
@@ -23,8 +23,8 @@ const HackathonDetail = () => {
     participants: "500+",
     status: "Registration Open",
     description: "Build AI solutions for real-world problems in healthcare, education, and sustainability.",
-    registrationDeadline: "Feb 10, 2025",
-    longDescription: "The AI Innovation Challenge 2025 is a premier hackathon bringing together the brightest minds in technology to solve pressing challenges using artificial intelligence and machine learning. Over 48 hours, participants will collaborate, innovate, and build solutions that can make a real impact in healthcare, education, and sustainability.",
+    registrationDeadline: "Feb 10, 2026",
+    longDescription: "The AI Innovation Challenge 2026 is a premier hackathon bringing together the brightest minds in technology to solve pressing challenges using artificial intelligence and machine learning. Over 48 hours, participants will collaborate, innovate, and build solutions that can make a real impact in healthcare, education, and sustainability.",
     schedule: [
       { time: "9:00 AM", activity: "Registration & Breakfast", day: "Day 1" },
       { time: "10:00 AM", activity: "Opening Ceremony", day: "Day 1" },

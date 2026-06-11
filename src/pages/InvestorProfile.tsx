@@ -30,9 +30,9 @@ const InvestorProfile = () => {
   ];
 
   const recentActivity = [
-    { type: "Investment", company: "DataFlow Systems", amount: "$1.5M", date: "2024-01-15" },
-    { type: "Exit", company: "MobileFirst", amount: "$5.4M", date: "2024-01-10" },
-    { type: "Follow-on", company: "HealthConnect", amount: "$1M", date: "2024-01-05" }
+    { type: "Investment", company: "DataFlow Systems", amount: "$1.5M", date: "2026-01-15" },
+    { type: "Exit", company: "MobileFirst", amount: "$5.4M", date: "2026-01-10" },
+    { type: "Follow-on", company: "HealthConnect", amount: "$1M", date: "2026-01-05" }
   ];
 
   return (

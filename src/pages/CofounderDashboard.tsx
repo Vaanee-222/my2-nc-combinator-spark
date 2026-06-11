@@ -31,7 +31,7 @@ const CofounderDashboard = () => {
       applications: 8,
       views: 156,
       status: "Active",
-      postedDate: "Dec 15, 2024"
+      postedDate: "Dec 15, 2026"
     },
     {
       id: 2,
@@ -41,7 +41,7 @@ const CofounderDashboard = () => {
       applications: 5,
       views: 89,
       status: "Active",
-      postedDate: "Dec 10, 2024"
+      postedDate: "Dec 10, 2026"
     }
   ];
 
@@ -54,7 +54,7 @@ const CofounderDashboard = () => {
       experience: "7 years",
       skills: ["React", "Python", "AWS"],
       status: "Under Review",
-      appliedDate: "Dec 18, 2024",
+      appliedDate: "Dec 18, 2026",
       matchScore: 92
     },
     {
@@ -65,7 +65,7 @@ const CofounderDashboard = () => {
       experience: "5 years",
       skills: ["Node.js", "Blockchain", "DevOps"],
       status: "Shortlisted",
-      appliedDate: "Dec 16, 2024",
+      appliedDate: "Dec 16, 2026",
       matchScore: 87
     }
   ];

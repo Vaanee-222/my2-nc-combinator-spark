@@ -87,7 +87,7 @@ const CurrentCohort = () => {
           <div className="container mx-auto px-4">
             <div className="text-center space-y-6 mb-16">
               <Badge variant="secondary" className="bg-primary/10 text-primary text-lg px-4 py-2">
-                Q1 2024 Cohort
+                Q1 2026 Cohort
               </Badge>
               <h1 className="text-4xl md:text-6xl font-bold">
                 Current{" "}
@@ -192,11 +192,11 @@ const CurrentCohort = () => {
                   </span>
                 </h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  Applications for Q2 2024 cohort are now open. Join the next batch of 
+                  Applications for Q2 2026 cohort are now open. Join the next batch of 
                   revolutionary startups transforming India.
                 </p>
                 <div className="flex flex-col md:flex-row gap-4 justify-center">
-                  <ApplicationDialog program="Q2 2024 Cohort">
+                  <ApplicationDialog program="Q2 2026 Cohort">
                     <Button variant="hero" size="lg">
                       Apply for Next Cohort
                     </Button>

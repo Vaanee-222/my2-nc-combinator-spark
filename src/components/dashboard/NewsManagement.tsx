@@ -25,11 +25,15 @@ interface News {
   is_breaking: boolean;
   is_published: boolean;
   published_at: string;
+  meta_title: string | null;
+  meta_description: string | null;
+  og_image_url: string | null;
 }
 
 const empty: Partial<News> = {
   title: "", slug: "", excerpt: "", content: "", category: "Funding",
   source: "", source_url: "", impact: "Medium", is_breaking: false, is_published: true,
+  meta_title: "", meta_description: "", og_image_url: "",
 };
 
 const slugify = (s: string) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -64,6 +68,9 @@ const NewsManagement = () => {
       impact: editing.impact || null,
       is_breaking: editing.is_breaking ?? false,
       is_published: editing.is_published ?? true,
+      meta_title: editing.meta_title || null,
+      meta_description: editing.meta_description || null,
+      og_image_url: editing.og_image_url || null,
     };
     const { error } = editing.id
       ? await (supabase as any).from("news").update(payload).eq("id", editing.id)
@@ -138,6 +145,12 @@ const NewsManagement = () => {
             </div>
             <div><Label>Excerpt</Label><Textarea rows={2} value={editing.excerpt ?? ""} onChange={(e) => setEditing({ ...editing, excerpt: e.target.value })} /></div>
             <div><Label>Content</Label><Textarea rows={8} value={editing.content ?? ""} onChange={(e) => setEditing({ ...editing, content: e.target.value })} /></div>
+            <div className="border-t pt-4 space-y-3">
+              <p className="text-sm font-medium text-muted-foreground">SEO</p>
+              <div><Label>Meta title</Label><Input value={editing.meta_title ?? ""} onChange={(e) => setEditing({ ...editing, meta_title: e.target.value })} placeholder="Defaults to title if blank" maxLength={120} /></div>
+              <div><Label>Meta description</Label><Textarea rows={2} value={editing.meta_description ?? ""} onChange={(e) => setEditing({ ...editing, meta_description: e.target.value })} placeholder="Defaults to excerpt if blank" maxLength={200} /></div>
+              <div><Label>OG image URL</Label><Input value={editing.og_image_url ?? ""} onChange={(e) => setEditing({ ...editing, og_image_url: e.target.value })} placeholder="https://…" /></div>
+            </div>
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2"><Switch checked={editing.is_published ?? true} onCheckedChange={(v) => setEditing({ ...editing, is_published: v })} /><Label>Published</Label></div>
               <div className="flex items-center gap-2"><Switch checked={editing.is_breaking ?? false} onCheckedChange={(v) => setEditing({ ...editing, is_breaking: v })} /><Label>Breaking</Label></div>

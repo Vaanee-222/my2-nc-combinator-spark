@@ -36,8 +36,10 @@ interface Region {
 interface Partner {
   id: string;
   region_id: string;
+  slug: string | null;
   name: string;
   note: string | null;
+  tagline: string | null;
   website_url: string | null;
   logo_url: string | null;
   description: string | null;
@@ -46,15 +48,20 @@ interface Partner {
   founded_year: number | null;
   headquarters: string | null;
   partnership_tier: string | null;
+  category: string | null;
   benefits: string[] | null;
   case_study_url: string | null;
 }
 
+const slugify = (s: string) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
 const emptyRegion: Partial<Region> = { name: "", flag: "", description: "", is_active: true };
 const emptyPartner: Partial<Partner> = {
-  name: "", note: "", website_url: "", logo_url: "", description: "", is_active: true,
-  founded_year: null, headquarters: "", partnership_tier: "", benefits: [], case_study_url: "",
+  name: "", slug: "", note: "", tagline: "", website_url: "", logo_url: "", description: "", is_active: true,
+  founded_year: null, headquarters: "", partnership_tier: "", category: "Ecosystem", benefits: [], case_study_url: "",
 };
+
+const PARTNER_CATEGORIES = ["Accelerator", "Technology", "Finance & Payments", "Banking", "Cloud & Credits", "Ecosystem"];
 
 const PartnerManagement = () => {
   const { toast } = useToast();
@@ -160,7 +167,9 @@ const PartnerManagement = () => {
     const payload = {
       region_id: editingPartner.region_id,
       name: editingPartner.name,
+      slug: editingPartner.slug || slugify(editingPartner.name!),
       note: editingPartner.note || null,
+      tagline: editingPartner.tagline || null,
       website_url: editingPartner.website_url || null,
       logo_url: editingPartner.logo_url || null,
       description: editingPartner.description || null,
@@ -168,6 +177,7 @@ const PartnerManagement = () => {
       founded_year: editingPartner.founded_year ?? null,
       headquarters: editingPartner.headquarters || null,
       partnership_tier: editingPartner.partnership_tier || null,
+      category: editingPartner.category || null,
       benefits: Array.isArray(editingPartner.benefits)
         ? editingPartner.benefits
         : (typeof editingPartner.benefits === "string"
@@ -254,7 +264,6 @@ const PartnerManagement = () => {
               <CardHeader className="flex flex-row items-start justify-between gap-3 space-y-0">
                 <div>
                   <CardTitle className="flex items-center gap-2">
-                    <span className="text-xl">{region.flag}</span>
                     {region.name}
                     {!region.is_active && (
                       <span className="text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground">inactive</span>
@@ -368,13 +377,32 @@ const PartnerManagement = () => {
               <Select value={editingPartner.region_id} onValueChange={(v) => setEditingPartner({ ...editingPartner, region_id: v })}>
                 <SelectTrigger><SelectValue placeholder="Select region" /></SelectTrigger>
                 <SelectContent>
-                  {regions.map((r) => <SelectItem key={r.id} value={r.id}>{r.flag} {r.name}</SelectItem>)}
+                  {regions.map((r) => <SelectItem key={r.id} value={r.id}>{r.name}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>
             <div>
               <Label>Name *</Label>
-              <Input value={editingPartner.name ?? ""} onChange={(e) => setEditingPartner({ ...editingPartner, name: e.target.value })} />
+              <Input value={editingPartner.name ?? ""} onChange={(e) => setEditingPartner({ ...editingPartner, name: e.target.value, slug: editingPartner.slug || slugify(e.target.value) })} />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label>Slug (URL)</Label>
+                <Input value={editingPartner.slug ?? ""} onChange={(e) => setEditingPartner({ ...editingPartner, slug: e.target.value })} placeholder="my-partner" />
+              </div>
+              <div>
+                <Label>Category</Label>
+                <Select value={editingPartner.category ?? "Ecosystem"} onValueChange={(v) => setEditingPartner({ ...editingPartner, category: v })}>
+                  <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
+                  <SelectContent>
+                    {PARTNER_CATEGORIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div>
+              <Label>Tagline</Label>
+              <Input value={editingPartner.tagline ?? ""} onChange={(e) => setEditingPartner({ ...editingPartner, tagline: e.target.value })} placeholder="One-line value prop shown on cards" />
             </div>
             <div>
               <Label>Short note</Label>

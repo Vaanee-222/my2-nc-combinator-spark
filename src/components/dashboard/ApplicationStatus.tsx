@@ -35,7 +35,7 @@ const ApplicationStatus = ({ applicationStatus }: ApplicationStatusProps) => {
                 <span className="text-white text-sm"></span>
               </div>
               <p className="font-medium">Application Submitted</p>
-              <p className="text-xs text-muted-foreground">Dec 15, 2024</p>
+              <p className="text-xs text-muted-foreground">Dec 15, 2026</p>
             </div>
             <div className="p-4 border rounded-lg">
               <div className="w-8 h-8 bg-primary rounded-full mx-auto mb-2 flex items-center justify-center">
@@ -49,7 +49,7 @@ const ApplicationStatus = ({ applicationStatus }: ApplicationStatusProps) => {
                 <span className="text-muted-foreground text-sm">3</span>
               </div>
               <p className="font-medium">Final Decision</p>
-              <p className="text-xs text-muted-foreground">Expected: Jan 5, 2025</p>
+              <p className="text-xs text-muted-foreground">Expected: Jan 5, 2026</p>
             </div>
           </div>
           <div className="flex items-center space-x-2 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg">

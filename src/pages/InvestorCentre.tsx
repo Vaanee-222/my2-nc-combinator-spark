@@ -637,68 +637,78 @@ const InvestorCentre = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Funding Trends Q4 2024</CardTitle>
+                  <CardTitle>Global Funding Trends — Q1 2026</CardTitle>
+                  <CardDescription>Source: PitchBook, Crunchbase, Xi Combinator Research</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span>Total Funding</span>
-                    <span className="font-bold text-primary">$1B</span>
+                    <span>Total Global VC Funding</span>
+                    <span className="font-bold text-primary">$94B</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span>Number of Deals</span>
-                    <span className="font-bold">156</span>
+                    <span className="font-bold">4,820</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span>Average Deal Size</span>
-                    <span className="font-bold">$6.4M</span>
+                    <span>Median Seed Round</span>
+                    <span className="font-bold">$3.4M</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span>Median Series A</span>
+                    <span className="font-bold">$14M</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span>QoQ Growth</span>
-                    <span className="font-bold text-green-600">+15%</span>
+                    <span className="font-bold text-green-500">+11%</span>
                   </div>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader>
-                  <CardTitle>Top Funded Sectors</CardTitle>
+                  <CardTitle>Top Funded Sectors — 2026</CardTitle>
+                  <CardDescription>Share of total VC dollars deployed YTD</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span>FinTech</span>
-                    <div className="flex items-center space-x-2">
-                      <div className="h-2 w-20 bg-muted rounded-full">
-                        <div className="h-2 w-16 bg-primary rounded-full"></div>
+                  {[
+                    { name: "AI & Foundation Models", pct: 38, color: "bg-primary" },
+                    { name: "Climate & Energy", pct: 16, color: "bg-orange-400" },
+                    { name: "FinTech & Stablecoins", pct: 14, color: "bg-green-400" },
+                    { name: "Healthcare & Biotech", pct: 12, color: "bg-blue-400" },
+                    { name: "Defense & Dual-Use", pct: 8, color: "bg-purple-400" },
+                  ].map((s) => (
+                    <div key={s.name} className="flex justify-between items-center">
+                      <span>{s.name}</span>
+                      <div className="flex items-center space-x-2">
+                        <div className="h-2 w-24 bg-muted rounded-full overflow-hidden">
+                          <div className={`h-2 ${s.color} rounded-full`} style={{ width: `${s.pct * 2}%` }}></div>
+                        </div>
+                        <span className="text-sm w-10 text-right">{s.pct}%</span>
                       </div>
-                      <span className="text-sm">32%</span>
                     </div>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span>E-commerce</span>
-                    <div className="flex items-center space-x-2">
-                      <div className="h-2 w-20 bg-muted rounded-full">
-                        <div className="h-2 w-12 bg-orange-400 rounded-full"></div>
-                      </div>
-                      <span className="text-sm">24%</span>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span>HealthTech</span>
-                    <div className="flex items-center space-x-2">
-                      <div className="h-2 w-20 bg-muted rounded-full">
-                        <div className="h-2 w-10 bg-green-400 rounded-full"></div>
-                      </div>
-                      <span className="text-sm">18%</span>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span>SaaS</span>
-                    <div className="flex items-center space-x-2">
-                      <div className="h-2 w-20 bg-muted rounded-full">
-                        <div className="h-2 w-8 bg-blue-400 rounded-full"></div>
-                      </div>
-                      <span className="text-sm">16%</span>
-                    </div>
-                  </div>
+                  ))}
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>2026 Market Signals</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3 text-sm">
+                  <p>• Down rounds fell to 14% — the third straight quarter of decline (Carta Q1 2026).</p>
+                  <p>• AI-native startups command a 2.3x revenue multiple premium at Series A vs. SaaS peers.</p>
+                  <p>• Emerging-market funds (MENA, SEA, LatAm) raised a record $18B in 2025; deployment accelerating into 2026.</p>
+                  <p>• Stablecoin and on-chain payments infra saw $4.2B in deals in 2025 — a 3x YoY jump.</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Regional Hotspots — 2026</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3 text-sm">
+                  <p>• <strong>San Francisco Bay Area</strong> — captures ~46% of all AI funding.</p>
+                  <p>• <strong>Bangalore</strong> — India's deep-tech corridor, $9.1B raised in 2025.</p>
+                  <p>• <strong>Singapore</strong> — APAC hub for fintech and Web3; new family-office incentives in effect 2026.</p>
+                  <p>• <strong>Paris / London</strong> — sovereign-AI tailwind drives European LLM funding.</p>
+                  <p>• <strong>Dubai / Riyadh</strong> — sovereign capital deploying via PIF, Mubadala, ADQ.</p>
                 </CardContent>
               </Card>
             </div>

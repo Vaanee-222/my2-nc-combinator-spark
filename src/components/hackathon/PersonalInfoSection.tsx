@@ -77,8 +77,8 @@ const PersonalInfoSection = ({ formData, onInputChange }: PersonalInfoSectionPro
             <SelectValue placeholder="Select graduation year" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="2024">2024</SelectItem>
-            <SelectItem value="2025">2025</SelectItem>
+            <SelectItem value="2026">2026</SelectItem>
+            <SelectItem value="2026">2026</SelectItem>
             <SelectItem value="2026">2026</SelectItem>
             <SelectItem value="2027">2027</SelectItem>
             <SelectItem value="working">Working Professional</SelectItem>

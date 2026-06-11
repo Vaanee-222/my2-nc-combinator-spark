@@ -45,7 +45,7 @@ Industry experts believe this trend will have far-reaching implications:
 
 ## Key Statistics
 
-- **Total Funding**: $8.3B raised in Q4 2024
+- **Total Funding**: $8.3B raised in Q4 2026
 - **Number of Deals**: 342 funding rounds completed
 - **Average Deal Size**: $24.3M across all stages
 - **Unicorn Creation**: 5 new unicorns minted this quarter
@@ -75,7 +75,7 @@ For startups looking to raise funding, this environment presents both opportunit
 
 ## Looking Ahead
 
-Analysts predict that 2025 will see continued momentum, with early indicators showing strong deal pipeline and sustained investor interest in the Indian market.
+Analysts predict that 2026 will see continued momentum, with early indicators showing strong deal pipeline and sustained investor interest in the Indian market.
 
 *Stay tuned for more updates on the evolving startup landscape.*
   `;

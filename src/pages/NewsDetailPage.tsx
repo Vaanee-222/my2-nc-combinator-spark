@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,9 @@ type NewsItem = {
   source_url?: string | null;
   impact?: string | null;
   published_at: string;
+  meta_title?: string | null;
+  meta_description?: string | null;
+  og_image_url?: string | null;
 };
 
 const NewsDetailPage = () => {
@@ -62,6 +66,26 @@ const NewsDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {item && (
+        <Helmet>
+          <title>{item.meta_title || `${item.title} — Xi News`}</title>
+          <meta name="description" content={item.meta_description || item.excerpt} />
+          <link rel="canonical" href={`/news/${item.slug}`} />
+          <meta property="og:title" content={item.meta_title || item.title} />
+          <meta property="og:description" content={item.meta_description || item.excerpt} />
+          <meta property="og:type" content="article" />
+          <meta property="og:url" content={`/news/${item.slug}`} />
+          {item.og_image_url && <meta property="og:image" content={item.og_image_url} />}
+          <script type="application/ld+json">{JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "NewsArticle",
+            headline: item.title,
+            datePublished: item.published_at,
+            articleSection: item.category,
+            publisher: { "@type": "Organization", name: item.source },
+          })}</script>
+        </Helmet>
+      )}
       <Navigation />
       <main className="container mx-auto px-4 pt-20 pb-12">
         <div className="max-w-4xl mx-auto">

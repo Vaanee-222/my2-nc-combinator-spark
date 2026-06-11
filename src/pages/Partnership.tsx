@@ -15,13 +15,25 @@ import { Link } from "react-router-dom";
 
 interface PartnerRow {
   id: string;
+  slug: string | null;
   name: string;
   note: string | null;
+  tagline: string | null;
   description: string | null;
   logo_url: string | null;
   website_url: string | null;
   partnership_tier: string | null;
+  category: string | null;
 }
+
+const PARTNER_CATEGORIES = [
+  "Accelerator",
+  "Technology",
+  "Finance & Payments",
+  "Banking",
+  "Cloud & Credits",
+  "Ecosystem",
+] as const;
 
 const Partnership = () => {
   const [partners, setPartners] = useState<PartnerRow[]>([]);
@@ -30,7 +42,7 @@ const Partnership = () => {
     (async () => {
       const { data } = await (supabase as any)
         .from("partners")
-        .select("id,name,note,description,logo_url,website_url,partnership_tier")
+        .select("id,slug,name,note,tagline,description,logo_url,website_url,partnership_tier,category")
         .eq("is_active", true)
         .order("sort_order");
       if (data) setPartners(data as PartnerRow[]);
@@ -151,9 +163,9 @@ const Partnership = () => {
           ) : (
             <Carousel opts={{ align: "start", loop: true }} className="max-w-6xl mx-auto">
               <CarouselContent className="-ml-3">
-                {partners.map((p) => (
-                  <CarouselItem key={p.id} className="pl-3 basis-1/2 md:basis-1/3 lg:basis-1/4">
-                    <Card className="p-5 h-full bg-card-gradient border-border text-center hover:shadow-orange-glow transition-all duration-300 flex flex-col items-center justify-between gap-3">
+                {partners.map((p) => {
+                  const inner = (
+                    <Card className="p-5 h-full bg-card-gradient border-border text-center hover:shadow-orange-glow transition-all duration-300 flex flex-col items-center justify-between gap-3 cursor-pointer">
                       <div className="w-16 h-16 rounded-xl bg-primary/10 text-primary flex items-center justify-center overflow-hidden">
                         {p.logo_url ? (
                           <img src={p.logo_url} alt={p.name} className="w-full h-full object-contain" />
@@ -162,15 +174,18 @@ const Partnership = () => {
                         )}
                       </div>
                       <h3 className="font-bold text-sm leading-tight line-clamp-2">{p.name}</h3>
-                      {p.partnership_tier && (
-                        <Badge variant="outline" className="text-xs">{p.partnership_tier}</Badge>
-                      )}
-                      {p.note && (
-                        <p className="text-xs text-muted-foreground line-clamp-2">{p.note}</p>
+                      {p.category && <Badge variant="outline" className="text-xs">{p.category}</Badge>}
+                      {(p.tagline || p.note) && (
+                        <p className="text-xs text-muted-foreground line-clamp-2">{p.tagline ?? p.note}</p>
                       )}
                     </Card>
-                  </CarouselItem>
-                ))}
+                  );
+                  return (
+                    <CarouselItem key={p.id} className="pl-3 basis-1/2 md:basis-1/3 lg:basis-1/4">
+                      {p.slug ? <Link to={`/partners/${p.slug}`}>{inner}</Link> : inner}
+                    </CarouselItem>
+                  );
+                })}
               </CarouselContent>
               <CarouselPrevious />
               <CarouselNext />
@@ -184,6 +199,59 @@ const Partnership = () => {
           </div>
         </div>
       </section>
+
+      {/* Partners grouped by Category — different from regional Partners list */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center space-y-4 mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold">Partner Ecosystem by Category</h2>
+            <p className="text-xl text-muted-foreground">
+              Accelerator, technology, finance, banking, cloud and ecosystem partners powering Xi Combinator startups.
+            </p>
+          </div>
+          <div className="space-y-10">
+            {PARTNER_CATEGORIES.map((cat) => {
+              const items = partners.filter((p) => (p.category ?? "Ecosystem") === cat);
+              if (items.length === 0) return null;
+              return (
+                <div key={cat} className="space-y-4">
+                  <div className="flex items-center justify-between border-b border-border/60 pb-2">
+                    <h3 className="text-2xl font-bold">{cat} Partners</h3>
+                    <span className="text-xs text-muted-foreground">{items.length} partner{items.length === 1 ? "" : "s"}</span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {items.map((p) => (
+                      <Link key={p.id} to={p.slug ? `/partners/${p.slug}` : "/partners"}>
+                        <Card className="p-5 h-full bg-card-gradient border-border hover:border-primary/40 hover:shadow-orange-glow transition-all duration-300">
+                          <div className="flex items-start gap-3">
+                            <div className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0 overflow-hidden">
+                              {p.logo_url ? (
+                                <img src={p.logo_url} alt={p.name} className="w-full h-full object-contain" />
+                              ) : (
+                                <Building2 className="h-5 w-5" />
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-semibold">{p.name}</h4>
+                              {(p.tagline || p.note) && (
+                                <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{p.tagline ?? p.note}</p>
+                              )}
+                              {p.partnership_tier && (
+                                <Badge variant="outline" className="text-[10px] mt-2">{p.partnership_tier}</Badge>
+                              )}
+                            </div>
+                          </div>
+                        </Card>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
 
       {/* Partnership Application */}
       <section className="py-20">

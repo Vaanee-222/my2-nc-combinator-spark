@@ -11,8 +11,8 @@ const PastEvents = () => {
   const pastEvents = [
     {
       id: 1,
-      title: "AI Innovation Challenge 2024",
-      date: "March 15-17, 2024",
+      title: "AI Innovation Challenge 2026",
+      date: "March 15-17, 2026",
       location: "IIT Bangalore",
       participants: 450,
       teams: 112,
@@ -40,8 +40,8 @@ const PastEvents = () => {
     },
     {
       id: 2,
-      title: "FinTech Revolution 2024",
-      date: "January 20-22, 2024",
+      title: "FinTech Revolution 2026",
+      date: "January 20-22, 2026",
       location: "IIIT Hyderabad",
       participants: 380,
       teams: 95,

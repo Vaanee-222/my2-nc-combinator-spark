@@ -7,9 +7,9 @@ import InvestmentApplicationDialog from "@/components/InvestmentApplicationDialo
 
 const InvestmentTable = () => {
   const investmentApplications = [
-    { id: 1, investor: "Sequoia Capital", amount: "$300K", status: "In Progress", date: "Dec 20, 2024" },
-    { id: 2, investor: "Accel Partners", amount: "$220K", status: "Pending", date: "Dec 18, 2024" },
-    { id: 3, investor: "Matrix Partners", amount: "$385K", status: "Under Review", date: "Dec 10, 2024" }
+    { id: 1, investor: "Sequoia Capital", amount: "$300K", status: "In Progress", date: "Dec 20, 2026" },
+    { id: 2, investor: "Accel Partners", amount: "$220K", status: "Pending", date: "Dec 18, 2026" },
+    { id: 3, investor: "Matrix Partners", amount: "$385K", status: "Under Review", date: "Dec 10, 2026" }
   ];
 
   return (
