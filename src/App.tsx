@@ -35,6 +35,7 @@ const StartupProfile = lazy(() => import("./pages/StartupProfile"));
 const Deals = lazy(() => import("./pages/Deals"));
 const Blogs = lazy(() => import("./pages/Blogs"));
 const News = lazy(() => import("./pages/News"));
+const NewsDetailPage = lazy(() => import("./pages/NewsDetailPage"));
 const MeetCofounder = lazy(() => import("./pages/MeetCofounder"));
 const InvestorCentre = lazy(() => import("./pages/InvestorCentre"));
 const InvestorProfile = lazy(() => import("./pages/InvestorProfile"));
