@@ -31,6 +31,7 @@ const Navigation = () => {
     { name: "Incubation", href: "/incubation" },
     { name: "MVP Lab", href: "/mvp-lab" },
     { name: "Xi Lab", href: "/xi-lab" },
+    { name: "Application Status", href: "/application-status" },
   ];
 
 
