@@ -121,7 +121,7 @@ const News = () => {
                     <span>{s.source}</span>
                     <div className="flex items-center space-x-1"><Clock className="h-3 w-3" /><span>{fmtTime(s.published_at)}</span></div>
                   </div>
-                  <NewsDetail news={s as any}><Button className="w-full" variant="outline">Read More</Button></NewsDetail>
+                  <Button asChild className="w-full" variant="outline"><Link to={`/news/${s.slug}`}>Read More</Link></Button>
                 </CardContent>
               </Card>
             ))}
