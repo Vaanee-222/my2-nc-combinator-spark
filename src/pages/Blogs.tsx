@@ -146,7 +146,7 @@ const Blogs = () => {
                 <div className="flex flex-wrap gap-1">
                   {post.tags.slice(0, 3).map((t) => <Badge key={t} variant="secondary" className="text-xs">{t}</Badge>)}
                 </div>
-                <BlogDetail blog={post as any}><Button className="w-full" variant="outline">Read More</Button></BlogDetail>
+                <Button asChild className="w-full" variant="outline"><Link to={`/blog/${post.slug}`}>Read More</Link></Button>
               </CardContent>
             </Card>
           ))}
