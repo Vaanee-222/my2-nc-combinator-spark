@@ -26,7 +26,7 @@ const Deals = () => {
       claimed: 45,
       totalSlots: 100,
       requirements: ["Startup must be < 2 years old", "First-time AWS user"],
-      logo: "☁️"
+      logo: ""
     },
     {
       id: 2,
@@ -40,7 +40,7 @@ const Deals = () => {
       claimed: 78,
       totalSlots: 150,
       requirements: ["Xi Combinator member", "Team size < 50"],
-      logo: "📝"
+      logo: ""
     },
     {
       id: 3,
@@ -54,7 +54,7 @@ const Deals = () => {
       claimed: 23,
       totalSlots: 75,
       requirements: ["Active startup", "New Stripe account"],
-      logo: "💳"
+      logo: ""
     }
   ];
 

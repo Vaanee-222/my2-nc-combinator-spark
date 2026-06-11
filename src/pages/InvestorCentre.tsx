@@ -37,7 +37,7 @@ const InvestorCentre = () => {
       founded: "2006",
       location: "Bangalore, Mumbai",
       aum: "$1.35B",
-      logo: "🚀"
+      logo: ""
     },
     {
       id: 2,
@@ -54,7 +54,7 @@ const InvestorCentre = () => {
       founded: "2008",
       location: "Bangalore",
       aum: "$650M",
-      logo: "⚡"
+      logo: ""
     },
     {
       id: 3,
@@ -71,7 +71,7 @@ const InvestorCentre = () => {
       founded: "2010",
       location: "Bangalore, Delhi",
       aum: "$450M",
-      logo: "🔷"
+      logo: ""
     }
   ];
 
@@ -85,7 +85,7 @@ const InvestorCentre = () => {
       portfolio: 156,
       sectors: ["Consumer", "Enterprise", "Gaming"],
       location: "Mumbai, Bangalore",
-      logo: "🌸"
+      logo: ""
     },
     {
       id: 5,
@@ -96,7 +96,7 @@ const InvestorCentre = () => {
       portfolio: 68,
       sectors: ["SaaS", "FinTech", "DeepTech"],
       location: "Bangalore",
-      logo: "🎯"
+      logo: ""
     },
     {
       id: 6,
@@ -107,7 +107,7 @@ const InvestorCentre = () => {
       portfolio: 42,
       sectors: ["Enterprise", "Consumer", "Healthcare"],
       location: "Mumbai, Bangalore",
-      logo: "🔗"
+      logo: ""
     },
     {
       id: 7,
@@ -118,7 +118,7 @@ const InvestorCentre = () => {
       portfolio: 35,
       sectors: ["Enterprise", "Consumer", "FinTech"],
       location: "Bangalore, Delhi",
-      logo: "⚡"
+      logo: ""
     },
     {
       id: 8,
@@ -129,7 +129,7 @@ const InvestorCentre = () => {
       portfolio: 28,
       sectors: ["Consumer Internet", "SaaS", "FinTech"],
       location: "Bangalore, Delhi",
-      logo: "⛰️"
+      logo: ""
     }
   ];
 
@@ -142,7 +142,7 @@ const InvestorCentre = () => {
       sectors: ["Consumer", "HealthTech", "Automotive"],
       investments: "100+",
       notable: ["Ola", "Paytm", "Urban Company"],
-      logo: "👤"
+      logo: ""
     },
     {
       id: 10,
@@ -152,7 +152,7 @@ const InvestorCentre = () => {
       sectors: ["E-commerce", "B2B", "Consumer"],
       investments: "50+",
       notable: ["Snapdeal Co-founder", "Multiple investments"],
-      logo: "👤"
+      logo: ""
     },
     {
       id: 11,
@@ -162,7 +162,7 @@ const InvestorCentre = () => {
       sectors: ["E-commerce", "Logistics", "B2B"],
       investments: "40+",
       notable: ["Flipkart Co-founder", "xto10x"],
-      logo: "👤"
+      logo: ""
     }
   ];
 

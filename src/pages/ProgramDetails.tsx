@@ -38,7 +38,7 @@ const ProgramDetails = () => {
         "Team of 2-4 members",
         "Passion for innovation"
       ],
-      icon: "💻"
+      icon: ""
     },
     {
       id: "incubation",
@@ -69,7 +69,7 @@ const ProgramDetails = () => {
         "Committed founding team",
         "Clear market opportunity"
       ],
-      icon: "🚀"
+      icon: ""
     },
     {
       id: "mvp-lab",
@@ -99,7 +99,7 @@ const ProgramDetails = () => {
         "Commitment to 8-week program",
         "Clear problem-solution fit"
       ],
-      icon: "🛠️"
+      icon: ""
     },
     {
       id: "inc-lab",
@@ -129,7 +129,7 @@ const ProgramDetails = () => {
         "Novel technology or approach",
         "Potential for commercialization"
       ],
-      icon: "🔬"
+      icon: ""
     }
   ];
 

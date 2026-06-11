@@ -38,25 +38,25 @@ const Contact = () => {
       city: "Bangalore",
       address: "Koramangala Innovation Hub, 5th Block",
       type: "Headquarters",
-      emoji: "🏢"
+      emoji: ""
     },
     {
       city: "Mumbai",
       address: "Bandra Kurla Complex, Financial District",
       type: "Regional Office",
-      emoji: "🌆"
+      emoji: ""
     },
     {
       city: "Delhi",
       address: "Connaught Place, Central Delhi",
       type: "Regional Office",
-      emoji: "🏛️"
+      emoji: ""
     },
     {
       city: "Hyderabad",
       address: "HITEC City, Cyberabad",
       type: "Tech Hub",
-      emoji: "💻"
+      emoji: ""
     }
   ];
 

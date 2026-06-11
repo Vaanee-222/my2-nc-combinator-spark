@@ -114,32 +114,32 @@ const INCLab = () => {
     {
       title: "Direct Funding Access",
       description: "$25L to $5Cr investment based on program track",
-      icon: "💰"
+      icon: ""
     },
     {
       title: "Technical Development",
       description: "Complete MVP/product development by our tech team",
-      icon: "🛠️"
+      icon: ""
     },
     {
       title: "Cloud Credits",
       description: "$25L+ in AWS, GCP, and Azure credits",
-      icon: "☁️"
+      icon: ""
     },
     {
       title: "Mentor Network",
       description: "Access to 200+ successful entrepreneurs and VCs",
-      icon: "🎯"
+      icon: ""
     },
     {
       title: "Market Access",
       description: "Corporate partnerships and customer introductions",
-      icon: "🚀"
+      icon: ""
     },
     {
       title: "Legal Support",
       description: "Complete legal, compliance, and IP protection",
-      icon: "⚖️"
+      icon: ""
     }
   ];
 

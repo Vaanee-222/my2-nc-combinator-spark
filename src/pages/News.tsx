@@ -27,7 +27,7 @@ const News = () => {
       category: "M&A",
       time: "4 hours ago",
       source: "TechCrunch India",
-      image: "🍕"
+      image: ""
     },
     {
       id: 3,
@@ -36,7 +36,7 @@ const News = () => {
       category: "Policy",
       time: "6 hours ago",
       source: "Economic Times",
-      image: "🏛️"
+      image: ""
     },
     {
       id: 4,
@@ -45,7 +45,7 @@ const News = () => {
       category: "Ecosystem",
       time: "8 hours ago",
       source: "YourStory",
-      image: "🌏"
+      image: ""
     }
   ];
 

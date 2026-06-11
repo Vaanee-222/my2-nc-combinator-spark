@@ -24,7 +24,7 @@ const BlogDetail = () => {
     date: "Dec 20, 2024",
     readTime: "8 min read",
     category: "Trends",
-    image: "📈",
+    image: "",
     tags: ["AI", "Sustainability", "Future Tech"]
   };
 

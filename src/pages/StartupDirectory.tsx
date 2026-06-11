@@ -28,7 +28,7 @@ const StartupDirectory = () => {
       founded: "2022",
       employees: "25-50",
       website: "aihealthcare.com",
-      logo: "🏥",
+      logo: "",
       tags: ["AI", "Healthcare", "Diagnostics"]
     },
     {
@@ -41,7 +41,7 @@ const StartupDirectory = () => {
       founded: "2021",
       employees: "11-25",
       website: "greentech.in",
-      logo: "🌱",
+      logo: "",
       tags: ["CleanTech", "Renewable Energy", "Sustainability"]
     },
     {
@@ -54,7 +54,7 @@ const StartupDirectory = () => {
       founded: "2023",
       employees: "5-10",
       website: "edtechplatform.com",
-      logo: "📚",
+      logo: "",
       tags: ["EdTech", "AI", "K-12"]
     },
     {
@@ -67,7 +67,7 @@ const StartupDirectory = () => {
       founded: "2020",
       employees: "51-100",
       website: "fintechsolutions.in",
-      logo: "💰",
+      logo: "",
       tags: ["FinTech", "Digital Banking", "Rural"]
     },
     {
@@ -80,7 +80,7 @@ const StartupDirectory = () => {
       founded: "2022",
       employees: "11-25",
       website: "agritechconnect.com",
-      logo: "🌾",
+      logo: "",
       tags: ["AgriTech", "Marketplace", "Farmers"]
     },
     {
@@ -93,7 +93,7 @@ const StartupDirectory = () => {
       founded: "2021",
       employees: "26-50",
       website: "logisticsai.com",
-      logo: "🚚",
+      logo: "",
       tags: ["Logistics", "AI", "Supply Chain"]
     }
   ];

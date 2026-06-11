@@ -11,7 +11,7 @@ const CloudCredits = () => {
   const cloudProviders = [
     {
       name: "Amazon Web Services (AWS)",
-      logo: "☁️",
+      logo: "",
       credits: "$10,00,000",
       duration: "12 months",
       benefits: [
@@ -26,7 +26,7 @@ const CloudCredits = () => {
     },
     {
       name: "Google Cloud Platform (GCP)",
-      logo: "🌐",
+      logo: "",
       credits: "$8,00,000",
       duration: "12 months",
       benefits: [
@@ -41,7 +41,7 @@ const CloudCredits = () => {
     },
     {
       name: "Microsoft Azure",
-      logo: "🔷",
+      logo: "",
       credits: "$6,00,000",
       duration: "12 months",
       benefits: [

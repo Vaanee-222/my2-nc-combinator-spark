@@ -50,37 +50,37 @@ const Hackathon = () => {
   const tracks = [
     {
       name: "AI/ML Track",
-      icon: "🤖",
+      icon: "",
       description: "Build intelligent solutions using artificial intelligence and machine learning",
       technologies: ["Python", "TensorFlow", "PyTorch", "OpenAI APIs"]
     },
     {
       name: "Web Development",
-      icon: "🌐",
+      icon: "",
       description: "Create innovative web applications and platforms",
       technologies: ["React", "Node.js", "MongoDB", "AWS"]
     },
     {
       name: "Mobile Apps",
-      icon: "📱",
+      icon: "",
       description: "Develop mobile applications for iOS and Android",
       technologies: ["React Native", "Flutter", "Swift", "Kotlin"]
     },
     {
       name: "Blockchain/Web3",
-      icon: "⛓️",
+      icon: "",
       description: "Build decentralized applications and blockchain solutions",
       technologies: ["Solidity", "Ethereum", "Web3.js", "IPFS"]
     },
     {
       name: "IoT & Hardware",
-      icon: "🔧",
+      icon: "",
       description: "Create IoT devices and hardware-based solutions",
       technologies: ["Arduino", "Raspberry Pi", "ESP32", "Sensors"]
     },
     {
       name: "Open Innovation",
-      icon: "💡",
+      icon: "",
       description: "Think outside the box with creative and unique solutions",
       technologies: ["Any technology stack"]
     }

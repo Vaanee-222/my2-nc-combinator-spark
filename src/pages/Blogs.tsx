@@ -17,7 +17,7 @@ const Blogs = () => {
     date: "Dec 20, 2024",
     readTime: "8 min read",
     category: "Trends",
-    image: "📈",
+    image: "",
     tags: ["AI", "Sustainability", "Future Tech"]
   };
 
@@ -30,7 +30,7 @@ const Blogs = () => {
       date: "Dec 18, 2024",
       readTime: "12 min read",
       category: "Funding",
-      image: "💰",
+      image: "",
       tags: ["Funding", "Seed Round", "Pitch Deck"]
     },
     {
@@ -41,7 +41,7 @@ const Blogs = () => {
       date: "Dec 15, 2024",
       readTime: "6 min read",
       category: "Product",
-      image: "🌾",
+      image: "",
       tags: ["Rural", "Product Design", "Bharat"]
     },
     {
@@ -52,7 +52,7 @@ const Blogs = () => {
       date: "Dec 12, 2024",
       readTime: "5 min read",
       category: "Product",
-      image: "🚀",
+      image: "",
       tags: ["MVP", "Product Development", "Lean Startup"]
     },
     {
@@ -63,7 +63,7 @@ const Blogs = () => {
       date: "Dec 10, 2024",
       readTime: "10 min read",
       category: "Research",
-      image: "🔍",
+      image: "",
       tags: ["Customer Discovery", "Market Research", "Validation"]
     },
     {
@@ -74,7 +74,7 @@ const Blogs = () => {
       date: "Dec 8, 2024",
       readTime: "7 min read",
       category: "Team",
-      image: "👥",
+      image: "",
       tags: ["Hiring", "Team Building", "Scaling"]
     },
     {
@@ -85,7 +85,7 @@ const Blogs = () => {
       date: "Dec 5, 2024",
       readTime: "9 min read",
       category: "Fintech",
-      image: "💳",
+      image: "",
       tags: ["Fintech", "Digital Payments", "UPI"]
     },
     {
@@ -96,7 +96,7 @@ const Blogs = () => {
       date: "Dec 2, 2024",
       readTime: "8 min read",
       category: "Strategy",
-      image: "🔄",
+      image: "",
       tags: ["Pivot", "Strategy", "Adaptation"]
     },
     {
@@ -107,7 +107,7 @@ const Blogs = () => {
       date: "Nov 28, 2024",
       readTime: "6 min read",
       category: "Marketing",
-      image: "📢",
+      image: "",
       tags: ["Building in Public", "Marketing", "Community"]
     }
   ];
