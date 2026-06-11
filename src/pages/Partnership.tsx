@@ -15,13 +15,25 @@ import { Link } from "react-router-dom";
 
 interface PartnerRow {
   id: string;
+  slug: string | null;
   name: string;
   note: string | null;
+  tagline: string | null;
   description: string | null;
   logo_url: string | null;
   website_url: string | null;
   partnership_tier: string | null;
+  category: string | null;
 }
+
+const PARTNER_CATEGORIES = [
+  "Accelerator",
+  "Technology",
+  "Finance & Payments",
+  "Banking",
+  "Cloud & Credits",
+  "Ecosystem",
+] as const;
 
 const Partnership = () => {
   const [partners, setPartners] = useState<PartnerRow[]>([]);
@@ -30,7 +42,7 @@ const Partnership = () => {
     (async () => {
       const { data } = await (supabase as any)
         .from("partners")
-        .select("id,name,note,description,logo_url,website_url,partnership_tier")
+        .select("id,slug,name,note,tagline,description,logo_url,website_url,partnership_tier,category")
         .eq("is_active", true)
         .order("sort_order");
       if (data) setPartners(data as PartnerRow[]);
