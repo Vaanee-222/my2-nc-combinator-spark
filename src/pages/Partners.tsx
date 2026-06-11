@@ -181,6 +181,19 @@ const Partners = () => {
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4 text-sm">
+            {(selected as any)?.partnership_tier && (
+              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                {(selected as any).partnership_tier} Partner
+              </div>
+            )}
+            <div className="grid grid-cols-2 gap-3">
+              {(selected as any)?.headquarters && (
+                <div><div className="text-xs uppercase tracking-wide text-muted-foreground mb-0.5">Headquarters</div><p>{(selected as any).headquarters}</p></div>
+              )}
+              {(selected as any)?.founded_year && (
+                <div><div className="text-xs uppercase tracking-wide text-muted-foreground mb-0.5">Founded</div><p>{(selected as any).founded_year}</p></div>
+              )}
+            </div>
             {selected?.note && (
               <div>
                 <div className="text-xs uppercase tracking-wide text-muted-foreground mb-1">Focus</div>
@@ -193,16 +206,34 @@ const Partners = () => {
                 <p className="text-muted-foreground whitespace-pre-line">{selected.description}</p>
               </div>
             )}
-            {selected?.website_url && (
-              <Button asChild variant="outline" className="w-full">
-                <a href={selected.website_url} target="_blank" rel="noopener noreferrer">
-                  Visit website <ExternalLink className="h-3.5 w-3.5 ml-1.5" />
-                </a>
-              </Button>
+            {Array.isArray((selected as any)?.benefits) && (selected as any).benefits.length > 0 && (
+              <div>
+                <div className="text-xs uppercase tracking-wide text-muted-foreground mb-1">Benefits</div>
+                <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                  {(selected as any).benefits.map((b: string, i: number) => <li key={i}>{b}</li>)}
+                </ul>
+              </div>
             )}
+            <div className="flex gap-2">
+              {selected?.website_url && (
+                <Button asChild variant="outline" className="flex-1">
+                  <a href={selected.website_url} target="_blank" rel="noopener noreferrer">
+                    Visit website <ExternalLink className="h-3.5 w-3.5 ml-1.5" />
+                  </a>
+                </Button>
+              )}
+              {(selected as any)?.case_study_url && (
+                <Button asChild variant="outline" className="flex-1">
+                  <a href={(selected as any).case_study_url} target="_blank" rel="noopener noreferrer">
+                    Case study <ExternalLink className="h-3.5 w-3.5 ml-1.5" />
+                  </a>
+                </Button>
+              )}
+            </div>
           </div>
         </DialogContent>
       </Dialog>
+
 
       <Footer />
     </div>
