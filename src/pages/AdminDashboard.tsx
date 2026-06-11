@@ -21,6 +21,9 @@ import UserManagement from "@/components/dashboard/UserManagement";
 import HeaderScripts from "@/components/dashboard/HeaderScripts";
 import PartnerManagement from "@/components/dashboard/PartnerManagement";
 import InclabApplications from "@/components/dashboard/InclabApplications";
+import BlogManagement from "@/components/dashboard/BlogManagement";
+import NewsManagement from "@/components/dashboard/NewsManagement";
+import StartupDirectoryManagement from "@/components/dashboard/StartupDirectoryManagement";
 
 
 const AdminDashboard = () => {
@@ -98,6 +101,9 @@ const AdminDashboard = () => {
             <TabsTrigger value="programs">Programs</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
             <TabsTrigger value="partners">Partners</TabsTrigger>
+            <TabsTrigger value="directory">Directory</TabsTrigger>
+            <TabsTrigger value="blogs">Blogs</TabsTrigger>
+            <TabsTrigger value="news">News</TabsTrigger>
 
             <TabsTrigger value="emails">Emails</TabsTrigger>
             <TabsTrigger value="acl">ACL</TabsTrigger>
@@ -170,6 +176,20 @@ const AdminDashboard = () => {
           <TabsContent value="partners" className="space-y-6">
             <PartnerManagement />
           </TabsContent>
+
+          <TabsContent value="directory" className="space-y-6">
+            <StartupDirectoryManagement />
+          </TabsContent>
+
+          <TabsContent value="blogs" className="space-y-6">
+            <BlogManagement />
+          </TabsContent>
+
+          <TabsContent value="news" className="space-y-6">
+            <NewsManagement />
+          </TabsContent>
+
+
 
 
           <TabsContent value="emails" className="space-y-6">

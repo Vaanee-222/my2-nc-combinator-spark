@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { lazy, Suspense } from "react";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -111,7 +111,8 @@ const AppRoutes = () => {
               <Route path="/hackathon-detail/:id" element={<HackathonDetail />} />
               <Route path="/incubation" element={<Incubation />} />
               <Route path="/mvp-lab" element={<MVPLab />} />
-              <Route path="/inclab" element={<INCLab />} />
+              <Route path="/xi-lab" element={<INCLab />} />
+              <Route path="/inclab" element={<Navigate to="/xi-lab" replace />} />
               <Route path="/resources" element={<Resources />} />
               <Route path="/partnership" element={<Partnership />} />
               <Route path="/partners" element={<Partners />} />
