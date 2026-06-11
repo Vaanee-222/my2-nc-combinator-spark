@@ -23,8 +23,11 @@ export type Database = {
           id: string
           phone: string | null
           program: string
+          review_notes: string | null
+          reviewed_at: string | null
           startup_name: string | null
           status: string
+          updated_at: string
           user_id: string | null
         }
         Insert: {
@@ -35,8 +38,11 @@ export type Database = {
           id?: string
           phone?: string | null
           program: string
+          review_notes?: string | null
+          reviewed_at?: string | null
           startup_name?: string | null
           status?: string
+          updated_at?: string
           user_id?: string | null
         }
         Update: {
@@ -47,8 +53,11 @@ export type Database = {
           id?: string
           phone?: string | null
           program?: string
+          review_notes?: string | null
+          reviewed_at?: string | null
           startup_name?: string | null
           status?: string
+          updated_at?: string
           user_id?: string | null
         }
         Relationships: []
@@ -64,6 +73,9 @@ export type Database = {
           id: string
           is_featured: boolean | null
           is_published: boolean | null
+          meta_description: string | null
+          meta_title: string | null
+          og_image_url: string | null
           published_at: string | null
           read_time_minutes: number | null
           slug: string
@@ -81,6 +93,9 @@ export type Database = {
           id?: string
           is_featured?: boolean | null
           is_published?: boolean | null
+          meta_description?: string | null
+          meta_title?: string | null
+          og_image_url?: string | null
           published_at?: string | null
           read_time_minutes?: number | null
           slug: string
@@ -98,6 +113,9 @@ export type Database = {
           id?: string
           is_featured?: boolean | null
           is_published?: boolean | null
+          meta_description?: string | null
+          meta_title?: string | null
+          og_image_url?: string | null
           published_at?: string | null
           read_time_minutes?: number | null
           slug?: string
@@ -372,6 +390,9 @@ export type Database = {
           impact: string | null
           is_breaking: boolean | null
           is_published: boolean | null
+          meta_description: string | null
+          meta_title: string | null
+          og_image_url: string | null
           published_at: string | null
           slug: string
           source: string | null
@@ -388,6 +409,9 @@ export type Database = {
           impact?: string | null
           is_breaking?: boolean | null
           is_published?: boolean | null
+          meta_description?: string | null
+          meta_title?: string | null
+          og_image_url?: string | null
           published_at?: string | null
           slug: string
           source?: string | null
@@ -404,6 +428,9 @@ export type Database = {
           impact?: string | null
           is_breaking?: boolean | null
           is_published?: boolean | null
+          meta_description?: string | null
+          meta_title?: string | null
+          og_image_url?: string | null
           published_at?: string | null
           slug?: string
           source?: string | null
@@ -450,6 +477,7 @@ export type Database = {
         Row: {
           benefits: string[] | null
           case_study_url: string | null
+          category: string | null
           created_at: string
           description: string | null
           founded_year: number | null
@@ -461,13 +489,16 @@ export type Database = {
           note: string | null
           partnership_tier: string | null
           region_id: string
+          slug: string | null
           sort_order: number
+          tagline: string | null
           updated_at: string
           website_url: string | null
         }
         Insert: {
           benefits?: string[] | null
           case_study_url?: string | null
+          category?: string | null
           created_at?: string
           description?: string | null
           founded_year?: number | null
@@ -479,13 +510,16 @@ export type Database = {
           note?: string | null
           partnership_tier?: string | null
           region_id: string
+          slug?: string | null
           sort_order?: number
+          tagline?: string | null
           updated_at?: string
           website_url?: string | null
         }
         Update: {
           benefits?: string[] | null
           case_study_url?: string | null
+          category?: string | null
           created_at?: string
           description?: string | null
           founded_year?: number | null
@@ -497,7 +531,9 @@ export type Database = {
           note?: string | null
           partnership_tier?: string | null
           region_id?: string
+          slug?: string | null
           sort_order?: number
+          tagline?: string | null
           updated_at?: string
           website_url?: string | null
         }
