@@ -184,7 +184,7 @@ const Subscription = () => {
     setProcessing(false);
     setPaymentOpen(false);
     toast({
-      title: "🎉 Payment Successful (Demo)",
+      title: " Payment Successful (Demo)",
       description: `You've subscribed to the ${selectedPlan?.name} plan. This is a demo transaction — no real charges were made.`,
     });
   };

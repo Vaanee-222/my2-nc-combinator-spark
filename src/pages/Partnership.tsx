@@ -38,12 +38,12 @@ const Partnership = () => {
   ];
 
   const currentPartners = [
-    { name: "Microsoft", type: "Cloud Partner", logo: "🚀" },
-    { name: "AWS", type: "Infrastructure", logo: "☁️" },
-    { name: "Google", type: "Technology", logo: "🔍" },
-    { name: "HDFC Bank", type: "Financial", logo: "🏦" },
-    { name: "TCS", type: "Enterprise", logo: "💼" },
-    { name: "Flipkart", type: "E-commerce", logo: "🛒" }
+    { name: "Microsoft", type: "Cloud Partner", logo: "" },
+    { name: "AWS", type: "Infrastructure", logo: "" },
+    { name: "Google", type: "Technology", logo: "" },
+    { name: "HDFC Bank", type: "Financial", logo: "" },
+    { name: "TCS", type: "Enterprise", logo: "" },
+    { name: "Flipkart", type: "E-commerce", logo: "" }
   ];
 
   return (
@@ -57,7 +57,7 @@ const Partnership = () => {
           <div className="text-center space-y-8 animate-fade-in">
             <div className="space-y-4">
               <Badge variant="secondary" className="bg-primary/10 text-primary text-lg px-4 py-2">
-                🤝 Strategic Partnerships
+                 Strategic Partnerships
               </Badge>
               <h1 className="text-5xl md:text-7xl font-bold leading-tight">
                 Partner with{" "}

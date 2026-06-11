@@ -196,7 +196,7 @@ const HackathonDetail = () => {
                       index === 0 ? 'border-yellow-400 bg-yellow-50 dark:bg-yellow-950' : 'bg-muted/5'
                     }`}>
                       <div className="text-2xl mb-2">
-                        {index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}
+                        {index === 0 ? '' : index === 1 ? '' : ''}
                       </div>
                       <h4 className="font-semibold">{prize.position}</h4>
                       <p className="text-lg font-bold text-primary mb-2">{prize.amount}</p>

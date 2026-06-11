@@ -321,7 +321,7 @@ const PartnerManagement = () => {
             </div>
             <div>
               <Label>Flag / Emoji</Label>
-              <Input value={editingRegion.flag ?? ""} onChange={(e) => setEditingRegion({ ...editingRegion, flag: e.target.value })} placeholder="🇮🇳" />
+              <Input value={editingRegion.flag ?? ""} onChange={(e) => setEditingRegion({ ...editingRegion, flag: e.target.value })} placeholder="" />
             </div>
             <div>
               <Label>Description</Label>

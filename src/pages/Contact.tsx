@@ -90,7 +90,7 @@ const Contact = () => {
           <div className="text-center space-y-8 animate-fade-in">
             <div className="space-y-4">
               <Badge variant="secondary" className="bg-primary/10 text-primary text-lg px-4 py-2">
-                💬 Get in Touch
+                 Get in Touch
               </Badge>
               <h1 className="text-5xl md:text-7xl font-bold leading-tight">
                 Contact{" "}

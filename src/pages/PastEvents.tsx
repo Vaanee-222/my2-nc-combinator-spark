@@ -198,7 +198,7 @@ const PastEvents = () => {
                     <Badge variant="outline" className="bg-green-100 text-green-800">
                       Completed
                     </Badge>
-                    <div className="text-2xl">🏆</div>
+                    <div className="text-2xl"></div>
                   </div>
                   <CardTitle className="text-xl">{event.title}</CardTitle>
                   <CardDescription className="space-y-2">
@@ -234,7 +234,7 @@ const PastEvents = () => {
 
                   {/* Winners */}
                   <div>
-                    <h4 className="font-semibold mb-3">🏆 Winners</h4>
+                    <h4 className="font-semibold mb-3"> Winners</h4>
                     <div className="space-y-2">
                       {event.winners.map((winner, index) => (
                         <div key={index} className="flex items-center justify-between p-2 bg-muted/5 rounded">
@@ -250,7 +250,7 @@ const PastEvents = () => {
 
                   {/* Highlights */}
                   <div>
-                    <h4 className="font-semibold mb-2">✨ Highlights</h4>
+                    <h4 className="font-semibold mb-2"> Highlights</h4>
                     <div className="space-y-1">
                       {event.highlights.slice(0, 3).map((highlight, index) => (
                         <div key={index} className="flex items-start space-x-2">
@@ -263,7 +263,7 @@ const PastEvents = () => {
 
                   {/* Sponsors */}
                   <div>
-                    <h4 className="font-semibold mb-2">🤝 Sponsors</h4>
+                    <h4 className="font-semibold mb-2"> Sponsors</h4>
                     <div className="flex flex-wrap gap-2">
                       {event.sponsors.map((sponsor, index) => (
                         <Badge key={index} variant="secondary" className="text-xs">

@@ -59,24 +59,24 @@ const Deals = () => {
   ];
 
   const cloudDeals = [
-    { company: "Google Cloud", offer: "$3,000 Credits", discount: "Free", logo: "🌐" },
-    { company: "Microsoft Azure", offer: "$2,500 Credits", discount: "Free", logo: "🔷" },
-    { company: "DigitalOcean", offer: "$200 Credits", discount: "Free", logo: "🌊" },
+    { company: "Google Cloud", offer: "$3,000 Credits", discount: "Free", logo: "" },
+    { company: "Microsoft Azure", offer: "$2,500 Credits", discount: "Free", logo: "" },
+    { company: "DigitalOcean", offer: "$200 Credits", discount: "Free", logo: "" },
     { company: "Vercel", offer: "Pro Plan 6 months", discount: "100% Off", logo: "▲" }
   ];
 
   const saasDeals = [
-    { company: "Slack", offer: "Pro Plan 3 months", discount: "100% Off", logo: "💬" },
-    { company: "Figma", offer: "Professional 1 year", discount: "50% Off", logo: "🎨" },
-    { company: "Calendly", offer: "Professional 6 months", discount: "100% Off", logo: "📅" },
-    { company: "Mailchimp", offer: "Standard Plan 6 months", discount: "50% Off", logo: "📧" }
+    { company: "Slack", offer: "Pro Plan 3 months", discount: "100% Off", logo: "" },
+    { company: "Figma", offer: "Professional 1 year", discount: "50% Off", logo: "" },
+    { company: "Calendly", offer: "Professional 6 months", discount: "100% Off", logo: "" },
+    { company: "Mailchimp", offer: "Standard Plan 6 months", discount: "50% Off", logo: "" }
   ];
 
   const businessDeals = [
-    { company: "LegalZoom", offer: "Business Formation", discount: "30% Off", logo: "⚖️" },
-    { company: "QuickBooks", offer: "Simple Start 6 months", discount: "50% Off", logo: "📊" },
-    { company: "Freshworks", offer: "CRM Suite 3 months", discount: "100% Off", logo: "📞" },
-    { company: "HubSpot", offer: "Startup Program", discount: "90% Off", logo: "🎯" }
+    { company: "LegalZoom", offer: "Business Formation", discount: "30% Off", logo: "" },
+    { company: "QuickBooks", offer: "Simple Start 6 months", discount: "50% Off", logo: "" },
+    { company: "Freshworks", offer: "CRM Suite 3 months", discount: "100% Off", logo: "" },
+    { company: "HubSpot", offer: "Startup Program", discount: "90% Off", logo: "" }
   ];
 
   const renderDealCard = (deal: any, isDetailed = false) => (
@@ -238,7 +238,7 @@ const Deals = () => {
               <Card className="hover:shadow-lg transition-all duration-300">
                 <CardHeader>
                   <div className="flex items-center space-x-3">
-                    <div className="text-2xl">📧</div>
+                    <div className="text-2xl"></div>
                     <div>
                       <CardTitle className="text-lg">Email Marketing Suite</CardTitle>
                       <CardDescription>Mailchimp, SendGrid, ConvertKit</CardDescription>
@@ -254,7 +254,7 @@ const Deals = () => {
               <Card className="hover:shadow-lg transition-all duration-300">
                 <CardHeader>
                   <div className="flex items-center space-x-3">
-                    <div className="text-2xl">📊</div>
+                    <div className="text-2xl"></div>
                     <div>
                       <CardTitle className="text-lg">Analytics & Tracking</CardTitle>
                       <CardDescription>Google Analytics, Mixpanel, Hotjar</CardDescription>

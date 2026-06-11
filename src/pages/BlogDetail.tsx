@@ -213,7 +213,7 @@ The future of Indian startups looks incredibly promising. Those who can combine 
               <h3 className="text-xl font-semibold mb-4">Related Articles</h3>
               <div className="space-y-4">
                 <div className="flex items-start space-x-4 p-4 bg-muted/50 rounded-lg hover:bg-muted/70 transition-colors cursor-pointer">
-                  <div className="text-2xl">💰</div>
+                  <div className="text-2xl"></div>
                   <div className="flex-1">
                     <h4 className="font-medium">Raising Your First Round: A Complete Guide</h4>
                     <p className="text-sm text-muted-foreground">Everything you need to know about raising seed funding in India...</p>
@@ -222,7 +222,7 @@ The future of Indian startups looks incredibly promising. Those who can combine 
                 </div>
                 
                 <div className="flex items-start space-x-4 p-4 bg-muted/50 rounded-lg hover:bg-muted/70 transition-colors cursor-pointer">
-                  <div className="text-2xl">🌾</div>
+                  <div className="text-2xl"></div>
                   <div className="flex-1">
                     <h4 className="font-medium">Building for Bharat: Designing Products for Rural India</h4>
                     <p className="text-sm text-muted-foreground">Key insights on creating technology solutions for rural population...</p>

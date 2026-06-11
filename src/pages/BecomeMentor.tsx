@@ -84,10 +84,10 @@ const BecomeMentor = () => {
           </p>
           <div className="flex justify-center space-x-4">
             <Badge variant="secondary" className="bg-primary/10 text-primary text-lg px-4 py-2">
-              🎯 Make an Impact
+               Make an Impact
             </Badge>
             <Badge variant="secondary" className="bg-primary/10 text-primary text-lg px-4 py-2">
-              🚀 Shape the Future
+               Shape the Future
             </Badge>
           </div>
         </section>

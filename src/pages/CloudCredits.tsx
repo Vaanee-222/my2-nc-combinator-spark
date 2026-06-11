@@ -123,10 +123,10 @@ const CloudCredits = () => {
           </p>
           <div className="flex justify-center space-x-4">
             <Badge variant="secondary" className="bg-primary/10 text-primary text-lg px-4 py-2">
-              💰 $25L+ Value
+               $25L+ Value
             </Badge>
             <Badge variant="secondary" className="bg-primary/10 text-primary text-lg px-4 py-2">
-              🚀 12 Months Free
+               12 Months Free
             </Badge>
           </div>
         </section>

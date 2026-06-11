@@ -133,7 +133,7 @@ const RequirementsDetail = () => {
           {/* Header */}
           <div className="text-center space-y-6 mb-12">
             <Badge variant="secondary" className="bg-primary/10 text-primary text-lg px-4 py-2">
-              📋 Application Requirements
+               Application Requirements
             </Badge>
             <h1 className="text-4xl md:text-5xl font-bold">
               Xi Lab Application{" "}

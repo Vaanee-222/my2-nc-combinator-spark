@@ -64,7 +64,7 @@ const CofounderPostDialog = ({ children }: CofounderPostDialogProps) => {
         contact_email: user.email || "",
       });
       if (error) throw error;
-      toast({ title: "Co-founder Requirement Posted ✅", description: "Your requirement has been posted successfully." });
+      toast({ title: "Co-founder Requirement Posted ", description: "Your requirement has been posted successfully." });
       setOpen(false);
       setFormData({ title: "", role: "", description: "", experience: "", equity: "", location: "", commitment: "", salary: "" });
       setSkills([]);

@@ -58,7 +58,7 @@ const ApplicationDialog = ({ children, program = "Xi Lab", title }: ApplicationD
       if (error) throw error;
 
       trackEvent("application_submitted", { program, startup_name: formData.startupName });
-      toast({ title: "Application Submitted! 🚀", description: `Your application to ${program} has been submitted successfully.` });
+      toast({ title: "Application Submitted! ", description: `Your application to ${program} has been submitted successfully.` });
       setOpen(false);
       setFormData({ firstName: "", lastName: "", email: "", phone: "", startupName: "", stage: "", problem: "", solution: "", market: "", traction: "", funding: "", why: "" });
     } catch (error: any) {

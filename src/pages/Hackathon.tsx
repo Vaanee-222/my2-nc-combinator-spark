@@ -204,7 +204,7 @@ const Hackathon = () => {
                     <Badge variant={hackathon.status === "Registration Open" ? "default" : "secondary"}>
                       {hackathon.status}
                     </Badge>
-                    <div className="text-2xl">🏆</div>
+                    <div className="text-2xl"></div>
                   </div>
                   <CardTitle className="text-xl">{hackathon.title}</CardTitle>
                   <CardDescription className="text-sm font-medium text-primary">
@@ -299,7 +299,7 @@ const Hackathon = () => {
               <Card key={index} className={`hover:shadow-lg transition-all duration-300 ${index === 0 ? 'border-yellow-400 bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-950 dark:to-yellow-900' : ''}`}>
                 <CardHeader className="text-center">
                   <div className="text-4xl mb-2">
-                    {index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}
+                    {index === 0 ? '' : index === 1 ? '' : ''}
                   </div>
                   <CardTitle className="text-xl">{prize.position}</CardTitle>
                   <CardDescription className="text-2xl font-bold text-primary">

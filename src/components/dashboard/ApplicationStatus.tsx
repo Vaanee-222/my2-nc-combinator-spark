@@ -32,7 +32,7 @@ const ApplicationStatus = ({ applicationStatus }: ApplicationStatusProps) => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
             <div className="p-4 border rounded-lg">
               <div className="w-8 h-8 bg-green-500 rounded-full mx-auto mb-2 flex items-center justify-center">
-                <span className="text-white text-sm">✓</span>
+                <span className="text-white text-sm"></span>
               </div>
               <p className="font-medium">Application Submitted</p>
               <p className="text-xs text-muted-foreground">Dec 15, 2024</p>

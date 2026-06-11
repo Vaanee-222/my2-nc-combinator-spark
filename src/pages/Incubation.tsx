@@ -217,7 +217,7 @@ const Incubation = () => {
                     <Badge variant={program.applications === "Open" ? "default" : "secondary"}>
                       {program.applications}
                     </Badge>
-                    <div className="text-2xl">🚀</div>
+                    <div className="text-2xl"></div>
                   </div>
                   <CardTitle className="text-xl">{program.name}</CardTitle>
                   <CardDescription className="flex items-center space-x-4 text-sm">

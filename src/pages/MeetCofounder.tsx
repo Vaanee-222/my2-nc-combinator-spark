@@ -37,7 +37,7 @@ const MeetCofounder = () => {
       availability: "Immediately Available",
       linkedin: "linkedin.com/in/priyasharma",
       rating: 4.9,
-      avatar: "👩‍💻"
+      avatar: "‍"
     },
     {
       id: 2,
@@ -53,7 +53,7 @@ const MeetCofounder = () => {
       availability: "Available part-time",
       linkedin: "linkedin.com/in/rahulverma",
       rating: 4.8,
-      avatar: "👨‍💼"
+      avatar: "‍"
     },
     {
       id: 3,
@@ -69,7 +69,7 @@ const MeetCofounder = () => {
       availability: "Immediately Available",
       linkedin: "linkedin.com/in/anitasingh",
       rating: 4.7,
-      avatar: "👩‍🎨"
+      avatar: "‍"
     }
   ];
 
@@ -84,7 +84,7 @@ const MeetCofounder = () => {
       company: "Ex-Amazon",
       skills: ["React", "Node.js", "MongoDB", "Docker"],
       lookingFor: "Business Co-founder",
-      avatar: "👨‍💻"
+      avatar: "‍"
     },
     {
       id: 5,
@@ -96,7 +96,7 @@ const MeetCofounder = () => {
       company: "Ex-Zomato",
       skills: ["Growth Hacking", "SEO", "Social Media", "Content Marketing"],
       lookingFor: "Tech Co-founder",
-      avatar: "👩‍💼"
+      avatar: "‍"
     },
     {
       id: 6,
@@ -108,7 +108,7 @@ const MeetCofounder = () => {
       company: "Ex-KPMG",
       skills: ["Financial Planning", "Fundraising", "Operations", "Compliance"],
       lookingFor: "Product Co-founder",
-      avatar: "👨‍💼"
+      avatar: "‍"
     },
     {
       id: 7,
@@ -120,7 +120,7 @@ const MeetCofounder = () => {
       company: "Ex-Swiggy",
       skills: ["Product Management", "UI/UX", "User Testing", "Agile"],
       lookingFor: "Tech Co-founder",
-      avatar: "👩‍🎨"
+      avatar: "‍"
     },
     {
       id: 8,
@@ -132,7 +132,7 @@ const MeetCofounder = () => {
       company: "Ex-Microsoft",
       skills: ["Kubernetes", "AWS", "DevOps", "System Design"],
       lookingFor: "Business Co-founder",
-      avatar: "👨‍💻"
+      avatar: "‍"
     }
   ];
 

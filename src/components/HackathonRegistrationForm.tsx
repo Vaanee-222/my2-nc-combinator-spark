@@ -54,7 +54,7 @@ const HackathonRegistrationForm = ({ children }: HackathonRegistrationFormProps)
         portfolio: formData.portfolio,
       });
       if (error) throw error;
-      toast({ title: "Registration Successful! 🚀", description: "You're registered for the hackathon." });
+      toast({ title: "Registration Successful! ", description: "You're registered for the hackathon." });
       setIsOpen(false);
     } catch (error: any) {
       toast({ title: "Registration Failed", description: error.message, variant: "destructive" });
@@ -87,7 +87,7 @@ const HackathonRegistrationForm = ({ children }: HackathonRegistrationFormProps)
           <div className="flex gap-4 pt-4">
             <Button type="button" variant="outline" onClick={() => setIsOpen(false)} className="flex-1">Cancel</Button>
             <Button type="submit" variant="hero" className="flex-1" disabled={isSubmitting}>
-              {isSubmitting ? "Registering..." : "Register for Hackathon 🚀"}
+              {isSubmitting ? "Registering..." : "Register for Hackathon "}
             </Button>
           </div>
           {!user && <p className="text-sm text-destructive text-center">You must be logged in to register.</p>}

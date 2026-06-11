@@ -103,7 +103,7 @@ const MVPLab = () => {
           <div className="text-center space-y-8 animate-fade-in">
             <div className="space-y-4">
               <Badge variant="secondary" className="bg-primary/10 text-primary text-lg px-4 py-2">
-                🛠️ Build. Test. Scale.
+                 Build. Test. Scale.
               </Badge>
               <h1 className="text-5xl md:text-7xl font-bold leading-tight">
                 MVP Lab:{" "}
