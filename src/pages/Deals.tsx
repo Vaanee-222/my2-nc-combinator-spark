@@ -84,7 +84,7 @@ const Deals = () => {
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-3">
-            <div className="text-2xl">{deal.logo}</div>
+            <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0"><Building2 className="h-5 w-5" /></div>
             <div>
               <CardTitle className="text-lg">{deal.title || `${deal.company} Deal`}</CardTitle>
               <CardDescription>{deal.company}</CardDescription>
