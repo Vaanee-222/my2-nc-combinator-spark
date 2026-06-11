@@ -95,9 +95,7 @@ const News = () => {
                   <Badge variant="outline">{breaking.category}</Badge>
                   <span className="text-sm text-muted-foreground">{breaking.source}</span>
                 </div>
-                <NewsDetail news={breaking as any}>
-                  <Button size="sm">Read Full Story <ExternalLink className="ml-2 h-3 w-3" /></Button>
-                </NewsDetail>
+                <Button asChild size="sm"><Link to={`/news/${breaking.slug}`}>Read Full Story <ExternalLink className="ml-2 h-3 w-3" /></Link></Button>
               </div>
             </CardContent>
           </Card>
