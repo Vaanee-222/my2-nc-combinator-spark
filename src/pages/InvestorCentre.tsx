@@ -200,7 +200,7 @@ const InvestorCentre = () => {
             Investor Centre
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Connect with India's top investors, VCs, and angels. Find the right funding partner for your startup's growth journey.
+            Connect with leading global investors, VCs, and angels. Find the right funding partner for your startup's growth journey.
           </p>
           <div className="flex justify-center space-x-4">
             <PitchSubmissionDialog>
