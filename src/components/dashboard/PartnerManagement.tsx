@@ -43,10 +43,18 @@ interface Partner {
   description: string | null;
   sort_order: number;
   is_active: boolean;
+  founded_year: number | null;
+  headquarters: string | null;
+  partnership_tier: string | null;
+  benefits: string[] | null;
+  case_study_url: string | null;
 }
 
 const emptyRegion: Partial<Region> = { name: "", flag: "", description: "", is_active: true };
-const emptyPartner: Partial<Partner> = { name: "", note: "", website_url: "", logo_url: "", description: "", is_active: true };
+const emptyPartner: Partial<Partner> = {
+  name: "", note: "", website_url: "", logo_url: "", description: "", is_active: true,
+  founded_year: null, headquarters: "", partnership_tier: "", benefits: [], case_study_url: "",
+};
 
 const PartnerManagement = () => {
   const { toast } = useToast();
@@ -157,6 +165,15 @@ const PartnerManagement = () => {
       logo_url: editingPartner.logo_url || null,
       description: editingPartner.description || null,
       is_active: editingPartner.is_active ?? true,
+      founded_year: editingPartner.founded_year ?? null,
+      headquarters: editingPartner.headquarters || null,
+      partnership_tier: editingPartner.partnership_tier || null,
+      benefits: Array.isArray(editingPartner.benefits)
+        ? editingPartner.benefits
+        : (typeof editingPartner.benefits === "string"
+            ? (editingPartner.benefits as any).split(",").map((s: string) => s.trim()).filter(Boolean)
+            : null),
+      case_study_url: editingPartner.case_study_url || null,
     };
     let error;
     if (editingPartner.id) {
@@ -414,10 +431,45 @@ const PartnerManagement = () => {
               <Label>Active</Label>
             </div>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setPartnerDialog(false)}>Cancel</Button>
-            <Button onClick={savePartner}>Save</Button>
-          </DialogFooter>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label>Partnership tier</Label>
+                <Select value={editingPartner.partnership_tier ?? ""} onValueChange={(v) => setEditingPartner({ ...editingPartner, partnership_tier: v })}>
+                  <SelectTrigger><SelectValue placeholder="Select tier" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Strategic">Strategic</SelectItem>
+                    <SelectItem value="Platform">Platform</SelectItem>
+                    <SelectItem value="Ecosystem">Ecosystem</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>Headquarters</Label>
+                <Input value={editingPartner.headquarters ?? ""} onChange={(e) => setEditingPartner({ ...editingPartner, headquarters: e.target.value })} placeholder="San Francisco, CA" />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label>Founded year</Label>
+                <Input type="number" value={editingPartner.founded_year ?? ""} onChange={(e) => setEditingPartner({ ...editingPartner, founded_year: e.target.value ? Number(e.target.value) : null })} />
+              </div>
+              <div>
+                <Label>Case study URL</Label>
+                <Input value={editingPartner.case_study_url ?? ""} onChange={(e) => setEditingPartner({ ...editingPartner, case_study_url: e.target.value })} placeholder="https://" />
+              </div>
+            </div>
+            <div>
+              <Label>Benefits (comma-separated)</Label>
+              <Input
+                value={Array.isArray(editingPartner.benefits) ? editingPartner.benefits.join(", ") : (editingPartner.benefits ?? "")}
+                onChange={(e) => setEditingPartner({ ...editingPartner, benefits: e.target.value as any })}
+                placeholder="Cloud credits, Mentorship, Co-marketing"
+              />
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setPartnerDialog(false)}>Cancel</Button>
+              <Button onClick={savePartner}>Save</Button>
+            </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
