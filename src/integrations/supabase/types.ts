@@ -53,6 +53,60 @@ export type Database = {
         }
         Relationships: []
       }
+      blogs: {
+        Row: {
+          author: string | null
+          category: string | null
+          content: string | null
+          cover_image_url: string | null
+          created_at: string
+          excerpt: string | null
+          id: string
+          is_featured: boolean | null
+          is_published: boolean | null
+          published_at: string | null
+          read_time_minutes: number | null
+          slug: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author?: string | null
+          category?: string | null
+          content?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          published_at?: string | null
+          read_time_minutes?: number | null
+          slug: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author?: string | null
+          category?: string | null
+          content?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          published_at?: string | null
+          read_time_minutes?: number | null
+          slug?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       cofounder_requests: {
         Row: {
           commitment: string | null
@@ -308,6 +362,57 @@ export type Database = {
         }
         Relationships: []
       }
+      news: {
+        Row: {
+          category: string | null
+          content: string | null
+          created_at: string
+          excerpt: string | null
+          id: string
+          impact: string | null
+          is_breaking: boolean | null
+          is_published: boolean | null
+          published_at: string | null
+          slug: string
+          source: string | null
+          source_url: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          content?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          impact?: string | null
+          is_breaking?: boolean | null
+          is_published?: boolean | null
+          published_at?: string | null
+          slug: string
+          source?: string | null
+          source_url?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          content?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          impact?: string | null
+          is_breaking?: boolean | null
+          is_published?: boolean | null
+          published_at?: string | null
+          slug?: string
+          source?: string | null
+          source_url?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       partner_regions: {
         Row: {
           created_at: string
@@ -343,39 +448,54 @@ export type Database = {
       }
       partners: {
         Row: {
+          benefits: string[] | null
+          case_study_url: string | null
           created_at: string
           description: string | null
+          founded_year: number | null
+          headquarters: string | null
           id: string
           is_active: boolean
           logo_url: string | null
           name: string
           note: string | null
+          partnership_tier: string | null
           region_id: string
           sort_order: number
           updated_at: string
           website_url: string | null
         }
         Insert: {
+          benefits?: string[] | null
+          case_study_url?: string | null
           created_at?: string
           description?: string | null
+          founded_year?: number | null
+          headquarters?: string | null
           id?: string
           is_active?: boolean
           logo_url?: string | null
           name: string
           note?: string | null
+          partnership_tier?: string | null
           region_id: string
           sort_order?: number
           updated_at?: string
           website_url?: string | null
         }
         Update: {
+          benefits?: string[] | null
+          case_study_url?: string | null
           created_at?: string
           description?: string | null
+          founded_year?: number | null
+          headquarters?: string | null
           id?: string
           is_active?: boolean
           logo_url?: string | null
           name?: string
           note?: string | null
+          partnership_tier?: string | null
           region_id?: string
           sort_order?: number
           updated_at?: string
@@ -427,6 +547,72 @@ export type Database = {
           phone?: string | null
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      startups: {
+        Row: {
+          country: string | null
+          created_at: string
+          description: string | null
+          founded_year: number | null
+          headquarters: string | null
+          id: string
+          is_active: boolean | null
+          is_featured: boolean | null
+          logo_url: string | null
+          name: string
+          region: string | null
+          sector: string | null
+          slug: string
+          sort_order: number | null
+          stage: string | null
+          tags: string[] | null
+          team_size: string | null
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          country?: string | null
+          created_at?: string
+          description?: string | null
+          founded_year?: number | null
+          headquarters?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          logo_url?: string | null
+          name: string
+          region?: string | null
+          sector?: string | null
+          slug: string
+          sort_order?: number | null
+          stage?: string | null
+          tags?: string[] | null
+          team_size?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          country?: string | null
+          created_at?: string
+          description?: string | null
+          founded_year?: number | null
+          headquarters?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          logo_url?: string | null
+          name?: string
+          region?: string | null
+          sector?: string | null
+          slug?: string
+          sort_order?: number | null
+          stage?: string | null
+          tags?: string[] | null
+          team_size?: string | null
+          updated_at?: string
+          website?: string | null
         }
         Relationships: []
       }
