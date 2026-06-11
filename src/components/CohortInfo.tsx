@@ -8,10 +8,10 @@ import ApplicationDialog from "@/components/ApplicationDialog";
 
 const CohortInfo = () => {
   const currentCohort = {
-    name: "Q1 2024 Cohort",
+    name: "Q1 2026 Cohort",
     status: "Applications Open",
-    deadline: "March 15, 2024",
-    startDate: "April 1, 2024",
+    deadline: "March 15, 2026",
+    startDate: "April 1, 2026",
     spotsAvailable: 8,
     totalSpots: 10
   };
@@ -109,7 +109,7 @@ const CohortInfo = () => {
                 <div className="text-4xl font-bold text-primary">$60K</div>
                 <div className="text-muted-foreground">Investment + Credits</div>
               </div>
-              <ApplicationDialog program="Q1 2024 Cohort">
+              <ApplicationDialog program="Q1 2026 Cohort">
                 <Button variant="hero" size="lg" className="text-lg px-8 py-6">
                   Apply to Current Cohort
                 </Button>

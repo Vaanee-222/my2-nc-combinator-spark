@@ -33,7 +33,7 @@ ${blog.excerpt}
 
 ## Introduction
 
-The Indian startup ecosystem is evolving at an unprecedented pace. As we step into 2025, the landscape is being reshaped by emerging technologies, changing consumer behaviors, and innovative business models that are uniquely Indian yet globally scalable.
+The Indian startup ecosystem is evolving at an unprecedented pace. As we step into 2026, the landscape is being reshaped by emerging technologies, changing consumer behaviors, and innovative business models that are uniquely Indian yet globally scalable.
 
 ## Key Trends Shaping the Future
 
