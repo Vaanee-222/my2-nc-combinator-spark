@@ -325,7 +325,7 @@ const InvestorCentre = () => {
                   <Card key={investor.id} className="hover:shadow-lg transition-all duration-300">
                     <CardHeader>
                       <div className="flex items-start space-x-4">
-                        <div className="text-4xl">{investor.logo}</div>
+                        <div className="w-14 h-14 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0"><Building2 className="h-7 w-7" /></div>
                         <div className="flex-1">
                           <CardTitle className="text-xl">{investor.name}</CardTitle>
                           <CardDescription className="font-medium">{investor.type}</CardDescription>
