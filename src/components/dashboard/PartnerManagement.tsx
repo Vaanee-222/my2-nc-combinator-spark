@@ -430,7 +430,6 @@ const PartnerManagement = () => {
               <Switch checked={editingPartner.is_active ?? true} onCheckedChange={(v) => setEditingPartner({ ...editingPartner, is_active: v })} />
               <Label>Active</Label>
             </div>
-          </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <Label>Partnership tier</Label>
@@ -466,10 +465,11 @@ const PartnerManagement = () => {
                 placeholder="Cloud credits, Mentorship, Co-marketing"
               />
             </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setPartnerDialog(false)}>Cancel</Button>
-              <Button onClick={savePartner}>Save</Button>
-            </DialogFooter>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setPartnerDialog(false)}>Cancel</Button>
+            <Button onClick={savePartner}>Save</Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
