@@ -258,7 +258,7 @@ The future of Indian startups looks incredibly promising. Those who can combine 
                   <a href="/mvp-lab" className="block text-muted-foreground hover:text-primary cursor-pointer">MVP Lab</a>
                   <a href="/incubation" className="block text-muted-foreground hover:text-primary cursor-pointer">Incubation</a>
                   <a href="/hackathon" className="block text-muted-foreground hover:text-primary cursor-pointer">Hackathon Track</a>
-                  <a href="/inclab" className="block text-muted-foreground hover:text-primary cursor-pointer">Xi Lab</a>
+                  <a href="/xi-lab" className="block text-muted-foreground hover:text-primary cursor-pointer">Xi Lab</a>
                 </div>
               </div>
               

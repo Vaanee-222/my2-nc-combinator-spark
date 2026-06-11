@@ -8,7 +8,7 @@ export type SearchEntry = {
 
 export const searchIndex: SearchEntry[] = [
   // Programs
-  { title: "Xi Lab", path: "/inclab", description: "Flagship accelerator program with funding, mentorship and resources.", keywords: ["accelerator", "inclab", "apply", "cohort", "funding"], category: "Programs" },
+  { title: "Xi Lab", path: "/xi-lab", description: "Flagship accelerator program with funding, mentorship and resources.", keywords: ["accelerator", "inclab", "apply", "cohort", "funding"], category: "Programs" },
   { title: "MVP Lab", path: "/mvp-lab", description: "Build your MVP with our tech team in 90 days.", keywords: ["mvp", "prototype", "build", "product", "tech"], category: "Programs" },
   { title: "Incubation", path: "/incubation", description: "Long-term incubation program with workspace and support.", keywords: ["incubation", "incubator", "early stage"], category: "Programs" },
   { title: "Hackathon", path: "/hackathon", description: "Compete in our flagship hackathons across India.", keywords: ["hackathon", "compete", "code", "event"], category: "Programs" },

@@ -124,7 +124,7 @@ const RequirementsDetail = () => {
           <Button 
             variant="ghost" 
             className="mb-6"
-            onClick={() => navigate('/inclab')}
+            onClick={() => navigate("/xi-lab")}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Xi Lab
@@ -291,7 +291,7 @@ const RequirementsDetail = () => {
                   The application process takes about 5 minutes to complete.
                 </p>
                 <div className="flex flex-col md:flex-row gap-4 justify-center">
-                  <Button variant="hero" size="lg" className="text-lg px-8 py-6" onClick={() => navigate('/inclab')}>
+                  <Button variant="hero" size="lg" className="text-lg px-8 py-6" onClick={() => navigate("/xi-lab")}>
                     Start Application
                   </Button>
                   <Button variant="outline" size="lg" className="text-lg px-8 py-6">
@@ -330,7 +330,7 @@ const RequirementsDetail = () => {
                   <a href="/mvp-lab" className="block text-muted-foreground hover:text-primary cursor-pointer">MVP Lab</a>
                   <a href="/incubation" className="block text-muted-foreground hover:text-primary cursor-pointer">Incubation</a>
                   <a href="/hackathon" className="block text-muted-foreground hover:text-primary cursor-pointer">Hackathon Track</a>
-                  <a href="/inclab" className="block text-muted-foreground hover:text-primary cursor-pointer">Xi Lab</a>
+                  <a href="/xi-lab" className="block text-muted-foreground hover:text-primary cursor-pointer">Xi Lab</a>
                 </div>
               </div>
               

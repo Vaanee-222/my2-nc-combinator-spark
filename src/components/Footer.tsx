@@ -43,7 +43,7 @@ const Footer = () => {
             <h3 className="text-lg font-semibold">Programs</h3>
             <div className="space-y-2">
               <Link to="/mvp-lab" className="block text-sm text-muted-foreground hover:text-primary transition-colors">MVP Lab</Link>
-              <Link to="/inclab" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Xi Lab</Link>
+              <Link to="/xi-lab" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Xi Lab</Link>
               <Link to="/meet-cofounder" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Meet Co-founder</Link>
               <Link to="/resources" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Resources</Link>
               <Link to="/blogs" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Blogs</Link>
