@@ -60,6 +60,8 @@ const Subscription = lazy(() => import("./pages/Subscription"));
 const AIAgents = lazy(() => import("./pages/AIAgents"));
 const Messages = lazy(() => import("./pages/Messages"));
 const Partners = lazy(() => import("./pages/Partners"));
+const PartnerDetail = lazy(() => import("./pages/PartnerDetail"));
+const ApplicationStatusPage = lazy(() => import("./pages/ApplicationStatus"));
 const MonthlyTop10 = lazy(() => import("./pages/MonthlyTop10"));
 const QuarterlyTop5 = lazy(() => import("./pages/QuarterlyTop5"));
 
@@ -117,6 +119,8 @@ const AppRoutes = () => {
               <Route path="/resources" element={<Resources />} />
               <Route path="/partnership" element={<Partnership />} />
               <Route path="/partners" element={<Partners />} />
+              <Route path="/partners/:slug" element={<PartnerDetail />} />
+              <Route path="/application-status" element={<ProtectedRoute><ApplicationStatusPage /></ProtectedRoute>} />
               <Route path="/monthly-top-10" element={<MonthlyTop10 />} />
               <Route path="/quarterly-top-5" element={<QuarterlyTop5 />} />
 
