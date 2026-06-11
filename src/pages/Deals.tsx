@@ -165,7 +165,7 @@ const Deals = () => {
           </p>
           <div className="flex justify-center space-x-4">
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary">$25L+</div>
+              <div className="text-3xl font-bold text-primary">$30K+</div>
               <p className="text-sm text-muted-foreground">Total Value</p>
             </div>
             <div className="text-center">

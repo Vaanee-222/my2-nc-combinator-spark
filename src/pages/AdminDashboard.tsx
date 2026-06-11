@@ -70,9 +70,9 @@ const AdminDashboard = () => {
   ];
 
   const topStartups = [
-    { id: 1, name: "AI Healthcare Solutions", sector: "HealthTech", valuation: "$50Cr", growth: "+45%", status: "Series A" },
-    { id: 2, name: "GreenTech Innovations", sector: "CleanTech", valuation: "$30Cr", growth: "+38%", status: "Seed" },
-    { id: 3, name: "EdTech Platform", sector: "Education", valuation: "$25Cr", growth: "+32%", status: "Pre-Seed" },
+    { id: 1, name: "AI Healthcare Solutions", sector: "HealthTech", valuation: "$6M", growth: "+45%", status: "Series A" },
+    { id: 2, name: "GreenTech Innovations", sector: "CleanTech", valuation: "$3.6M", growth: "+38%", status: "Seed" },
+    { id: 3, name: "EdTech Platform", sector: "Education", valuation: "$3M", growth: "+32%", status: "Pre-Seed" },
   ];
 
   return (

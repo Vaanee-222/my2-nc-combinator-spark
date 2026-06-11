@@ -17,7 +17,7 @@ const CurrentCohort = () => {
       category: "FinTech",
       description: "Digital banking platform for rural India with micro-lending capabilities",
       stage: "MVP",
-      funding: "$25L",
+      funding: "$30K",
       traction: "5,000+ users, $2L MRR",
       location: "Bangalore",
       team: 4,
@@ -30,7 +30,7 @@ const CurrentCohort = () => {
       category: "CleanTech",
       description: "Solar panel leasing and maintenance platform for residential users",
       stage: "Early Traction",
-      funding: "$50L",
+      funding: "$60K",
       traction: "200+ installations, $5L MRR",
       location: "Pune",
       team: 6,
@@ -108,7 +108,7 @@ const CurrentCohort = () => {
                 <div className="text-muted-foreground">Active Startups</div>
               </Card>
               <Card className="p-6 text-center bg-card-gradient border-border">
-                <div className="text-3xl font-bold text-primary mb-2">$3.2Cr</div>
+                <div className="text-3xl font-bold text-primary mb-2">$385K</div>
                 <div className="text-muted-foreground">Total Funding</div>
               </Card>
               <Card className="p-6 text-center bg-card-gradient border-border">
@@ -116,7 +116,7 @@ const CurrentCohort = () => {
                 <div className="text-muted-foreground">Users Impacted</div>
               </Card>
               <Card className="p-6 text-center bg-card-gradient border-border">
-                <div className="text-3xl font-bold text-primary mb-2">$15L</div>
+                <div className="text-3xl font-bold text-primary mb-2">$18K</div>
                 <div className="text-muted-foreground">Monthly Revenue</div>
               </Card>
             </div>

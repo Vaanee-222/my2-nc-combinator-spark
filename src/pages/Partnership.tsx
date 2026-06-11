@@ -86,7 +86,7 @@ const Partnership = () => {
               </Card>
               <Card className="p-6 bg-card-gradient border-border">
                 <div className="text-center space-y-2">
-                  <div className="text-3xl font-bold text-primary">$100Cr+</div>
+                  <div className="text-3xl font-bold text-primary">$12M+</div>
                   <div className="text-muted-foreground">Partnership Value</div>
                 </div>
               </Card>

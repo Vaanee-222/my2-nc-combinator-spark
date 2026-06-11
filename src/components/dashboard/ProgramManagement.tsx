@@ -29,7 +29,7 @@ const ProgramManagement = () => {
       { id: 2, name: "MVP Accelerator Q2", startDate: "May 2024", duration: "8 weeks", participants: 0, status: "Planning" },
     ],
     inclab: [
-      { id: 1, name: "Advanced Research Lab 2024", focus: "AI & ML", researchers: 15, budget: "$50L", status: "Active" },
+      { id: 1, name: "Advanced Research Lab 2024", focus: "AI & ML", researchers: 15, budget: "$60K", status: "Active" },
       { id: 2, name: "Blockchain Innovation Lab", focus: "DeFi Solutions", researchers: 8, budget: "$30L", status: "Planning" },
     ]
   };

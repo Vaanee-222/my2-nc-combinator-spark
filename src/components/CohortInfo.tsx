@@ -106,7 +106,7 @@ const CohortInfo = () => {
 
             <div className="text-center lg:text-right space-y-4">
               <div className="space-y-3">
-                <div className="text-4xl font-bold text-primary">$50L</div>
+                <div className="text-4xl font-bold text-primary">$60K</div>
                 <div className="text-muted-foreground">Investment + Credits</div>
               </div>
               <ApplicationDialog program="Q1 2024 Cohort">

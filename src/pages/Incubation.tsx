@@ -17,7 +17,7 @@ const Incubation = () => {
       duration: "6 months",
       stage: "Idea to MVP",
       description: "Perfect for early-stage startups looking to validate their idea and build their first product.",
-      benefits: ["Seed funding up to $25L", "Weekly mentorship", "Product development support", "Market validation"],
+      benefits: ["Seed funding up to $30K", "Weekly mentorship", "Product development support", "Market validation"],
       nextCohort: "March 2025",
       applications: "Open"
     },
@@ -27,7 +27,7 @@ const Incubation = () => {
       duration: "12 months",
       stage: "MVP to Scale",
       description: "For startups with proven traction ready to scale their business and expand market reach.",
-      benefits: ["Growth funding up to $1Cr", "Go-to-market strategy", "Investor connections", "International expansion"],
+      benefits: ["Growth funding up to $125K", "Go-to-market strategy", "Investor connections", "International expansion"],
       nextCohort: "April 2025",
       applications: "Open"
     },
@@ -37,7 +37,7 @@ const Incubation = () => {
       duration: "18 months",
       stage: "R&D to Market",
       description: "Specialized program for deep tech startups working on breakthrough technologies.",
-      benefits: ["R&D funding up to $2Cr", "Technical mentorship", "Lab facilities", "Patent support"],
+      benefits: ["R&D funding up to $250K", "Technical mentorship", "Lab facilities", "Patent support"],
       nextCohort: "May 2025",
       applications: "Coming Soon"
     }
@@ -47,21 +47,21 @@ const Incubation = () => {
     {
       name: "HealthTech Pro",
       sector: "HealthTech",
-      funding: "$15 Cr Series A",
+      funding: "$1.8M Series A",
       description: "AI-powered diagnostic platform serving 50+ hospitals across India",
       year: "2023 Cohort"
     },
     {
       name: "EduConnect",
       sector: "EdTech",
-      funding: "$8 Cr Seed",
+      funding: "$1M Seed",
       description: "Vernacular learning platform with 2M+ active users",
       year: "2022 Cohort"
     },
     {
       name: "AgroSmart",
       sector: "AgriTech",
-      funding: "$12 Cr Series A",
+      funding: "$1.5M Series A",
       description: "IoT-based precision farming solution for 10,000+ farmers",
       year: "2023 Cohort"
     }
@@ -71,7 +71,7 @@ const Incubation = () => {
     {
       icon: <TrendingUp className="h-6 w-6 text-primary" />,
       title: "Funding Support",
-      description: "Seed funding from $25L to $2Cr based on program and milestones"
+      description: "Seed funding from $30K to $250K based on program and milestones"
     },
     {
       icon: <Users className="h-6 w-6 text-primary" />,
@@ -180,7 +180,7 @@ const Incubation = () => {
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-primary">$250Cr</div>
+              <div className="text-3xl font-bold text-primary">$30M</div>
               <p className="text-xs text-muted-foreground">Raised by alumni</p>
             </CardContent>
           </Card>

@@ -12,7 +12,7 @@ const WeeklyShowcase = () => {
       category: "Agriculture",
       description: "AI-powered crop monitoring system helping farmers increase yield by 40%",
       stage: "Seed",
-      funding: "$2Cr raised",
+      funding: "$250K raised",
       impact: "50,000+ farmers impacted",
     },
     {
@@ -21,7 +21,7 @@ const WeeklyShowcase = () => {
       category: "Healthcare",
       description: "Telemedicine platform connecting rural patients with urban specialists",
       stage: "Series A",
-      funding: "$15Cr raised",
+      funding: "$1.8M raised",
       impact: "1M+ consultations",
     },
     {
@@ -30,7 +30,7 @@ const WeeklyShowcase = () => {
       category: "Education",
       description: "Vernacular language learning platform for skill development",
       stage: "Pre-seed",
-      funding: "$50L raised",
+      funding: "$60K raised",
       impact: "200K+ students",
     },
   ];

@@ -156,7 +156,7 @@ const StartupManagement = ({ startups }: StartupManagementProps) => {
                     id="valuation"
                     value={newStartup.valuation}
                     onChange={(e) => setNewStartup({...newStartup, valuation: e.target.value})}
-                    placeholder="e.g., $5Cr"
+                    placeholder="e.g., $600K"
                   />
                 </div>
                 <div className="space-y-2">

@@ -14,7 +14,7 @@ const InvestorProfile = () => {
     company: "Prime Ventures",
     location: "Mumbai, India",
     image: "/placeholder.svg",
-    totalInvestments: "$250 Cr",
+    totalInvestments: "$30M",
     portfolioSize: 42,
     avgTicketSize: "$5-15 Cr",
     industries: ["FinTech", "SaaS", "E-commerce", "HealthTech"],
@@ -23,16 +23,16 @@ const InvestorProfile = () => {
   };
 
   const portfolioCompanies = [
-    { name: "PayNext", sector: "FinTech", stage: "Series B", valuation: "$500 Cr" },
+    { name: "PayNext", sector: "FinTech", stage: "Series B", valuation: "$60M" },
     { name: "HealthConnect", sector: "HealthTech", stage: "Series A", valuation: "$200 Cr" },
     { name: "EduPlatform", sector: "EdTech", stage: "Growth", valuation: "$800 Cr" },
     { name: "LogiTech Pro", sector: "SaaS", stage: "Series A", valuation: "$150 Cr" }
   ];
 
   const recentActivity = [
-    { type: "Investment", company: "DataFlow Systems", amount: "$12 Cr", date: "2024-01-15" },
-    { type: "Exit", company: "MobileFirst", amount: "$45 Cr", date: "2024-01-10" },
-    { type: "Follow-on", company: "HealthConnect", amount: "$8 Cr", date: "2024-01-05" }
+    { type: "Investment", company: "DataFlow Systems", amount: "$1.5M", date: "2024-01-15" },
+    { type: "Exit", company: "MobileFirst", amount: "$5.4M", date: "2024-01-10" },
+    { type: "Follow-on", company: "HealthConnect", amount: "$1M", date: "2024-01-05" }
   ];
 
   return (

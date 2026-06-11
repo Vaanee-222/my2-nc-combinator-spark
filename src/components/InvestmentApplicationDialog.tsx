@@ -86,7 +86,7 @@ const InvestmentApplicationDialog = ({ children }: InvestmentApplicationDialogPr
               <Label htmlFor="amount">Funding Amount</Label>
               <Input
                 id="amount"
-                placeholder="e.g., $2.5 Cr"
+                placeholder="e.g., $300K"
                 value={formData.amount}
                 onChange={(e) => setFormData({...formData, amount: e.target.value})}
                 required
@@ -114,7 +114,7 @@ const InvestmentApplicationDialog = ({ children }: InvestmentApplicationDialogPr
               <Label htmlFor="valuation">Current Valuation</Label>
               <Input
                 id="valuation"
-                placeholder="e.g., $10 Cr"
+                placeholder="e.g., $1.2M"
                 value={formData.valuation}
                 onChange={(e) => setFormData({...formData, valuation: e.target.value})}
               />
