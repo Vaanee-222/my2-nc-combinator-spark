@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Clock, TrendingUp, DollarSign, Building2, Search, ExternalLink, Newspaper } from "lucide-react";
-import NewsDetail from "@/components/NewsDetail";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { NEWS_2026 } from "@/data/news2026";
 
