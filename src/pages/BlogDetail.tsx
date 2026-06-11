@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,9 @@ type Blog = {
   read_time_minutes: number;
   published_at: string;
   cover_image_url?: string | null;
+  meta_title?: string | null;
+  meta_description?: string | null;
+  og_image_url?: string | null;
 };
 
 const BlogDetailPage = () => {
@@ -74,6 +78,29 @@ const BlogDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {post && (
+        <Helmet>
+          <title>{post.meta_title || `${post.title} — Xi Combinator`}</title>
+          <meta name="description" content={post.meta_description || post.excerpt} />
+          <link rel="canonical" href={`/blog/${post.slug}`} />
+          <meta property="og:title" content={post.meta_title || post.title} />
+          <meta property="og:description" content={post.meta_description || post.excerpt} />
+          <meta property="og:type" content="article" />
+          <meta property="og:url" content={`/blog/${post.slug}`} />
+          {(post.og_image_url || post.cover_image_url) && (
+            <meta property="og:image" content={post.og_image_url || post.cover_image_url || ""} />
+          )}
+          <script type="application/ld+json">{JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: post.title,
+            author: { "@type": "Person", name: post.author },
+            datePublished: post.published_at,
+            articleSection: post.category,
+            image: post.og_image_url || post.cover_image_url || undefined,
+          })}</script>
+        </Helmet>
+      )}
       <Navigation />
       <main className="container mx-auto px-4 pt-20 pb-12">
         <div className="max-w-4xl mx-auto">
