@@ -383,7 +383,26 @@ const PartnerManagement = () => {
             </div>
             <div>
               <Label>Name *</Label>
-              <Input value={editingPartner.name ?? ""} onChange={(e) => setEditingPartner({ ...editingPartner, name: e.target.value })} />
+              <Input value={editingPartner.name ?? ""} onChange={(e) => setEditingPartner({ ...editingPartner, name: e.target.value, slug: editingPartner.slug || slugify(e.target.value) })} />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label>Slug (URL)</Label>
+                <Input value={editingPartner.slug ?? ""} onChange={(e) => setEditingPartner({ ...editingPartner, slug: e.target.value })} placeholder="my-partner" />
+              </div>
+              <div>
+                <Label>Category</Label>
+                <Select value={editingPartner.category ?? "Ecosystem"} onValueChange={(v) => setEditingPartner({ ...editingPartner, category: v })}>
+                  <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
+                  <SelectContent>
+                    {PARTNER_CATEGORIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div>
+              <Label>Tagline</Label>
+              <Input value={editingPartner.tagline ?? ""} onChange={(e) => setEditingPartner({ ...editingPartner, tagline: e.target.value })} placeholder="One-line value prop shown on cards" />
             </div>
             <div>
               <Label>Short note</Label>
