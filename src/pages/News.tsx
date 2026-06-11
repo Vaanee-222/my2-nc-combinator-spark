@@ -155,9 +155,7 @@ const News = () => {
                           {n.impact && <><span>•</span><Badge variant="outline" className="text-xs">{n.impact} Impact</Badge></>}
                         </div>
                       </div>
-                      <NewsDetail news={n as any}>
-                        <Button variant="outline" size="sm">Details</Button>
-                      </NewsDetail>
+                      <Button asChild variant="outline" size="sm"><Link to={`/news/${n.slug}`}>Details</Link></Button>
                     </div>
                   </CardContent>
                 </Card>
