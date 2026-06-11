@@ -76,8 +76,8 @@ const InvestorSettings = () => {
             <div className="space-y-2">
               <Label htmlFor="check-size">Check Size Range</Label>
               <div className="grid grid-cols-2 gap-2">
-                <Input placeholder="Min (₹)" />
-                <Input placeholder="Max (₹)" />
+                <Input placeholder="Min ($)" />
+                <Input placeholder="Max ($)" />
               </div>
             </div>
             <div className="space-y-2">

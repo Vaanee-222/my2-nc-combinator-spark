@@ -29,7 +29,7 @@ const Register = () => {
     setIsLoading(true);
     try {
       await signUp(email, password, fullName, role);
-      toast({ title: "Registration Successful! 🎉", description: "Please check your email to verify your account." });
+      toast({ title: "Registration Successful! ", description: "Please check your email to verify your account." });
       navigate("/login");
     } catch (error: any) {
       toast({ title: "Registration Failed", description: error.message, variant: "destructive" });

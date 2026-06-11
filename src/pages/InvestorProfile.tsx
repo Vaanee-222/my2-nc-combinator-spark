@@ -14,25 +14,25 @@ const InvestorProfile = () => {
     company: "Prime Ventures",
     location: "Mumbai, India",
     image: "/placeholder.svg",
-    totalInvestments: "₹250 Cr",
+    totalInvestments: "$250 Cr",
     portfolioSize: 42,
-    avgTicketSize: "₹5-15 Cr",
+    avgTicketSize: "$5-15 Cr",
     industries: ["FinTech", "SaaS", "E-commerce", "HealthTech"],
     investmentStage: ["Series A", "Series B", "Growth"],
     description: "Seasoned investor with 15+ years of experience in scaling technology companies. Focus on B2B SaaS and FinTech startups with strong unit economics and clear path to profitability."
   };
 
   const portfolioCompanies = [
-    { name: "PayNext", sector: "FinTech", stage: "Series B", valuation: "₹500 Cr" },
-    { name: "HealthConnect", sector: "HealthTech", stage: "Series A", valuation: "₹200 Cr" },
-    { name: "EduPlatform", sector: "EdTech", stage: "Growth", valuation: "₹800 Cr" },
-    { name: "LogiTech Pro", sector: "SaaS", stage: "Series A", valuation: "₹150 Cr" }
+    { name: "PayNext", sector: "FinTech", stage: "Series B", valuation: "$500 Cr" },
+    { name: "HealthConnect", sector: "HealthTech", stage: "Series A", valuation: "$200 Cr" },
+    { name: "EduPlatform", sector: "EdTech", stage: "Growth", valuation: "$800 Cr" },
+    { name: "LogiTech Pro", sector: "SaaS", stage: "Series A", valuation: "$150 Cr" }
   ];
 
   const recentActivity = [
-    { type: "Investment", company: "DataFlow Systems", amount: "₹12 Cr", date: "2024-01-15" },
-    { type: "Exit", company: "MobileFirst", amount: "₹45 Cr", date: "2024-01-10" },
-    { type: "Follow-on", company: "HealthConnect", amount: "₹8 Cr", date: "2024-01-05" }
+    { type: "Investment", company: "DataFlow Systems", amount: "$12 Cr", date: "2024-01-15" },
+    { type: "Exit", company: "MobileFirst", amount: "$45 Cr", date: "2024-01-10" },
+    { type: "Follow-on", company: "HealthConnect", amount: "$8 Cr", date: "2024-01-05" }
   ];
 
   return (

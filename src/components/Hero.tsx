@@ -54,7 +54,7 @@ const Hero = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-12 max-w-4xl mx-auto">
           {[
             { icon: Rocket, value: "500+", label: "Startups Accelerated" },
-            { icon: TrendingUp, value: "₹1000Cr+", label: "Total Funding Raised" },
+            { icon: TrendingUp, value: "$1000Cr+", label: "Total Funding Raised" },
             { icon: Users, value: "50+", label: "Unicorn Potential" },
           ].map((stat) => (
             <Card key={stat.label} className="p-6 border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/30 transition-all duration-300">

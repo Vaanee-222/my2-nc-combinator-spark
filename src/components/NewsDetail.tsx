@@ -147,7 +147,7 @@ Analysts predict that 2025 will see continued momentum, with early indicators sh
               <h3 className="font-semibold mb-4">Related News</h3>
               <div className="space-y-3">
                 <div className="flex items-start space-x-3 p-3 bg-muted/50 rounded-lg">
-                  <div className="text-sm">📈</div>
+                  <div className="text-sm"></div>
                   <div className="flex-1">
                     <p className="text-sm font-medium">Indian SaaS Market Hits $8B Revenue Mark</p>
                     <p className="text-xs text-muted-foreground">Economic Times • 1 day ago</p>
@@ -155,7 +155,7 @@ Analysts predict that 2025 will see continued momentum, with early indicators sh
                 </div>
                 
                 <div className="flex items-start space-x-3 p-3 bg-muted/50 rounded-lg">
-                  <div className="text-sm">🏛️</div>
+                  <div className="text-sm"></div>
                   <div className="flex-1">
                     <p className="text-sm font-medium">Government Announces New Startup Policy Framework</p>
                     <p className="text-xs text-muted-foreground">Business Standard • 2 days ago</p>

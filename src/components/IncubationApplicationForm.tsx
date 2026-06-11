@@ -52,7 +52,7 @@ const IncubationApplicationForm = ({ children }: IncubationApplicationFormProps)
     console.log("Incubation application submitted:", formData);
     
     toast({
-      title: "Application Submitted Successfully! 🚀",
+      title: "Application Submitted Successfully! ",
       description: "We'll review your application and get back to you within 7-10 business days.",
     });
     
@@ -99,7 +99,7 @@ const IncubationApplicationForm = ({ children }: IncubationApplicationFormProps)
               Cancel
             </Button>
             <Button type="submit" variant="hero" className="flex-1">
-              Submit Application 🚀
+              Submit Application 
             </Button>
           </div>
         </form>

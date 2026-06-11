@@ -46,7 +46,7 @@ const IncApplicationDialog = ({ children }: IncApplicationDialogProps) => {
         funding_status: formData.funding,
       });
       if (error) throw error;
-      toast({ title: "Application Submitted ✅", description: "Your incubation application has been submitted." });
+      toast({ title: "Application Submitted ", description: "Your incubation application has been submitted." });
       setOpen(false);
       setFormData({ startupName: "", founderName: "", email: "", phone: "", stage: "", sector: "", description: "", problem: "", solution: "", traction: "", funding: "", teamSize: "", website: "" });
     } catch (error: any) {

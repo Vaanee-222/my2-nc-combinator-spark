@@ -21,9 +21,9 @@ const StartupDashboard = () => {
   };
 
   const deals = [
-    { id: 1, title: "AWS Credits", value: "₹50,000", status: "Active", expires: "Jan 15, 2025" },
-    { id: 2, title: "Google Cloud Credits", value: "₹30,000", status: "Active", expires: "Feb 10, 2025" },
-    { id: 3, title: "Notion Pro", value: "₹12,000", status: "Claimed", expires: "Dec 31, 2024" }
+    { id: 1, title: "AWS Credits", value: "$50,000", status: "Active", expires: "Jan 15, 2025" },
+    { id: 2, title: "Google Cloud Credits", value: "$30,000", status: "Active", expires: "Feb 10, 2025" },
+    { id: 3, title: "Notion Pro", value: "$12,000", status: "Claimed", expires: "Dec 31, 2024" }
   ];
 
   return (

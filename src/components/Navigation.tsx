@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, LogIn, UserPlus, LogOut, User, MessageSquare, ChevronDown } from "lucide-react";
 import ApplicationDialog from "./ApplicationDialog";
 import GlobalSearch from "./GlobalSearch";
+import CurrencySelector from "./CurrencySelector";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   DropdownMenu,
@@ -29,7 +30,7 @@ const Navigation = () => {
     { name: "Hackathon", href: "/hackathon" },
     { name: "Incubation", href: "/incubation" },
     { name: "MVP Lab", href: "/mvp-lab" },
-    { name: "Xi Lab", href: "/inclab" },
+    { name: "Xi Lab", href: "/xi-lab" },
   ];
 
 
@@ -94,6 +95,7 @@ const Navigation = () => {
 
           {/* Right side actions */}
           <div className="hidden lg:flex items-center space-x-2">
+            <CurrencySelector />
             <GlobalSearch />
             <ApplicationDialog>
               <Button variant="hero" size="sm" className="font-semibold shadow-md hover:shadow-lg transition-shadow">

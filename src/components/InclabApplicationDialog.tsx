@@ -78,7 +78,7 @@ const InclabApplicationDialog = ({ children, title = "Apply to Xi Lab" }: Props)
       const { error } = await (supabase as any).from("inclab_applications").insert(payload);
       if (error) throw error;
       trackEvent("application_submitted", { program: "Xi Lab", startup_name: parsed.data.startup_name || "" });
-      toast({ title: "Application submitted! 🚀", description: "Our team will review and get back within 1-2 weeks." });
+      toast({ title: "Application submitted! ", description: "Our team will review and get back within 1-2 weeks." });
       setOpen(false);
       setForm({ founder_name: "", email: "", phone: "", startup_name: "", stage: "", industry: "", team_size: "", problem: "", solution: "", market: "", traction: "", funding_ask: "", why_inclab: "", pitch_deck_url: "" });
     } catch (err: any) {
@@ -141,7 +141,7 @@ const InclabApplicationDialog = ({ children, title = "Apply to Xi Lab" }: Props)
           <div className="space-y-2"><Label>Current traction</Label><Textarea rows={2} value={form.traction} onChange={(e) => set("traction", e.target.value)} placeholder="Users, revenue, partnerships…" /></div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2"><Label>Funding Ask</Label><Input value={form.funding_ask} onChange={(e) => set("funding_ask", e.target.value)} placeholder="e.g. ₹50L" /></div>
+            <div className="space-y-2"><Label>Funding Ask</Label><Input value={form.funding_ask} onChange={(e) => set("funding_ask", e.target.value)} placeholder="e.g. $50L" /></div>
             <div className="space-y-2"><Label>Pitch Deck URL</Label><Input value={form.pitch_deck_url} onChange={(e) => set("pitch_deck_url", e.target.value)} placeholder="https://…" /></div>
           </div>
 

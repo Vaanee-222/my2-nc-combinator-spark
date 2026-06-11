@@ -21,6 +21,9 @@ import UserManagement from "@/components/dashboard/UserManagement";
 import HeaderScripts from "@/components/dashboard/HeaderScripts";
 import PartnerManagement from "@/components/dashboard/PartnerManagement";
 import InclabApplications from "@/components/dashboard/InclabApplications";
+import BlogManagement from "@/components/dashboard/BlogManagement";
+import NewsManagement from "@/components/dashboard/NewsManagement";
+import StartupDirectoryManagement from "@/components/dashboard/StartupDirectoryManagement";
 
 
 const AdminDashboard = () => {
@@ -61,15 +64,15 @@ const AdminDashboard = () => {
 
   // Static data kept for investors/deals tabs
   const investors = [
-    { id: 1, name: "Sequoia Capital India", checkSize: "₹5-50Cr", portfolio: 45, stage: "Series A+", status: "Active" },
-    { id: 2, name: "Accel Partners", checkSize: "₹2-25Cr", portfolio: 38, stage: "Seed-Series B", status: "Active" },
-    { id: 3, name: "Matrix Partners", checkSize: "₹1-15Cr", portfolio: 52, stage: "Pre-Seed-Series A", status: "Active" },
+    { id: 1, name: "Sequoia Capital India", checkSize: "$5-50Cr", portfolio: 45, stage: "Series A+", status: "Active" },
+    { id: 2, name: "Accel Partners", checkSize: "$2-25Cr", portfolio: 38, stage: "Seed-Series B", status: "Active" },
+    { id: 3, name: "Matrix Partners", checkSize: "$1-15Cr", portfolio: 52, stage: "Pre-Seed-Series A", status: "Active" },
   ];
 
   const topStartups = [
-    { id: 1, name: "AI Healthcare Solutions", sector: "HealthTech", valuation: "₹50Cr", growth: "+45%", status: "Series A" },
-    { id: 2, name: "GreenTech Innovations", sector: "CleanTech", valuation: "₹30Cr", growth: "+38%", status: "Seed" },
-    { id: 3, name: "EdTech Platform", sector: "Education", valuation: "₹25Cr", growth: "+32%", status: "Pre-Seed" },
+    { id: 1, name: "AI Healthcare Solutions", sector: "HealthTech", valuation: "$50Cr", growth: "+45%", status: "Series A" },
+    { id: 2, name: "GreenTech Innovations", sector: "CleanTech", valuation: "$30Cr", growth: "+38%", status: "Seed" },
+    { id: 3, name: "EdTech Platform", sector: "Education", valuation: "$25Cr", growth: "+32%", status: "Pre-Seed" },
   ];
 
   return (
@@ -98,6 +101,9 @@ const AdminDashboard = () => {
             <TabsTrigger value="programs">Programs</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
             <TabsTrigger value="partners">Partners</TabsTrigger>
+            <TabsTrigger value="directory">Directory</TabsTrigger>
+            <TabsTrigger value="blogs">Blogs</TabsTrigger>
+            <TabsTrigger value="news">News</TabsTrigger>
 
             <TabsTrigger value="emails">Emails</TabsTrigger>
             <TabsTrigger value="acl">ACL</TabsTrigger>
@@ -170,6 +176,20 @@ const AdminDashboard = () => {
           <TabsContent value="partners" className="space-y-6">
             <PartnerManagement />
           </TabsContent>
+
+          <TabsContent value="directory" className="space-y-6">
+            <StartupDirectoryManagement />
+          </TabsContent>
+
+          <TabsContent value="blogs" className="space-y-6">
+            <BlogManagement />
+          </TabsContent>
+
+          <TabsContent value="news" className="space-y-6">
+            <NewsManagement />
+          </TabsContent>
+
+
 
 
           <TabsContent value="emails" className="space-y-6">

@@ -17,8 +17,8 @@ const ProgramManagement = () => {
 
   const programs = {
     hackathon: [
-      { id: 1, name: "AI Innovation Hackathon 2024", date: "March 15-17, 2024", participants: 150, status: "Active", prizes: "₹5L" },
-      { id: 2, name: "FinTech Challenge", date: "April 10-12, 2024", participants: 89, status: "Planning", prizes: "₹3L" },
+      { id: 1, name: "AI Innovation Hackathon 2024", date: "March 15-17, 2024", participants: 150, status: "Active", prizes: "$5L" },
+      { id: 2, name: "FinTech Challenge", date: "April 10-12, 2024", participants: 89, status: "Planning", prizes: "$3L" },
     ],
     incubation: [
       { id: 1, name: "Cohort 2024-A", startDate: "Jan 2024", duration: "6 months", startups: 25, status: "Active" },
@@ -29,8 +29,8 @@ const ProgramManagement = () => {
       { id: 2, name: "MVP Accelerator Q2", startDate: "May 2024", duration: "8 weeks", participants: 0, status: "Planning" },
     ],
     inclab: [
-      { id: 1, name: "Advanced Research Lab 2024", focus: "AI & ML", researchers: 15, budget: "₹50L", status: "Active" },
-      { id: 2, name: "Blockchain Innovation Lab", focus: "DeFi Solutions", researchers: 8, budget: "₹30L", status: "Planning" },
+      { id: 1, name: "Advanced Research Lab 2024", focus: "AI & ML", researchers: 15, budget: "$50L", status: "Active" },
+      { id: 2, name: "Blockchain Innovation Lab", focus: "DeFi Solutions", researchers: 8, budget: "$30L", status: "Planning" },
     ]
   };
 
@@ -93,7 +93,7 @@ const ProgramManagement = () => {
             </div>
             <div className="space-y-2">
               <Label htmlFor="budget">Budget</Label>
-              <Input id="budget" placeholder="e.g., ₹5L" />
+              <Input id="budget" placeholder="e.g., $5L" />
             </div>
           </div>
           <Button onClick={() => handleAddProgram(type)} className="w-full">

@@ -152,7 +152,7 @@ const PitchSubmissionDialog = ({ children }: PitchSubmissionDialogProps) => {
                   id="fundingRequired"
                   value={formData.fundingRequired}
                   onChange={(e) => handleInputChange("fundingRequired", e.target.value)}
-                  placeholder="e.g., ₹2 Crores"
+                  placeholder="e.g., $2 Crores"
                   required
                 />
               </div>
@@ -162,7 +162,7 @@ const PitchSubmissionDialog = ({ children }: PitchSubmissionDialogProps) => {
                   id="monthlyRevenue"
                   value={formData.monthlyRevenue}
                   onChange={(e) => handleInputChange("monthlyRevenue", e.target.value)}
-                  placeholder="e.g., ₹5 Lakhs"
+                  placeholder="e.g., $5 Lakhs"
                 />
               </div>
               <div>

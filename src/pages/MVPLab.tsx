@@ -26,8 +26,8 @@ const MVPLab = () => {
       title: "Cloud Infrastructure",
       description: "Enterprise-grade cloud setup and optimization",
       features: [
-        "₹10L+ AWS credits",
-        "₹8L+ GCP credits", 
+        "$10L+ AWS credits",
+        "$8L+ GCP credits", 
         "Azure startup credits",
         "DevOps & deployment setup"
       ],
@@ -49,25 +49,25 @@ const MVPLab = () => {
   const grants = [
     {
       name: "Ratan Tata Innovation Grant",
-      amount: "₹50L",
+      amount: "$50L",
       criteria: "Social impact startups",
       application: "Quarterly"
     },
     {
       name: "Women Entrepreneur Grant", 
-      amount: "₹25L",
+      amount: "$25L",
       criteria: "Women-led startups",
       application: "Bi-annual"
     },
     {
       name: "Rural Innovation Grant",
-      amount: "₹30L", 
+      amount: "$30L", 
       criteria: "Rural market solutions",
       application: "Annual"
     },
     {
       name: "Deep Tech Grant",
-      amount: "₹1Cr",
+      amount: "$1Cr",
       criteria: "AI/ML/Blockchain startups",
       application: "Annual"
     }
@@ -76,17 +76,17 @@ const MVPLab = () => {
   const cloudPartners = [
     {
       name: "Amazon Web Services",
-      credits: "₹10L+",
+      credits: "$10L+",
       benefits: "Startup credits, technical support, training"
     },
     {
       name: "Google Cloud Platform",
-      credits: "₹8L+", 
+      credits: "$8L+", 
       benefits: "AI/ML credits, startup program, mentorship"
     },
     {
       name: "Microsoft Azure",
-      credits: "₹6L+",
+      credits: "$6L+",
       benefits: "Startup credits, BizSpark program, support"
     }
   ];
@@ -103,7 +103,7 @@ const MVPLab = () => {
           <div className="text-center space-y-8 animate-fade-in">
             <div className="space-y-4">
               <Badge variant="secondary" className="bg-primary/10 text-primary text-lg px-4 py-2">
-                🛠️ Build. Test. Scale.
+                 Build. Test. Scale.
               </Badge>
               <h1 className="text-5xl md:text-7xl font-bold leading-tight">
                 MVP Lab:{" "}
@@ -139,7 +139,7 @@ const MVPLab = () => {
               </Card>
               <Card className="p-6 bg-card-gradient border-border">
                 <div className="text-center space-y-2">
-                  <div className="text-3xl font-bold text-primary">₹100Cr+</div>
+                  <div className="text-3xl font-bold text-primary">$100Cr+</div>
                   <div className="text-muted-foreground">Cloud Credits Given</div>
                 </div>
               </Card>
@@ -236,7 +236,7 @@ const MVPLab = () => {
             <div className="space-y-4">
               <h3 className="text-3xl font-bold">
                 Total Value:{" "}
-                <span className="text-primary">₹25L+ in Cloud Credits</span>
+                <span className="text-primary">$25L+ in Cloud Credits</span>
               </h3>
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 Every MVP Lab participant gets access to enterprise cloud infrastructure 
@@ -339,7 +339,7 @@ const MVPLab = () => {
               <AccordionItem value="item-2" className="bg-card-gradient border border-border rounded-lg px-6">
                 <AccordionTrigger className="text-left">How much equity do you take?</AccordionTrigger>
                 <AccordionContent className="text-muted-foreground">
-                  MVP Lab investment starts at ₹25L for 8% equity, which includes all development, cloud credits, mentorship, and ongoing support. This is significantly lower than traditional development costs while providing much more value.
+                  MVP Lab investment starts at $25L for 8% equity, which includes all development, cloud credits, mentorship, and ongoing support. This is significantly lower than traditional development costs while providing much more value.
                 </AccordionContent>
               </AccordionItem>
 

@@ -66,7 +66,7 @@ const INCLab = () => {
       category: "FinTech",
       description: "Digital lending platform for MSMEs",
       stage: "Seed",
-      traction: "₹50L monthly GMV"
+      traction: "$50L monthly GMV"
     },
     {
       name: "AgriSmart",
@@ -106,40 +106,40 @@ const INCLab = () => {
       category: "CleanTech",
       description: "Solar financing platform",
       stage: "Pre-Seed",
-      traction: "₹10Cr+ facilitated loans"
+      traction: "$10Cr+ facilitated loans"
     }
   ];
 
   const benefits = [
     {
       title: "Direct Funding Access",
-      description: "₹25L to ₹5Cr investment based on program track",
-      icon: "💰"
+      description: "$25L to $5Cr investment based on program track",
+      icon: ""
     },
     {
       title: "Technical Development",
       description: "Complete MVP/product development by our tech team",
-      icon: "🛠️"
+      icon: ""
     },
     {
       title: "Cloud Credits",
-      description: "₹25L+ in AWS, GCP, and Azure credits",
-      icon: "☁️"
+      description: "$25L+ in AWS, GCP, and Azure credits",
+      icon: ""
     },
     {
       title: "Mentor Network",
       description: "Access to 200+ successful entrepreneurs and VCs",
-      icon: "🎯"
+      icon: ""
     },
     {
       title: "Market Access",
       description: "Corporate partnerships and customer introductions",
-      icon: "🚀"
+      icon: ""
     },
     {
       title: "Legal Support",
       description: "Complete legal, compliance, and IP protection",
-      icon: "⚖️"
+      icon: ""
     }
   ];
 
@@ -154,7 +154,7 @@ const INCLab = () => {
           <div className="text-center space-y-8 animate-fade-in">
             <div className="space-y-4">
               <Badge variant="secondary" className="bg-primary/10 text-primary text-lg px-4 py-2">
-                🎯 Apply. Build. Scale.
+                 Apply. Build. Scale.
               </Badge>
               <h1 className="text-5xl md:text-7xl font-bold leading-tight">
                 Xi Lab:{" "}
@@ -208,7 +208,7 @@ const INCLab = () => {
               </Card>
               <Card className="p-6 bg-card-gradient border-border">
                 <div className="text-center space-y-2">
-                  <div className="text-3xl font-bold text-primary">₹500Cr+</div>
+                  <div className="text-3xl font-bold text-primary">$500Cr+</div>
                   <div className="text-muted-foreground">Alumni Valuation</div>
                 </div>
               </Card>
@@ -262,7 +262,7 @@ const INCLab = () => {
                   </div>
                   <div className="space-y-1">
                     <div className="text-sm text-muted-foreground">Investment</div>
-                    <div className="font-semibold text-primary">₹25L - ₹5Cr</div>
+                    <div className="font-semibold text-primary">$25L - $5Cr</div>
                   </div>
                 </div>
               </div>
@@ -438,7 +438,7 @@ const INCLab = () => {
               <div className="space-y-4">
                 <h3 className="text-2xl font-bold">
                   Total Value:{" "}
-                  <span className="text-primary">₹1Cr+ per startup</span>
+                  <span className="text-primary">$1Cr+ per startup</span>
                 </h3>
                 <p className="text-muted-foreground">
                   Investment, credits, mentorship, and resources combined

@@ -26,7 +26,7 @@ const Deals = () => {
       claimed: 45,
       totalSlots: 100,
       requirements: ["Startup must be < 2 years old", "First-time AWS user"],
-      logo: "☁️"
+      logo: ""
     },
     {
       id: 2,
@@ -40,7 +40,7 @@ const Deals = () => {
       claimed: 78,
       totalSlots: 150,
       requirements: ["Xi Combinator member", "Team size < 50"],
-      logo: "📝"
+      logo: ""
     },
     {
       id: 3,
@@ -54,29 +54,29 @@ const Deals = () => {
       claimed: 23,
       totalSlots: 75,
       requirements: ["Active startup", "New Stripe account"],
-      logo: "💳"
+      logo: ""
     }
   ];
 
   const cloudDeals = [
-    { company: "Google Cloud", offer: "$3,000 Credits", discount: "Free", logo: "🌐" },
-    { company: "Microsoft Azure", offer: "$2,500 Credits", discount: "Free", logo: "🔷" },
-    { company: "DigitalOcean", offer: "$200 Credits", discount: "Free", logo: "🌊" },
+    { company: "Google Cloud", offer: "$3,000 Credits", discount: "Free", logo: "" },
+    { company: "Microsoft Azure", offer: "$2,500 Credits", discount: "Free", logo: "" },
+    { company: "DigitalOcean", offer: "$200 Credits", discount: "Free", logo: "" },
     { company: "Vercel", offer: "Pro Plan 6 months", discount: "100% Off", logo: "▲" }
   ];
 
   const saasDeals = [
-    { company: "Slack", offer: "Pro Plan 3 months", discount: "100% Off", logo: "💬" },
-    { company: "Figma", offer: "Professional 1 year", discount: "50% Off", logo: "🎨" },
-    { company: "Calendly", offer: "Professional 6 months", discount: "100% Off", logo: "📅" },
-    { company: "Mailchimp", offer: "Standard Plan 6 months", discount: "50% Off", logo: "📧" }
+    { company: "Slack", offer: "Pro Plan 3 months", discount: "100% Off", logo: "" },
+    { company: "Figma", offer: "Professional 1 year", discount: "50% Off", logo: "" },
+    { company: "Calendly", offer: "Professional 6 months", discount: "100% Off", logo: "" },
+    { company: "Mailchimp", offer: "Standard Plan 6 months", discount: "50% Off", logo: "" }
   ];
 
   const businessDeals = [
-    { company: "LegalZoom", offer: "Business Formation", discount: "30% Off", logo: "⚖️" },
-    { company: "QuickBooks", offer: "Simple Start 6 months", discount: "50% Off", logo: "📊" },
-    { company: "Freshworks", offer: "CRM Suite 3 months", discount: "100% Off", logo: "📞" },
-    { company: "HubSpot", offer: "Startup Program", discount: "90% Off", logo: "🎯" }
+    { company: "LegalZoom", offer: "Business Formation", discount: "30% Off", logo: "" },
+    { company: "QuickBooks", offer: "Simple Start 6 months", discount: "50% Off", logo: "" },
+    { company: "Freshworks", offer: "CRM Suite 3 months", discount: "100% Off", logo: "" },
+    { company: "HubSpot", offer: "Startup Program", discount: "90% Off", logo: "" }
   ];
 
   const renderDealCard = (deal: any, isDetailed = false) => (
@@ -165,7 +165,7 @@ const Deals = () => {
           </p>
           <div className="flex justify-center space-x-4">
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary">₹25L+</div>
+              <div className="text-3xl font-bold text-primary">$25L+</div>
               <p className="text-sm text-muted-foreground">Total Value</p>
             </div>
             <div className="text-center">
@@ -238,7 +238,7 @@ const Deals = () => {
               <Card className="hover:shadow-lg transition-all duration-300">
                 <CardHeader>
                   <div className="flex items-center space-x-3">
-                    <div className="text-2xl">📧</div>
+                    <div className="text-2xl"></div>
                     <div>
                       <CardTitle className="text-lg">Email Marketing Suite</CardTitle>
                       <CardDescription>Mailchimp, SendGrid, ConvertKit</CardDescription>
@@ -254,7 +254,7 @@ const Deals = () => {
               <Card className="hover:shadow-lg transition-all duration-300">
                 <CardHeader>
                   <div className="flex items-center space-x-3">
-                    <div className="text-2xl">📊</div>
+                    <div className="text-2xl"></div>
                     <div>
                       <CardTitle className="text-lg">Analytics & Tracking</CardTitle>
                       <CardDescription>Google Analytics, Mixpanel, Hotjar</CardDescription>
@@ -303,7 +303,7 @@ const Deals = () => {
         <section className="text-center py-16 bg-gradient-to-r from-primary/10 to-orange-400/10 rounded-3xl">
           <h2 className="text-3xl font-bold mb-4">Ready to Save Thousands?</h2>
           <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join Xi Combinator today and get instant access to our exclusive deal marketplace worth over ₹25 lakhs.
+            Join Xi Combinator today and get instant access to our exclusive deal marketplace worth over $25 lakhs.
           </p>
           <Button size="lg" className="bg-gradient-to-r from-primary to-orange-400 hover:shadow-orange-glow mr-4">
             Apply Now

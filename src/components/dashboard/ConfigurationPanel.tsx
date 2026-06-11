@@ -303,7 +303,7 @@ const ConfigurationPanel = () => {
                   <Select defaultValue="inr">
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="inr">INR (₹)</SelectItem>
+                      <SelectItem value="inr">INR ($)</SelectItem>
                       <SelectItem value="usd">USD ($)</SelectItem>
                     </SelectContent>
                   </Select>

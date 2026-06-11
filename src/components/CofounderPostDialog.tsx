@@ -64,7 +64,7 @@ const CofounderPostDialog = ({ children }: CofounderPostDialogProps) => {
         contact_email: user.email || "",
       });
       if (error) throw error;
-      toast({ title: "Co-founder Requirement Posted ✅", description: "Your requirement has been posted successfully." });
+      toast({ title: "Co-founder Requirement Posted ", description: "Your requirement has been posted successfully." });
       setOpen(false);
       setFormData({ title: "", role: "", description: "", experience: "", equity: "", location: "", commitment: "", salary: "" });
       setSkills([]);
@@ -204,7 +204,7 @@ const CofounderPostDialog = ({ children }: CofounderPostDialogProps) => {
               <Label htmlFor="salary">Salary (Optional)</Label>
               <Input
                 id="salary"
-                placeholder="e.g., ₹50,000/month"
+                placeholder="e.g., $50,000/month"
                 value={formData.salary}
                 onChange={(e) => setFormData({...formData, salary: e.target.value})}
               />

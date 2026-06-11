@@ -15,7 +15,7 @@ const SuccessStories = () => {
       sector: "HealthTech",
       program: "Incubation",
       cohort: "2023",
-      funding: "₹15 Cr Series A",
+      funding: "$15 Cr Series A",
       description: "AI-powered diagnostic platform revolutionizing healthcare delivery across rural India",
       metrics: {
         hospitals: "50+",
@@ -37,7 +37,7 @@ const SuccessStories = () => {
       sector: "EdTech",
       program: "MVP Lab",
       cohort: "2022",
-      funding: "₹8 Cr Seed",
+      funding: "$8 Cr Seed",
       description: "Vernacular learning platform making quality education accessible in local languages",
       metrics: {
         users: "2M+",
@@ -59,13 +59,13 @@ const SuccessStories = () => {
       sector: "AgriTech",
       program: "Deep Tech Incubation",
       cohort: "2023",
-      funding: "₹12 Cr Series A",
+      funding: "$12 Cr Series A",
       description: "IoT-based precision farming solution helping farmers increase crop yield and reduce costs",
       metrics: {
         farmers: "10,000+",
         yield: "+30%",
         water: "-40%",
-        revenue: "₹50Cr"
+        revenue: "$50Cr"
       },
       achievements: [
         "Featured in Forbes 30 Under 30",
@@ -77,10 +77,10 @@ const SuccessStories = () => {
   ];
 
   const programStats = [
-    { program: "Incubation", startups: 45, funding: "₹120 Cr", success: "87%" },
-    { program: "MVP Lab", startups: 78, funding: "₹85 Cr", success: "82%" },
-    { program: "Xi Lab", startups: 32, funding: "₹65 Cr", success: "90%" },
-    { program: "Hackathon", startups: 25, funding: "₹40 Cr", success: "75%" }
+    { program: "Incubation", startups: 45, funding: "$120 Cr", success: "87%" },
+    { program: "MVP Lab", startups: 78, funding: "$85 Cr", success: "82%" },
+    { program: "Xi Lab", startups: 32, funding: "$65 Cr", success: "90%" },
+    { program: "Hackathon", startups: 25, funding: "$40 Cr", success: "75%" }
   ];
 
   return (
@@ -117,7 +117,7 @@ const SuccessStories = () => {
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-primary">₹310Cr+</div>
+              <div className="text-3xl font-bold text-primary">$310Cr+</div>
               <p className="text-xs text-muted-foreground">Raised by alumni</p>
             </CardContent>
           </Card>
@@ -227,7 +227,7 @@ const SuccessStories = () => {
             <h2 className="text-3xl font-bold">Our Impact</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
               <div>
-                <div className="text-4xl font-bold text-primary mb-2">₹310Cr+</div>
+                <div className="text-4xl font-bold text-primary mb-2">$310Cr+</div>
                 <p className="text-muted-foreground">Total funding raised by our startups</p>
               </div>
               <div>

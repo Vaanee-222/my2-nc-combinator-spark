@@ -21,7 +21,7 @@ const ProgramDetails = () => {
         "Expert mentorship during the event",
         "Industry-relevant problem statements",
         "Networking with peers and professionals",
-        "Prize pool up to ₹10 lakhs",
+        "Prize pool up to $10 lakhs",
         "Opportunity to showcase solutions",
         "Potential for startup incubation"
       ],
@@ -38,7 +38,7 @@ const ProgramDetails = () => {
         "Team of 2-4 members",
         "Passion for innovation"
       ],
-      icon: "💻"
+      icon: ""
     },
     {
       id: "incubation",
@@ -56,7 +56,7 @@ const ProgramDetails = () => {
         "Market validation assistance"
       ],
       benefits: [
-        "₹5-50 lakhs potential funding",
+        "$5-50 lakhs potential funding",
         "Expert guidance and mentorship",
         "Access to co-working spaces",
         "Legal and financial support",
@@ -69,7 +69,7 @@ const ProgramDetails = () => {
         "Committed founding team",
         "Clear market opportunity"
       ],
-      icon: "🚀"
+      icon: ""
     },
     {
       id: "mvp-lab",
@@ -99,7 +99,7 @@ const ProgramDetails = () => {
         "Commitment to 8-week program",
         "Clear problem-solution fit"
       ],
-      icon: "🛠️"
+      icon: ""
     },
     {
       id: "inc-lab",
@@ -129,7 +129,7 @@ const ProgramDetails = () => {
         "Novel technology or approach",
         "Potential for commercialization"
       ],
-      icon: "🔬"
+      icon: ""
     }
   ];
 

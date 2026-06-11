@@ -19,7 +19,7 @@ const HackathonDetail = () => {
     location: "Bangalore, India",
     venue: "Indian Institute of Science (IISc)",
     theme: "Artificial Intelligence & Machine Learning",
-    prizePool: "₹10 Lakhs",
+    prizePool: "$10 Lakhs",
     participants: "500+",
     status: "Registration Open",
     description: "Build AI solutions for real-world problems in healthcare, education, and sustainability.",
@@ -46,9 +46,9 @@ const HackathonDetail = () => {
       { name: "Open Innovation", description: "Creative AI applications in any domain" },
     ],
     prizes: [
-      { position: "1st Place", amount: "₹5,00,000", benefits: ["Cash Prize", "Incubation Program", "Mentorship"] },
-      { position: "2nd Place", amount: "₹3,00,000", benefits: ["Cash Prize", "Mentorship Program", "Co-working Space"] },
-      { position: "3rd Place", amount: "₹2,00,000", benefits: ["Cash Prize", "Online Courses", "Startup Resources"] },
+      { position: "1st Place", amount: "$5,00,000", benefits: ["Cash Prize", "Incubation Program", "Mentorship"] },
+      { position: "2nd Place", amount: "$3,00,000", benefits: ["Cash Prize", "Mentorship Program", "Co-working Space"] },
+      { position: "3rd Place", amount: "$2,00,000", benefits: ["Cash Prize", "Online Courses", "Startup Resources"] },
     ],
     judges: [
       { name: "Dr. Priya Sharma", title: "AI Research Director, Microsoft India" },
@@ -196,7 +196,7 @@ const HackathonDetail = () => {
                       index === 0 ? 'border-yellow-400 bg-yellow-50 dark:bg-yellow-950' : 'bg-muted/5'
                     }`}>
                       <div className="text-2xl mb-2">
-                        {index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}
+                        {index === 0 ? '' : index === 1 ? '' : ''}
                       </div>
                       <h4 className="font-semibold">{prize.position}</h4>
                       <p className="text-lg font-bold text-primary mb-2">{prize.amount}</p>

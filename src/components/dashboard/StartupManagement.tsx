@@ -156,7 +156,7 @@ const StartupManagement = ({ startups }: StartupManagementProps) => {
                     id="valuation"
                     value={newStartup.valuation}
                     onChange={(e) => setNewStartup({...newStartup, valuation: e.target.value})}
-                    placeholder="e.g., ₹5Cr"
+                    placeholder="e.g., $5Cr"
                   />
                 </div>
                 <div className="space-y-2">
@@ -203,7 +203,7 @@ const StartupManagement = ({ startups }: StartupManagementProps) => {
         <Card>
           <CardContent className="pt-6 text-center">
             <TrendingUp className="h-8 w-8 text-green-500 mx-auto mb-2" />
-            <div className="text-2xl font-bold">₹127Cr</div>
+            <div className="text-2xl font-bold">$127Cr</div>
             <p className="text-sm text-muted-foreground">Total Valuation</p>
           </CardContent>
         </Card>

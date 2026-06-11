@@ -38,25 +38,25 @@ const Contact = () => {
       city: "Bangalore",
       address: "Koramangala Innovation Hub, 5th Block",
       type: "Headquarters",
-      emoji: "🏢"
+      emoji: ""
     },
     {
       city: "Mumbai",
       address: "Bandra Kurla Complex, Financial District",
       type: "Regional Office",
-      emoji: "🌆"
+      emoji: ""
     },
     {
       city: "Delhi",
       address: "Connaught Place, Central Delhi",
       type: "Regional Office",
-      emoji: "🏛️"
+      emoji: ""
     },
     {
       city: "Hyderabad",
       address: "HITEC City, Cyberabad",
       type: "Tech Hub",
-      emoji: "💻"
+      emoji: ""
     }
   ];
 
@@ -90,7 +90,7 @@ const Contact = () => {
           <div className="text-center space-y-8 animate-fade-in">
             <div className="space-y-4">
               <Badge variant="secondary" className="bg-primary/10 text-primary text-lg px-4 py-2">
-                💬 Get in Touch
+                 Get in Touch
               </Badge>
               <h1 className="text-5xl md:text-7xl font-bold leading-tight">
                 Contact{" "}
