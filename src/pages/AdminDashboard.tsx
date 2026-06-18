@@ -212,7 +212,7 @@ const AdminDashboard = () => {
           </TabsContent>
 
           <TabsContent value="investors" className="space-y-6">
-            <InvestorManagement investors={investors} />
+            <InvestorManagement />
           </TabsContent>
 
           <TabsContent value="programs" className="space-y-6">
