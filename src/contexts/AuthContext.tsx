@@ -51,7 +51,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     if (!data?.role) {
       const desiredRole = sanitizeSignupRole(metadata.selected_role ?? metadata.role);
-      await (supabase as any).rpc("assign_signup_role", { _role: desiredRole });
+      await supabase.from("user_roles").insert({
+        user_id: currentUser.id,
+        role: desiredRole as any,
+      });
       const refreshed = await supabase
         .from("user_roles")
         .select("role")
