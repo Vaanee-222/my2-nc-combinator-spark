@@ -6,6 +6,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  roleLoading: boolean;
   userRole: string | null;
   signUp: (email: string, password: string, fullName: string, role: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
@@ -25,15 +26,45 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [roleLoading, setRoleLoading] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
 
-  const fetchUserRole = async (userId: string) => {
-    const { data } = await supabase
+  const validRoles = ['startup', 'investor', 'mentor', 'cofounder'] as const;
+  const sanitizeSignupRole = (role?: string | null) =>
+    validRoles.includes(role as any) ? role as typeof validRoles[number] : 'startup';
+
+  const ensureUserRecords = async (currentUser: User) => {
+    setRoleLoading(true);
+    const metadata = currentUser.user_metadata ?? {};
+
+    await supabase.from("profiles").upsert({
+      user_id: currentUser.id,
+      email: currentUser.email ?? null,
+      full_name: metadata.full_name ?? "",
+    }, { onConflict: "user_id" });
+
+    let { data } = await supabase
       .from("user_roles")
       .select("role")
-      .eq("user_id", userId)
+      .eq("user_id", currentUser.id)
       .maybeSingle();
+
+    if (!data?.role) {
+      const desiredRole = sanitizeSignupRole(metadata.selected_role ?? metadata.role);
+      await supabase.from("user_roles").insert({
+        user_id: currentUser.id,
+        role: desiredRole as any,
+      });
+      const refreshed = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", currentUser.id)
+        .maybeSingle();
+      data = refreshed.data;
+    }
+
     setUserRole(data?.role ?? null);
+    setRoleLoading(false);
   };
 
   useEffect(() => {
@@ -42,9 +73,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setSession(session);
         setUser(session?.user ?? null);
         if (session?.user) {
-          setTimeout(() => fetchUserRole(session.user.id), 0);
+          setRoleLoading(true);
+          setTimeout(() => ensureUserRecords(session.user).finally(() => setRoleLoading(false)), 0);
         } else {
           setUserRole(null);
+          setRoleLoading(false);
         }
         setLoading(false);
       }
@@ -54,7 +87,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
-        fetchUserRole(session.user.id);
+        ensureUserRecords(session.user).finally(() => setRoleLoading(false));
+      } else {
+        setRoleLoading(false);
       }
       setLoading(false);
     });
@@ -63,24 +98,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signUp = async (email: string, password: string, fullName: string, role: string) => {
+    const safeRole = sanitizeSignupRole(role);
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        data: { full_name: fullName },
+        data: { full_name: fullName, selected_role: safeRole },
         emailRedirectTo: window.location.origin,
       },
     });
     if (error) throw error;
-    
-    // Insert role after signup
-    if (data.user) {
-      const validRoles = ['admin', 'startup', 'investor', 'mentor', 'cofounder'] as const;
-      const safeRole = validRoles.includes(role as any) ? role : 'startup';
-      await supabase.from("user_roles").insert({
-        user_id: data.user.id,
-        role: safeRole as any,
-      });
+
+    if (data.user && data.session) {
+      await ensureUserRecords(data.user);
     }
   };
 
@@ -94,6 +124,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
     setSession(null);
     setUserRole(null);
+    setRoleLoading(false);
   };
 
   const resetPassword = async (email: string) => {
@@ -104,7 +135,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, userRole, signUp, signIn, signOut, resetPassword }}>
+    <AuthContext.Provider value={{ user, session, loading, roleLoading, userRole, signUp, signIn, signOut, resetPassword }}>
       {children}
     </AuthContext.Provider>
   );

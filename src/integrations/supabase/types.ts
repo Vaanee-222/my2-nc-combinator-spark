@@ -353,6 +353,45 @@ export type Database = {
         }
         Relationships: []
       }
+      investors: {
+        Row: {
+          check_size: string | null
+          created_at: string
+          id: string
+          name: string
+          notes: string | null
+          portfolio_count: number | null
+          stage: string | null
+          status: string
+          updated_at: string
+          website_url: string | null
+        }
+        Insert: {
+          check_size?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          notes?: string | null
+          portfolio_count?: number | null
+          stage?: string | null
+          status?: string
+          updated_at?: string
+          website_url?: string | null
+        }
+        Update: {
+          check_size?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          notes?: string | null
+          portfolio_count?: number | null
+          stage?: string | null
+          status?: string
+          updated_at?: string
+          website_url?: string | null
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
           content: string
@@ -583,6 +622,48 @@ export type Database = {
           phone?: string | null
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      programs: {
+        Row: {
+          budget: string | null
+          capacity: number | null
+          created_at: string
+          description: string | null
+          duration: string | null
+          id: string
+          name: string
+          program_type: string
+          start_date: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          budget?: string | null
+          capacity?: number | null
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          id?: string
+          name: string
+          program_type: string
+          start_date?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          budget?: string | null
+          capacity?: number | null
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          id?: string
+          name?: string
+          program_type?: string
+          start_date?: string | null
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }

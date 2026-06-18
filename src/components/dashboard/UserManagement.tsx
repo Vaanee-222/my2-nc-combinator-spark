@@ -1,22 +1,29 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Users, Search, UserCheck, UserX } from "lucide-react";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Users, Search, UserCheck, Edit, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 import { format } from "date-fns";
 
 const UserManagement = () => {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [profiles, setProfiles] = useState<any[]>([]);
   const [roles, setRoles] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState<any | null>(null);
+  const [saving, setSaving] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
@@ -34,6 +41,48 @@ const UserManagement = () => {
   const getUserRole = (userId: string) => {
     const r = roles.find(r => r.user_id === userId);
     return r?.role || "user";
+  };
+
+  const openEdit = (profile: any) => {
+    setEditing({ ...profile, role: getUserRole(profile.user_id) });
+  };
+
+  const saveUser = async () => {
+    if (!editing?.user_id) return;
+    if (editing.user_id === user?.id && editing.role !== "admin") {
+      return toast({ title: "Cannot remove your own admin role", variant: "destructive" });
+    }
+    setSaving(true);
+    const profilePayload = {
+      full_name: editing.full_name || null,
+      email: editing.email || null,
+      phone: editing.phone || null,
+      city: editing.city || null,
+      bio: editing.bio || null,
+    };
+    const profileRes = await supabase.from("profiles").update(profilePayload).eq("user_id", editing.user_id);
+    if (profileRes.error) {
+      setSaving(false);
+      return toast({ title: "Profile update failed", description: profileRes.error.message, variant: "destructive" });
+    }
+    const validRole = ["admin", "startup", "investor", "mentor", "cofounder"].includes(editing.role) ? editing.role : "startup";
+    const deleteRes = await supabase.from("user_roles").delete().eq("user_id", editing.user_id);
+    const insertRes = deleteRes.error ? deleteRes : await supabase.from("user_roles").insert({ user_id: editing.user_id, role: validRole as any });
+    setSaving(false);
+    if (insertRes.error) return toast({ title: "Role update failed", description: insertRes.error.message, variant: "destructive" });
+    toast({ title: "User updated" });
+    setEditing(null);
+    fetchData();
+  };
+
+  const deleteUser = async (profile: any) => {
+    if (profile.user_id === user?.id) return toast({ title: "You cannot delete your own profile", variant: "destructive" });
+    if (!confirm("Delete this user profile and role access? This does not remove their login account.")) return;
+    const roleRes = await supabase.from("user_roles").delete().eq("user_id", profile.user_id);
+    const profileRes = roleRes.error ? roleRes : await supabase.from("profiles").delete().eq("user_id", profile.user_id);
+    if (profileRes.error) return toast({ title: "Delete failed", description: profileRes.error.message, variant: "destructive" });
+    toast({ title: "User profile deleted" });
+    fetchData();
   };
 
   const filtered = profiles.filter(p => {
@@ -121,6 +170,7 @@ const UserManagement = () => {
                   <TableHead>Role</TableHead>
                   <TableHead>City</TableHead>
                   <TableHead>Joined</TableHead>
+                  <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -137,11 +187,17 @@ const UserManagement = () => {
                     <TableCell className="text-muted-foreground">
                       {format(new Date(p.created_at), "MMM d, yyyy")}
                     </TableCell>
+                    <TableCell>
+                      <div className="flex gap-1">
+                        <Button size="icon" variant="ghost" onClick={() => openEdit(p)}><Edit className="h-4 w-4" /></Button>
+                        <Button size="icon" variant="ghost" onClick={() => deleteUser(p)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                      </div>
+                    </TableCell>
                   </TableRow>
                 ))}
                 {filtered.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">No users found</TableCell>
+                    <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">No users found</TableCell>
                   </TableRow>
                 )}
               </TableBody>
@@ -149,6 +205,26 @@ const UserManagement = () => {
           )}
         </CardContent>
       </Card>
+
+      <Dialog open={!!editing} onOpenChange={(open) => !open && setEditing(null)}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader><DialogTitle>Edit User</DialogTitle></DialogHeader>
+          {editing && <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div><Label>Full name</Label><Input value={editing.full_name ?? ""} onChange={(e) => setEditing({ ...editing, full_name: e.target.value })} /></div>
+              <div><Label>Email</Label><Input type="email" value={editing.email ?? ""} onChange={(e) => setEditing({ ...editing, email: e.target.value })} /></div>
+              <div><Label>Phone</Label><Input value={editing.phone ?? ""} onChange={(e) => setEditing({ ...editing, phone: e.target.value })} /></div>
+              <div><Label>City</Label><Input value={editing.city ?? ""} onChange={(e) => setEditing({ ...editing, city: e.target.value })} /></div>
+              <div className="md:col-span-2"><Label>Role</Label><Select value={editing.role} onValueChange={(role) => setEditing({ ...editing, role })}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="admin">Admin</SelectItem><SelectItem value="startup">Startup</SelectItem><SelectItem value="investor">Investor</SelectItem><SelectItem value="mentor">Mentor</SelectItem><SelectItem value="cofounder">Co-founder</SelectItem></SelectContent></Select></div>
+            </div>
+            <div><Label>Bio</Label><Textarea rows={3} value={editing.bio ?? ""} onChange={(e) => setEditing({ ...editing, bio: e.target.value })} /></div>
+          </div>}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditing(null)}>Cancel</Button>
+            <Button onClick={saveUser} disabled={saving}>{saving ? "Saving..." : "Save"}</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import Navigation from "@/components/Navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { BarChart3, BookOpen, Building2, ClipboardList, Code2, FlaskConical, Handshake, HeartPulse, LayoutDashboard, Mail, Newspaper, Rocket, Search, Settings, ShieldCheck, SlidersHorizontal, Trophy, UserCog, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import AdminOverview from "@/components/dashboard/AdminOverview";
@@ -24,6 +24,56 @@ import InclabApplications from "@/components/dashboard/InclabApplications";
 import BlogManagement from "@/components/dashboard/BlogManagement";
 import NewsManagement from "@/components/dashboard/NewsManagement";
 import StartupDirectoryManagement from "@/components/dashboard/StartupDirectoryManagement";
+
+const adminMenuGroups = [
+  {
+    label: "Command Center",
+    items: [
+      { value: "overview", label: "Overview", icon: LayoutDashboard },
+      { value: "analytics", label: "Analytics", icon: BarChart3 },
+    ],
+  },
+  {
+    label: "Applications",
+    items: [
+      { value: "applications", label: "Applications", icon: ClipboardList },
+      { value: "hackathons", label: "Hackathons", icon: Trophy },
+      { value: "incubation", label: "Incubation", icon: Rocket },
+      { value: "inclab", label: "Xi Lab", icon: FlaskConical },
+      { value: "cofounders", label: "Co-founders", icon: Users },
+      { value: "health", label: "Health Score", icon: HeartPulse },
+    ],
+  },
+  {
+    label: "Ecosystem",
+    items: [
+      { value: "startups", label: "Portfolio", icon: Building2 },
+      { value: "investors", label: "Investors", icon: Handshake },
+      { value: "programs", label: "Programs", icon: Rocket },
+      { value: "partners", label: "Partners", icon: Handshake },
+      { value: "directory", label: "Directory", icon: Search },
+    ],
+  },
+  {
+    label: "Content",
+    items: [
+      { value: "blogs", label: "Blogs", icon: BookOpen },
+      { value: "news", label: "News", icon: Newspaper },
+      { value: "emails", label: "Emails", icon: Mail },
+    ],
+  },
+  {
+    label: "Access & System",
+    items: [
+      { value: "users", label: "Users", icon: UserCog },
+      { value: "acl", label: "ACL", icon: ShieldCheck },
+      { value: "config", label: "Config", icon: SlidersHorizontal },
+      { value: "header-scripts", label: "Header Scripts", icon: Code2 },
+      { value: "docs", label: "Docs", icon: BookOpen },
+      { value: "settings", label: "Settings", icon: Settings },
+    ],
+  },
+];
 
 
 const AdminDashboard = () => {
@@ -62,19 +112,6 @@ const AdminDashboard = () => {
     totalUsers: profiles.length,
   };
 
-  // Static data kept for investors/deals tabs
-  const investors = [
-    { id: 1, name: "Sequoia Capital India", checkSize: "$5-50Cr", portfolio: 45, stage: "Series A+", status: "Active" },
-    { id: 2, name: "Accel Partners", checkSize: "$2-25Cr", portfolio: 38, stage: "Seed-Series B", status: "Active" },
-    { id: 3, name: "Matrix Partners", checkSize: "$1-15Cr", portfolio: 52, stage: "Pre-Seed-Series A", status: "Active" },
-  ];
-
-  const topStartups = [
-    { id: 1, name: "AI Healthcare Solutions", sector: "HealthTech", valuation: "$6M", growth: "+45%", status: "Series A" },
-    { id: 2, name: "GreenTech Innovations", sector: "CleanTech", valuation: "$3.6M", growth: "+38%", status: "Seed" },
-    { id: 3, name: "EdTech Platform", sector: "Education", valuation: "$3M", growth: "+32%", status: "Pre-Seed" },
-  ];
-
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -86,32 +123,32 @@ const AdminDashboard = () => {
           <p className="text-muted-foreground">Manage Xi Combinator ecosystem and operations</p>
         </div>
 
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="flex flex-wrap gap-1">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="applications">Applications</TabsTrigger>
-            <TabsTrigger value="hackathons">Hackathons</TabsTrigger>
-            <TabsTrigger value="incubation">Incubation</TabsTrigger>
-            <TabsTrigger value="inclab">Xi Lab</TabsTrigger>
-            <TabsTrigger value="cofounders">Co-founders</TabsTrigger>
-            <TabsTrigger value="health">Health Score</TabsTrigger>
-            <TabsTrigger value="startups">Startups</TabsTrigger>
-            <TabsTrigger value="investors">Investors</TabsTrigger>
-            <TabsTrigger value="programs">Programs</TabsTrigger>
-            <TabsTrigger value="users">Users</TabsTrigger>
-            <TabsTrigger value="partners">Partners</TabsTrigger>
-            <TabsTrigger value="directory">Directory</TabsTrigger>
-            <TabsTrigger value="blogs">Blogs</TabsTrigger>
-            <TabsTrigger value="news">News</TabsTrigger>
+        <Tabs defaultValue="overview" className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
+          <aside className="lg:sticky lg:top-24 lg:self-start">
+            <TabsList className="h-auto w-full flex-col items-stretch justify-start gap-4 rounded-lg border bg-card p-3">
+              {adminMenuGroups.map((group) => (
+                <div key={group.label} className="space-y-1">
+                  <div className="px-2 py-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    {group.label}
+                  </div>
+                  <div className="space-y-1">
+                    {group.items.map(({ value, label, icon: Icon }) => (
+                      <TabsTrigger
+                        key={value}
+                        value={value}
+                        className="w-full justify-start gap-2 px-3 py-2 text-left data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                      >
+                        <Icon className="h-4 w-4" />
+                        <span>{label}</span>
+                      </TabsTrigger>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </TabsList>
+          </aside>
 
-            <TabsTrigger value="emails">Emails</TabsTrigger>
-            <TabsTrigger value="acl">ACL</TabsTrigger>
-            <TabsTrigger value="config">Config</TabsTrigger>
-            <TabsTrigger value="header-scripts">Header Scripts</TabsTrigger>
-            <TabsTrigger value="docs">Docs</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
-          </TabsList>
+          <section className="min-w-0 space-y-6">
 
           <TabsContent value="overview" className="space-y-6">
             <AdminOverview
@@ -158,11 +195,11 @@ const AdminDashboard = () => {
           </TabsContent>
 
           <TabsContent value="startups" className="space-y-6">
-            <StartupManagement startups={topStartups} />
+            <StartupManagement />
           </TabsContent>
 
           <TabsContent value="investors" className="space-y-6">
-            <InvestorManagement investors={investors} />
+            <InvestorManagement />
           </TabsContent>
 
           <TabsContent value="programs" className="space-y-6">
@@ -215,6 +252,7 @@ const AdminDashboard = () => {
           <TabsContent value="settings" className="space-y-6">
             <AdminSettings />
           </TabsContent>
+          </section>
         </Tabs>
       </main>
     </div>
