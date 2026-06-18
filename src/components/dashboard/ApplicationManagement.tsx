@@ -3,12 +3,16 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
+import { Edit, Eye, Plus, Trash2 } from "lucide-react";
 
 interface ApplicationManagementProps {
   applications: any[];
@@ -27,9 +31,22 @@ const ApplicationManagement = ({ applications, onRefresh }: ApplicationManagemen
   const { toast } = useToast();
   const [filter, setFilter] = useState("all");
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [viewing, setViewing] = useState<any | null>(null);
+  const [editing, setEditing] = useState<any | null>(null);
   const [bulkStage, setBulkStage] = useState<string>("under_review");
   const [bulkNotes, setBulkNotes] = useState("");
   const [busy, setBusy] = useState(false);
+
+  const emptyApplication = {
+    program: "MVP Lab",
+    applicant_name: "",
+    email: "",
+    phone: "",
+    startup_name: "",
+    description: "",
+    status: "submitted",
+    review_notes: "",
+  };
 
   const filtered = useMemo(
     () => (filter === "all" ? applications : applications.filter((a) => a.status === filter)),
@@ -48,9 +65,43 @@ const ApplicationManagement = ({ applications, onRefresh }: ApplicationManagemen
   };
 
   const updateStatus = async (id: string, status: string) => {
-    const { error } = await supabase.from("applications").update({ status }).eq("id", id);
+    const { error } = await supabase.from("applications").update({ status, reviewed_at: new Date().toISOString() }).eq("id", id);
     if (error) return toast({ title: "Error", description: error.message, variant: "destructive" });
     toast({ title: "Status Updated", description: `Marked as ${status}` });
+    onRefresh();
+  };
+
+  const saveApplication = async () => {
+    if (!editing?.applicant_name || !editing?.email || !editing?.program) {
+      return toast({ title: "Applicant, email, and program are required", variant: "destructive" });
+    }
+    setBusy(true);
+    const payload = {
+      program: editing.program,
+      applicant_name: editing.applicant_name,
+      email: editing.email,
+      phone: editing.phone || null,
+      startup_name: editing.startup_name || null,
+      description: editing.description || null,
+      status: editing.status || "submitted",
+      review_notes: editing.review_notes || null,
+      reviewed_at: editing.review_notes ? new Date().toISOString() : editing.reviewed_at ?? null,
+    };
+    const { error } = editing.id
+      ? await supabase.from("applications").update(payload).eq("id", editing.id)
+      : await supabase.from("applications").insert(payload as any);
+    setBusy(false);
+    if (error) return toast({ title: "Save failed", description: error.message, variant: "destructive" });
+    toast({ title: editing.id ? "Application updated" : "Application created" });
+    setEditing(null);
+    onRefresh();
+  };
+
+  const deleteApplication = async (id: string) => {
+    if (!confirm("Delete this application?")) return;
+    const { error } = await supabase.from("applications").delete().eq("id", id);
+    if (error) return toast({ title: "Delete failed", description: error.message, variant: "destructive" });
+    toast({ title: "Application deleted" });
     onRefresh();
   };
 
@@ -74,17 +125,20 @@ const ApplicationManagement = ({ applications, onRefresh }: ApplicationManagemen
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Application Management ({applications.length})</h2>
-        <Select value={filter} onValueChange={setFilter}>
-          <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All</SelectItem>
-            {STAGES.map((s) => (
-              <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
-            ))}
-            <SelectItem value="pending">Pending (legacy)</SelectItem>
-            <SelectItem value="approved">Approved (legacy)</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="flex items-center gap-2">
+          <Button onClick={() => setEditing(emptyApplication)}><Plus className="mr-2 h-4 w-4" />New</Button>
+          <Select value={filter} onValueChange={setFilter}>
+            <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All</SelectItem>
+              {STAGES.map((s) => (
+                <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+              ))}
+              <SelectItem value="pending">Pending (legacy)</SelectItem>
+              <SelectItem value="approved">Approved (legacy)</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       {/* Bulk actions */}
@@ -152,9 +206,12 @@ const ApplicationManagement = ({ applications, onRefresh }: ApplicationManagemen
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <div className="flex space-x-1">
+                    <div className="flex flex-wrap gap-1">
+                      <Button size="icon" variant="ghost" onClick={() => setViewing(app)}><Eye className="h-4 w-4" /></Button>
+                      <Button size="icon" variant="ghost" onClick={() => setEditing(app)}><Edit className="h-4 w-4" /></Button>
                       <Button size="sm" variant="outline" onClick={() => updateStatus(app.id, "accepted")}>Accept</Button>
                       <Button size="sm" variant="outline" onClick={() => updateStatus(app.id, "rejected")}>Reject</Button>
+                      <Button size="icon" variant="ghost" onClick={() => deleteApplication(app.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -166,6 +223,42 @@ const ApplicationManagement = ({ applications, onRefresh }: ApplicationManagemen
           </Table>
         </CardContent>
       </Card>
+
+      <Dialog open={!!viewing} onOpenChange={(open) => !open && setViewing(null)}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader><DialogTitle>Application Details</DialogTitle></DialogHeader>
+          {viewing && <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            {Object.entries(viewing).map(([key, value]) => (
+              <div key={key} className={key === "description" || key === "review_notes" ? "md:col-span-2" : ""}>
+                <p className="text-xs font-medium text-muted-foreground capitalize">{key.replace(/_/g, " ")}</p>
+                <p className="break-words whitespace-pre-wrap">{value ? String(value) : "—"}</p>
+              </div>
+            ))}
+          </div>}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={!!editing} onOpenChange={(open) => !open && setEditing(null)}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader><DialogTitle>{editing?.id ? "Edit Application" : "New Application"}</DialogTitle></DialogHeader>
+          {editing && <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div><Label>Applicant *</Label><Input value={editing.applicant_name ?? ""} onChange={(e) => setEditing({ ...editing, applicant_name: e.target.value })} /></div>
+              <div><Label>Email *</Label><Input type="email" value={editing.email ?? ""} onChange={(e) => setEditing({ ...editing, email: e.target.value })} /></div>
+              <div><Label>Phone</Label><Input value={editing.phone ?? ""} onChange={(e) => setEditing({ ...editing, phone: e.target.value })} /></div>
+              <div><Label>Startup</Label><Input value={editing.startup_name ?? ""} onChange={(e) => setEditing({ ...editing, startup_name: e.target.value })} /></div>
+              <div><Label>Program *</Label><Input value={editing.program ?? ""} onChange={(e) => setEditing({ ...editing, program: e.target.value })} /></div>
+              <div><Label>Status</Label><Select value={editing.status ?? "submitted"} onValueChange={(value) => setEditing({ ...editing, status: value })}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent>{STAGES.map((s) => <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>)}</SelectContent></Select></div>
+            </div>
+            <div><Label>Description</Label><Textarea rows={4} value={editing.description ?? ""} onChange={(e) => setEditing({ ...editing, description: e.target.value })} /></div>
+            <div><Label>Reviewer notes</Label><Textarea rows={3} value={editing.review_notes ?? ""} onChange={(e) => setEditing({ ...editing, review_notes: e.target.value })} /></div>
+          </div>}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditing(null)}>Cancel</Button>
+            <Button onClick={saveApplication} disabled={busy}>Save</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
