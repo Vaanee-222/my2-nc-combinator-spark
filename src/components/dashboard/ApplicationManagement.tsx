@@ -9,10 +9,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
-import { Edit, Eye, Plus, Trash2 } from "lucide-react";
+import { Edit, Eye, Plus, Trash2, Check, X } from "lucide-react";
+import { logAudit } from "@/lib/audit";
 
 interface ApplicationManagementProps {
   applications: any[];
@@ -36,6 +38,8 @@ const ApplicationManagement = ({ applications, onRefresh }: ApplicationManagemen
   const [bulkStage, setBulkStage] = useState<string>("under_review");
   const [bulkNotes, setBulkNotes] = useState("");
   const [busy, setBusy] = useState(false);
+  const [confirm, setConfirm] = useState<{ title: string; description: string; action: () => Promise<void> } | null>(null);
+  const askConfirm = (title: string, description: string, action: () => Promise<any>) => setConfirm({ title, description, action: async () => { await action(); } });
 
   const emptyApplication = {
     program: "MVP Lab",
@@ -67,6 +71,7 @@ const ApplicationManagement = ({ applications, onRefresh }: ApplicationManagemen
   const updateStatus = async (id: string, status: string) => {
     const { error } = await supabase.from("applications").update({ status, reviewed_at: new Date().toISOString() }).eq("id", id);
     if (error) return toast({ title: "Error", description: error.message, variant: "destructive" });
+    logAudit({ action: "status_change", table: "applications", recordId: id, details: { status } });
     toast({ title: "Status Updated", description: `Marked as ${status}` });
     onRefresh();
   };
@@ -87,39 +92,97 @@ const ApplicationManagement = ({ applications, onRefresh }: ApplicationManagemen
       review_notes: editing.review_notes || null,
       reviewed_at: editing.review_notes ? new Date().toISOString() : editing.reviewed_at ?? null,
     };
-    const { error } = editing.id
+    const isUpdate = !!editing.id;
+    const { error } = isUpdate
       ? await supabase.from("applications").update(payload).eq("id", editing.id)
       : await supabase.from("applications").insert(payload as any);
     setBusy(false);
     if (error) return toast({ title: "Save failed", description: error.message, variant: "destructive" });
-    toast({ title: editing.id ? "Application updated" : "Application created" });
+    logAudit({ action: isUpdate ? "update" : "create", table: "applications", recordId: editing.id || null, details: { program: editing.program, status: payload.status, has_notes: !!payload.review_notes } });
+    if (isUpdate && editing.review_notes) logAudit({ action: "note", table: "applications", recordId: editing.id, details: { note: editing.review_notes } });
+    toast({ title: isUpdate ? "Application updated" : "Application created" });
     setEditing(null);
     onRefresh();
   };
 
   const deleteApplication = async (id: string) => {
-    if (!confirm("Delete this application?")) return;
+    const snapshot = applications.find((a) => a.id === id);
     const { error } = await supabase.from("applications").delete().eq("id", id);
     if (error) return toast({ title: "Delete failed", description: error.message, variant: "destructive" });
-    toast({ title: "Application deleted" });
+    logAudit({ action: "delete", table: "applications", recordId: id, details: { snapshot } });
+    toast({
+      title: "Application deleted",
+      action: (snapshot ? (
+        <Button size="sm" variant="outline" onClick={async () => {
+          const { id: _, created_at, ...rest } = snapshot;
+          await supabase.from("applications").insert({ ...rest, id } as any);
+          logAudit({ action: "create", table: "applications", recordId: id, details: { restored: true } });
+          toast({ title: "Restored" });
+          onRefresh();
+        }}>Undo</Button>
+      ) : undefined) as any,
+    });
+    onRefresh();
+  };
+
+  const bulkDelete = async () => {
+    const ids = Array.from(selected);
+    const snapshots = applications.filter((a) => ids.includes(a.id));
+    const { error } = await supabase.from("applications").delete().in("id", ids);
+    if (error) return toast({ title: "Bulk delete failed", description: error.message, variant: "destructive" });
+    logAudit({ action: "bulk_delete", table: "applications", details: { count: ids.length, ids } });
+    toast({
+      title: `${ids.length} application(s) deleted`,
+      action: (
+        <Button size="sm" variant="outline" onClick={async () => {
+          for (const s of snapshots) {
+            const { id, created_at, ...rest } = s;
+            await supabase.from("applications").insert({ ...rest, id } as any);
+          }
+          logAudit({ action: "create", table: "applications", details: { restored: snapshots.length } });
+          toast({ title: "Restored" });
+          onRefresh();
+        }}>Undo</Button>
+      ) as any,
+    });
+    setSelected(new Set());
     onRefresh();
   };
 
   const runBulk = async () => {
     if (selected.size === 0) return toast({ title: "Select at least one application" });
+    const ids = Array.from(selected);
+    const snapshots = applications.filter((a) => ids.includes(a.id)).map((a) => ({ id: a.id, status: a.status, review_notes: a.review_notes }));
     setBusy(true);
     const payload: any = { status: bulkStage, reviewed_at: new Date().toISOString() };
     if (bulkNotes.trim()) payload.review_notes = bulkNotes.trim();
-    const { error } = await supabase.from("applications").update(payload).in("id", Array.from(selected));
+    const { error } = await supabase.from("applications").update(payload).in("id", ids);
     setBusy(false);
     if (error) return toast({ title: "Bulk update failed", description: error.message, variant: "destructive" });
-    toast({ title: "Bulk update complete", description: `${selected.size} applications updated` });
+    logAudit({ action: "bulk_update", table: "applications", details: { count: ids.length, status: bulkStage, has_notes: !!bulkNotes.trim() } });
+    if (bulkNotes.trim()) logAudit({ action: "note", table: "applications", details: { count: ids.length, note: bulkNotes.trim() } });
+    toast({
+      title: "Bulk update complete",
+      description: `${ids.length} applications updated`,
+      action: (
+        <Button size="sm" variant="outline" onClick={async () => {
+          for (const s of snapshots) {
+            await supabase.from("applications").update({ status: s.status, review_notes: s.review_notes }).eq("id", s.id);
+          }
+          logAudit({ action: "bulk_update", table: "applications", details: { rollback: true, count: snapshots.length } });
+          toast({ title: "Reverted" });
+          onRefresh();
+        }}>Undo</Button>
+      ) as any,
+    });
     setSelected(new Set());
     setBulkNotes("");
     onRefresh();
   };
 
   const allSelected = filtered.length > 0 && selected.size === filtered.length;
+
+
 
   return (
     <div className="space-y-6">
@@ -156,8 +219,17 @@ const ApplicationManagement = ({ applications, onRefresh }: ApplicationManagemen
                 ))}
               </SelectContent>
             </Select>
-            <Button onClick={runBulk} disabled={busy || selected.size === 0}>
+            <Button onClick={() => askConfirm("Apply bulk update?", `Set ${selected.size} application(s) to "${bulkStage}"${bulkNotes.trim() ? " with reviewer notes" : ""}?`, runBulk)} disabled={busy || selected.size === 0}>
               Apply to {selected.size || 0}
+            </Button>
+            <Button variant="outline" size="sm" disabled={!selected.size} onClick={() => askConfirm("Approve selected?", `Mark ${selected.size} application(s) as accepted?`, async () => { setBulkStage("accepted"); await new Promise(r => setTimeout(r, 0)); await runBulk(); })}>
+              <Check className="mr-1 h-4 w-4" />Approve
+            </Button>
+            <Button variant="outline" size="sm" disabled={!selected.size} onClick={() => askConfirm("Reject selected?", `Mark ${selected.size} application(s) as rejected?`, async () => { setBulkStage("rejected"); await new Promise(r => setTimeout(r, 0)); await runBulk(); })}>
+              <X className="mr-1 h-4 w-4" />Reject
+            </Button>
+            <Button variant="destructive" size="sm" disabled={!selected.size} onClick={() => askConfirm("Delete selected?", `Permanently delete ${selected.size} application(s)? You can undo this from the toast.`, bulkDelete)}>
+              <Trash2 className="mr-1 h-4 w-4" />Delete
             </Button>
             <Button variant="ghost" size="sm" onClick={() => setSelected(new Set())} disabled={selected.size === 0}>
               Clear
@@ -211,7 +283,7 @@ const ApplicationManagement = ({ applications, onRefresh }: ApplicationManagemen
                       <Button size="icon" variant="ghost" onClick={() => setEditing(app)}><Edit className="h-4 w-4" /></Button>
                       <Button size="sm" variant="outline" onClick={() => updateStatus(app.id, "accepted")}>Accept</Button>
                       <Button size="sm" variant="outline" onClick={() => updateStatus(app.id, "rejected")}>Reject</Button>
-                      <Button size="icon" variant="ghost" onClick={() => deleteApplication(app.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                      <Button size="icon" variant="ghost" onClick={() => askConfirm("Delete application?", `Permanently delete ${app.applicant_name}'s application? You can undo from the toast.`, () => deleteApplication(app.id))}><Trash2 className="h-4 w-4 text-destructive" /></Button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -259,6 +331,19 @@ const ApplicationManagement = ({ applications, onRefresh }: ApplicationManagemen
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={!!confirm} onOpenChange={(open) => !open && setConfirm(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{confirm?.title}</AlertDialogTitle>
+            <AlertDialogDescription>{confirm?.description}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={async () => { const c = confirm; setConfirm(null); await c?.action(); }}>Confirm</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

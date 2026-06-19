@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BarChart3, BookOpen, Building2, ClipboardList, Code2, FlaskConical, Handshake, HeartPulse, LayoutDashboard, Mail, Newspaper, Rocket, Search, Settings, ShieldCheck, SlidersHorizontal, Trophy, UserCog, Users } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { BarChart3, BookOpen, Building2, ClipboardList, Code2, FlaskConical, Handshake, HeartPulse, LayoutDashboard, Mail, Newspaper, Rocket, Search, Settings, ShieldCheck, SlidersHorizontal, Trophy, UserCog, Users, ChevronLeft, ChevronRight, ScrollText, Workflow } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import AdminOverview from "@/components/dashboard/AdminOverview";
@@ -24,6 +26,7 @@ import InclabApplications from "@/components/dashboard/InclabApplications";
 import BlogManagement from "@/components/dashboard/BlogManagement";
 import NewsManagement from "@/components/dashboard/NewsManagement";
 import StartupDirectoryManagement from "@/components/dashboard/StartupDirectoryManagement";
+import AuditLog from "@/components/dashboard/AuditLog";
 
 const adminMenuGroups = [
   {
@@ -67,6 +70,7 @@ const adminMenuGroups = [
     items: [
       { value: "users", label: "Users", icon: UserCog },
       { value: "acl", label: "ACL", icon: ShieldCheck },
+      { value: "audit", label: "Audit Log", icon: ScrollText },
       { value: "config", label: "Config", icon: SlidersHorizontal },
       { value: "header-scripts", label: "Header Scripts", icon: Code2 },
       { value: "docs", label: "Docs", icon: BookOpen },
@@ -78,6 +82,7 @@ const adminMenuGroups = [
 
 const AdminDashboard = () => {
   const { toast } = useToast();
+  const [collapsed, setCollapsed] = useState(false);
   const [applications, setApplications] = useState<any[]>([]);
   const [hackathonRegs, setHackathonRegs] = useState<any[]>([]);
   const [incubationApps, setIncubationApps] = useState<any[]>([]);
@@ -116,39 +121,62 @@ const AdminDashboard = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       <main className="container mx-auto px-4 pt-20 pb-12">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent mb-2">
-            Admin Dashboard
-          </h1>
-          <p className="text-muted-foreground">Manage Xi Combinator ecosystem and operations</p>
+        <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent mb-2">
+              Admin Dashboard
+            </h1>
+            <p className="text-muted-foreground">Manage Xi Combinator ecosystem and operations</p>
+          </div>
+          <Button asChild variant="outline">
+            <Link to="/admin-workflow"><Workflow className="mr-2 h-4 w-4" /> End-to-End Workflow</Link>
+          </Button>
         </div>
 
-        <Tabs defaultValue="overview" className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
+        <Tabs defaultValue="overview" className={`grid gap-6 ${collapsed ? "lg:grid-cols-[72px_minmax(0,1fr)]" : "lg:grid-cols-[260px_minmax(0,1fr)]"}`}>
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            <TabsList className="h-auto w-full flex-col items-stretch justify-start gap-4 rounded-lg border bg-card p-3">
-              {adminMenuGroups.map((group) => (
-                <div key={group.label} className="space-y-1">
-                  <div className="px-2 py-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    {group.label}
+            <div className="flex justify-end mb-2">
+              <Button variant="ghost" size="icon" onClick={() => setCollapsed((c) => !c)} title={collapsed ? "Expand sidebar" : "Collapse sidebar"}>
+                {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+              </Button>
+            </div>
+            <TabsList className="h-auto w-full flex-col items-stretch justify-start gap-4 rounded-lg border bg-card p-2">
+              <TooltipProvider delayDuration={100}>
+                {adminMenuGroups.map((group) => (
+                  <div key={group.label} className="space-y-1 w-full">
+                    {!collapsed && (
+                      <div className="px-2 py-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                        {group.label}
+                      </div>
+                    )}
+                    <div className="space-y-1">
+                      {group.items.map(({ value, label, icon: Icon }) => {
+                        const trigger = (
+                          <TabsTrigger
+                            key={value}
+                            value={value}
+                            className={`w-full ${collapsed ? "justify-center px-2" : "justify-start gap-2 px-3"} py-2 text-left data-[state=active]:bg-primary data-[state=active]:text-primary-foreground`}
+                          >
+                            <Icon className="h-4 w-4 shrink-0" />
+                            {!collapsed && <span>{label}</span>}
+                          </TabsTrigger>
+                        );
+                        return collapsed ? (
+                          <Tooltip key={value}>
+                            <TooltipTrigger asChild>{trigger}</TooltipTrigger>
+                            <TooltipContent side="right">{label}</TooltipContent>
+                          </Tooltip>
+                        ) : trigger;
+                      })}
+                    </div>
                   </div>
-                  <div className="space-y-1">
-                    {group.items.map(({ value, label, icon: Icon }) => (
-                      <TabsTrigger
-                        key={value}
-                        value={value}
-                        className="w-full justify-start gap-2 px-3 py-2 text-left data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                      >
-                        <Icon className="h-4 w-4" />
-                        <span>{label}</span>
-                      </TabsTrigger>
-                    ))}
-                  </div>
-                </div>
-              ))}
+                ))}
+              </TooltipProvider>
             </TabsList>
           </aside>
 
           <section className="min-w-0 space-y-6">
+
 
           <TabsContent value="overview" className="space-y-6">
             <AdminOverview
@@ -235,6 +263,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="acl" className="space-y-6">
             <ACLManagement />
+          </TabsContent>
+
+          <TabsContent value="audit" className="space-y-6">
+            <AuditLog />
           </TabsContent>
 
           <TabsContent value="config" className="space-y-6">

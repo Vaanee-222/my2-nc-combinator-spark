@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { friendlyAuthError } from "@/lib/authErrors";
 
 const demoAccounts = [
   { label: "Admin", email: "admin@incombinator.com", role: "admin" },
@@ -49,7 +50,7 @@ const Login = () => {
       await signIn(email, password);
       toast({ title: "Login Successful", description: "Redirecting to dashboard..." });
     } catch (error: any) {
-      toast({ title: "Login Failed", description: error.message || "Invalid credentials", variant: "destructive" });
+      toast({ title: "Sign-in failed", description: friendlyAuthError(error, "login"), variant: "destructive" });
     } finally {
       setIsLoading(false);
     }
