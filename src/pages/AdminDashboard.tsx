@@ -26,6 +26,7 @@ import InclabApplications from "@/components/dashboard/InclabApplications";
 import BlogManagement from "@/components/dashboard/BlogManagement";
 import NewsManagement from "@/components/dashboard/NewsManagement";
 import StartupDirectoryManagement from "@/components/dashboard/StartupDirectoryManagement";
+import AuditLog from "@/components/dashboard/AuditLog";
 
 const adminMenuGroups = [
   {
