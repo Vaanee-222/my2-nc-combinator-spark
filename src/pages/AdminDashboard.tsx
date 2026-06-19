@@ -265,6 +265,10 @@ const AdminDashboard = () => {
             <ACLManagement />
           </TabsContent>
 
+          <TabsContent value="audit" className="space-y-6">
+            <AuditLog />
+          </TabsContent>
+
           <TabsContent value="config" className="space-y-6">
             <ConfigurationPanel />
           </TabsContent>
