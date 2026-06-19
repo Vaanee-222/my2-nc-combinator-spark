@@ -219,8 +219,17 @@ const ApplicationManagement = ({ applications, onRefresh }: ApplicationManagemen
                 ))}
               </SelectContent>
             </Select>
-            <Button onClick={runBulk} disabled={busy || selected.size === 0}>
+            <Button onClick={() => askConfirm("Apply bulk update?", `Set ${selected.size} application(s) to "${bulkStage}"${bulkNotes.trim() ? " with reviewer notes" : ""}?`, runBulk)} disabled={busy || selected.size === 0}>
               Apply to {selected.size || 0}
+            </Button>
+            <Button variant="outline" size="sm" disabled={!selected.size} onClick={() => askConfirm("Approve selected?", `Mark ${selected.size} application(s) as accepted?`, async () => { setBulkStage("accepted"); await new Promise(r => setTimeout(r, 0)); await runBulk(); })}>
+              <Check className="mr-1 h-4 w-4" />Approve
+            </Button>
+            <Button variant="outline" size="sm" disabled={!selected.size} onClick={() => askConfirm("Reject selected?", `Mark ${selected.size} application(s) as rejected?`, async () => { setBulkStage("rejected"); await new Promise(r => setTimeout(r, 0)); await runBulk(); })}>
+              <X className="mr-1 h-4 w-4" />Reject
+            </Button>
+            <Button variant="destructive" size="sm" disabled={!selected.size} onClick={() => askConfirm("Delete selected?", `Permanently delete ${selected.size} application(s)? You can undo this from the toast.`, bulkDelete)}>
+              <Trash2 className="mr-1 h-4 w-4" />Delete
             </Button>
             <Button variant="ghost" size="sm" onClick={() => setSelected(new Set())} disabled={selected.size === 0}>
               Clear
