@@ -127,7 +127,7 @@ const UserManagement = () => {
   const allSelected = filtered.length > 0 && selected.size === filtered.length;
   const toggleAll = () => setSelected((p) => p.size === filtered.length ? new Set() : new Set(filtered.map((x) => x.user_id)));
 
-  const askConfirm = (title: string, description: string, action: () => Promise<void>) => setConfirm({ title, description, action });
+  const askConfirm = (title: string, description: string, action: () => Promise<any>) => setConfirm({ title, description, action: async () => { await action(); } });
 
   const roleStats = {
     total: profiles.length,
