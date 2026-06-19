@@ -121,39 +121,62 @@ const AdminDashboard = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       <main className="container mx-auto px-4 pt-20 pb-12">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent mb-2">
-            Admin Dashboard
-          </h1>
-          <p className="text-muted-foreground">Manage Xi Combinator ecosystem and operations</p>
+        <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent mb-2">
+              Admin Dashboard
+            </h1>
+            <p className="text-muted-foreground">Manage Xi Combinator ecosystem and operations</p>
+          </div>
+          <Button asChild variant="outline">
+            <Link to="/admin-workflow"><Workflow className="mr-2 h-4 w-4" /> End-to-End Workflow</Link>
+          </Button>
         </div>
 
-        <Tabs defaultValue="overview" className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
+        <Tabs defaultValue="overview" className={`grid gap-6 ${collapsed ? "lg:grid-cols-[72px_minmax(0,1fr)]" : "lg:grid-cols-[260px_minmax(0,1fr)]"}`}>
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            <TabsList className="h-auto w-full flex-col items-stretch justify-start gap-4 rounded-lg border bg-card p-3">
-              {adminMenuGroups.map((group) => (
-                <div key={group.label} className="space-y-1">
-                  <div className="px-2 py-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    {group.label}
+            <div className="flex justify-end mb-2">
+              <Button variant="ghost" size="icon" onClick={() => setCollapsed((c) => !c)} title={collapsed ? "Expand sidebar" : "Collapse sidebar"}>
+                {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+              </Button>
+            </div>
+            <TabsList className="h-auto w-full flex-col items-stretch justify-start gap-4 rounded-lg border bg-card p-2">
+              <TooltipProvider delayDuration={100}>
+                {adminMenuGroups.map((group) => (
+                  <div key={group.label} className="space-y-1 w-full">
+                    {!collapsed && (
+                      <div className="px-2 py-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                        {group.label}
+                      </div>
+                    )}
+                    <div className="space-y-1">
+                      {group.items.map(({ value, label, icon: Icon }) => {
+                        const trigger = (
+                          <TabsTrigger
+                            key={value}
+                            value={value}
+                            className={`w-full ${collapsed ? "justify-center px-2" : "justify-start gap-2 px-3"} py-2 text-left data-[state=active]:bg-primary data-[state=active]:text-primary-foreground`}
+                          >
+                            <Icon className="h-4 w-4 shrink-0" />
+                            {!collapsed && <span>{label}</span>}
+                          </TabsTrigger>
+                        );
+                        return collapsed ? (
+                          <Tooltip key={value}>
+                            <TooltipTrigger asChild>{trigger}</TooltipTrigger>
+                            <TooltipContent side="right">{label}</TooltipContent>
+                          </Tooltip>
+                        ) : trigger;
+                      })}
+                    </div>
                   </div>
-                  <div className="space-y-1">
-                    {group.items.map(({ value, label, icon: Icon }) => (
-                      <TabsTrigger
-                        key={value}
-                        value={value}
-                        className="w-full justify-start gap-2 px-3 py-2 text-left data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                      >
-                        <Icon className="h-4 w-4" />
-                        <span>{label}</span>
-                      </TabsTrigger>
-                    ))}
-                  </div>
-                </div>
-              ))}
+                ))}
+              </TooltipProvider>
             </TabsList>
           </aside>
 
           <section className="min-w-0 space-y-6">
+
 
           <TabsContent value="overview" className="space-y-6">
             <AdminOverview
