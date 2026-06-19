@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { friendlyAuthError } from "@/lib/authErrors";
 
 const demoAccounts = [
   { label: "Admin", email: "admin@incombinator.com", role: "admin" },
