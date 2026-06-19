@@ -82,6 +82,7 @@ const adminMenuGroups = [
 
 const AdminDashboard = () => {
   const { toast } = useToast();
+  const [collapsed, setCollapsed] = useState(false);
   const [applications, setApplications] = useState<any[]>([]);
   const [hackathonRegs, setHackathonRegs] = useState<any[]>([]);
   const [incubationApps, setIncubationApps] = useState<any[]>([]);
