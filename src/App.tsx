@@ -158,6 +158,7 @@ const AppRoutes = () => {
 
               {/* Protected dashboard routes */}
               <Route path="/admin-dashboard" element={<ProtectedRoute allowedRoles={["admin"]}><AdminDashboard /></ProtectedRoute>} />
+              <Route path="/admin-workflow" element={<ProtectedRoute allowedRoles={["admin"]}><AdminWorkflow /></ProtectedRoute>} />
               <Route path="/startup-dashboard" element={<ProtectedRoute allowedRoles={["startup"]}><StartupDashboard /></ProtectedRoute>} />
               <Route path="/investor-dashboard" element={<ProtectedRoute allowedRoles={["investor"]}><InvestorDashboard /></ProtectedRoute>} />
               <Route path="/mentor-dashboard" element={<ProtectedRoute allowedRoles={["mentor"]}><MentorDashboard /></ProtectedRoute>} />
