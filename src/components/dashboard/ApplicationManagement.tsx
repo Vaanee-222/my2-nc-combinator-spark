@@ -283,7 +283,7 @@ const ApplicationManagement = ({ applications, onRefresh }: ApplicationManagemen
                       <Button size="icon" variant="ghost" onClick={() => setEditing(app)}><Edit className="h-4 w-4" /></Button>
                       <Button size="sm" variant="outline" onClick={() => updateStatus(app.id, "accepted")}>Accept</Button>
                       <Button size="sm" variant="outline" onClick={() => updateStatus(app.id, "rejected")}>Reject</Button>
-                      <Button size="icon" variant="ghost" onClick={() => deleteApplication(app.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                      <Button size="icon" variant="ghost" onClick={() => askConfirm("Delete application?", `Permanently delete ${app.applicant_name}'s application? You can undo from the toast.`, () => deleteApplication(app.id))}><Trash2 className="h-4 w-4 text-destructive" /></Button>
                     </div>
                   </TableCell>
                 </TableRow>
