@@ -71,6 +71,7 @@ const ApplicationManagement = ({ applications, onRefresh }: ApplicationManagemen
   const updateStatus = async (id: string, status: string) => {
     const { error } = await supabase.from("applications").update({ status, reviewed_at: new Date().toISOString() }).eq("id", id);
     if (error) return toast({ title: "Error", description: error.message, variant: "destructive" });
+    logAudit({ action: "status_change", table: "applications", recordId: id, details: { status } });
     toast({ title: "Status Updated", description: `Marked as ${status}` });
     onRefresh();
   };
@@ -91,39 +92,97 @@ const ApplicationManagement = ({ applications, onRefresh }: ApplicationManagemen
       review_notes: editing.review_notes || null,
       reviewed_at: editing.review_notes ? new Date().toISOString() : editing.reviewed_at ?? null,
     };
-    const { error } = editing.id
+    const isUpdate = !!editing.id;
+    const { error } = isUpdate
       ? await supabase.from("applications").update(payload).eq("id", editing.id)
       : await supabase.from("applications").insert(payload as any);
     setBusy(false);
     if (error) return toast({ title: "Save failed", description: error.message, variant: "destructive" });
-    toast({ title: editing.id ? "Application updated" : "Application created" });
+    logAudit({ action: isUpdate ? "update" : "create", table: "applications", recordId: editing.id || null, details: { program: editing.program, status: payload.status, has_notes: !!payload.review_notes } });
+    if (isUpdate && editing.review_notes) logAudit({ action: "note", table: "applications", recordId: editing.id, details: { note: editing.review_notes } });
+    toast({ title: isUpdate ? "Application updated" : "Application created" });
     setEditing(null);
     onRefresh();
   };
 
   const deleteApplication = async (id: string) => {
-    if (!confirm("Delete this application?")) return;
+    const snapshot = applications.find((a) => a.id === id);
     const { error } = await supabase.from("applications").delete().eq("id", id);
     if (error) return toast({ title: "Delete failed", description: error.message, variant: "destructive" });
-    toast({ title: "Application deleted" });
+    logAudit({ action: "delete", table: "applications", recordId: id, details: { snapshot } });
+    toast({
+      title: "Application deleted",
+      action: (snapshot ? (
+        <Button size="sm" variant="outline" onClick={async () => {
+          const { id: _, created_at, ...rest } = snapshot;
+          await supabase.from("applications").insert({ ...rest, id } as any);
+          logAudit({ action: "create", table: "applications", recordId: id, details: { restored: true } });
+          toast({ title: "Restored" });
+          onRefresh();
+        }}>Undo</Button>
+      ) : undefined) as any,
+    });
+    onRefresh();
+  };
+
+  const bulkDelete = async () => {
+    const ids = Array.from(selected);
+    const snapshots = applications.filter((a) => ids.includes(a.id));
+    const { error } = await supabase.from("applications").delete().in("id", ids);
+    if (error) return toast({ title: "Bulk delete failed", description: error.message, variant: "destructive" });
+    logAudit({ action: "bulk_delete", table: "applications", details: { count: ids.length, ids } });
+    toast({
+      title: `${ids.length} application(s) deleted`,
+      action: (
+        <Button size="sm" variant="outline" onClick={async () => {
+          for (const s of snapshots) {
+            const { id, created_at, ...rest } = s;
+            await supabase.from("applications").insert({ ...rest, id } as any);
+          }
+          logAudit({ action: "create", table: "applications", details: { restored: snapshots.length } });
+          toast({ title: "Restored" });
+          onRefresh();
+        }}>Undo</Button>
+      ) as any,
+    });
+    setSelected(new Set());
     onRefresh();
   };
 
   const runBulk = async () => {
     if (selected.size === 0) return toast({ title: "Select at least one application" });
+    const ids = Array.from(selected);
+    const snapshots = applications.filter((a) => ids.includes(a.id)).map((a) => ({ id: a.id, status: a.status, review_notes: a.review_notes }));
     setBusy(true);
     const payload: any = { status: bulkStage, reviewed_at: new Date().toISOString() };
     if (bulkNotes.trim()) payload.review_notes = bulkNotes.trim();
-    const { error } = await supabase.from("applications").update(payload).in("id", Array.from(selected));
+    const { error } = await supabase.from("applications").update(payload).in("id", ids);
     setBusy(false);
     if (error) return toast({ title: "Bulk update failed", description: error.message, variant: "destructive" });
-    toast({ title: "Bulk update complete", description: `${selected.size} applications updated` });
+    logAudit({ action: "bulk_update", table: "applications", details: { count: ids.length, status: bulkStage, has_notes: !!bulkNotes.trim() } });
+    if (bulkNotes.trim()) logAudit({ action: "note", table: "applications", details: { count: ids.length, note: bulkNotes.trim() } });
+    toast({
+      title: "Bulk update complete",
+      description: `${ids.length} applications updated`,
+      action: (
+        <Button size="sm" variant="outline" onClick={async () => {
+          for (const s of snapshots) {
+            await supabase.from("applications").update({ status: s.status, review_notes: s.review_notes }).eq("id", s.id);
+          }
+          logAudit({ action: "bulk_update", table: "applications", details: { rollback: true, count: snapshots.length } });
+          toast({ title: "Reverted" });
+          onRefresh();
+        }}>Undo</Button>
+      ) as any,
+    });
     setSelected(new Set());
     setBulkNotes("");
     onRefresh();
   };
 
   const allSelected = filtered.length > 0 && selected.size === filtered.length;
+
+
 
   return (
     <div className="space-y-6">
