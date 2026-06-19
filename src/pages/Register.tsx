@@ -27,13 +27,21 @@ const Register = () => {
       toast({ title: "Select a role", description: "Please select your account type", variant: "destructive" });
       return;
     }
+    if (!email || !email.includes("@")) {
+      toast({ title: "Invalid email", description: "Please enter a valid email address.", variant: "destructive" });
+      return;
+    }
+    if (password.length < 6) {
+      toast({ title: "Password too short", description: "Password must be at least 6 characters.", variant: "destructive" });
+      return;
+    }
     setIsLoading(true);
     try {
       await signUp(email, password, fullName, role);
-      toast({ title: "Registration Successful! ", description: "Please check your email to verify your account." });
+      toast({ title: "Account created", description: "Please check your email to verify your account." });
       navigate("/login");
     } catch (error: any) {
-      toast({ title: "Registration Failed", description: error.message, variant: "destructive" });
+      toast({ title: "Sign-up failed", description: friendlyAuthError(error, "signup"), variant: "destructive" });
     } finally {
       setIsLoading(false);
     }
