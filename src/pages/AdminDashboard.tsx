@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BarChart3, BookOpen, Building2, ClipboardList, Code2, FlaskConical, Handshake, HeartPulse, LayoutDashboard, Mail, Newspaper, Rocket, Search, Settings, ShieldCheck, SlidersHorizontal, Trophy, UserCog, Users } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { BarChart3, BookOpen, Building2, ClipboardList, Code2, FlaskConical, Handshake, HeartPulse, LayoutDashboard, Mail, Newspaper, Rocket, Search, Settings, ShieldCheck, SlidersHorizontal, Trophy, UserCog, Users, ChevronLeft, ChevronRight, ScrollText, Workflow } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import AdminOverview from "@/components/dashboard/AdminOverview";
