@@ -38,6 +38,8 @@ const ApplicationManagement = ({ applications, onRefresh }: ApplicationManagemen
   const [bulkStage, setBulkStage] = useState<string>("under_review");
   const [bulkNotes, setBulkNotes] = useState("");
   const [busy, setBusy] = useState(false);
+  const [confirm, setConfirm] = useState<{ title: string; description: string; action: () => Promise<void> } | null>(null);
+  const askConfirm = (title: string, description: string, action: () => Promise<any>) => setConfirm({ title, description, action: async () => { await action(); } });
 
   const emptyApplication = {
     program: "MVP Lab",
