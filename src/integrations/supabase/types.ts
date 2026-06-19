@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_audit_log: {
+        Row: {
+          action_type: string
+          admin_email: string | null
+          admin_user_id: string | null
+          created_at: string
+          details: Json | null
+          id: string
+          record_id: string | null
+          table_name: string
+        }
+        Insert: {
+          action_type: string
+          admin_email?: string | null
+          admin_user_id?: string | null
+          created_at?: string
+          details?: Json | null
+          id?: string
+          record_id?: string | null
+          table_name: string
+        }
+        Update: {
+          action_type?: string
+          admin_email?: string | null
+          admin_user_id?: string | null
+          created_at?: string
+          details?: Json | null
+          id?: string
+          record_id?: string | null
+          table_name?: string
+        }
+        Relationships: []
+      }
       applications: {
         Row: {
           applicant_name: string
@@ -595,6 +628,7 @@ export type Database = {
           email: string | null
           full_name: string | null
           id: string
+          is_active: boolean
           phone: string | null
           updated_at: string
           user_id: string
@@ -607,6 +641,7 @@ export type Database = {
           email?: string | null
           full_name?: string | null
           id?: string
+          is_active?: boolean
           phone?: string | null
           updated_at?: string
           user_id: string
@@ -619,6 +654,7 @@ export type Database = {
           email?: string | null
           full_name?: string | null
           id?: string
+          is_active?: boolean
           phone?: string | null
           updated_at?: string
           user_id?: string
