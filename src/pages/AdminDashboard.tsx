@@ -70,6 +70,7 @@ const adminMenuGroups = [
     items: [
       { value: "users", label: "Users", icon: UserCog },
       { value: "acl", label: "ACL", icon: ShieldCheck },
+      { value: "audit", label: "Audit Log", icon: ScrollText },
       { value: "config", label: "Config", icon: SlidersHorizontal },
       { value: "header-scripts", label: "Header Scripts", icon: Code2 },
       { value: "docs", label: "Docs", icon: BookOpen },
