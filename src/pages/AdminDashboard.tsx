@@ -27,6 +27,7 @@ import BlogManagement from "@/components/dashboard/BlogManagement";
 import NewsManagement from "@/components/dashboard/NewsManagement";
 import StartupDirectoryManagement from "@/components/dashboard/StartupDirectoryManagement";
 import AuditLog from "@/components/dashboard/AuditLog";
+import RoleManagement from "@/components/dashboard/RoleManagement";
 
 const adminMenuGroups = [
   {
