@@ -1,18 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
-import { ShieldCheck } from "lucide-react";
+import { Download, RotateCcw, ShieldCheck } from "lucide-react";
+
+const ACTIONS = [
+  "create", "update", "delete", "bulk_update", "bulk_delete",
+  "status_change", "note", "password_change",
+];
 
 const AuditLog = () => {
   const [rows, setRows] = useState<any[]>([]);
-  const [search, setSearch] = useState("");
-  const [actionFilter, setActionFilter] = useState("all");
   const [loading, setLoading] = useState(true);
+
+  // Filters
+  const [q, setQ] = useState(""); // global full-text
+  const [emailQ, setEmailQ] = useState("");
+  const [tableQ, setTableQ] = useState("");
+  const [recordQ, setRecordQ] = useState("");
+  const [actionFilter, setActionFilter] = useState("all");
+  const [tableFilter, setTableFilter] = useState("all");
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
 
   const fetchData = async () => {
     setLoading(true);
@@ -20,54 +34,124 @@ const AuditLog = () => {
       .from("admin_audit_log")
       .select("*")
       .order("created_at", { ascending: false })
-      .limit(500);
+      .limit(2000);
     setRows(data ?? []);
     setLoading(false);
   };
 
   useEffect(() => { fetchData(); }, []);
 
-  const filtered = rows.filter((r) => {
-    const matchesSearch =
-      !search ||
-      r.admin_email?.toLowerCase().includes(search.toLowerCase()) ||
-      r.table_name?.toLowerCase().includes(search.toLowerCase()) ||
-      r.record_id?.toLowerCase().includes(search.toLowerCase());
-    const matchesAction = actionFilter === "all" || r.action_type === actionFilter;
-    return matchesSearch && matchesAction;
-  });
+  const tableNames = useMemo(() => {
+    const s = new Set<string>();
+    rows.forEach((r) => r.table_name && s.add(r.table_name));
+    return Array.from(s).sort();
+  }, [rows]);
+
+  const filtered = useMemo(() => {
+    const fromTs = from ? new Date(from).getTime() : null;
+    const toTs = to ? new Date(to).getTime() + 24 * 3600 * 1000 : null;
+    const ql = q.toLowerCase().trim();
+    const el = emailQ.toLowerCase().trim();
+    const tl = tableQ.toLowerCase().trim();
+    const rl = recordQ.toLowerCase().trim();
+
+    return rows.filter((r) => {
+      if (actionFilter !== "all" && r.action_type !== actionFilter) return false;
+      if (tableFilter !== "all" && r.table_name !== tableFilter) return false;
+      const ts = new Date(r.created_at).getTime();
+      if (fromTs && ts < fromTs) return false;
+      if (toTs && ts > toTs) return false;
+      if (el && !(r.admin_email ?? "").toLowerCase().includes(el)) return false;
+      if (tl && !(r.table_name ?? "").toLowerCase().includes(tl)) return false;
+      if (rl && !(r.record_id ?? "").toLowerCase().includes(rl)) return false;
+      if (ql) {
+        const hay = [
+          r.admin_email, r.admin_user_id, r.table_name, r.record_id,
+          r.action_type, r.details ? JSON.stringify(r.details) : "",
+        ].join(" ").toLowerCase();
+        if (!hay.includes(ql)) return false;
+      }
+      return true;
+    });
+  }, [rows, q, emailQ, tableQ, recordQ, actionFilter, tableFilter, from, to]);
+
+  const resetFilters = () => {
+    setQ(""); setEmailQ(""); setTableQ(""); setRecordQ("");
+    setActionFilter("all"); setTableFilter("all"); setFrom(""); setTo("");
+  };
+
+  const exportCsv = () => {
+    const headers = ["when", "admin_email", "admin_user_id", "action", "table", "record_id", "details"];
+    const escape = (v: any) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+    const lines = [headers.join(",")].concat(
+      filtered.map((r) => [
+        r.created_at, r.admin_email, r.admin_user_id, r.action_type,
+        r.table_name, r.record_id, r.details ? JSON.stringify(r.details) : "",
+      ].map(escape).join(","))
+    );
+    const blob = new Blob([lines.join("\n")], { type: "text/csv" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `audit-log-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
 
   const variantFor = (a: string) => {
-    if (a.includes("delete")) return "destructive" as const;
+    if (a?.includes("delete")) return "destructive" as const;
     if (a === "create") return "default" as const;
     return "secondary" as const;
   };
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <ShieldCheck className="h-5 w-5 text-primary" />
-        <h2 className="text-2xl font-bold">Admin Audit Log</h2>
+      <div className="flex items-center justify-between gap-2 flex-wrap">
+        <div className="flex items-center gap-2">
+          <ShieldCheck className="h-5 w-5 text-primary" />
+          <h2 className="text-2xl font-bold">Admin Audit Log</h2>
+        </div>
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" onClick={resetFilters}><RotateCcw className="h-4 w-4 mr-1" /> Reset</Button>
+          <Button variant="outline" size="sm" onClick={exportCsv}><Download className="h-4 w-4 mr-1" /> Export CSV</Button>
+        </div>
       </div>
-      <p className="text-sm text-muted-foreground">Every create, update, delete, and reviewer note change made by an admin is recorded here.</p>
+      <p className="text-sm text-muted-foreground">
+        Every create, update, delete, and reviewer note change made by an admin is recorded here.
+        Showing <b>{filtered.length}</b> of {rows.length} events.
+      </p>
 
-      <div className="flex flex-wrap items-center gap-3">
-        <Input className="max-w-sm" placeholder="Search by admin, table, or record id" value={search} onChange={(e) => setSearch(e.target.value)} />
-        <Select value={actionFilter} onValueChange={setActionFilter}>
-          <SelectTrigger className="w-48"><SelectValue /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All actions</SelectItem>
-            <SelectItem value="create">Create</SelectItem>
-            <SelectItem value="update">Update</SelectItem>
-            <SelectItem value="delete">Delete</SelectItem>
-            <SelectItem value="bulk_update">Bulk update</SelectItem>
-            <SelectItem value="bulk_delete">Bulk delete</SelectItem>
-            <SelectItem value="status_change">Status change</SelectItem>
-            <SelectItem value="note">Reviewer note</SelectItem>
-            <SelectItem value="password_change">Password change</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+      <Card>
+        <CardContent className="pt-6 space-y-3">
+          <Input placeholder="Full-text search (admin, table, record, action, details)…" value={q} onChange={(e) => setQ(e.target.value)} />
+          <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+            <Input placeholder="Admin email contains…" value={emailQ} onChange={(e) => setEmailQ(e.target.value)} />
+            <Input placeholder="Record ID contains…" value={recordQ} onChange={(e) => setRecordQ(e.target.value)} />
+            <Select value={actionFilter} onValueChange={setActionFilter}>
+              <SelectTrigger><SelectValue placeholder="Action" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All actions</SelectItem>
+                {ACTIONS.map((a) => <SelectItem key={a} value={a}>{a}</SelectItem>)}
+              </SelectContent>
+            </Select>
+            <Select value={tableFilter} onValueChange={setTableFilter}>
+              <SelectTrigger><SelectValue placeholder="Table" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All tables</SelectItem>
+                {tableNames.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}
+              </SelectContent>
+            </Select>
+            <div>
+              <label className="text-xs text-muted-foreground">From</label>
+              <Input type="date" value={from} onChange={(e) => setFrom(e.target.value)} />
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground">To</label>
+              <Input type="date" value={to} onChange={(e) => setTo(e.target.value)} />
+            </div>
+            <Input placeholder="Table name contains…" value={tableQ} onChange={(e) => setTableQ(e.target.value)} />
+          </div>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardContent className="p-0">
@@ -103,7 +187,7 @@ const AuditLog = () => {
                   </TableRow>
                 ))}
                 {filtered.length === 0 && (
-                  <TableRow><TableCell colSpan={6} className="text-center py-8 text-muted-foreground">No audit events yet.</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={6} className="text-center py-8 text-muted-foreground">No audit events match these filters.</TableCell></TableRow>
                 )}
               </TableBody>
             </Table>

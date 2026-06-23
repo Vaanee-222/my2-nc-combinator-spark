@@ -27,6 +27,7 @@ import BlogManagement from "@/components/dashboard/BlogManagement";
 import NewsManagement from "@/components/dashboard/NewsManagement";
 import StartupDirectoryManagement from "@/components/dashboard/StartupDirectoryManagement";
 import AuditLog from "@/components/dashboard/AuditLog";
+import RoleManagement from "@/components/dashboard/RoleManagement";
 
 const adminMenuGroups = [
   {
@@ -69,6 +70,7 @@ const adminMenuGroups = [
     label: "Access & System",
     items: [
       { value: "users", label: "Users", icon: UserCog },
+      { value: "roles", label: "Roles", icon: ShieldCheck },
       { value: "acl", label: "ACL", icon: ShieldCheck },
       { value: "audit", label: "Audit Log", icon: ScrollText },
       { value: "config", label: "Config", icon: SlidersHorizontal },
@@ -263,6 +265,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="acl" className="space-y-6">
             <ACLManagement />
+          </TabsContent>
+
+          <TabsContent value="roles" className="space-y-6">
+            <RoleManagement />
           </TabsContent>
 
           <TabsContent value="audit" className="space-y-6">
