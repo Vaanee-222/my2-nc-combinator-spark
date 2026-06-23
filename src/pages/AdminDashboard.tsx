@@ -70,6 +70,7 @@ const adminMenuGroups = [
     label: "Access & System",
     items: [
       { value: "users", label: "Users", icon: UserCog },
+      { value: "roles", label: "Roles", icon: ShieldCheck },
       { value: "acl", label: "ACL", icon: ShieldCheck },
       { value: "audit", label: "Audit Log", icon: ScrollText },
       { value: "config", label: "Config", icon: SlidersHorizontal },
