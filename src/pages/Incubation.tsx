@@ -220,13 +220,13 @@ const Incubation = () => {
                     <div className="text-2xl"></div>
                   </div>
                   <CardTitle className="text-xl">{program.name}</CardTitle>
-                  <CardDescription className="flex items-center space-x-4 text-sm">
+                  <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                     <span className="flex items-center space-x-1">
                       <Clock className="h-3 w-3" />
                       <span>{program.duration}</span>
                     </span>
                     <Badge variant="outline" className="text-xs">{program.stage}</Badge>
-                  </CardDescription>
+                  </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <p className="text-sm text-muted-foreground">{program.description}</p>
