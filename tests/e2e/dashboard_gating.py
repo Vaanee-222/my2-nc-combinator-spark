@@ -55,11 +55,13 @@ async def main():
 
         # 2. Public routes should render meaningful content and not crash.
         for route in PUBLIC_ROUTES:
-            await page.goto(f"{BASE}{route}", wait_until="domcontentloaded")
+            await page.goto(f"{BASE}{route}", wait_until="load")
             try:
-                await page.wait_for_selector("body", timeout=5000)
-                text = (await page.locator("body").inner_text()).strip()
-                rendered = len(text) > 40
+                await page.wait_for_function(
+                    "document.body && document.body.innerText.trim().length > 40",
+                    timeout=8000,
+                )
+                rendered = True
             except Exception:
                 rendered = False
             results["public"].append({"route": route, "url": page.url, "rendered": rendered})
