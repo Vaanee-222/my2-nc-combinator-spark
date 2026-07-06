@@ -76,7 +76,7 @@ async def main():
     print(json.dumps(results, indent=2))
 
     failures = [r for r in results["gating"] if not r["redirected_to_login"]]
-    failures += [r for r in results["public"] if not r["has_main"]]
+    failures += [r for r in results["public"] if not r["rendered"]]
     if not results["notfound"]["shows_404"]:
         failures.append({"notfound": results["notfound"]})
     sys.exit(1 if failures or results["errors"] else 0)
