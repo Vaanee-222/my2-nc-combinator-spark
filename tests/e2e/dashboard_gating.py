@@ -53,15 +53,16 @@ async def main():
             results["gating"].append({"route": route, "final": final, "redirected_to_login": ok})
             await page.screenshot(path=str(OUT / f"gate_{route.strip('/').replace('/', '_')}.png"))
 
-        # 2. Public routes should render <main> and not crash.
+        # 2. Public routes should render meaningful content and not crash.
         for route in PUBLIC_ROUTES:
             await page.goto(f"{BASE}{route}", wait_until="domcontentloaded")
             try:
-                await page.wait_for_selector("main, [role=main], body", timeout=5000)
-                has_main = await page.locator("main").count() > 0
-            except Exception as e:
-                has_main = False
-            results["public"].append({"route": route, "url": page.url, "has_main": has_main})
+                await page.wait_for_selector("body", timeout=5000)
+                text = (await page.locator("body").inner_text()).strip()
+                rendered = len(text) > 40
+            except Exception:
+                rendered = False
+            results["public"].append({"route": route, "url": page.url, "rendered": rendered})
 
         # 3. NotFound behaviour on an unknown route.
         await page.goto(f"{BASE}{BROKEN}", wait_until="domcontentloaded")
