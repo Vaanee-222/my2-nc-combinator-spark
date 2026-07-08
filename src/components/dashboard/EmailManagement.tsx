@@ -192,6 +192,8 @@ const EmailManagement = () => {
           <TabsTrigger value="compose">Compose</TabsTrigger>
           <TabsTrigger value="triggers">Notification Triggers</TabsTrigger>
           <TabsTrigger value="history">Send History</TabsTrigger>
+          <TabsTrigger value="smtp" data-testid="tab-smtp">SMTP</TabsTrigger>
+          <TabsTrigger value="provider" data-testid="tab-provider">Providers</TabsTrigger>
         </TabsList>
 
         {/* Templates Tab */}
