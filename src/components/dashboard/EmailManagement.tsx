@@ -359,6 +359,120 @@ const EmailManagement = () => {
             </CardContent>
           </Card>
         </TabsContent>
+
+        {/* SMTP Tab */}
+        <TabsContent value="smtp" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2"><Server className="h-5 w-5" /><span>SMTP Configuration</span></CardTitle>
+              <CardDescription>Configure your outbound SMTP server. Credentials are stored locally in the admin browser only.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2 md:col-span-2">
+                  <Label htmlFor="smtp-host">SMTP Host *</Label>
+                  <Input id="smtp-host" placeholder="smtp.example.com" value={smtp.host} onChange={e => setSmtp({ ...smtp, host: e.target.value })} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="smtp-port">Port *</Label>
+                  <Input id="smtp-port" type="number" placeholder="587" value={smtp.port} onChange={e => setSmtp({ ...smtp, port: e.target.value })} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="smtp-user">Username</Label>
+                  <Input id="smtp-user" placeholder="apikey / user@domain" value={smtp.username} onChange={e => setSmtp({ ...smtp, username: e.target.value })} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="smtp-pass">Password</Label>
+                  <Input id="smtp-pass" type="password" placeholder="••••••••" value={smtp.password} onChange={e => setSmtp({ ...smtp, password: e.target.value })} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Encryption</Label>
+                  <Select value={smtp.encryption} onValueChange={(v: any) => setSmtp({ ...smtp, encryption: v })}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">None</SelectItem>
+                      <SelectItem value="ssl">SSL</SelectItem>
+                      <SelectItem value="tls">TLS</SelectItem>
+                      <SelectItem value="starttls">STARTTLS</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="smtp-from-name">From Name</Label>
+                  <Input id="smtp-from-name" placeholder="Xi Combinator" value={smtp.fromName} onChange={e => setSmtp({ ...smtp, fromName: e.target.value })} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="smtp-from-email">From Email *</Label>
+                  <Input id="smtp-from-email" type="email" placeholder="noreply@xicombinator.com" value={smtp.fromEmail} onChange={e => setSmtp({ ...smtp, fromEmail: e.target.value })} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="smtp-reply">Reply-To</Label>
+                  <Input id="smtp-reply" type="email" placeholder="hello@xicombinator.com" value={smtp.replyTo} onChange={e => setSmtp({ ...smtp, replyTo: e.target.value })} />
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 pt-2">
+                <Button variant="outline" onClick={testSmtp} disabled={testingSmtp} data-testid="smtp-test">
+                  <PlugZap className="h-4 w-4 mr-1" /> {testingSmtp ? "Testing…" : "Test Connection"}
+                </Button>
+                <Button onClick={saveSmtp} data-testid="smtp-save">
+                  <Save className="h-4 w-4 mr-1" /> Save SMTP
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Provider Tab */}
+        <TabsContent value="provider" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2"><KeyRound className="h-5 w-5" /><span>Email Service Provider</span></CardTitle>
+              <CardDescription>Alternative to SMTP — configure API-based providers like Resend, SendGrid, Mailgun, Postmark, or AWS SES.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Provider</Label>
+                  <Select value={provider.provider} onValueChange={(v: any) => setProvider({ ...provider, provider: v })}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="resend">Resend</SelectItem>
+                      <SelectItem value="sendgrid">SendGrid</SelectItem>
+                      <SelectItem value="mailgun">Mailgun</SelectItem>
+                      <SelectItem value="postmark">Postmark</SelectItem>
+                      <SelectItem value="ses">AWS SES</SelectItem>
+                      <SelectItem value="custom">Custom / Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="prov-key">API Key *</Label>
+                  <Input id="prov-key" type="password" placeholder="re_xxx / SG.xxx / key-xxx" value={provider.apiKey} onChange={e => setProvider({ ...provider, apiKey: e.target.value })} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="prov-domain">Sending Domain</Label>
+                  <Input id="prov-domain" placeholder="mail.xicombinator.com" value={provider.domain} onChange={e => setProvider({ ...provider, domain: e.target.value })} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="prov-region">Region</Label>
+                  <Input id="prov-region" placeholder="us-east-1 (SES) / eu (Mailgun)" value={provider.region} onChange={e => setProvider({ ...provider, region: e.target.value })} />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label htmlFor="prov-webhook">Webhook Signing Secret</Label>
+                  <Input id="prov-webhook" type="password" placeholder="whsec_xxx" value={provider.webhookSecret} onChange={e => setProvider({ ...provider, webhookSecret: e.target.value })} />
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 pt-2">
+                <Button variant="outline" onClick={testProvider} disabled={testingProvider} data-testid="provider-test">
+                  <PlugZap className="h-4 w-4 mr-1" /> {testingProvider ? "Testing…" : "Test Provider"}
+                </Button>
+                <Button onClick={saveProvider} data-testid="provider-save">
+                  <Save className="h-4 w-4 mr-1" /> Save Provider
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
       </Tabs>
     </div>
   );
