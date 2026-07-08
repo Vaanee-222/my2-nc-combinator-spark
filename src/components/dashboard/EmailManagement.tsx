@@ -67,6 +67,17 @@ const EmailManagement = () => {
   const [composeSubject, setComposeSubject] = useState("");
   const [composeBody, setComposeBody] = useState("");
   const [triggers, setTriggers] = useState(notificationTriggers);
+  const [smtp, setSmtp] = useState<SmtpConfig>(defaultSmtp);
+  const [provider, setProvider] = useState<ProviderConfig>(defaultProvider);
+  const [testingSmtp, setTestingSmtp] = useState(false);
+  const [testingProvider, setTestingProvider] = useState(false);
+
+  useEffect(() => {
+    try {
+      const s = localStorage.getItem(SMTP_KEY); if (s) setSmtp({ ...defaultSmtp, ...JSON.parse(s) });
+      const p = localStorage.getItem(PROVIDER_KEY); if (p) setProvider({ ...defaultProvider, ...JSON.parse(p) });
+    } catch {}
+  }, []);
 
   const filteredTemplates = categoryFilter === "all"
     ? emailTemplates
