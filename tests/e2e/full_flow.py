@@ -105,6 +105,7 @@ async def main():
         summary = await admin_workflow(page)
         summary["errors"] = errors
         summary["applicant_email"] = APPLICANT_EMAIL
+        summary["cleanup"] = cleanup_test_data()
         (OUT / "summary.json").write_text(json.dumps(summary, indent=2))
         print(json.dumps(summary, indent=2))
         await browser.close()
