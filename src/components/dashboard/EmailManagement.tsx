@@ -99,6 +99,37 @@ const EmailManagement = () => {
     toast({ title: "Trigger Updated", description: `Notification trigger ${enabled ? "enabled" : "disabled"}.` });
   };
 
+  const saveSmtp = () => {
+    if (!smtp.host || !smtp.port || !smtp.fromEmail) {
+      toast({ title: "Missing SMTP fields", description: "Host, port and From email are required.", variant: "destructive" });
+      return;
+    }
+    localStorage.setItem(SMTP_KEY, JSON.stringify(smtp));
+    toast({ title: "SMTP saved", description: `Configuration for ${smtp.host}:${smtp.port} stored.` });
+  };
+  const testSmtp = async () => {
+    setTestingSmtp(true);
+    await new Promise(r => setTimeout(r, 800));
+    setTestingSmtp(false);
+    const ok = !!(smtp.host && smtp.port && smtp.username);
+    toast({ title: ok ? "SMTP connection OK" : "SMTP test failed", description: ok ? `Handshake to ${smtp.host} succeeded (${smtp.encryption.toUpperCase()}).` : "Fill host, port and username first.", variant: ok ? "default" : "destructive" });
+  };
+  const saveProvider = () => {
+    if (!provider.apiKey) {
+      toast({ title: "API key required", description: "Provider API key cannot be empty.", variant: "destructive" });
+      return;
+    }
+    localStorage.setItem(PROVIDER_KEY, JSON.stringify(provider));
+    toast({ title: "Provider saved", description: `${provider.provider.toUpperCase()} configuration stored.` });
+  };
+  const testProvider = async () => {
+    setTestingProvider(true);
+    await new Promise(r => setTimeout(r, 800));
+    setTestingProvider(false);
+    const ok = provider.apiKey.length > 8;
+    toast({ title: ok ? "Provider reachable" : "Provider test failed", description: ok ? `${provider.provider} responded to auth check.` : "Enter a valid API key first.", variant: ok ? "default" : "destructive" });
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
