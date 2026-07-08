@@ -9,8 +9,23 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Mail, Send, FileText, Bell, Eye, Copy, Plus, Clock, CheckCircle, XCircle } from "lucide-react";
+import { Mail, Send, FileText, Bell, Eye, Copy, Plus, Clock, CheckCircle, XCircle, Server, KeyRound, Save, PlugZap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useEffect } from "react";
+
+type SmtpConfig = {
+  host: string; port: string; username: string; password: string;
+  encryption: "none" | "ssl" | "tls" | "starttls";
+  fromName: string; fromEmail: string; replyTo: string;
+};
+type ProviderConfig = {
+  provider: "resend" | "sendgrid" | "mailgun" | "postmark" | "ses" | "custom";
+  apiKey: string; domain: string; region: string; webhookSecret: string;
+};
+const SMTP_KEY = "admin_email_smtp_v1";
+const PROVIDER_KEY = "admin_email_provider_v1";
+const defaultSmtp: SmtpConfig = { host: "", port: "587", username: "", password: "", encryption: "tls", fromName: "", fromEmail: "", replyTo: "" };
+const defaultProvider: ProviderConfig = { provider: "resend", apiKey: "", domain: "", region: "us-east-1", webhookSecret: "" };
 
 const emailTemplates = [
   { id: "welcome", name: "Welcome Email", subject: "Welcome to Xi Combinator!", category: "onboarding", status: "active", lastEdited: "2026-05-01" },
