@@ -1,42 +1,53 @@
 # End-to-End Playwright Tests
 
-Python Playwright scripts that exercise the running app at `http://localhost:8080`.
-The sandbox has Playwright + Chromium preinstalled — no `pip install` needed.
+Python Playwright scripts that exercise `http://localhost:8080`. Chromium is
+preinstalled in the sandbox — no `pip install` needed.
+
+## Shared helpers — `_helpers.py`
+- `unique_email(prefix)` — collision-free `<prefix>-<ts>-<uuid>@e2e.test`.
+- `cleanup_test_data()` — deletes every row created by any e2e run (emails
+  ending in `@e2e.test`) from `inclab_applications`, `applications`,
+  `hackathon_registrations`, `incubation_applications`, `user_roles`,
+  `profiles`, and `auth.users`. Uses the sandbox's preconfigured `psql` env;
+  no-ops with a warning when `PGHOST` is unset.
+
+Run cleanup on demand:
+```bash
+python3 tests/e2e/_helpers.py
+```
+
+Every test script below calls cleanup automatically on exit, so repeated CI
+runs never collide with existing users, applications, or sessions.
 
 ## Scripts
 
 ### `dashboard_gating.py`
-Verifies every dashboard route (`/admin-dashboard`, `/investor-dashboard`,
-`/startup-dashboard`, `/mentor-dashboard`, `/cofounder-dashboard`,
-`/user-dashboard`, `/admin-workflow`) redirects unauthenticated users to
-`/login`, that key public routes render `<main>`, and that unknown URLs render
-the NotFound page. Also collects any uncaught page errors.
-
-```bash
-python3 tests/e2e/dashboard_gating.py
-```
-
-Exit code `0` on success. JSON report + screenshots land in `/tmp/browser/e2e/`.
+Route-gating smoke test. No auth required. Exit `0` on success.
 
 ### `full_flow.py`
-Runs the full **register → login → application submission → admin stage
-update → audit trail** journey via the `/admin-workflow` page.
-
-Needs an existing admin account:
-
+`register → login → application submission → admin stage update → audit trail`.
+Applicant email is per-run unique; test data is purged on exit.
 ```bash
-ADMIN_EMAIL=admin@example.com \
-ADMIN_PASSWORD=... \
-python3 tests/e2e/full_flow.py
+ADMIN_EMAIL=... ADMIN_PASSWORD=... python3 tests/e2e/full_flow.py
 ```
 
-A throwaway applicant `applicant-<timestamp>@e2e.test` is created each run.
-Auth email confirmation must be OFF for the project (default in Lovable Cloud
-dev). Screenshots + `summary.json` are written to
-`/tmp/browser/e2e/full_flow/`.
+### `inclab_flow.py`
+Registers a fresh applicant, submits the Xi Lab (INClab) form from `/xi-lab`,
+then logs in as admin and verifies the application shows up in the admin
+queue.
+```bash
+ADMIN_EMAIL=... ADMIN_PASSWORD=... python3 tests/e2e/inclab_flow.py
+```
 
-## Adding to CI
-These scripts exit non-zero on failure, so any CI runner that can launch
-Chromium (`playwright install chromium`) can run them directly after `bun run
-dev` is up on port 8080. Wire them in as post-build smoke steps alongside the
-existing `vitest` suite.
+### `bulk_actions.py`
+Covers admin bulk approve/reject on Applications and activate/deactivate on
+Users, including confirmation dialog surfacing. Read-only by default (opens
+the confirmation dialog and cancels — rollback-safe). Set
+`ADMIN_APPLY_BULK=1` to actually confirm the action.
+```bash
+ADMIN_EMAIL=... ADMIN_PASSWORD=... python3 tests/e2e/bulk_actions.py
+# destructive mode
+ADMIN_APPLY_BULK=1 ADMIN_EMAIL=... ADMIN_PASSWORD=... python3 tests/e2e/bulk_actions.py
+```
+
+Screenshots + `summary.json` land in `/tmp/browser/e2e/<script>/`.

@@ -16,13 +16,14 @@ Screenshots + summary written under /tmp/browser/e2e/full_flow/.
 import asyncio, os, sys, time, json
 from pathlib import Path
 from playwright.async_api import async_playwright
+from _helpers import unique_email, cleanup_test_data
 
 BASE = "http://localhost:8080"
 OUT = Path("/tmp/browser/e2e/full_flow"); OUT.mkdir(parents=True, exist_ok=True)
 
 ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD")
-APPLICANT_EMAIL = f"applicant-{int(time.time())}@e2e.test"
+APPLICANT_EMAIL = unique_email("applicant")
 APPLICANT_PASSWORD = "Passw0rd!Passw0rd!"
 APPLICANT_NAME = "E2E Applicant"
 
@@ -104,6 +105,7 @@ async def main():
         summary = await admin_workflow(page)
         summary["errors"] = errors
         summary["applicant_email"] = APPLICANT_EMAIL
+        summary["cleanup"] = cleanup_test_data()
         (OUT / "summary.json").write_text(json.dumps(summary, indent=2))
         print(json.dumps(summary, indent=2))
         await browser.close()

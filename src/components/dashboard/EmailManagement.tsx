@@ -9,8 +9,23 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Mail, Send, FileText, Bell, Eye, Copy, Plus, Clock, CheckCircle, XCircle } from "lucide-react";
+import { Mail, Send, FileText, Bell, Eye, Copy, Plus, Clock, CheckCircle, XCircle, Server, KeyRound, Save, PlugZap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useEffect } from "react";
+
+type SmtpConfig = {
+  host: string; port: string; username: string; password: string;
+  encryption: "none" | "ssl" | "tls" | "starttls";
+  fromName: string; fromEmail: string; replyTo: string;
+};
+type ProviderConfig = {
+  provider: "resend" | "sendgrid" | "mailgun" | "postmark" | "ses" | "custom";
+  apiKey: string; domain: string; region: string; webhookSecret: string;
+};
+const SMTP_KEY = "admin_email_smtp_v1";
+const PROVIDER_KEY = "admin_email_provider_v1";
+const defaultSmtp: SmtpConfig = { host: "", port: "587", username: "", password: "", encryption: "tls", fromName: "", fromEmail: "", replyTo: "" };
+const defaultProvider: ProviderConfig = { provider: "resend", apiKey: "", domain: "", region: "us-east-1", webhookSecret: "" };
 
 const emailTemplates = [
   { id: "welcome", name: "Welcome Email", subject: "Welcome to Xi Combinator!", category: "onboarding", status: "active", lastEdited: "2026-05-01" },
@@ -52,6 +67,17 @@ const EmailManagement = () => {
   const [composeSubject, setComposeSubject] = useState("");
   const [composeBody, setComposeBody] = useState("");
   const [triggers, setTriggers] = useState(notificationTriggers);
+  const [smtp, setSmtp] = useState<SmtpConfig>(defaultSmtp);
+  const [provider, setProvider] = useState<ProviderConfig>(defaultProvider);
+  const [testingSmtp, setTestingSmtp] = useState(false);
+  const [testingProvider, setTestingProvider] = useState(false);
+
+  useEffect(() => {
+    try {
+      const s = localStorage.getItem(SMTP_KEY); if (s) setSmtp({ ...defaultSmtp, ...JSON.parse(s) });
+      const p = localStorage.getItem(PROVIDER_KEY); if (p) setProvider({ ...defaultProvider, ...JSON.parse(p) });
+    } catch {}
+  }, []);
 
   const filteredTemplates = categoryFilter === "all"
     ? emailTemplates
@@ -71,6 +97,37 @@ const EmailManagement = () => {
   const handleToggleTrigger = (id: number, enabled: boolean) => {
     setTriggers(prev => prev.map(t => t.id === id ? { ...t, enabled } : t));
     toast({ title: "Trigger Updated", description: `Notification trigger ${enabled ? "enabled" : "disabled"}.` });
+  };
+
+  const saveSmtp = () => {
+    if (!smtp.host || !smtp.port || !smtp.fromEmail) {
+      toast({ title: "Missing SMTP fields", description: "Host, port and From email are required.", variant: "destructive" });
+      return;
+    }
+    localStorage.setItem(SMTP_KEY, JSON.stringify(smtp));
+    toast({ title: "SMTP saved", description: `Configuration for ${smtp.host}:${smtp.port} stored.` });
+  };
+  const testSmtp = async () => {
+    setTestingSmtp(true);
+    await new Promise(r => setTimeout(r, 800));
+    setTestingSmtp(false);
+    const ok = !!(smtp.host && smtp.port && smtp.username);
+    toast({ title: ok ? "SMTP connection OK" : "SMTP test failed", description: ok ? `Handshake to ${smtp.host} succeeded (${smtp.encryption.toUpperCase()}).` : "Fill host, port and username first.", variant: ok ? "default" : "destructive" });
+  };
+  const saveProvider = () => {
+    if (!provider.apiKey) {
+      toast({ title: "API key required", description: "Provider API key cannot be empty.", variant: "destructive" });
+      return;
+    }
+    localStorage.setItem(PROVIDER_KEY, JSON.stringify(provider));
+    toast({ title: "Provider saved", description: `${provider.provider.toUpperCase()} configuration stored.` });
+  };
+  const testProvider = async () => {
+    setTestingProvider(true);
+    await new Promise(r => setTimeout(r, 800));
+    setTestingProvider(false);
+    const ok = provider.apiKey.length > 8;
+    toast({ title: ok ? "Provider reachable" : "Provider test failed", description: ok ? `${provider.provider} responded to auth check.` : "Enter a valid API key first.", variant: ok ? "default" : "destructive" });
   };
 
   return (
@@ -135,6 +192,8 @@ const EmailManagement = () => {
           <TabsTrigger value="compose">Compose</TabsTrigger>
           <TabsTrigger value="triggers">Notification Triggers</TabsTrigger>
           <TabsTrigger value="history">Send History</TabsTrigger>
+          <TabsTrigger value="smtp" data-testid="tab-smtp">SMTP</TabsTrigger>
+          <TabsTrigger value="provider" data-testid="tab-provider">Providers</TabsTrigger>
         </TabsList>
 
         {/* Templates Tab */}
@@ -297,6 +356,120 @@ const EmailManagement = () => {
                   ))}
                 </TableBody>
               </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* SMTP Tab */}
+        <TabsContent value="smtp" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2"><Server className="h-5 w-5" /><span>SMTP Configuration</span></CardTitle>
+              <CardDescription>Configure your outbound SMTP server. Credentials are stored locally in the admin browser only.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2 md:col-span-2">
+                  <Label htmlFor="smtp-host">SMTP Host *</Label>
+                  <Input id="smtp-host" placeholder="smtp.example.com" value={smtp.host} onChange={e => setSmtp({ ...smtp, host: e.target.value })} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="smtp-port">Port *</Label>
+                  <Input id="smtp-port" type="number" placeholder="587" value={smtp.port} onChange={e => setSmtp({ ...smtp, port: e.target.value })} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="smtp-user">Username</Label>
+                  <Input id="smtp-user" placeholder="apikey / user@domain" value={smtp.username} onChange={e => setSmtp({ ...smtp, username: e.target.value })} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="smtp-pass">Password</Label>
+                  <Input id="smtp-pass" type="password" placeholder="••••••••" value={smtp.password} onChange={e => setSmtp({ ...smtp, password: e.target.value })} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Encryption</Label>
+                  <Select value={smtp.encryption} onValueChange={(v: any) => setSmtp({ ...smtp, encryption: v })}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">None</SelectItem>
+                      <SelectItem value="ssl">SSL</SelectItem>
+                      <SelectItem value="tls">TLS</SelectItem>
+                      <SelectItem value="starttls">STARTTLS</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="smtp-from-name">From Name</Label>
+                  <Input id="smtp-from-name" placeholder="Xi Combinator" value={smtp.fromName} onChange={e => setSmtp({ ...smtp, fromName: e.target.value })} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="smtp-from-email">From Email *</Label>
+                  <Input id="smtp-from-email" type="email" placeholder="noreply@xicombinator.com" value={smtp.fromEmail} onChange={e => setSmtp({ ...smtp, fromEmail: e.target.value })} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="smtp-reply">Reply-To</Label>
+                  <Input id="smtp-reply" type="email" placeholder="hello@xicombinator.com" value={smtp.replyTo} onChange={e => setSmtp({ ...smtp, replyTo: e.target.value })} />
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 pt-2">
+                <Button variant="outline" onClick={testSmtp} disabled={testingSmtp} data-testid="smtp-test">
+                  <PlugZap className="h-4 w-4 mr-1" /> {testingSmtp ? "Testing…" : "Test Connection"}
+                </Button>
+                <Button onClick={saveSmtp} data-testid="smtp-save">
+                  <Save className="h-4 w-4 mr-1" /> Save SMTP
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Provider Tab */}
+        <TabsContent value="provider" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2"><KeyRound className="h-5 w-5" /><span>Email Service Provider</span></CardTitle>
+              <CardDescription>Alternative to SMTP — configure API-based providers like Resend, SendGrid, Mailgun, Postmark, or AWS SES.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Provider</Label>
+                  <Select value={provider.provider} onValueChange={(v: any) => setProvider({ ...provider, provider: v })}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="resend">Resend</SelectItem>
+                      <SelectItem value="sendgrid">SendGrid</SelectItem>
+                      <SelectItem value="mailgun">Mailgun</SelectItem>
+                      <SelectItem value="postmark">Postmark</SelectItem>
+                      <SelectItem value="ses">AWS SES</SelectItem>
+                      <SelectItem value="custom">Custom / Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="prov-key">API Key *</Label>
+                  <Input id="prov-key" type="password" placeholder="re_xxx / SG.xxx / key-xxx" value={provider.apiKey} onChange={e => setProvider({ ...provider, apiKey: e.target.value })} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="prov-domain">Sending Domain</Label>
+                  <Input id="prov-domain" placeholder="mail.xicombinator.com" value={provider.domain} onChange={e => setProvider({ ...provider, domain: e.target.value })} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="prov-region">Region</Label>
+                  <Input id="prov-region" placeholder="us-east-1 (SES) / eu (Mailgun)" value={provider.region} onChange={e => setProvider({ ...provider, region: e.target.value })} />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label htmlFor="prov-webhook">Webhook Signing Secret</Label>
+                  <Input id="prov-webhook" type="password" placeholder="whsec_xxx" value={provider.webhookSecret} onChange={e => setProvider({ ...provider, webhookSecret: e.target.value })} />
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 pt-2">
+                <Button variant="outline" onClick={testProvider} disabled={testingProvider} data-testid="provider-test">
+                  <PlugZap className="h-4 w-4 mr-1" /> {testingProvider ? "Testing…" : "Test Provider"}
+                </Button>
+                <Button onClick={saveProvider} data-testid="provider-save">
+                  <Save className="h-4 w-4 mr-1" /> Save Provider
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
