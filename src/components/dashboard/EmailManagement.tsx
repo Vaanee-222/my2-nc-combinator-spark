@@ -519,6 +519,76 @@ const EmailManagement = () => {
           </Card>
         </TabsContent>
       </Tabs>
+
+      <Dialog open={editorOpen} onOpenChange={(o) => { setEditorOpen(o); if (!o) setEditing(null); }}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>{editing?.id && templates.some(t => t.id === editing?.id) ? "Edit Template" : "New Template"}</DialogTitle>
+            <DialogDescription>Define subject, category and body. Use {"{{variable}}"} placeholders.</DialogDescription>
+          </DialogHeader>
+          {editing && (
+            <div className="space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="space-y-1"><Label>Name</Label><Input value={editing.name} onChange={e => setEditing({ ...editing, name: e.target.value })} /></div>
+                <div className="space-y-1">
+                  <Label>Category</Label>
+                  <Select value={editing.category} onValueChange={v => setEditing({ ...editing, category: v })}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="auth">Authentication</SelectItem>
+                      <SelectItem value="onboarding">Onboarding</SelectItem>
+                      <SelectItem value="application">Application</SelectItem>
+                      <SelectItem value="booking">Booking</SelectItem>
+                      <SelectItem value="billing">Billing</SelectItem>
+                      <SelectItem value="notification">Notification</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="space-y-1"><Label>Subject</Label><Input value={editing.subject} onChange={e => setEditing({ ...editing, subject: e.target.value })} /></div>
+              <div className="space-y-1"><Label>Body</Label><Textarea className="min-h-[180px]" value={editing.body || ""} onChange={e => setEditing({ ...editing, body: e.target.value })} /></div>
+              <div className="flex items-center justify-between">
+                <Label>Active</Label>
+                <Switch checked={editing.status === "active"} onCheckedChange={c => setEditing({ ...editing, status: c ? "active" : "draft" })} />
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => { setEditorOpen(false); setEditing(null); }}>Cancel</Button>
+            <Button onClick={saveTemplate}><Save className="h-4 w-4 mr-1" /> Save Template</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={!!previewId} onOpenChange={(o) => { if (!o) setPreviewId(null); }}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader><DialogTitle>Template Preview</DialogTitle></DialogHeader>
+          {(() => {
+            const t = templates.find(x => x.id === previewId);
+            if (!t) return null;
+            return (
+              <div className="space-y-2">
+                <div className="text-sm"><span className="text-muted-foreground">Subject:</span> <span className="font-medium">{t.subject}</span></div>
+                <div className="text-sm"><span className="text-muted-foreground">Category:</span> {t.category}</div>
+                <div className="rounded-md border p-4 bg-muted/30 whitespace-pre-wrap text-sm">{t.body || "(No body)"}</div>
+              </div>
+            );
+          })()}
+        </DialogContent>
+      </Dialog>
+
+      <AlertDialog open={!!deleteId} onOpenChange={(o) => { if (!o) setDeleteId(null); }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this template?</AlertDialogTitle>
+            <AlertDialogDescription>This cannot be undone.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete}>Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
