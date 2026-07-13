@@ -28,17 +28,19 @@ const PROVIDER_KEY = "admin_email_provider_v1";
 const defaultSmtp: SmtpConfig = { host: "", port: "587", username: "", password: "", encryption: "tls", fromName: "", fromEmail: "", replyTo: "" };
 const defaultProvider: ProviderConfig = { provider: "resend", apiKey: "", domain: "", region: "us-east-1", webhookSecret: "" };
 
-const emailTemplates = [
-  { id: "welcome", name: "Welcome Email", subject: "Welcome to Xi Combinator!", category: "onboarding", status: "active", lastEdited: "2026-05-01" },
-  { id: "verify", name: "Verify Email", subject: "Verify your email address", category: "auth", status: "active", lastEdited: "2026-04-28" },
-  { id: "booking-confirmed", name: "Booking Confirmed", subject: "Your booking is confirmed", category: "booking", status: "active", lastEdited: "2026-04-25" },
-  { id: "application-received", name: "Application Received", subject: "We received your application", category: "application", status: "active", lastEdited: "2026-04-20" },
-  { id: "application-approved", name: "Application Approved", subject: "Congratulations! You're accepted", category: "application", status: "active", lastEdited: "2026-04-18" },
-  { id: "application-rejected", name: "Application Rejected", subject: "Application Update", category: "application", status: "draft", lastEdited: "2026-04-15" },
-  { id: "invoice", name: "Invoice", subject: "Your invoice from Xi Combinator", category: "billing", status: "active", lastEdited: "2026-04-10" },
-  { id: "password-reset", name: "Password Reset", subject: "Reset your password", category: "auth", status: "active", lastEdited: "2026-04-08" },
-  { id: "mentor-assigned", name: "Mentor Assigned", subject: "A mentor has been assigned to you", category: "notification", status: "active", lastEdited: "2026-04-05" },
-  { id: "event-reminder", name: "Event Reminder", subject: "Upcoming event reminder", category: "notification", status: "draft", lastEdited: "2026-04-01" },
+type EmailTemplate = { id: string; name: string; subject: string; category: string; status: "active" | "draft"; lastEdited: string; body?: string };
+const TEMPLATES_KEY = "admin_email_templates_v1";
+const initialTemplates: EmailTemplate[] = [
+  { id: "welcome", name: "Welcome Email", subject: "Welcome to Xi Combinator!", category: "onboarding", status: "active", lastEdited: "2026-05-01", body: "Hi {{name}}, welcome aboard!" },
+  { id: "verify", name: "Verify Email", subject: "Verify your email address", category: "auth", status: "active", lastEdited: "2026-04-28", body: "Please verify: {{link}}" },
+  { id: "booking-confirmed", name: "Booking Confirmed", subject: "Your booking is confirmed", category: "booking", status: "active", lastEdited: "2026-04-25", body: "Your booking is confirmed." },
+  { id: "application-received", name: "Application Received", subject: "We received your application", category: "application", status: "active", lastEdited: "2026-04-20", body: "Thanks for applying." },
+  { id: "application-approved", name: "Application Approved", subject: "Congratulations! You're accepted", category: "application", status: "active", lastEdited: "2026-04-18", body: "Congrats!" },
+  { id: "application-rejected", name: "Application Rejected", subject: "Application Update", category: "application", status: "draft", lastEdited: "2026-04-15", body: "Update on your application." },
+  { id: "invoice", name: "Invoice", subject: "Your invoice from Xi Combinator", category: "billing", status: "active", lastEdited: "2026-04-10", body: "Invoice attached." },
+  { id: "password-reset", name: "Password Reset", subject: "Reset your password", category: "auth", status: "active", lastEdited: "2026-04-08", body: "Reset link: {{link}}" },
+  { id: "mentor-assigned", name: "Mentor Assigned", subject: "A mentor has been assigned to you", category: "notification", status: "active", lastEdited: "2026-04-05", body: "Your mentor: {{mentor}}" },
+  { id: "event-reminder", name: "Event Reminder", subject: "Upcoming event reminder", category: "notification", status: "draft", lastEdited: "2026-04-01", body: "Reminder: {{event}}" },
 ];
 
 const emailHistory = [
