@@ -19,7 +19,7 @@ const Hero = () => {
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/5 text-sm text-primary">
           <Rocket className="w-4 h-4" />
-          Backed by Ratan Tata's Vision
+          Build the improbable. Ship the inevitable.
         </div>
 
         {/* Headline */}
