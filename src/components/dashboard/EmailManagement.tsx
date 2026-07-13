@@ -254,7 +254,7 @@ const EmailManagement = () => {
                 <SelectItem value="notification">Notification</SelectItem>
               </SelectContent>
             </Select>
-            <Button size="sm"><Plus className="h-4 w-4 mr-1" /> New Template</Button>
+            <Button size="sm" onClick={openNewTemplate}><Plus className="h-4 w-4 mr-1" /> New Template</Button>
           </div>
           <Card>
             <CardContent className="p-0">
