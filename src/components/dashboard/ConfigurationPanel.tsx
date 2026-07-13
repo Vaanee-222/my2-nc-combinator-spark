@@ -34,7 +34,6 @@ const ConfigurationPanel = () => {
           <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="auth">Authentication</TabsTrigger>
           <TabsTrigger value="ai">AI Models</TabsTrigger>
-          <TabsTrigger value="email">Email</TabsTrigger>
           <TabsTrigger value="sms">SMS</TabsTrigger>
           <TabsTrigger value="payment">Payment</TabsTrigger>
           <TabsTrigger value="api-keys">API Keys</TabsTrigger>
