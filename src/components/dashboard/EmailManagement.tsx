@@ -88,8 +88,8 @@ const EmailManagement = () => {
   }, []);
 
   const filteredTemplates = categoryFilter === "all"
-    ? emailTemplates
-    : emailTemplates.filter(t => t.category === categoryFilter);
+    ? templates
+    : templates.filter(t => t.category === categoryFilter);
 
   const handleSendEmail = () => {
     if (!composeRecipient || !composeSubject) {
@@ -175,7 +175,7 @@ const EmailManagement = () => {
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-orange-500/10 rounded-lg"><FileText className="h-5 w-5 text-orange-500" /></div>
               <div>
-                <p className="text-2xl font-bold">{emailTemplates.length}</p>
+                <p className="text-2xl font-bold">{templates.length}</p>
                 <p className="text-xs text-muted-foreground">Templates</p>
               </div>
             </div>
@@ -273,10 +273,10 @@ const EmailManagement = () => {
                 </div>
                 <div className="space-y-2">
                   <Label>Template (Optional)</Label>
-                  <Select onValueChange={v => { const t = emailTemplates.find(et => et.id === v); if (t) setComposeSubject(t.subject); }}>
+                  <Select onValueChange={v => { const t = templates.find(et => et.id === v); if (t) setComposeSubject(t.subject); }}>
                     <SelectTrigger><SelectValue placeholder="Select template" /></SelectTrigger>
                     <SelectContent>
-                      {emailTemplates.map(t => <SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>)}
+                      {templates.map(t => <SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
