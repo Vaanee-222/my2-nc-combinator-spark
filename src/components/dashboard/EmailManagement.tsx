@@ -74,6 +74,11 @@ const EmailManagement = () => {
   const [provider, setProvider] = useState<ProviderConfig>(defaultProvider);
   const [testingSmtp, setTestingSmtp] = useState(false);
   const [testingProvider, setTestingProvider] = useState(false);
+  const [templates, setTemplates] = useState<EmailTemplate[]>(initialTemplates);
+  const [editorOpen, setEditorOpen] = useState(false);
+  const [editing, setEditing] = useState<EmailTemplate | null>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [previewId, setPreviewId] = useState<string | null>(null);
 
   useEffect(() => {
     try {
