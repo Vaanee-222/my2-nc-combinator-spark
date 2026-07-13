@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,9 +9,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Mail, Send, FileText, Bell, Eye, Copy, Plus, Clock, CheckCircle, XCircle, Server, KeyRound, Save, PlugZap } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { Mail, Send, FileText, Bell, Eye, Copy, Plus, Clock, CheckCircle, XCircle, Server, KeyRound, Save, PlugZap, Pencil, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useEffect } from "react";
 
 type SmtpConfig = {
   host: string; port: string; username: string; password: string;
@@ -27,17 +28,19 @@ const PROVIDER_KEY = "admin_email_provider_v1";
 const defaultSmtp: SmtpConfig = { host: "", port: "587", username: "", password: "", encryption: "tls", fromName: "", fromEmail: "", replyTo: "" };
 const defaultProvider: ProviderConfig = { provider: "resend", apiKey: "", domain: "", region: "us-east-1", webhookSecret: "" };
 
-const emailTemplates = [
-  { id: "welcome", name: "Welcome Email", subject: "Welcome to Xi Combinator!", category: "onboarding", status: "active", lastEdited: "2026-05-01" },
-  { id: "verify", name: "Verify Email", subject: "Verify your email address", category: "auth", status: "active", lastEdited: "2026-04-28" },
-  { id: "booking-confirmed", name: "Booking Confirmed", subject: "Your booking is confirmed", category: "booking", status: "active", lastEdited: "2026-04-25" },
-  { id: "application-received", name: "Application Received", subject: "We received your application", category: "application", status: "active", lastEdited: "2026-04-20" },
-  { id: "application-approved", name: "Application Approved", subject: "Congratulations! You're accepted", category: "application", status: "active", lastEdited: "2026-04-18" },
-  { id: "application-rejected", name: "Application Rejected", subject: "Application Update", category: "application", status: "draft", lastEdited: "2026-04-15" },
-  { id: "invoice", name: "Invoice", subject: "Your invoice from Xi Combinator", category: "billing", status: "active", lastEdited: "2026-04-10" },
-  { id: "password-reset", name: "Password Reset", subject: "Reset your password", category: "auth", status: "active", lastEdited: "2026-04-08" },
-  { id: "mentor-assigned", name: "Mentor Assigned", subject: "A mentor has been assigned to you", category: "notification", status: "active", lastEdited: "2026-04-05" },
-  { id: "event-reminder", name: "Event Reminder", subject: "Upcoming event reminder", category: "notification", status: "draft", lastEdited: "2026-04-01" },
+type EmailTemplate = { id: string; name: string; subject: string; category: string; status: "active" | "draft"; lastEdited: string; body?: string };
+const TEMPLATES_KEY = "admin_email_templates_v1";
+const initialTemplates: EmailTemplate[] = [
+  { id: "welcome", name: "Welcome Email", subject: "Welcome to Xi Combinator!", category: "onboarding", status: "active", lastEdited: "2026-05-01", body: "Hi {{name}}, welcome aboard!" },
+  { id: "verify", name: "Verify Email", subject: "Verify your email address", category: "auth", status: "active", lastEdited: "2026-04-28", body: "Please verify: {{link}}" },
+  { id: "booking-confirmed", name: "Booking Confirmed", subject: "Your booking is confirmed", category: "booking", status: "active", lastEdited: "2026-04-25", body: "Your booking is confirmed." },
+  { id: "application-received", name: "Application Received", subject: "We received your application", category: "application", status: "active", lastEdited: "2026-04-20", body: "Thanks for applying." },
+  { id: "application-approved", name: "Application Approved", subject: "Congratulations! You're accepted", category: "application", status: "active", lastEdited: "2026-04-18", body: "Congrats!" },
+  { id: "application-rejected", name: "Application Rejected", subject: "Application Update", category: "application", status: "draft", lastEdited: "2026-04-15", body: "Update on your application." },
+  { id: "invoice", name: "Invoice", subject: "Your invoice from Xi Combinator", category: "billing", status: "active", lastEdited: "2026-04-10", body: "Invoice attached." },
+  { id: "password-reset", name: "Password Reset", subject: "Reset your password", category: "auth", status: "active", lastEdited: "2026-04-08", body: "Reset link: {{link}}" },
+  { id: "mentor-assigned", name: "Mentor Assigned", subject: "A mentor has been assigned to you", category: "notification", status: "active", lastEdited: "2026-04-05", body: "Your mentor: {{mentor}}" },
+  { id: "event-reminder", name: "Event Reminder", subject: "Upcoming event reminder", category: "notification", status: "draft", lastEdited: "2026-04-01", body: "Reminder: {{event}}" },
 ];
 
 const emailHistory = [
@@ -71,17 +74,57 @@ const EmailManagement = () => {
   const [provider, setProvider] = useState<ProviderConfig>(defaultProvider);
   const [testingSmtp, setTestingSmtp] = useState(false);
   const [testingProvider, setTestingProvider] = useState(false);
+  const [templates, setTemplates] = useState<EmailTemplate[]>(initialTemplates);
+  const [editorOpen, setEditorOpen] = useState(false);
+  const [editing, setEditing] = useState<EmailTemplate | null>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [previewId, setPreviewId] = useState<string | null>(null);
 
   useEffect(() => {
     try {
       const s = localStorage.getItem(SMTP_KEY); if (s) setSmtp({ ...defaultSmtp, ...JSON.parse(s) });
       const p = localStorage.getItem(PROVIDER_KEY); if (p) setProvider({ ...defaultProvider, ...JSON.parse(p) });
+      const t = localStorage.getItem(TEMPLATES_KEY); if (t) setTemplates(JSON.parse(t));
     } catch {}
   }, []);
 
+  const persistTemplates = (list: EmailTemplate[]) => {
+    setTemplates(list);
+    try { localStorage.setItem(TEMPLATES_KEY, JSON.stringify(list)); } catch {}
+  };
+
+  const openNewTemplate = () => {
+    setEditing({ id: "", name: "", subject: "", category: "notification", status: "draft", lastEdited: new Date().toISOString().slice(0, 10), body: "" });
+    setEditorOpen(true);
+  };
+  const openEditTemplate = (t: EmailTemplate) => { setEditing({ ...t }); setEditorOpen(true); };
+  const saveTemplate = () => {
+    if (!editing) return;
+    if (!editing.name || !editing.subject) {
+      toast({ title: "Missing fields", description: "Name and subject are required.", variant: "destructive" });
+      return;
+    }
+    const today = new Date().toISOString().slice(0, 10);
+    const isNew = !editing.id || !templates.some(t => t.id === editing.id);
+    const id = isNew ? (editing.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + "-" + Math.random().toString(36).slice(2, 6)) : editing.id;
+    const next: EmailTemplate = { ...editing, id, lastEdited: today };
+    const list = isNew ? [next, ...templates] : templates.map(t => t.id === id ? next : t);
+    persistTemplates(list);
+    setEditorOpen(false);
+    setEditing(null);
+    toast({ title: isNew ? "Template created" : "Template updated", description: next.name });
+  };
+  const confirmDelete = () => {
+    if (!deleteId) return;
+    const removed = templates.find(t => t.id === deleteId);
+    persistTemplates(templates.filter(t => t.id !== deleteId));
+    setDeleteId(null);
+    toast({ title: "Template deleted", description: removed?.name });
+  };
+
   const filteredTemplates = categoryFilter === "all"
-    ? emailTemplates
-    : emailTemplates.filter(t => t.category === categoryFilter);
+    ? templates
+    : templates.filter(t => t.category === categoryFilter);
 
   const handleSendEmail = () => {
     if (!composeRecipient || !composeSubject) {
@@ -167,7 +210,7 @@ const EmailManagement = () => {
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-orange-500/10 rounded-lg"><FileText className="h-5 w-5 text-orange-500" /></div>
               <div>
-                <p className="text-2xl font-bold">{emailTemplates.length}</p>
+                <p className="text-2xl font-bold">{templates.length}</p>
                 <p className="text-xs text-muted-foreground">Templates</p>
               </div>
             </div>
@@ -211,7 +254,7 @@ const EmailManagement = () => {
                 <SelectItem value="notification">Notification</SelectItem>
               </SelectContent>
             </Select>
-            <Button size="sm"><Plus className="h-4 w-4 mr-1" /> New Template</Button>
+            <Button size="sm" onClick={openNewTemplate}><Plus className="h-4 w-4 mr-1" /> New Template</Button>
           </div>
           <Card>
             <CardContent className="p-0">
@@ -238,8 +281,10 @@ const EmailManagement = () => {
                       <TableCell className="text-muted-foreground">{t.lastEdited}</TableCell>
                       <TableCell>
                         <div className="flex space-x-1">
-                          <Button size="sm" variant="ghost" onClick={() => setSelectedTemplate(t.id)}><Eye className="h-4 w-4" /></Button>
-                          <Button size="sm" variant="ghost" onClick={() => { navigator.clipboard.writeText(t.id); toast({ title: "Copied", description: `Template ID "${t.id}" copied.` }); }}><Copy className="h-4 w-4" /></Button>
+                          <Button size="sm" variant="ghost" onClick={() => setPreviewId(t.id)} title="Preview"><Eye className="h-4 w-4" /></Button>
+                          <Button size="sm" variant="ghost" onClick={() => openEditTemplate(t)} title="Edit"><Pencil className="h-4 w-4" /></Button>
+                          <Button size="sm" variant="ghost" onClick={() => { navigator.clipboard.writeText(t.id); toast({ title: "Copied", description: `Template ID "${t.id}" copied.` }); }} title="Copy ID"><Copy className="h-4 w-4" /></Button>
+                          <Button size="sm" variant="ghost" onClick={() => setDeleteId(t.id)} title="Delete"><Trash2 className="h-4 w-4 text-destructive" /></Button>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -265,10 +310,10 @@ const EmailManagement = () => {
                 </div>
                 <div className="space-y-2">
                   <Label>Template (Optional)</Label>
-                  <Select onValueChange={v => { const t = emailTemplates.find(et => et.id === v); if (t) setComposeSubject(t.subject); }}>
+                  <Select onValueChange={v => { const t = templates.find(et => et.id === v); if (t) setComposeSubject(t.subject); }}>
                     <SelectTrigger><SelectValue placeholder="Select template" /></SelectTrigger>
                     <SelectContent>
-                      {emailTemplates.map(t => <SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>)}
+                      {templates.map(t => <SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
@@ -474,6 +519,76 @@ const EmailManagement = () => {
           </Card>
         </TabsContent>
       </Tabs>
+
+      <Dialog open={editorOpen} onOpenChange={(o) => { setEditorOpen(o); if (!o) setEditing(null); }}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>{editing?.id && templates.some(t => t.id === editing?.id) ? "Edit Template" : "New Template"}</DialogTitle>
+            <DialogDescription>Define subject, category and body. Use {"{{variable}}"} placeholders.</DialogDescription>
+          </DialogHeader>
+          {editing && (
+            <div className="space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="space-y-1"><Label>Name</Label><Input value={editing.name} onChange={e => setEditing({ ...editing, name: e.target.value })} /></div>
+                <div className="space-y-1">
+                  <Label>Category</Label>
+                  <Select value={editing.category} onValueChange={v => setEditing({ ...editing, category: v })}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="auth">Authentication</SelectItem>
+                      <SelectItem value="onboarding">Onboarding</SelectItem>
+                      <SelectItem value="application">Application</SelectItem>
+                      <SelectItem value="booking">Booking</SelectItem>
+                      <SelectItem value="billing">Billing</SelectItem>
+                      <SelectItem value="notification">Notification</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="space-y-1"><Label>Subject</Label><Input value={editing.subject} onChange={e => setEditing({ ...editing, subject: e.target.value })} /></div>
+              <div className="space-y-1"><Label>Body</Label><Textarea className="min-h-[180px]" value={editing.body || ""} onChange={e => setEditing({ ...editing, body: e.target.value })} /></div>
+              <div className="flex items-center justify-between">
+                <Label>Active</Label>
+                <Switch checked={editing.status === "active"} onCheckedChange={c => setEditing({ ...editing, status: c ? "active" : "draft" })} />
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => { setEditorOpen(false); setEditing(null); }}>Cancel</Button>
+            <Button onClick={saveTemplate}><Save className="h-4 w-4 mr-1" /> Save Template</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={!!previewId} onOpenChange={(o) => { if (!o) setPreviewId(null); }}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader><DialogTitle>Template Preview</DialogTitle></DialogHeader>
+          {(() => {
+            const t = templates.find(x => x.id === previewId);
+            if (!t) return null;
+            return (
+              <div className="space-y-2">
+                <div className="text-sm"><span className="text-muted-foreground">Subject:</span> <span className="font-medium">{t.subject}</span></div>
+                <div className="text-sm"><span className="text-muted-foreground">Category:</span> {t.category}</div>
+                <div className="rounded-md border p-4 bg-muted/30 whitespace-pre-wrap text-sm">{t.body || "(No body)"}</div>
+              </div>
+            );
+          })()}
+        </DialogContent>
+      </Dialog>
+
+      <AlertDialog open={!!deleteId} onOpenChange={(o) => { if (!o) setDeleteId(null); }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this template?</AlertDialogTitle>
+            <AlertDialogDescription>This cannot be undone.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete}>Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
