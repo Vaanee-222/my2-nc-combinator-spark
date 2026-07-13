@@ -84,8 +84,43 @@ const EmailManagement = () => {
     try {
       const s = localStorage.getItem(SMTP_KEY); if (s) setSmtp({ ...defaultSmtp, ...JSON.parse(s) });
       const p = localStorage.getItem(PROVIDER_KEY); if (p) setProvider({ ...defaultProvider, ...JSON.parse(p) });
+      const t = localStorage.getItem(TEMPLATES_KEY); if (t) setTemplates(JSON.parse(t));
     } catch {}
   }, []);
+
+  const persistTemplates = (list: EmailTemplate[]) => {
+    setTemplates(list);
+    try { localStorage.setItem(TEMPLATES_KEY, JSON.stringify(list)); } catch {}
+  };
+
+  const openNewTemplate = () => {
+    setEditing({ id: "", name: "", subject: "", category: "notification", status: "draft", lastEdited: new Date().toISOString().slice(0, 10), body: "" });
+    setEditorOpen(true);
+  };
+  const openEditTemplate = (t: EmailTemplate) => { setEditing({ ...t }); setEditorOpen(true); };
+  const saveTemplate = () => {
+    if (!editing) return;
+    if (!editing.name || !editing.subject) {
+      toast({ title: "Missing fields", description: "Name and subject are required.", variant: "destructive" });
+      return;
+    }
+    const today = new Date().toISOString().slice(0, 10);
+    const isNew = !editing.id || !templates.some(t => t.id === editing.id);
+    const id = isNew ? (editing.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + "-" + Math.random().toString(36).slice(2, 6)) : editing.id;
+    const next: EmailTemplate = { ...editing, id, lastEdited: today };
+    const list = isNew ? [next, ...templates] : templates.map(t => t.id === id ? next : t);
+    persistTemplates(list);
+    setEditorOpen(false);
+    setEditing(null);
+    toast({ title: isNew ? "Template created" : "Template updated", description: next.name });
+  };
+  const confirmDelete = () => {
+    if (!deleteId) return;
+    const removed = templates.find(t => t.id === deleteId);
+    persistTemplates(templates.filter(t => t.id !== deleteId));
+    setDeleteId(null);
+    toast({ title: "Template deleted", description: removed?.name });
+  };
 
   const filteredTemplates = categoryFilter === "all"
     ? templates
