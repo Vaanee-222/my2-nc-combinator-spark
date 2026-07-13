@@ -197,45 +197,8 @@ const ConfigurationPanel = () => {
           </Card>
         </TabsContent>
 
-        {/* Email */}
-        <TabsContent value="email">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2"><Mail className="h-5 w-5" /><span>Email Configuration</span></CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Sender Name</Label>
-                  <Input defaultValue="Xi Combinator" />
-                </div>
-                <div className="space-y-2">
-                  <Label>Sender Email</Label>
-                  <Input defaultValue="noreply@xicombinator.com" />
-                </div>
-                <div className="space-y-2">
-                  <Label>Reply-To Email</Label>
-                  <Input defaultValue="support@xicombinator.com" />
-                </div>
-                <div className="space-y-2">
-                  <Label>Email Provider</Label>
-                  <Select defaultValue="lovable">
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="lovable">Lovable Cloud (Built-in)</SelectItem>
-                      <SelectItem value="custom">Custom SMTP</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <Label>Email Sending Enabled</Label>
-                <Switch defaultChecked />
-              </div>
-              <Button onClick={() => handleSave("Email")} className="w-full"><Save className="h-4 w-4 mr-1" /> Save Email Settings</Button>
-            </CardContent>
-          </Card>
-        </TabsContent>
+        {/* Email settings moved to Email & Notifications > SMTP / Providers tabs */}
+
 
         {/* SMS */}
         <TabsContent value="sms">
