@@ -281,8 +281,10 @@ const EmailManagement = () => {
                       <TableCell className="text-muted-foreground">{t.lastEdited}</TableCell>
                       <TableCell>
                         <div className="flex space-x-1">
-                          <Button size="sm" variant="ghost" onClick={() => setSelectedTemplate(t.id)}><Eye className="h-4 w-4" /></Button>
-                          <Button size="sm" variant="ghost" onClick={() => { navigator.clipboard.writeText(t.id); toast({ title: "Copied", description: `Template ID "${t.id}" copied.` }); }}><Copy className="h-4 w-4" /></Button>
+                          <Button size="sm" variant="ghost" onClick={() => setPreviewId(t.id)} title="Preview"><Eye className="h-4 w-4" /></Button>
+                          <Button size="sm" variant="ghost" onClick={() => openEditTemplate(t)} title="Edit"><Pencil className="h-4 w-4" /></Button>
+                          <Button size="sm" variant="ghost" onClick={() => { navigator.clipboard.writeText(t.id); toast({ title: "Copied", description: `Template ID "${t.id}" copied.` }); }} title="Copy ID"><Copy className="h-4 w-4" /></Button>
+                          <Button size="sm" variant="ghost" onClick={() => setDeleteId(t.id)} title="Delete"><Trash2 className="h-4 w-4 text-destructive" /></Button>
                         </div>
                       </TableCell>
                     </TableRow>
