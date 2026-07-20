@@ -1,5 +1,6 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 const PrivacyPolicy = () => {
   return (
