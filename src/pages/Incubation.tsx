@@ -1,4 +1,3 @@
-import { Helmet } from "react-helmet-async";
 import Navigation from "@/components/Navigation";
 import IncubationApplicationForm from "@/components/IncubationApplicationForm";
 import Footer from "@/components/Footer";
@@ -134,34 +133,8 @@ const Incubation = () => {
     }
   ];
 
-  const serviceJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    serviceType: "Startup Incubation Program",
-    provider: { "@type": "Organization", name: "Xi Combinator" },
-    areaServed: "Global",
-    description: "Multi-track startup incubation offering seed funding, mentorship, and go-to-market support from idea stage through growth.",
-    hasOfferCatalog: {
-      "@type": "OfferCatalog",
-      name: "Incubation Tracks",
-      itemListElement: programs.map((p) => ({
-        "@type": "Offer",
-        itemOffered: { "@type": "Service", name: p.name, description: p.description },
-      })),
-    },
-  };
-
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-        <title>Startup Incubation Program — Xi Combinator</title>
-        <meta name="description" content="Xi Combinator incubation: seed funding, mentorship, and go-to-market support across early-stage, growth, and deep-tech tracks." />
-        <link rel="canonical" href="/incubation" />
-        <meta property="og:title" content="Startup Incubation Program — Xi Combinator" />
-        <meta property="og:description" content="Seed funding, mentorship, and go-to-market for early-stage and growth startups." />
-        <meta property="og:url" content="/incubation" />
-        <script type="application/ld+json">{JSON.stringify(serviceJsonLd)}</script>
-      </Helmet>
       <Navigation />
       <main className="container mx-auto px-4 pt-20 pb-12">
         <Breadcrumbs />
@@ -247,13 +220,13 @@ const Incubation = () => {
                     <div className="text-2xl"></div>
                   </div>
                   <CardTitle className="text-xl">{program.name}</CardTitle>
-                  <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                  <CardDescription className="flex items-center space-x-4 text-sm">
                     <span className="flex items-center space-x-1">
                       <Clock className="h-3 w-3" />
                       <span>{program.duration}</span>
                     </span>
                     <Badge variant="outline" className="text-xs">{program.stage}</Badge>
-                  </div>
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <p className="text-sm text-muted-foreground">{program.description}</p>

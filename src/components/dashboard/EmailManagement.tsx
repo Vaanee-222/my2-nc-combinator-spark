@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,38 +9,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { Mail, Send, FileText, Bell, Eye, Copy, Plus, Clock, CheckCircle, XCircle, Server, KeyRound, Save, PlugZap, Pencil, Trash2 } from "lucide-react";
+import { Mail, Send, FileText, Bell, Eye, Copy, Plus, Clock, CheckCircle, XCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-type SmtpConfig = {
-  host: string; port: string; username: string; password: string;
-  encryption: "none" | "ssl" | "tls" | "starttls";
-  fromName: string; fromEmail: string; replyTo: string;
-};
-type ProviderConfig = {
-  provider: "resend" | "sendgrid" | "mailgun" | "postmark" | "ses" | "custom";
-  apiKey: string; domain: string; region: string; webhookSecret: string;
-};
-const SMTP_KEY = "admin_email_smtp_v1";
-const PROVIDER_KEY = "admin_email_provider_v1";
-const defaultSmtp: SmtpConfig = { host: "", port: "587", username: "", password: "", encryption: "tls", fromName: "", fromEmail: "", replyTo: "" };
-const defaultProvider: ProviderConfig = { provider: "resend", apiKey: "", domain: "", region: "us-east-1", webhookSecret: "" };
-
-type EmailTemplate = { id: string; name: string; subject: string; category: string; status: "active" | "draft"; lastEdited: string; body?: string };
-const TEMPLATES_KEY = "admin_email_templates_v1";
-const initialTemplates: EmailTemplate[] = [
-  { id: "welcome", name: "Welcome Email", subject: "Welcome to Xi Combinator!", category: "onboarding", status: "active", lastEdited: "2026-05-01", body: "Hi {{name}}, welcome aboard!" },
-  { id: "verify", name: "Verify Email", subject: "Verify your email address", category: "auth", status: "active", lastEdited: "2026-04-28", body: "Please verify: {{link}}" },
-  { id: "booking-confirmed", name: "Booking Confirmed", subject: "Your booking is confirmed", category: "booking", status: "active", lastEdited: "2026-04-25", body: "Your booking is confirmed." },
-  { id: "application-received", name: "Application Received", subject: "We received your application", category: "application", status: "active", lastEdited: "2026-04-20", body: "Thanks for applying." },
-  { id: "application-approved", name: "Application Approved", subject: "Congratulations! You're accepted", category: "application", status: "active", lastEdited: "2026-04-18", body: "Congrats!" },
-  { id: "application-rejected", name: "Application Rejected", subject: "Application Update", category: "application", status: "draft", lastEdited: "2026-04-15", body: "Update on your application." },
-  { id: "invoice", name: "Invoice", subject: "Your invoice from Xi Combinator", category: "billing", status: "active", lastEdited: "2026-04-10", body: "Invoice attached." },
-  { id: "password-reset", name: "Password Reset", subject: "Reset your password", category: "auth", status: "active", lastEdited: "2026-04-08", body: "Reset link: {{link}}" },
-  { id: "mentor-assigned", name: "Mentor Assigned", subject: "A mentor has been assigned to you", category: "notification", status: "active", lastEdited: "2026-04-05", body: "Your mentor: {{mentor}}" },
-  { id: "event-reminder", name: "Event Reminder", subject: "Upcoming event reminder", category: "notification", status: "draft", lastEdited: "2026-04-01", body: "Reminder: {{event}}" },
+const emailTemplates = [
+  { id: "welcome", name: "Welcome Email", subject: "Welcome to Xi Combinator!", category: "onboarding", status: "active", lastEdited: "2026-05-01" },
+  { id: "verify", name: "Verify Email", subject: "Verify your email address", category: "auth", status: "active", lastEdited: "2026-04-28" },
+  { id: "booking-confirmed", name: "Booking Confirmed", subject: "Your booking is confirmed", category: "booking", status: "active", lastEdited: "2026-04-25" },
+  { id: "application-received", name: "Application Received", subject: "We received your application", category: "application", status: "active", lastEdited: "2026-04-20" },
+  { id: "application-approved", name: "Application Approved", subject: "Congratulations! You're accepted", category: "application", status: "active", lastEdited: "2026-04-18" },
+  { id: "application-rejected", name: "Application Rejected", subject: "Application Update", category: "application", status: "draft", lastEdited: "2026-04-15" },
+  { id: "invoice", name: "Invoice", subject: "Your invoice from Xi Combinator", category: "billing", status: "active", lastEdited: "2026-04-10" },
+  { id: "password-reset", name: "Password Reset", subject: "Reset your password", category: "auth", status: "active", lastEdited: "2026-04-08" },
+  { id: "mentor-assigned", name: "Mentor Assigned", subject: "A mentor has been assigned to you", category: "notification", status: "active", lastEdited: "2026-04-05" },
+  { id: "event-reminder", name: "Event Reminder", subject: "Upcoming event reminder", category: "notification", status: "draft", lastEdited: "2026-04-01" },
 ];
 
 const emailHistory = [
@@ -70,61 +52,10 @@ const EmailManagement = () => {
   const [composeSubject, setComposeSubject] = useState("");
   const [composeBody, setComposeBody] = useState("");
   const [triggers, setTriggers] = useState(notificationTriggers);
-  const [smtp, setSmtp] = useState<SmtpConfig>(defaultSmtp);
-  const [provider, setProvider] = useState<ProviderConfig>(defaultProvider);
-  const [testingSmtp, setTestingSmtp] = useState(false);
-  const [testingProvider, setTestingProvider] = useState(false);
-  const [templates, setTemplates] = useState<EmailTemplate[]>(initialTemplates);
-  const [editorOpen, setEditorOpen] = useState(false);
-  const [editing, setEditing] = useState<EmailTemplate | null>(null);
-  const [deleteId, setDeleteId] = useState<string | null>(null);
-  const [previewId, setPreviewId] = useState<string | null>(null);
-
-  useEffect(() => {
-    try {
-      const s = localStorage.getItem(SMTP_KEY); if (s) setSmtp({ ...defaultSmtp, ...JSON.parse(s) });
-      const p = localStorage.getItem(PROVIDER_KEY); if (p) setProvider({ ...defaultProvider, ...JSON.parse(p) });
-      const t = localStorage.getItem(TEMPLATES_KEY); if (t) setTemplates(JSON.parse(t));
-    } catch {}
-  }, []);
-
-  const persistTemplates = (list: EmailTemplate[]) => {
-    setTemplates(list);
-    try { localStorage.setItem(TEMPLATES_KEY, JSON.stringify(list)); } catch {}
-  };
-
-  const openNewTemplate = () => {
-    setEditing({ id: "", name: "", subject: "", category: "notification", status: "draft", lastEdited: new Date().toISOString().slice(0, 10), body: "" });
-    setEditorOpen(true);
-  };
-  const openEditTemplate = (t: EmailTemplate) => { setEditing({ ...t }); setEditorOpen(true); };
-  const saveTemplate = () => {
-    if (!editing) return;
-    if (!editing.name || !editing.subject) {
-      toast({ title: "Missing fields", description: "Name and subject are required.", variant: "destructive" });
-      return;
-    }
-    const today = new Date().toISOString().slice(0, 10);
-    const isNew = !editing.id || !templates.some(t => t.id === editing.id);
-    const id = isNew ? (editing.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + "-" + Math.random().toString(36).slice(2, 6)) : editing.id;
-    const next: EmailTemplate = { ...editing, id, lastEdited: today };
-    const list = isNew ? [next, ...templates] : templates.map(t => t.id === id ? next : t);
-    persistTemplates(list);
-    setEditorOpen(false);
-    setEditing(null);
-    toast({ title: isNew ? "Template created" : "Template updated", description: next.name });
-  };
-  const confirmDelete = () => {
-    if (!deleteId) return;
-    const removed = templates.find(t => t.id === deleteId);
-    persistTemplates(templates.filter(t => t.id !== deleteId));
-    setDeleteId(null);
-    toast({ title: "Template deleted", description: removed?.name });
-  };
 
   const filteredTemplates = categoryFilter === "all"
-    ? templates
-    : templates.filter(t => t.category === categoryFilter);
+    ? emailTemplates
+    : emailTemplates.filter(t => t.category === categoryFilter);
 
   const handleSendEmail = () => {
     if (!composeRecipient || !composeSubject) {
@@ -140,37 +71,6 @@ const EmailManagement = () => {
   const handleToggleTrigger = (id: number, enabled: boolean) => {
     setTriggers(prev => prev.map(t => t.id === id ? { ...t, enabled } : t));
     toast({ title: "Trigger Updated", description: `Notification trigger ${enabled ? "enabled" : "disabled"}.` });
-  };
-
-  const saveSmtp = () => {
-    if (!smtp.host || !smtp.port || !smtp.fromEmail) {
-      toast({ title: "Missing SMTP fields", description: "Host, port and From email are required.", variant: "destructive" });
-      return;
-    }
-    localStorage.setItem(SMTP_KEY, JSON.stringify(smtp));
-    toast({ title: "SMTP saved", description: `Configuration for ${smtp.host}:${smtp.port} stored.` });
-  };
-  const testSmtp = async () => {
-    setTestingSmtp(true);
-    await new Promise(r => setTimeout(r, 800));
-    setTestingSmtp(false);
-    const ok = !!(smtp.host && smtp.port && smtp.username);
-    toast({ title: ok ? "SMTP connection OK" : "SMTP test failed", description: ok ? `Handshake to ${smtp.host} succeeded (${smtp.encryption.toUpperCase()}).` : "Fill host, port and username first.", variant: ok ? "default" : "destructive" });
-  };
-  const saveProvider = () => {
-    if (!provider.apiKey) {
-      toast({ title: "API key required", description: "Provider API key cannot be empty.", variant: "destructive" });
-      return;
-    }
-    localStorage.setItem(PROVIDER_KEY, JSON.stringify(provider));
-    toast({ title: "Provider saved", description: `${provider.provider.toUpperCase()} configuration stored.` });
-  };
-  const testProvider = async () => {
-    setTestingProvider(true);
-    await new Promise(r => setTimeout(r, 800));
-    setTestingProvider(false);
-    const ok = provider.apiKey.length > 8;
-    toast({ title: ok ? "Provider reachable" : "Provider test failed", description: ok ? `${provider.provider} responded to auth check.` : "Enter a valid API key first.", variant: ok ? "default" : "destructive" });
   };
 
   return (
@@ -210,7 +110,7 @@ const EmailManagement = () => {
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-orange-500/10 rounded-lg"><FileText className="h-5 w-5 text-orange-500" /></div>
               <div>
-                <p className="text-2xl font-bold">{templates.length}</p>
+                <p className="text-2xl font-bold">{emailTemplates.length}</p>
                 <p className="text-xs text-muted-foreground">Templates</p>
               </div>
             </div>
@@ -235,8 +135,6 @@ const EmailManagement = () => {
           <TabsTrigger value="compose">Compose</TabsTrigger>
           <TabsTrigger value="triggers">Notification Triggers</TabsTrigger>
           <TabsTrigger value="history">Send History</TabsTrigger>
-          <TabsTrigger value="smtp" data-testid="tab-smtp">SMTP</TabsTrigger>
-          <TabsTrigger value="provider" data-testid="tab-provider">Providers</TabsTrigger>
         </TabsList>
 
         {/* Templates Tab */}
@@ -254,7 +152,7 @@ const EmailManagement = () => {
                 <SelectItem value="notification">Notification</SelectItem>
               </SelectContent>
             </Select>
-            <Button size="sm" onClick={openNewTemplate}><Plus className="h-4 w-4 mr-1" /> New Template</Button>
+            <Button size="sm"><Plus className="h-4 w-4 mr-1" /> New Template</Button>
           </div>
           <Card>
             <CardContent className="p-0">
@@ -281,10 +179,8 @@ const EmailManagement = () => {
                       <TableCell className="text-muted-foreground">{t.lastEdited}</TableCell>
                       <TableCell>
                         <div className="flex space-x-1">
-                          <Button size="sm" variant="ghost" onClick={() => setPreviewId(t.id)} title="Preview"><Eye className="h-4 w-4" /></Button>
-                          <Button size="sm" variant="ghost" onClick={() => openEditTemplate(t)} title="Edit"><Pencil className="h-4 w-4" /></Button>
-                          <Button size="sm" variant="ghost" onClick={() => { navigator.clipboard.writeText(t.id); toast({ title: "Copied", description: `Template ID "${t.id}" copied.` }); }} title="Copy ID"><Copy className="h-4 w-4" /></Button>
-                          <Button size="sm" variant="ghost" onClick={() => setDeleteId(t.id)} title="Delete"><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                          <Button size="sm" variant="ghost" onClick={() => setSelectedTemplate(t.id)}><Eye className="h-4 w-4" /></Button>
+                          <Button size="sm" variant="ghost" onClick={() => { navigator.clipboard.writeText(t.id); toast({ title: "Copied", description: `Template ID "${t.id}" copied.` }); }}><Copy className="h-4 w-4" /></Button>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -310,10 +206,10 @@ const EmailManagement = () => {
                 </div>
                 <div className="space-y-2">
                   <Label>Template (Optional)</Label>
-                  <Select onValueChange={v => { const t = templates.find(et => et.id === v); if (t) setComposeSubject(t.subject); }}>
+                  <Select onValueChange={v => { const t = emailTemplates.find(et => et.id === v); if (t) setComposeSubject(t.subject); }}>
                     <SelectTrigger><SelectValue placeholder="Select template" /></SelectTrigger>
                     <SelectContent>
-                      {templates.map(t => <SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>)}
+                      {emailTemplates.map(t => <SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
@@ -404,191 +300,7 @@ const EmailManagement = () => {
             </CardContent>
           </Card>
         </TabsContent>
-
-        {/* SMTP Tab */}
-        <TabsContent value="smtp" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2"><Server className="h-5 w-5" /><span>SMTP Configuration</span></CardTitle>
-              <CardDescription>Configure your outbound SMTP server. Credentials are stored locally in the admin browser only.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="smtp-host">SMTP Host *</Label>
-                  <Input id="smtp-host" placeholder="smtp.example.com" value={smtp.host} onChange={e => setSmtp({ ...smtp, host: e.target.value })} />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="smtp-port">Port *</Label>
-                  <Input id="smtp-port" type="number" placeholder="587" value={smtp.port} onChange={e => setSmtp({ ...smtp, port: e.target.value })} />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="smtp-user">Username</Label>
-                  <Input id="smtp-user" placeholder="apikey / user@domain" value={smtp.username} onChange={e => setSmtp({ ...smtp, username: e.target.value })} />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="smtp-pass">Password</Label>
-                  <Input id="smtp-pass" type="password" placeholder="••••••••" value={smtp.password} onChange={e => setSmtp({ ...smtp, password: e.target.value })} />
-                </div>
-                <div className="space-y-2">
-                  <Label>Encryption</Label>
-                  <Select value={smtp.encryption} onValueChange={(v: any) => setSmtp({ ...smtp, encryption: v })}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="none">None</SelectItem>
-                      <SelectItem value="ssl">SSL</SelectItem>
-                      <SelectItem value="tls">TLS</SelectItem>
-                      <SelectItem value="starttls">STARTTLS</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="smtp-from-name">From Name</Label>
-                  <Input id="smtp-from-name" placeholder="Xi Combinator" value={smtp.fromName} onChange={e => setSmtp({ ...smtp, fromName: e.target.value })} />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="smtp-from-email">From Email *</Label>
-                  <Input id="smtp-from-email" type="email" placeholder="noreply@xicombinator.com" value={smtp.fromEmail} onChange={e => setSmtp({ ...smtp, fromEmail: e.target.value })} />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="smtp-reply">Reply-To</Label>
-                  <Input id="smtp-reply" type="email" placeholder="hello@xicombinator.com" value={smtp.replyTo} onChange={e => setSmtp({ ...smtp, replyTo: e.target.value })} />
-                </div>
-              </div>
-              <div className="flex justify-end gap-2 pt-2">
-                <Button variant="outline" onClick={testSmtp} disabled={testingSmtp} data-testid="smtp-test">
-                  <PlugZap className="h-4 w-4 mr-1" /> {testingSmtp ? "Testing…" : "Test Connection"}
-                </Button>
-                <Button onClick={saveSmtp} data-testid="smtp-save">
-                  <Save className="h-4 w-4 mr-1" /> Save SMTP
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Provider Tab */}
-        <TabsContent value="provider" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2"><KeyRound className="h-5 w-5" /><span>Email Service Provider</span></CardTitle>
-              <CardDescription>Alternative to SMTP — configure API-based providers like Resend, SendGrid, Mailgun, Postmark, or AWS SES.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Provider</Label>
-                  <Select value={provider.provider} onValueChange={(v: any) => setProvider({ ...provider, provider: v })}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="resend">Resend</SelectItem>
-                      <SelectItem value="sendgrid">SendGrid</SelectItem>
-                      <SelectItem value="mailgun">Mailgun</SelectItem>
-                      <SelectItem value="postmark">Postmark</SelectItem>
-                      <SelectItem value="ses">AWS SES</SelectItem>
-                      <SelectItem value="custom">Custom / Other</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="prov-key">API Key *</Label>
-                  <Input id="prov-key" type="password" placeholder="re_xxx / SG.xxx / key-xxx" value={provider.apiKey} onChange={e => setProvider({ ...provider, apiKey: e.target.value })} />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="prov-domain">Sending Domain</Label>
-                  <Input id="prov-domain" placeholder="mail.xicombinator.com" value={provider.domain} onChange={e => setProvider({ ...provider, domain: e.target.value })} />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="prov-region">Region</Label>
-                  <Input id="prov-region" placeholder="us-east-1 (SES) / eu (Mailgun)" value={provider.region} onChange={e => setProvider({ ...provider, region: e.target.value })} />
-                </div>
-                <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="prov-webhook">Webhook Signing Secret</Label>
-                  <Input id="prov-webhook" type="password" placeholder="whsec_xxx" value={provider.webhookSecret} onChange={e => setProvider({ ...provider, webhookSecret: e.target.value })} />
-                </div>
-              </div>
-              <div className="flex justify-end gap-2 pt-2">
-                <Button variant="outline" onClick={testProvider} disabled={testingProvider} data-testid="provider-test">
-                  <PlugZap className="h-4 w-4 mr-1" /> {testingProvider ? "Testing…" : "Test Provider"}
-                </Button>
-                <Button onClick={saveProvider} data-testid="provider-save">
-                  <Save className="h-4 w-4 mr-1" /> Save Provider
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
       </Tabs>
-
-      <Dialog open={editorOpen} onOpenChange={(o) => { setEditorOpen(o); if (!o) setEditing(null); }}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>{editing?.id && templates.some(t => t.id === editing?.id) ? "Edit Template" : "New Template"}</DialogTitle>
-            <DialogDescription>Define subject, category and body. Use {"{{variable}}"} placeholders.</DialogDescription>
-          </DialogHeader>
-          {editing && (
-            <div className="space-y-3">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div className="space-y-1"><Label>Name</Label><Input value={editing.name} onChange={e => setEditing({ ...editing, name: e.target.value })} /></div>
-                <div className="space-y-1">
-                  <Label>Category</Label>
-                  <Select value={editing.category} onValueChange={v => setEditing({ ...editing, category: v })}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="auth">Authentication</SelectItem>
-                      <SelectItem value="onboarding">Onboarding</SelectItem>
-                      <SelectItem value="application">Application</SelectItem>
-                      <SelectItem value="booking">Booking</SelectItem>
-                      <SelectItem value="billing">Billing</SelectItem>
-                      <SelectItem value="notification">Notification</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <div className="space-y-1"><Label>Subject</Label><Input value={editing.subject} onChange={e => setEditing({ ...editing, subject: e.target.value })} /></div>
-              <div className="space-y-1"><Label>Body</Label><Textarea className="min-h-[180px]" value={editing.body || ""} onChange={e => setEditing({ ...editing, body: e.target.value })} /></div>
-              <div className="flex items-center justify-between">
-                <Label>Active</Label>
-                <Switch checked={editing.status === "active"} onCheckedChange={c => setEditing({ ...editing, status: c ? "active" : "draft" })} />
-              </div>
-            </div>
-          )}
-          <DialogFooter>
-            <Button variant="outline" onClick={() => { setEditorOpen(false); setEditing(null); }}>Cancel</Button>
-            <Button onClick={saveTemplate}><Save className="h-4 w-4 mr-1" /> Save Template</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={!!previewId} onOpenChange={(o) => { if (!o) setPreviewId(null); }}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader><DialogTitle>Template Preview</DialogTitle></DialogHeader>
-          {(() => {
-            const t = templates.find(x => x.id === previewId);
-            if (!t) return null;
-            return (
-              <div className="space-y-2">
-                <div className="text-sm"><span className="text-muted-foreground">Subject:</span> <span className="font-medium">{t.subject}</span></div>
-                <div className="text-sm"><span className="text-muted-foreground">Category:</span> {t.category}</div>
-                <div className="rounded-md border p-4 bg-muted/30 whitespace-pre-wrap text-sm">{t.body || "(No body)"}</div>
-              </div>
-            );
-          })()}
-        </DialogContent>
-      </Dialog>
-
-      <AlertDialog open={!!deleteId} onOpenChange={(o) => { if (!o) setDeleteId(null); }}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete this template?</AlertDialogTitle>
-            <AlertDialogDescription>This cannot be undone.</AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmDelete}>Delete</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 };

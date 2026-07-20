@@ -1,6 +1,6 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const PrivacyPolicy = () => {
   return (
@@ -11,13 +11,13 @@ const PrivacyPolicy = () => {
           <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent mb-4">
             Privacy Policy
           </h1>
-          <p className="text-muted-foreground">Last updated: January 15, 2026</p>
+          <p className="text-muted-foreground">Last updated: December 21, 2024</p>
         </div>
 
         <div className="space-y-8">
           <Card>
             <CardHeader>
-              <h2 className="text-2xl font-semibold leading-none tracking-tight">1. Information We Collect</h2>
+              <CardTitle>1. Information We Collect</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-muted-foreground">
@@ -38,7 +38,7 @@ const PrivacyPolicy = () => {
 
           <Card>
             <CardHeader>
-              <h2 className="text-2xl font-semibold leading-none tracking-tight">2. How We Use Your Information</h2>
+              <CardTitle>2. How We Use Your Information</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="list-disc list-inside text-muted-foreground space-y-2">
@@ -54,7 +54,7 @@ const PrivacyPolicy = () => {
 
           <Card>
             <CardHeader>
-              <h2 className="text-2xl font-semibold leading-none tracking-tight">3. Information Sharing</h2>
+              <CardTitle>3. Information Sharing</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-muted-foreground">
@@ -72,7 +72,7 @@ const PrivacyPolicy = () => {
 
           <Card>
             <CardHeader>
-              <h2 className="text-2xl font-semibold leading-none tracking-tight">4. Data Security</h2>
+              <CardTitle>4. Data Security</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
@@ -85,7 +85,7 @@ const PrivacyPolicy = () => {
 
           <Card>
             <CardHeader>
-              <h2 className="text-2xl font-semibold leading-none tracking-tight">5. Your Rights</h2>
+              <CardTitle>5. Your Rights</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground mb-4">You have the right to:</p>
@@ -101,7 +101,7 @@ const PrivacyPolicy = () => {
 
           <Card>
             <CardHeader>
-              <h2 className="text-2xl font-semibold leading-none tracking-tight">6. Cookies and Tracking</h2>
+              <CardTitle>6. Cookies and Tracking</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
@@ -113,7 +113,7 @@ const PrivacyPolicy = () => {
 
           <Card>
             <CardHeader>
-              <h2 className="text-2xl font-semibold leading-none tracking-tight">7. Third-Party Services</h2>
+              <CardTitle>7. Third-Party Services</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
@@ -125,7 +125,7 @@ const PrivacyPolicy = () => {
 
           <Card>
             <CardHeader>
-              <h2 className="text-2xl font-semibold leading-none tracking-tight">8. Children's Privacy</h2>
+              <CardTitle>8. Children's Privacy</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
@@ -137,7 +137,7 @@ const PrivacyPolicy = () => {
 
           <Card>
             <CardHeader>
-              <h2 className="text-2xl font-semibold leading-none tracking-tight">9. International Transfers</h2>
+              <CardTitle>9. International Transfers</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
@@ -149,7 +149,7 @@ const PrivacyPolicy = () => {
 
           <Card>
             <CardHeader>
-              <h2 className="text-2xl font-semibold leading-none tracking-tight">10. Changes to This Policy</h2>
+              <CardTitle>10. Changes to This Policy</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
@@ -161,7 +161,7 @@ const PrivacyPolicy = () => {
 
           <Card>
             <CardHeader>
-              <h2 className="text-2xl font-semibold leading-none tracking-tight">Contact Us</h2>
+              <CardTitle>Contact Us</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2 text-muted-foreground">
