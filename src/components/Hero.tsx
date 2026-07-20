@@ -19,7 +19,7 @@ const Hero = () => {
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/5 text-sm text-primary">
           <Rocket className="w-4 h-4" />
-          Backed by Ratan Tata's Vision
+          Build the improbable. Ship the inevitable.
         </div>
 
         {/* Headline */}
@@ -68,8 +68,13 @@ const Hero = () => {
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <ArrowDown className="w-6 h-6 text-primary/60" />
+        <div
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce"
+          role="img"
+          aria-label="Scroll down to see more"
+        >
+          <ArrowDown className="w-6 h-6 text-primary/60" aria-hidden="true" />
+          <span className="sr-only">Scroll down</span>
         </div>
       </div>
     </section>

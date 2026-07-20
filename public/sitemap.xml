@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://xicombinator.lovable.app/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://xicombinator.lovable.app/about</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://xicombinator.lovable.app/contact</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xicombinator.lovable.app/philosophy</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://xicombinator.lovable.app/incubation</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://xicombinator.lovable.app/mvp-lab</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://xicombinator.lovable.app/xi-lab</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://xicombinator.lovable.app/hackathon</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://xicombinator.lovable.app/resources</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xicombinator.lovable.app/partnership</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xicombinator.lovable.app/partners</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xicombinator.lovable.app/startup-directory</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://xicombinator.lovable.app/featured-startups</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://xicombinator.lovable.app/monthly-top-10</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://xicombinator.lovable.app/quarterly-top-5</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://xicombinator.lovable.app/current-cohort</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://xicombinator.lovable.app/success-stories</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xicombinator.lovable.app/investor-centre</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://xicombinator.lovable.app/deals</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xicombinator.lovable.app/cloud-credits</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://xicombinator.lovable.app/grants-funding</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xicombinator.lovable.app/blogs</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://xicombinator.lovable.app/news</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://xicombinator.lovable.app/meet-cofounder</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xicombinator.lovable.app/become-mentor</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://xicombinator.lovable.app/past-events</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://xicombinator.lovable.app/subscription</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://xicombinator.lovable.app/privacy-policy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://xicombinator.lovable.app/terms-conditions</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+</urlset>
