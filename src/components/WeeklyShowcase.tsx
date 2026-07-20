@@ -84,9 +84,9 @@ const WeeklyShowcase = () => {
                   </div>
                 </div>
 
-                <Link to={`/startup-profile/${startup.id}`}>
+                <Link to={`/startup-profile/${startup.id}`} aria-label={`Learn more about ${startup.name}`}>
                   <Button variant="ghost" className="w-full mt-4 group-hover:bg-primary/10">
-                    Learn More
+                    Learn about {startup.name}
                   </Button>
                 </Link>
               </div>

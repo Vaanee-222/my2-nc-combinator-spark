@@ -68,8 +68,13 @@ const Hero = () => {
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <ArrowDown className="w-6 h-6 text-primary/60" />
+        <div
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce"
+          role="img"
+          aria-label="Scroll down to see more"
+        >
+          <ArrowDown className="w-6 h-6 text-primary/60" aria-hidden="true" />
+          <span className="sr-only">Scroll down</span>
         </div>
       </div>
     </section>
