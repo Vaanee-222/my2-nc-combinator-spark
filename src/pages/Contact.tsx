@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -79,9 +80,46 @@ const Contact = () => {
     }
   ];
 
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  };
+
+  const localBusinessJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: "Xi Combinator",
+    email: "hello@xicombinator.in",
+    telephone: "+91 80 4567 8900",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Koramangala Innovation Hub, 5th Block",
+      addressLocality: "Bangalore",
+      addressRegion: "Karnataka",
+      postalCode: "560034",
+      addressCountry: "IN",
+    },
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Contact Xi Combinator — Offices, Support & Partnerships</title>
+        <meta name="description" content="Get in touch with Xi Combinator. Offices in Bangalore, Mumbai, Delhi, and Hyderabad. Program questions, partnerships, and press inquiries." />
+        <link rel="canonical" href="/contact" />
+        <meta property="og:title" content="Contact Xi Combinator" />
+        <meta property="og:description" content="Offices, support, and partnership contacts for Xi Combinator." />
+        <meta property="og:url" content="/contact" />
+        <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
+        <script type="application/ld+json">{JSON.stringify(localBusinessJsonLd)}</script>
+      </Helmet>
       <Navigation />
+      
       
       {/* Hero Section */}
       <section className="pt-20 pb-16 bg-hero-gradient relative overflow-hidden">
