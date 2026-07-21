@@ -81,6 +81,17 @@ const adminMenuGroups = [
   },
 ];
 
+const ADMIN_TAB_STORAGE_KEY = "xi-admin-dashboard-active-tab";
+const DEFAULT_ADMIN_TAB = "overview";
+const adminTabValues = adminMenuGroups.flatMap((group) => group.items.map((item) => item.value));
+
+const getInitialAdminTab = () => {
+  if (typeof window === "undefined") return DEFAULT_ADMIN_TAB;
+
+  const savedTab = window.localStorage.getItem(ADMIN_TAB_STORAGE_KEY);
+  return savedTab && adminTabValues.includes(savedTab) ? savedTab : DEFAULT_ADMIN_TAB;
+};
+
 
 const AdminDashboard = () => {
   const { toast } = useToast();
@@ -91,6 +102,12 @@ const AdminDashboard = () => {
   const [cofounderReqs, setCofounderReqs] = useState<any[]>([]);
   const [profiles, setProfiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState(getInitialAdminTab);
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    window.localStorage.setItem(ADMIN_TAB_STORAGE_KEY, value);
+  };
 
   const fetchData = async () => {
     setLoading(true);
@@ -135,7 +152,7 @@ const AdminDashboard = () => {
           </Button>
         </div>
 
-        <Tabs defaultValue="overview" className={`grid gap-6 ${collapsed ? "lg:grid-cols-[72px_minmax(0,1fr)]" : "lg:grid-cols-[260px_minmax(0,1fr)]"}`}>
+        <Tabs value={activeTab} onValueChange={handleTabChange} className={`grid gap-6 ${collapsed ? "lg:grid-cols-[72px_minmax(0,1fr)]" : "lg:grid-cols-[260px_minmax(0,1fr)]"}`}>
           <aside className="lg:sticky lg:top-24 lg:self-start">
             <div className="flex justify-end mb-2">
               <Button variant="ghost" size="icon" onClick={() => setCollapsed((c) => !c)} title={collapsed ? "Expand sidebar" : "Collapse sidebar"}>
