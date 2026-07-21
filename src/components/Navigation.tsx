@@ -26,13 +26,15 @@ const Navigation = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const navItems = [
-    { name: "Hackathon", href: "/hackathon" },
-    { name: "Incubation", href: "/incubation" },
-    { name: "MVP Lab", href: "/mvp-lab" },
-    { name: "Xi Lab", href: "/xi-lab" },
-    { name: "Application Status", href: "/application-status" },
-  ];
+  const navItems = user
+    ? []
+    : [
+        { name: "Hackathon", href: "/hackathon" },
+        { name: "Incubation", href: "/incubation" },
+        { name: "MVP Lab", href: "/mvp-lab" },
+        { name: "Xi Lab", href: "/xi-lab" },
+        { name: "Application Status", href: "/application-status" },
+      ];
 
 
 
