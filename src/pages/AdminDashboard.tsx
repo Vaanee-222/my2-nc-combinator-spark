@@ -180,7 +180,7 @@ const AdminDashboard = () => {
           <section className="min-w-0 space-y-6">
 
 
-          <TabsContent value="overview" className="space-y-6">
+          <TabsContent value="overview" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <AdminOverview
               stats={stats}
               applications={applications}
@@ -190,7 +190,7 @@ const AdminDashboard = () => {
             />
           </TabsContent>
 
-          <TabsContent value="analytics" className="space-y-6">
+          <TabsContent value="analytics" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <AnalyticsDashboard
               applications={applications}
               hackathonRegs={hackathonRegs}
@@ -200,94 +200,94 @@ const AdminDashboard = () => {
             />
           </TabsContent>
 
-          <TabsContent value="applications" className="space-y-6">
+          <TabsContent value="applications" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <ApplicationManagement applications={applications} onRefresh={fetchData} />
           </TabsContent>
 
-          <TabsContent value="hackathons" className="space-y-6">
+          <TabsContent value="hackathons" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <HackathonManagement registrations={hackathonRegs} onRefresh={fetchData} />
           </TabsContent>
 
-          <TabsContent value="incubation" className="space-y-6">
+          <TabsContent value="incubation" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <IncubationManagement applications={incubationApps} onRefresh={fetchData} />
           </TabsContent>
 
-          <TabsContent value="inclab" className="space-y-6">
+          <TabsContent value="inclab" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <InclabApplications />
           </TabsContent>
 
-          <TabsContent value="cofounders" className="space-y-6">
+          <TabsContent value="cofounders" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <CofounderManagement requests={cofounderReqs} />
           </TabsContent>
 
-          <TabsContent value="health" className="space-y-6">
+          <TabsContent value="health" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <StartupHealthScore incubationApps={incubationApps} />
           </TabsContent>
 
-          <TabsContent value="startups" className="space-y-6">
+          <TabsContent value="startups" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <StartupManagement />
           </TabsContent>
 
-          <TabsContent value="investors" className="space-y-6">
+          <TabsContent value="investors" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <InvestorManagement />
           </TabsContent>
 
-          <TabsContent value="programs" className="space-y-6">
+          <TabsContent value="programs" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <ProgramManagement />
           </TabsContent>
 
-          <TabsContent value="users" className="space-y-6">
+          <TabsContent value="users" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <UserManagement />
           </TabsContent>
 
-          <TabsContent value="partners" className="space-y-6">
+          <TabsContent value="partners" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <PartnerManagement />
           </TabsContent>
 
-          <TabsContent value="directory" className="space-y-6">
+          <TabsContent value="directory" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <StartupDirectoryManagement />
           </TabsContent>
 
-          <TabsContent value="blogs" className="space-y-6">
+          <TabsContent value="blogs" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <BlogManagement />
           </TabsContent>
 
-          <TabsContent value="news" className="space-y-6">
+          <TabsContent value="news" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <NewsManagement />
           </TabsContent>
 
 
 
 
-          <TabsContent value="emails" className="space-y-6">
+          <TabsContent value="emails" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <EmailManagement />
           </TabsContent>
 
-          <TabsContent value="acl" className="space-y-6">
+          <TabsContent value="acl" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <ACLManagement />
           </TabsContent>
 
-          <TabsContent value="roles" className="space-y-6">
+          <TabsContent value="roles" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <RoleManagement />
           </TabsContent>
 
-          <TabsContent value="audit" className="space-y-6">
+          <TabsContent value="audit" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <AuditLog />
           </TabsContent>
 
-          <TabsContent value="config" className="space-y-6">
+          <TabsContent value="config" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <ConfigurationPanel />
           </TabsContent>
 
-          <TabsContent value="header-scripts" className="space-y-6">
+          <TabsContent value="header-scripts" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <HeaderScripts />
           </TabsContent>
 
-          <TabsContent value="docs" className="space-y-6">
+          <TabsContent value="docs" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <DocumentationView />
           </TabsContent>
 
-          <TabsContent value="settings" className="space-y-6">
+          <TabsContent value="settings" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <AdminSettings />
           </TabsContent>
           </section>
