@@ -387,11 +387,12 @@ const EmailManagement = () => {
       </div>
 
       <Tabs defaultValue="templates" className="space-y-4">
-        <TabsList>
+        <TabsList className="flex flex-wrap gap-1">
           <TabsTrigger value="templates">Templates</TabsTrigger>
           <TabsTrigger value="compose">Compose</TabsTrigger>
           <TabsTrigger value="triggers">Notification Triggers</TabsTrigger>
           <TabsTrigger value="history">Send History</TabsTrigger>
+          <TabsTrigger value="test" data-testid="tab-test">Delivery Test</TabsTrigger>
           <TabsTrigger value="smtp" data-testid="tab-smtp">SMTP</TabsTrigger>
           <TabsTrigger value="provider" data-testid="tab-provider">Providers</TabsTrigger>
         </TabsList>
