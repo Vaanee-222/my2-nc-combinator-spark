@@ -345,7 +345,7 @@ const EmailManagement = () => {
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-primary/10 rounded-lg"><Send className="h-5 w-5 text-primary" /></div>
               <div>
-                <p className="text-2xl font-bold">{emailHistory.filter(e => e.status === "delivered").length}</p>
+                <p className="text-2xl font-bold">{metrics.delivered}</p>
                 <p className="text-xs text-muted-foreground">Delivered</p>
               </div>
             </div>
