@@ -115,6 +115,18 @@ const EmailManagement = () => {
   const [editing, setEditing] = useState<EmailTemplate | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [previewId, setPreviewId] = useState<string | null>(null);
+  const [history, setHistory] = useState<EmailHistoryEntry[]>(seedHistory);
+  const [historyPage, setHistoryPage] = useState(1);
+  const [historyStatusFilter, setHistoryStatusFilter] = useState<string>("all");
+  const [historySearch, setHistorySearch] = useState("");
+  const historyPageSize = 10;
+  const [testTo, setTestTo] = useState("");
+  const [testMode, setTestMode] = useState<"smtp" | "provider">("smtp");
+  const [testTemplateId, setTestTemplateId] = useState<string>("");
+  const [testSubject, setTestSubject] = useState("Xi Combinator – Delivery Test");
+  const [testBody, setTestBody] = useState("Hi there,\n\nThis is a delivery test from the Xi Combinator admin panel.\n\nIf you received this, your email pipeline is working.\n");
+  const [testRunning, setTestRunning] = useState(false);
+  const [testLog, setTestLog] = useState<Array<{ ts: string; level: "info" | "ok" | "error"; message: string }>>([]);
 
   useEffect(() => {
     try {
