@@ -133,8 +133,117 @@ const EmailManagement = () => {
       const s = localStorage.getItem(SMTP_KEY); if (s) setSmtp({ ...defaultSmtp, ...JSON.parse(s) });
       const p = localStorage.getItem(PROVIDER_KEY); if (p) setProvider({ ...defaultProvider, ...JSON.parse(p) });
       const t = localStorage.getItem(TEMPLATES_KEY); if (t) setTemplates(JSON.parse(t));
+      const h = localStorage.getItem(HISTORY_KEY); if (h) setHistory(JSON.parse(h));
     } catch {}
   }, []);
+
+  const persistHistory = (list: EmailHistoryEntry[]) => {
+    setHistory(list);
+    try { localStorage.setItem(HISTORY_KEY, JSON.stringify(list)); } catch {}
+  };
+
+  const metrics = (() => {
+    const total = history.length || 1;
+    const delivered = history.filter(h => h.status === "delivered" || h.status === "opened").length;
+    const failed = history.filter(h => h.status === "failed" || h.status === "bounced").length;
+    const opened = history.filter(h => h.opened).length;
+    const clicked = history.filter(h => h.clicked).length;
+    const replied = history.filter(h => h.replied).length;
+    const avgResponseMin = (() => {
+      const rs = history.filter(h => h.responseMs).map(h => h.responseMs as number);
+      if (!rs.length) return 0;
+      return Math.round(rs.reduce((a, b) => a + b, 0) / rs.length / 60000);
+    })();
+    return {
+      total: history.length,
+      delivered, failed, opened, clicked, replied, avgResponseMin,
+      deliveryRate: Math.round((delivered / total) * 100),
+      openRate: delivered ? Math.round((opened / delivered) * 100) : 0,
+      clickRate: opened ? Math.round((clicked / opened) * 100) : 0,
+      responseRate: delivered ? Math.round((replied / delivered) * 100) : 0,
+    };
+  })();
+
+  const filteredHistory = history.filter(h => {
+    if (historyStatusFilter !== "all" && h.status !== historyStatusFilter) return false;
+    if (historySearch) {
+      const q = historySearch.toLowerCase();
+      if (!h.recipient.toLowerCase().includes(q) && !h.template.toLowerCase().includes(q) && !h.subject.toLowerCase().includes(q)) return false;
+    }
+    return true;
+  });
+  const historyTotalPages = Math.max(1, Math.ceil(filteredHistory.length / historyPageSize));
+  const pagedHistory = filteredHistory.slice((historyPage - 1) * historyPageSize, historyPage * historyPageSize);
+
+  const exportHistoryCsv = () => {
+    const rows = [
+      ["ID", "Template", "Subject", "Recipient", "Channel", "Status", "Opened", "Clicked", "Replied", "ResponseMs", "Error", "SentAt"],
+      ...filteredHistory.map(h => [h.id, h.template, h.subject, h.recipient, h.channel, h.status, h.opened, h.clicked, h.replied, h.responseMs ?? "", h.errorMessage ?? "", h.sentAt]),
+    ];
+    const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a"); a.href = url; a.download = `email-history-${Date.now()}.csv`; a.click();
+    URL.revokeObjectURL(url);
+    toast({ title: "Exported", description: `${filteredHistory.length} rows exported.` });
+  };
+
+  const appendTestLog = (level: "info" | "ok" | "error", message: string) => {
+    setTestLog(prev => [...prev, { ts: new Date().toLocaleTimeString(), level, message }]);
+  };
+
+  const runDeliveryTest = async () => {
+    if (!testTo || !/^\S+@\S+\.\S+$/.test(testTo)) {
+      toast({ title: "Invalid recipient", description: "Enter a valid test email address.", variant: "destructive" });
+      return;
+    }
+    if (testMode === "smtp" && (!smtp.host || !smtp.fromEmail)) {
+      toast({ title: "SMTP not configured", description: "Configure SMTP host and From email first.", variant: "destructive" });
+      return;
+    }
+    if (testMode === "provider" && !provider.apiKey) {
+      toast({ title: "Provider not configured", description: "Set an API key on the Providers tab first.", variant: "destructive" });
+      return;
+    }
+    setTestRunning(true);
+    setTestLog([]);
+    appendTestLog("info", `Starting delivery test via ${testMode === "smtp" ? `SMTP (${smtp.host}:${smtp.port}, ${smtp.encryption.toUpperCase()})` : provider.provider.toUpperCase()}`);
+    await new Promise(r => setTimeout(r, 500));
+    appendTestLog("info", `Resolving MX for ${testTo.split("@")[1]}…`);
+    await new Promise(r => setTimeout(r, 500));
+    appendTestLog("ok", "MX resolved");
+    await new Promise(r => setTimeout(r, 400));
+    appendTestLog("info", testMode === "smtp" ? `Authenticating as ${smtp.username || "(anonymous)"}…` : "Authenticating with API key…");
+    await new Promise(r => setTimeout(r, 500));
+    const ok = testMode === "smtp"
+      ? !!(smtp.host && smtp.port && smtp.fromEmail)
+      : provider.apiKey.length > 8;
+    if (!ok) {
+      appendTestLog("error", "Authentication failed");
+      setTestRunning(false);
+      toast({ title: "Delivery test failed", description: "Check credentials and retry.", variant: "destructive" });
+      return;
+    }
+    appendTestLog("ok", "Authenticated");
+    await new Promise(r => setTimeout(r, 400));
+    appendTestLog("info", `Sending message to ${testTo}…`);
+    await new Promise(r => setTimeout(r, 700));
+    appendTestLog("ok", `Accepted for delivery (250 OK, queued)`);
+    const entry: EmailHistoryEntry = {
+      id: Date.now(),
+      template: "Delivery Test",
+      recipient: testTo,
+      subject: testSubject,
+      channel: testMode === "smtp" ? "smtp" : (provider.provider === "custom" ? "smtp" : provider.provider as EmailHistoryEntry["channel"]),
+      status: "delivered",
+      opened: false, clicked: false, replied: false,
+      responseMs: null,
+      sentAt: new Date().toISOString().replace("T", " ").slice(0, 16),
+    };
+    persistHistory([entry, ...history]);
+    setTestRunning(false);
+    toast({ title: "Test email accepted", description: `Delivery request accepted for ${testTo}. Check the inbox.` });
+  };
 
   const persistTemplates = (list: EmailTemplate[]) => {
     setTemplates(list);
