@@ -43,13 +43,49 @@ const initialTemplates: EmailTemplate[] = [
   { id: "event-reminder", name: "Event Reminder", subject: "Upcoming event reminder", category: "notification", status: "draft", lastEdited: "2026-04-01", body: "Reminder: {{event}}" },
 ];
 
-const emailHistory = [
-  { id: 1, template: "Welcome Email", recipient: "startup@example.com", status: "delivered", sentAt: "2026-05-05 14:30" },
-  { id: 2, template: "Application Received", recipient: "founder@example.com", status: "delivered", sentAt: "2026-05-05 12:15" },
-  { id: 3, template: "Booking Confirmed", recipient: "investor@example.com", status: "delivered", sentAt: "2026-05-04 18:00" },
-  { id: 4, template: "Invoice", recipient: "billing@startup.io", status: "failed", sentAt: "2026-05-04 10:22" },
-  { id: 5, template: "Verify Email", recipient: "new@user.com", status: "delivered", sentAt: "2026-05-03 09:45" },
-];
+type EmailHistoryEntry = {
+  id: number;
+  template: string;
+  recipient: string;
+  subject: string;
+  channel: "smtp" | "resend" | "sendgrid" | "mailgun" | "postmark" | "ses";
+  status: "delivered" | "failed" | "bounced" | "opened" | "queued";
+  opened: boolean;
+  clicked: boolean;
+  replied: boolean;
+  responseMs: number | null;
+  errorMessage?: string;
+  sentAt: string;
+};
+
+const HISTORY_KEY = "admin_email_history_v1";
+
+const seedHistory: EmailHistoryEntry[] = Array.from({ length: 42 }).map((_, i) => {
+  const templates = ["Welcome Email", "Application Received", "Booking Confirmed", "Invoice", "Verify Email", "Password Reset", "Mentor Assigned", "Event Reminder"];
+  const recipients = ["startup@example.com", "founder@example.com", "investor@example.com", "billing@startup.io", "new@user.com", "mentor@xicb.com", "team@venture.io"];
+  const channels: EmailHistoryEntry["channel"][] = ["smtp", "resend", "sendgrid", "mailgun"];
+  const statuses: EmailHistoryEntry["status"][] = i % 11 === 0 ? ["failed"] : i % 7 === 0 ? ["bounced"] : ["delivered", "opened"];
+  const status = statuses[i % statuses.length];
+  const opened = status === "opened" || (status === "delivered" && i % 3 === 0);
+  const clicked = opened && i % 4 === 0;
+  const replied = opened && i % 9 === 0;
+  const day = String(28 - (i % 28)).padStart(2, "0");
+  const hour = String(23 - (i % 24)).padStart(2, "0");
+  return {
+    id: i + 1,
+    template: templates[i % templates.length],
+    recipient: recipients[i % recipients.length],
+    subject: templates[i % templates.length] + " – " + (2000 + i),
+    channel: channels[i % channels.length],
+    status,
+    opened,
+    clicked,
+    replied,
+    responseMs: replied ? 60_000 + i * 2500 : null,
+    errorMessage: status === "failed" ? "SMTP 550: recipient rejected" : status === "bounced" ? "Hard bounce: mailbox unavailable" : undefined,
+    sentAt: `2026-05-${day} ${hour}:${String((i * 7) % 60).padStart(2, "0")}`,
+  };
+});
 
 const notificationTriggers = [
   { id: 1, event: "New Application Submitted", template: "Application Received", channel: "Email", enabled: true },
