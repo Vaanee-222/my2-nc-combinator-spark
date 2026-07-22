@@ -528,10 +528,40 @@ const EmailManagement = () => {
 
         {/* History Tab */}
         <TabsContent value="history" className="space-y-4">
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
+            <MetricPill label="Total Sent" value={metrics.total} />
+            <MetricPill label="Delivery Rate" value={`${metrics.deliveryRate}%`} tone="ok" />
+            <MetricPill label="Open Rate" value={`${metrics.openRate}%`} />
+            <MetricPill label="Click Rate" value={`${metrics.clickRate}%`} />
+            <MetricPill label="Response Rate" value={`${metrics.responseRate}%`} />
+            <MetricPill label="Avg Response" value={`${metrics.avgResponseMin}m`} />
+          </div>
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2"><Clock className="h-5 w-5" /><span>Send History</span></CardTitle>
-              <CardDescription>Recent email delivery log</CardDescription>
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                <div>
+                  <CardTitle className="flex items-center space-x-2"><Clock className="h-5 w-5" /><span>Send History</span></CardTitle>
+                  <CardDescription>Delivery log with read status and response tracking</CardDescription>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <div className="relative">
+                    <Search className="h-4 w-4 absolute left-2 top-2.5 text-muted-foreground" />
+                    <Input placeholder="Search recipient, template, subject…" className="pl-8 w-64" value={historySearch} onChange={e => { setHistorySearch(e.target.value); setHistoryPage(1); }} />
+                  </div>
+                  <Select value={historyStatusFilter} onValueChange={v => { setHistoryStatusFilter(v); setHistoryPage(1); }}>
+                    <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Statuses</SelectItem>
+                      <SelectItem value="delivered">Delivered</SelectItem>
+                      <SelectItem value="opened">Opened</SelectItem>
+                      <SelectItem value="failed">Failed</SelectItem>
+                      <SelectItem value="bounced">Bounced</SelectItem>
+                      <SelectItem value="queued">Queued</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Button variant="outline" size="sm" onClick={exportHistoryCsv}><Download className="h-4 w-4 mr-1" /> Export CSV</Button>
+                </div>
+              </div>
             </CardHeader>
             <CardContent className="p-0">
               <Table>
@@ -539,26 +569,132 @@ const EmailManagement = () => {
                   <TableRow>
                     <TableHead>Template</TableHead>
                     <TableHead>Recipient</TableHead>
+                    <TableHead>Channel</TableHead>
                     <TableHead>Status</TableHead>
+                    <TableHead>Engagement</TableHead>
+                    <TableHead>Response</TableHead>
                     <TableHead>Sent At</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {emailHistory.map(e => (
+                  {pagedHistory.map(e => (
                     <TableRow key={e.id}>
-                      <TableCell className="font-medium">{e.template}</TableCell>
-                      <TableCell className="text-muted-foreground">{e.recipient}</TableCell>
-                      <TableCell>
-                        <Badge variant={e.status === "delivered" ? "default" : "destructive"}>
-                          {e.status === "delivered" ? <CheckCircle className="h-3 w-3 mr-1" /> : <XCircle className="h-3 w-3 mr-1" />}
-                          {e.status}
-                        </Badge>
+                      <TableCell className="font-medium">
+                        <div>{e.template}</div>
+                        <div className="text-xs text-muted-foreground truncate max-w-xs">{e.subject}</div>
                       </TableCell>
-                      <TableCell className="text-muted-foreground">{e.sentAt}</TableCell>
+                      <TableCell className="text-muted-foreground">{e.recipient}</TableCell>
+                      <TableCell><Badge variant="outline" className="uppercase text-xs">{e.channel}</Badge></TableCell>
+                      <TableCell>
+                        {e.status === "delivered" || e.status === "opened" ? (
+                          <Badge className="bg-green-500/15 text-green-500 hover:bg-green-500/15"><CheckCircle className="h-3 w-3 mr-1" /> {e.status}</Badge>
+                        ) : e.status === "failed" ? (
+                          <Badge variant="destructive"><XCircle className="h-3 w-3 mr-1" /> failed</Badge>
+                        ) : e.status === "bounced" ? (
+                          <Badge className="bg-amber-500/15 text-amber-500 hover:bg-amber-500/15"><AlertTriangle className="h-3 w-3 mr-1" /> bounced</Badge>
+                        ) : (
+                          <Badge variant="secondary">{e.status}</Badge>
+                        )}
+                        {e.errorMessage && <div className="text-[11px] text-destructive mt-1">{e.errorMessage}</div>}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2 text-xs">
+                          <span className={e.opened ? "text-green-500 flex items-center" : "text-muted-foreground flex items-center"}><MailOpen className="h-3 w-3 mr-1" /> {e.opened ? "opened" : "unread"}</span>
+                          {e.clicked && <Badge variant="outline" className="text-[10px]">clicked</Badge>}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        {e.replied ? (
+                          <div className="flex items-center text-xs text-green-500"><Reply className="h-3 w-3 mr-1" /> {Math.round((e.responseMs || 0) / 60000)}m</div>
+                        ) : <span className="text-muted-foreground text-xs">—</span>}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground text-xs whitespace-nowrap">{e.sentAt}</TableCell>
                     </TableRow>
                   ))}
+                  {pagedHistory.length === 0 && (
+                    <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-8">No emails match the current filters.</TableCell></TableRow>
+                  )}
                 </TableBody>
               </Table>
+              <div className="flex items-center justify-between p-3 border-t">
+                <div className="text-xs text-muted-foreground">
+                  Showing {(pagedHistory.length ? (historyPage - 1) * historyPageSize + 1 : 0)}–{(historyPage - 1) * historyPageSize + pagedHistory.length} of {filteredHistory.length}
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" size="sm" disabled={historyPage <= 1} onClick={() => setHistoryPage(p => Math.max(1, p - 1))}><ChevronLeft className="h-4 w-4" /></Button>
+                  <span className="text-xs">Page {historyPage} / {historyTotalPages}</span>
+                  <Button variant="outline" size="sm" disabled={historyPage >= historyTotalPages} onClick={() => setHistoryPage(p => Math.min(historyTotalPages, p + 1))}><ChevronRight className="h-4 w-4" /></Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Delivery Test Tab */}
+        <TabsContent value="test" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2"><FlaskConical className="h-5 w-5" /><span>Delivery Test</span></CardTitle>
+              <CardDescription>Send a test email through your active SMTP or provider configuration to verify deliverability.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Delivery Channel</Label>
+                  <Select value={testMode} onValueChange={(v: any) => setTestMode(v)}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="smtp">SMTP ({smtp.host || "not set"})</SelectItem>
+                      <SelectItem value="provider">Provider ({provider.provider})</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Test Recipient *</Label>
+                  <Input type="email" placeholder="you@example.com" value={testTo} onChange={e => setTestTo(e.target.value)} />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label>Use Template (optional)</Label>
+                  <Select value={testTemplateId} onValueChange={v => {
+                    setTestTemplateId(v);
+                    const t = templates.find(x => x.id === v);
+                    if (t) { setTestSubject(t.subject); setTestBody(t.body || ""); }
+                  }}>
+                    <SelectTrigger><SelectValue placeholder="Select a template to populate subject & body" /></SelectTrigger>
+                    <SelectContent>
+                      {templates.map(t => <SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label>Subject</Label>
+                  <Input value={testSubject} onChange={e => setTestSubject(e.target.value)} />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label>Body</Label>
+                  <Textarea className="min-h-[140px]" value={testBody} onChange={e => setTestBody(e.target.value)} />
+                </div>
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setTestLog([])} disabled={testRunning}>Clear Log</Button>
+                <Button onClick={runDeliveryTest} disabled={testRunning}>
+                  <FlaskConical className="h-4 w-4 mr-1" /> {testRunning ? "Running…" : "Send Test Email"}
+                </Button>
+              </div>
+              <div className="rounded-md border bg-muted/30 p-3 font-mono text-xs min-h-[140px] max-h-[280px] overflow-auto space-y-1">
+                {testLog.length === 0 ? (
+                  <div className="text-muted-foreground">Test log output will appear here.</div>
+                ) : testLog.map((l, i) => (
+                  <div key={i} className={l.level === "error" ? "text-destructive" : l.level === "ok" ? "text-green-500" : ""}>
+                    [{l.ts}] {l.level.toUpperCase().padEnd(5)} {l.message}
+                  </div>
+                ))}
+              </div>
+              <div className="text-xs text-muted-foreground">
+                Presets: <Button variant="link" className="px-1 h-auto" onClick={() => setTestTo("delivery-test@xicombinator.com")}>internal QA</Button>
+                <Button variant="link" className="px-1 h-auto" onClick={() => setTestTo("gmail-check@gmail.com")}>gmail</Button>
+                <Button variant="link" className="px-1 h-auto" onClick={() => setTestTo("outlook-check@outlook.com")}>outlook</Button>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
