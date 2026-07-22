@@ -887,4 +887,11 @@ const EmailManagement = () => {
   );
 };
 
+const MetricPill = ({ label, value, tone }: { label: string; value: string | number; tone?: "ok" | "warn" }) => (
+  <div className="rounded-lg border p-3">
+    <div className="text-xs text-muted-foreground">{label}</div>
+    <div className={"text-lg font-semibold " + (tone === "ok" ? "text-green-500" : tone === "warn" ? "text-amber-500" : "")}>{value}</div>
+  </div>
+);
+
 export default EmailManagement;
