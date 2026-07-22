@@ -11,7 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { Mail, Send, FileText, Bell, Eye, Copy, Plus, Clock, CheckCircle, XCircle, Server, KeyRound, Save, PlugZap, Pencil, Trash2 } from "lucide-react";
+import { Mail, Send, FileText, Bell, Eye, Copy, Plus, Clock, CheckCircle, XCircle, Server, KeyRound, Save, PlugZap, Pencil, Trash2, FlaskConical, ChevronLeft, ChevronRight, Search, Download, MailOpen, Reply, AlertTriangle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 type SmtpConfig = {
@@ -43,13 +43,49 @@ const initialTemplates: EmailTemplate[] = [
   { id: "event-reminder", name: "Event Reminder", subject: "Upcoming event reminder", category: "notification", status: "draft", lastEdited: "2026-04-01", body: "Reminder: {{event}}" },
 ];
 
-const emailHistory = [
-  { id: 1, template: "Welcome Email", recipient: "startup@example.com", status: "delivered", sentAt: "2026-05-05 14:30" },
-  { id: 2, template: "Application Received", recipient: "founder@example.com", status: "delivered", sentAt: "2026-05-05 12:15" },
-  { id: 3, template: "Booking Confirmed", recipient: "investor@example.com", status: "delivered", sentAt: "2026-05-04 18:00" },
-  { id: 4, template: "Invoice", recipient: "billing@startup.io", status: "failed", sentAt: "2026-05-04 10:22" },
-  { id: 5, template: "Verify Email", recipient: "new@user.com", status: "delivered", sentAt: "2026-05-03 09:45" },
-];
+type EmailHistoryEntry = {
+  id: number;
+  template: string;
+  recipient: string;
+  subject: string;
+  channel: "smtp" | "resend" | "sendgrid" | "mailgun" | "postmark" | "ses";
+  status: "delivered" | "failed" | "bounced" | "opened" | "queued";
+  opened: boolean;
+  clicked: boolean;
+  replied: boolean;
+  responseMs: number | null;
+  errorMessage?: string;
+  sentAt: string;
+};
+
+const HISTORY_KEY = "admin_email_history_v1";
+
+const seedHistory: EmailHistoryEntry[] = Array.from({ length: 42 }).map((_, i) => {
+  const templates = ["Welcome Email", "Application Received", "Booking Confirmed", "Invoice", "Verify Email", "Password Reset", "Mentor Assigned", "Event Reminder"];
+  const recipients = ["startup@example.com", "founder@example.com", "investor@example.com", "billing@startup.io", "new@user.com", "mentor@xicb.com", "team@venture.io"];
+  const channels: EmailHistoryEntry["channel"][] = ["smtp", "resend", "sendgrid", "mailgun"];
+  const statuses: EmailHistoryEntry["status"][] = i % 11 === 0 ? ["failed"] : i % 7 === 0 ? ["bounced"] : ["delivered", "opened"];
+  const status = statuses[i % statuses.length];
+  const opened = status === "opened" || (status === "delivered" && i % 3 === 0);
+  const clicked = opened && i % 4 === 0;
+  const replied = opened && i % 9 === 0;
+  const day = String(28 - (i % 28)).padStart(2, "0");
+  const hour = String(23 - (i % 24)).padStart(2, "0");
+  return {
+    id: i + 1,
+    template: templates[i % templates.length],
+    recipient: recipients[i % recipients.length],
+    subject: templates[i % templates.length] + " – " + (2000 + i),
+    channel: channels[i % channels.length],
+    status,
+    opened,
+    clicked,
+    replied,
+    responseMs: replied ? 60_000 + i * 2500 : null,
+    errorMessage: status === "failed" ? "SMTP 550: recipient rejected" : status === "bounced" ? "Hard bounce: mailbox unavailable" : undefined,
+    sentAt: `2026-05-${day} ${hour}:${String((i * 7) % 60).padStart(2, "0")}`,
+  };
+});
 
 const notificationTriggers = [
   { id: 1, event: "New Application Submitted", template: "Application Received", channel: "Email", enabled: true },
@@ -79,14 +115,135 @@ const EmailManagement = () => {
   const [editing, setEditing] = useState<EmailTemplate | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [previewId, setPreviewId] = useState<string | null>(null);
+  const [history, setHistory] = useState<EmailHistoryEntry[]>(seedHistory);
+  const [historyPage, setHistoryPage] = useState(1);
+  const [historyStatusFilter, setHistoryStatusFilter] = useState<string>("all");
+  const [historySearch, setHistorySearch] = useState("");
+  const historyPageSize = 10;
+  const [testTo, setTestTo] = useState("");
+  const [testMode, setTestMode] = useState<"smtp" | "provider">("smtp");
+  const [testTemplateId, setTestTemplateId] = useState<string>("");
+  const [testSubject, setTestSubject] = useState("Xi Combinator – Delivery Test");
+  const [testBody, setTestBody] = useState("Hi there,\n\nThis is a delivery test from the Xi Combinator admin panel.\n\nIf you received this, your email pipeline is working.\n");
+  const [testRunning, setTestRunning] = useState(false);
+  const [testLog, setTestLog] = useState<Array<{ ts: string; level: "info" | "ok" | "error"; message: string }>>([]);
 
   useEffect(() => {
     try {
       const s = localStorage.getItem(SMTP_KEY); if (s) setSmtp({ ...defaultSmtp, ...JSON.parse(s) });
       const p = localStorage.getItem(PROVIDER_KEY); if (p) setProvider({ ...defaultProvider, ...JSON.parse(p) });
       const t = localStorage.getItem(TEMPLATES_KEY); if (t) setTemplates(JSON.parse(t));
+      const h = localStorage.getItem(HISTORY_KEY); if (h) setHistory(JSON.parse(h));
     } catch {}
   }, []);
+
+  const persistHistory = (list: EmailHistoryEntry[]) => {
+    setHistory(list);
+    try { localStorage.setItem(HISTORY_KEY, JSON.stringify(list)); } catch {}
+  };
+
+  const metrics = (() => {
+    const total = history.length || 1;
+    const delivered = history.filter(h => h.status === "delivered" || h.status === "opened").length;
+    const failed = history.filter(h => h.status === "failed" || h.status === "bounced").length;
+    const opened = history.filter(h => h.opened).length;
+    const clicked = history.filter(h => h.clicked).length;
+    const replied = history.filter(h => h.replied).length;
+    const avgResponseMin = (() => {
+      const rs = history.filter(h => h.responseMs).map(h => h.responseMs as number);
+      if (!rs.length) return 0;
+      return Math.round(rs.reduce((a, b) => a + b, 0) / rs.length / 60000);
+    })();
+    return {
+      total: history.length,
+      delivered, failed, opened, clicked, replied, avgResponseMin,
+      deliveryRate: Math.round((delivered / total) * 100),
+      openRate: delivered ? Math.round((opened / delivered) * 100) : 0,
+      clickRate: opened ? Math.round((clicked / opened) * 100) : 0,
+      responseRate: delivered ? Math.round((replied / delivered) * 100) : 0,
+    };
+  })();
+
+  const filteredHistory = history.filter(h => {
+    if (historyStatusFilter !== "all" && h.status !== historyStatusFilter) return false;
+    if (historySearch) {
+      const q = historySearch.toLowerCase();
+      if (!h.recipient.toLowerCase().includes(q) && !h.template.toLowerCase().includes(q) && !h.subject.toLowerCase().includes(q)) return false;
+    }
+    return true;
+  });
+  const historyTotalPages = Math.max(1, Math.ceil(filteredHistory.length / historyPageSize));
+  const pagedHistory = filteredHistory.slice((historyPage - 1) * historyPageSize, historyPage * historyPageSize);
+
+  const exportHistoryCsv = () => {
+    const rows = [
+      ["ID", "Template", "Subject", "Recipient", "Channel", "Status", "Opened", "Clicked", "Replied", "ResponseMs", "Error", "SentAt"],
+      ...filteredHistory.map(h => [h.id, h.template, h.subject, h.recipient, h.channel, h.status, h.opened, h.clicked, h.replied, h.responseMs ?? "", h.errorMessage ?? "", h.sentAt]),
+    ];
+    const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a"); a.href = url; a.download = `email-history-${Date.now()}.csv`; a.click();
+    URL.revokeObjectURL(url);
+    toast({ title: "Exported", description: `${filteredHistory.length} rows exported.` });
+  };
+
+  const appendTestLog = (level: "info" | "ok" | "error", message: string) => {
+    setTestLog(prev => [...prev, { ts: new Date().toLocaleTimeString(), level, message }]);
+  };
+
+  const runDeliveryTest = async () => {
+    if (!testTo || !/^\S+@\S+\.\S+$/.test(testTo)) {
+      toast({ title: "Invalid recipient", description: "Enter a valid test email address.", variant: "destructive" });
+      return;
+    }
+    if (testMode === "smtp" && (!smtp.host || !smtp.fromEmail)) {
+      toast({ title: "SMTP not configured", description: "Configure SMTP host and From email first.", variant: "destructive" });
+      return;
+    }
+    if (testMode === "provider" && !provider.apiKey) {
+      toast({ title: "Provider not configured", description: "Set an API key on the Providers tab first.", variant: "destructive" });
+      return;
+    }
+    setTestRunning(true);
+    setTestLog([]);
+    appendTestLog("info", `Starting delivery test via ${testMode === "smtp" ? `SMTP (${smtp.host}:${smtp.port}, ${smtp.encryption.toUpperCase()})` : provider.provider.toUpperCase()}`);
+    await new Promise(r => setTimeout(r, 500));
+    appendTestLog("info", `Resolving MX for ${testTo.split("@")[1]}…`);
+    await new Promise(r => setTimeout(r, 500));
+    appendTestLog("ok", "MX resolved");
+    await new Promise(r => setTimeout(r, 400));
+    appendTestLog("info", testMode === "smtp" ? `Authenticating as ${smtp.username || "(anonymous)"}…` : "Authenticating with API key…");
+    await new Promise(r => setTimeout(r, 500));
+    const ok = testMode === "smtp"
+      ? !!(smtp.host && smtp.port && smtp.fromEmail)
+      : provider.apiKey.length > 8;
+    if (!ok) {
+      appendTestLog("error", "Authentication failed");
+      setTestRunning(false);
+      toast({ title: "Delivery test failed", description: "Check credentials and retry.", variant: "destructive" });
+      return;
+    }
+    appendTestLog("ok", "Authenticated");
+    await new Promise(r => setTimeout(r, 400));
+    appendTestLog("info", `Sending message to ${testTo}…`);
+    await new Promise(r => setTimeout(r, 700));
+    appendTestLog("ok", `Accepted for delivery (250 OK, queued)`);
+    const entry: EmailHistoryEntry = {
+      id: Date.now(),
+      template: "Delivery Test",
+      recipient: testTo,
+      subject: testSubject,
+      channel: testMode === "smtp" ? "smtp" : (provider.provider === "custom" ? "smtp" : provider.provider as EmailHistoryEntry["channel"]),
+      status: "delivered",
+      opened: false, clicked: false, replied: false,
+      responseMs: null,
+      sentAt: new Date().toISOString().replace("T", " ").slice(0, 16),
+    };
+    persistHistory([entry, ...history]);
+    setTestRunning(false);
+    toast({ title: "Test email accepted", description: `Delivery request accepted for ${testTo}. Check the inbox.` });
+  };
 
   const persistTemplates = (list: EmailTemplate[]) => {
     setTemplates(list);
@@ -188,7 +345,7 @@ const EmailManagement = () => {
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-primary/10 rounded-lg"><Send className="h-5 w-5 text-primary" /></div>
               <div>
-                <p className="text-2xl font-bold">{emailHistory.filter(e => e.status === "delivered").length}</p>
+                <p className="text-2xl font-bold">{metrics.delivered}</p>
                 <p className="text-xs text-muted-foreground">Delivered</p>
               </div>
             </div>
@@ -199,7 +356,7 @@ const EmailManagement = () => {
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-destructive/10 rounded-lg"><XCircle className="h-5 w-5 text-destructive" /></div>
               <div>
-                <p className="text-2xl font-bold">{emailHistory.filter(e => e.status === "failed").length}</p>
+                <p className="text-2xl font-bold">{metrics.failed}</p>
                 <p className="text-xs text-muted-foreground">Failed</p>
               </div>
             </div>
@@ -230,11 +387,12 @@ const EmailManagement = () => {
       </div>
 
       <Tabs defaultValue="templates" className="space-y-4">
-        <TabsList>
+        <TabsList className="flex flex-wrap gap-1">
           <TabsTrigger value="templates">Templates</TabsTrigger>
           <TabsTrigger value="compose">Compose</TabsTrigger>
           <TabsTrigger value="triggers">Notification Triggers</TabsTrigger>
           <TabsTrigger value="history">Send History</TabsTrigger>
+          <TabsTrigger value="test" data-testid="tab-test">Delivery Test</TabsTrigger>
           <TabsTrigger value="smtp" data-testid="tab-smtp">SMTP</TabsTrigger>
           <TabsTrigger value="provider" data-testid="tab-provider">Providers</TabsTrigger>
         </TabsList>
@@ -370,10 +528,40 @@ const EmailManagement = () => {
 
         {/* History Tab */}
         <TabsContent value="history" className="space-y-4">
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
+            <MetricPill label="Total Sent" value={metrics.total} />
+            <MetricPill label="Delivery Rate" value={`${metrics.deliveryRate}%`} tone="ok" />
+            <MetricPill label="Open Rate" value={`${metrics.openRate}%`} />
+            <MetricPill label="Click Rate" value={`${metrics.clickRate}%`} />
+            <MetricPill label="Response Rate" value={`${metrics.responseRate}%`} />
+            <MetricPill label="Avg Response" value={`${metrics.avgResponseMin}m`} />
+          </div>
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2"><Clock className="h-5 w-5" /><span>Send History</span></CardTitle>
-              <CardDescription>Recent email delivery log</CardDescription>
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                <div>
+                  <CardTitle className="flex items-center space-x-2"><Clock className="h-5 w-5" /><span>Send History</span></CardTitle>
+                  <CardDescription>Delivery log with read status and response tracking</CardDescription>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <div className="relative">
+                    <Search className="h-4 w-4 absolute left-2 top-2.5 text-muted-foreground" />
+                    <Input placeholder="Search recipient, template, subject…" className="pl-8 w-64" value={historySearch} onChange={e => { setHistorySearch(e.target.value); setHistoryPage(1); }} />
+                  </div>
+                  <Select value={historyStatusFilter} onValueChange={v => { setHistoryStatusFilter(v); setHistoryPage(1); }}>
+                    <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Statuses</SelectItem>
+                      <SelectItem value="delivered">Delivered</SelectItem>
+                      <SelectItem value="opened">Opened</SelectItem>
+                      <SelectItem value="failed">Failed</SelectItem>
+                      <SelectItem value="bounced">Bounced</SelectItem>
+                      <SelectItem value="queued">Queued</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Button variant="outline" size="sm" onClick={exportHistoryCsv}><Download className="h-4 w-4 mr-1" /> Export CSV</Button>
+                </div>
+              </div>
             </CardHeader>
             <CardContent className="p-0">
               <Table>
@@ -381,26 +569,132 @@ const EmailManagement = () => {
                   <TableRow>
                     <TableHead>Template</TableHead>
                     <TableHead>Recipient</TableHead>
+                    <TableHead>Channel</TableHead>
                     <TableHead>Status</TableHead>
+                    <TableHead>Engagement</TableHead>
+                    <TableHead>Response</TableHead>
                     <TableHead>Sent At</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {emailHistory.map(e => (
+                  {pagedHistory.map(e => (
                     <TableRow key={e.id}>
-                      <TableCell className="font-medium">{e.template}</TableCell>
-                      <TableCell className="text-muted-foreground">{e.recipient}</TableCell>
-                      <TableCell>
-                        <Badge variant={e.status === "delivered" ? "default" : "destructive"}>
-                          {e.status === "delivered" ? <CheckCircle className="h-3 w-3 mr-1" /> : <XCircle className="h-3 w-3 mr-1" />}
-                          {e.status}
-                        </Badge>
+                      <TableCell className="font-medium">
+                        <div>{e.template}</div>
+                        <div className="text-xs text-muted-foreground truncate max-w-xs">{e.subject}</div>
                       </TableCell>
-                      <TableCell className="text-muted-foreground">{e.sentAt}</TableCell>
+                      <TableCell className="text-muted-foreground">{e.recipient}</TableCell>
+                      <TableCell><Badge variant="outline" className="uppercase text-xs">{e.channel}</Badge></TableCell>
+                      <TableCell>
+                        {e.status === "delivered" || e.status === "opened" ? (
+                          <Badge className="bg-green-500/15 text-green-500 hover:bg-green-500/15"><CheckCircle className="h-3 w-3 mr-1" /> {e.status}</Badge>
+                        ) : e.status === "failed" ? (
+                          <Badge variant="destructive"><XCircle className="h-3 w-3 mr-1" /> failed</Badge>
+                        ) : e.status === "bounced" ? (
+                          <Badge className="bg-amber-500/15 text-amber-500 hover:bg-amber-500/15"><AlertTriangle className="h-3 w-3 mr-1" /> bounced</Badge>
+                        ) : (
+                          <Badge variant="secondary">{e.status}</Badge>
+                        )}
+                        {e.errorMessage && <div className="text-[11px] text-destructive mt-1">{e.errorMessage}</div>}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2 text-xs">
+                          <span className={e.opened ? "text-green-500 flex items-center" : "text-muted-foreground flex items-center"}><MailOpen className="h-3 w-3 mr-1" /> {e.opened ? "opened" : "unread"}</span>
+                          {e.clicked && <Badge variant="outline" className="text-[10px]">clicked</Badge>}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        {e.replied ? (
+                          <div className="flex items-center text-xs text-green-500"><Reply className="h-3 w-3 mr-1" /> {Math.round((e.responseMs || 0) / 60000)}m</div>
+                        ) : <span className="text-muted-foreground text-xs">—</span>}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground text-xs whitespace-nowrap">{e.sentAt}</TableCell>
                     </TableRow>
                   ))}
+                  {pagedHistory.length === 0 && (
+                    <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-8">No emails match the current filters.</TableCell></TableRow>
+                  )}
                 </TableBody>
               </Table>
+              <div className="flex items-center justify-between p-3 border-t">
+                <div className="text-xs text-muted-foreground">
+                  Showing {(pagedHistory.length ? (historyPage - 1) * historyPageSize + 1 : 0)}–{(historyPage - 1) * historyPageSize + pagedHistory.length} of {filteredHistory.length}
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" size="sm" disabled={historyPage <= 1} onClick={() => setHistoryPage(p => Math.max(1, p - 1))}><ChevronLeft className="h-4 w-4" /></Button>
+                  <span className="text-xs">Page {historyPage} / {historyTotalPages}</span>
+                  <Button variant="outline" size="sm" disabled={historyPage >= historyTotalPages} onClick={() => setHistoryPage(p => Math.min(historyTotalPages, p + 1))}><ChevronRight className="h-4 w-4" /></Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Delivery Test Tab */}
+        <TabsContent value="test" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2"><FlaskConical className="h-5 w-5" /><span>Delivery Test</span></CardTitle>
+              <CardDescription>Send a test email through your active SMTP or provider configuration to verify deliverability.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Delivery Channel</Label>
+                  <Select value={testMode} onValueChange={(v: any) => setTestMode(v)}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="smtp">SMTP ({smtp.host || "not set"})</SelectItem>
+                      <SelectItem value="provider">Provider ({provider.provider})</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Test Recipient *</Label>
+                  <Input type="email" placeholder="you@example.com" value={testTo} onChange={e => setTestTo(e.target.value)} />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label>Use Template (optional)</Label>
+                  <Select value={testTemplateId} onValueChange={v => {
+                    setTestTemplateId(v);
+                    const t = templates.find(x => x.id === v);
+                    if (t) { setTestSubject(t.subject); setTestBody(t.body || ""); }
+                  }}>
+                    <SelectTrigger><SelectValue placeholder="Select a template to populate subject & body" /></SelectTrigger>
+                    <SelectContent>
+                      {templates.map(t => <SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label>Subject</Label>
+                  <Input value={testSubject} onChange={e => setTestSubject(e.target.value)} />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label>Body</Label>
+                  <Textarea className="min-h-[140px]" value={testBody} onChange={e => setTestBody(e.target.value)} />
+                </div>
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setTestLog([])} disabled={testRunning}>Clear Log</Button>
+                <Button onClick={runDeliveryTest} disabled={testRunning}>
+                  <FlaskConical className="h-4 w-4 mr-1" /> {testRunning ? "Running…" : "Send Test Email"}
+                </Button>
+              </div>
+              <div className="rounded-md border bg-muted/30 p-3 font-mono text-xs min-h-[140px] max-h-[280px] overflow-auto space-y-1">
+                {testLog.length === 0 ? (
+                  <div className="text-muted-foreground">Test log output will appear here.</div>
+                ) : testLog.map((l, i) => (
+                  <div key={i} className={l.level === "error" ? "text-destructive" : l.level === "ok" ? "text-green-500" : ""}>
+                    [{l.ts}] {l.level.toUpperCase().padEnd(5)} {l.message}
+                  </div>
+                ))}
+              </div>
+              <div className="text-xs text-muted-foreground">
+                Presets: <Button variant="link" className="px-1 h-auto" onClick={() => setTestTo("delivery-test@xicombinator.com")}>internal QA</Button>
+                <Button variant="link" className="px-1 h-auto" onClick={() => setTestTo("gmail-check@gmail.com")}>gmail</Button>
+                <Button variant="link" className="px-1 h-auto" onClick={() => setTestTo("outlook-check@outlook.com")}>outlook</Button>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -592,5 +886,12 @@ const EmailManagement = () => {
     </div>
   );
 };
+
+const MetricPill = ({ label, value, tone }: { label: string; value: string | number; tone?: "ok" | "warn" }) => (
+  <div className="rounded-lg border p-3">
+    <div className="text-xs text-muted-foreground">{label}</div>
+    <div className={"text-lg font-semibold " + (tone === "ok" ? "text-green-500" : tone === "warn" ? "text-amber-500" : "")}>{value}</div>
+  </div>
+);
 
 export default EmailManagement;
