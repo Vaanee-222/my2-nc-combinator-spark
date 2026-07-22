@@ -11,7 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { Mail, Send, FileText, Bell, Eye, Copy, Plus, Clock, CheckCircle, XCircle, Server, KeyRound, Save, PlugZap, Pencil, Trash2 } from "lucide-react";
+import { Mail, Send, FileText, Bell, Eye, Copy, Plus, Clock, CheckCircle, XCircle, Server, KeyRound, Save, PlugZap, Pencil, Trash2, FlaskConical, ChevronLeft, ChevronRight, Search, Download, MailOpen, Reply, AlertTriangle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 type SmtpConfig = {
