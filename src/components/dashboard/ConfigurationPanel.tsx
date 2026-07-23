@@ -59,6 +59,7 @@ const ConfigurationPanel = () => {
       <Tabs defaultValue="general" className="space-y-4">
         <TabsList className="flex flex-wrap gap-1">
           <TabsTrigger value="general">General</TabsTrigger>
+          <TabsTrigger value="currency">Currency</TabsTrigger>
           <TabsTrigger value="auth">Authentication</TabsTrigger>
           <TabsTrigger value="ai">AI Models</TabsTrigger>
           <TabsTrigger value="sms">SMS</TabsTrigger>
@@ -97,12 +98,15 @@ const ConfigurationPanel = () => {
                 </div>
                 <div className="space-y-2">
                   <Label>Timezone</Label>
-                  <Select defaultValue="ist">
+                  <Select defaultValue="utc">
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="ist">IST (Asia/Kolkata)</SelectItem>
                       <SelectItem value="utc">UTC</SelectItem>
-                      <SelectItem value="pst">PST</SelectItem>
+                      <SelectItem value="ist">IST (Asia/Kolkata)</SelectItem>
+                      <SelectItem value="pst">PST (America/Los_Angeles)</SelectItem>
+                      <SelectItem value="est">EST (America/New_York)</SelectItem>
+                      <SelectItem value="cet">CET (Europe/Berlin)</SelectItem>
+                      <SelectItem value="sgt">SGT (Asia/Singapore)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -291,11 +295,14 @@ const ConfigurationPanel = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Default Currency</Label>
-                  <Select defaultValue="inr">
+                  <Select defaultValue="usd">
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="inr">INR ($)</SelectItem>
                       <SelectItem value="usd">USD ($)</SelectItem>
+                      <SelectItem value="inr">INR (₹)</SelectItem>
+                      <SelectItem value="eur">EUR (€)</SelectItem>
+                      <SelectItem value="gbp">GBP (£)</SelectItem>
+                      <SelectItem value="sgd">SGD (S$)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
