@@ -18,7 +18,7 @@ const InvestorDashboard = () => {
   const investorProfile = {
     name: "Sarah Investment Capital",
     type: "Venture Capital",
-    checkSize: "$1-5 Cr",
+    checkSize: "$0.1M–$0.6M",
     totalPortfolio: 25,
     activeInvestments: 18,
     successfulExits: 7,
@@ -54,7 +54,7 @@ const InvestorDashboard = () => {
       company: "EduNext Platform",
       sector: "EdTech",
       investmentAmount: "$385K",
-      currentValuation: "$18 Cr",
+      currentValuation: "$2.2M",
       investmentDate: "Dec 2022",
       stage: "Series A",
       status: "Exited",
@@ -67,7 +67,7 @@ const InvestorDashboard = () => {
       id: 1,
       company: "GreenTech Solutions",
       sector: "CleanTech",
-      requestedAmount: "$4 Cr",
+      requestedAmount: "$0.5M",
       stage: "Due Diligence",
       progress: 75,
       foundedYear: 2022,
@@ -78,7 +78,7 @@ const InvestorDashboard = () => {
       id: 2,
       company: "AI Robotics Co",
       sector: "AI/ML",
-      requestedAmount: "$6 Cr",
+      requestedAmount: "$0.7M",
       stage: "Initial Review",
       progress: 25,
       foundedYear: 2023,
@@ -89,7 +89,7 @@ const InvestorDashboard = () => {
 
   const investmentMetrics = {
     totalInvested: "$5.4M",
-    currentPortfolioValue: "$180 Cr",
+    currentPortfolioValue: "$21.6M",
     averageROI: "285%",
     successRate: "78%"
   };

@@ -44,7 +44,7 @@ const PortfolioManagement = () => {
       sector: "EdTech",
       investmentAmount: "$385K",
       investmentDate: "Dec 2022",
-      currentValuation: "$18 Cr",
+      currentValuation: "$2.2M",
       ownership: "18%",
       stage: "Series A",
       status: "Exited",
@@ -190,7 +190,7 @@ const PortfolioManagement = () => {
             <div className="flex items-center space-x-2">
               <TrendingUp className="h-8 w-8 text-blue-500" />
               <div>
-                <p className="text-2xl font-bold">$180 Cr</p>
+                <p className="text-2xl font-bold">$21.6M</p>
                 <p className="text-xs text-muted-foreground">Portfolio Value</p>
               </div>
             </div>

@@ -17,7 +17,7 @@ const PastEvents = () => {
       participants: 450,
       teams: 112,
       theme: "Artificial Intelligence & Machine Learning",
-      prizePool: "$8 Lakhs",
+      prizePool: "$9,600",
       winner: "MediAI - Smart Diagnostic Platform",
       status: "completed",
       highlights: [
@@ -75,7 +75,7 @@ const PastEvents = () => {
       participants: 320,
       teams: 80,
       theme: "Sustainability & Clean Technology",
-      prizePool: "$6 Lakhs",
+      prizePool: "$7,200",
       winner: "GreenEnergy - Solar Optimization System",
       status: "completed",
       highlights: [
@@ -104,7 +104,7 @@ const PastEvents = () => {
       participants: 280,
       teams: 70,
       theme: "Healthcare Technology & Telemedicine",
-      prizePool: "$7 Lakhs",
+      prizePool: "$8,400",
       winner: "TeleMed Pro - Remote Healthcare Platform",
       status: "completed",
       highlights: [

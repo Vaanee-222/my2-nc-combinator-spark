@@ -577,7 +577,7 @@ const InvestorCentre = () => {
                     </div>
                     <div>
                       <label className="text-sm font-medium mb-2 block">Monthly Revenue (if any)</label>
-                      <Input placeholder="e.g., $5 Lakhs" />
+                      <Input placeholder="e.g., $6,000" />
                     </div>
                     <div>
                       <label className="text-sm font-medium mb-2 block">Team Size</label>

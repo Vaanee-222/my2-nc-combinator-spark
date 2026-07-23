@@ -50,7 +50,7 @@ const StartupOverview = ({ applicationStatus }: StartupOverviewProps) => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-primary">3</div>
-            <p className="text-xs text-muted-foreground">$7.5Cr total applied</p>
+            <p className="text-xs text-muted-foreground">$0.9M total applied</p>
           </CardContent>
         </Card>
 
