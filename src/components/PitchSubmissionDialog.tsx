@@ -162,7 +162,7 @@ const PitchSubmissionDialog = ({ children }: PitchSubmissionDialogProps) => {
                   id="monthlyRevenue"
                   value={formData.monthlyRevenue}
                   onChange={(e) => handleInputChange("monthlyRevenue", e.target.value)}
-                  placeholder="e.g., $5 Lakhs"
+                  placeholder="e.g., $6,000"
                 />
               </div>
               <div>

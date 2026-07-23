@@ -150,7 +150,7 @@ const InvestmentApplicationDialog = ({ children }: InvestmentApplicationDialogPr
               <Label htmlFor="revenue">Monthly Revenue</Label>
               <Input
                 id="revenue"
-                placeholder="e.g., $5 Lakh"
+                placeholder="e.g., $6,000"
                 value={formData.revenue}
                 onChange={(e) => setFormData({...formData, revenue: e.target.value})}
               />

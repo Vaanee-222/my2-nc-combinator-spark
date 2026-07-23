@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,11 +7,38 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Key, Bot, Mail, MessageSquare, CreditCard, Globe, Shield, Eye, EyeOff, Save } from "lucide-react";
+import { Key, Bot, Mail, MessageSquare, CreditCard, Globe, Shield, Eye, EyeOff, Save, RefreshCw, DollarSign } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { getFxApiKey, setFxApiKey, fetchLiveRates, SUPPORTED_CURRENCIES, formatMoney } from "@/lib/currency";
+import { useCurrency } from "@/contexts/CurrencyContext";
 
 const ConfigurationPanel = () => {
   const { toast } = useToast();
+  const { refreshRates, ratesVersion } = useCurrency();
+  const [fxKey, setFxKeyState] = useState("");
+  const [fxTesting, setFxTesting] = useState(false);
+  const [fxLastFetched, setFxLastFetched] = useState<string | null>(null);
+
+  useEffect(() => {
+    setFxKeyState(getFxApiKey());
+    try {
+      const raw = localStorage.getItem("xi.fx.rates.v1");
+      if (raw) setFxLastFetched(new Date(JSON.parse(raw).fetchedAt).toLocaleString());
+    } catch {}
+  }, [ratesVersion]);
+
+  const saveFxKey = async () => {
+    setFxApiKey(fxKey.trim());
+    setFxTesting(true);
+    const r = await fetchLiveRates(true);
+    setFxTesting(false);
+    if (r) {
+      await refreshRates();
+      toast({ title: "Currency API connected", description: "Live FX rates fetched successfully." });
+    } else {
+      toast({ title: "Currency API failed", description: "Rates could not be fetched. Falling back to cached/static rates.", variant: "destructive" });
+    }
+  };
   const [showKeys, setShowKeys] = useState<Record<string, boolean>>({});
 
   const toggleKeyVisibility = (key: string) => {
@@ -32,6 +59,7 @@ const ConfigurationPanel = () => {
       <Tabs defaultValue="general" className="space-y-4">
         <TabsList className="flex flex-wrap gap-1">
           <TabsTrigger value="general">General</TabsTrigger>
+          <TabsTrigger value="currency">Currency</TabsTrigger>
           <TabsTrigger value="auth">Authentication</TabsTrigger>
           <TabsTrigger value="ai">AI Models</TabsTrigger>
           <TabsTrigger value="sms">SMS</TabsTrigger>
@@ -61,19 +89,24 @@ const ConfigurationPanel = () => {
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="en">English</SelectItem>
+                      <SelectItem value="es">Spanish</SelectItem>
+                      <SelectItem value="fr">French</SelectItem>
+                      <SelectItem value="de">German</SelectItem>
                       <SelectItem value="hi">Hindi</SelectItem>
-                      <SelectItem value="ta">Tamil</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
                   <Label>Timezone</Label>
-                  <Select defaultValue="ist">
+                  <Select defaultValue="utc">
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="ist">IST (Asia/Kolkata)</SelectItem>
                       <SelectItem value="utc">UTC</SelectItem>
-                      <SelectItem value="pst">PST</SelectItem>
+                      <SelectItem value="ist">IST (Asia/Kolkata)</SelectItem>
+                      <SelectItem value="pst">PST (America/Los_Angeles)</SelectItem>
+                      <SelectItem value="est">EST (America/New_York)</SelectItem>
+                      <SelectItem value="cet">CET (Europe/Berlin)</SelectItem>
+                      <SelectItem value="sgt">SGT (Asia/Singapore)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -87,6 +120,56 @@ const ConfigurationPanel = () => {
                 <Switch defaultChecked />
               </div>
               <Button onClick={() => handleSave("General")} className="w-full"><Save className="h-4 w-4 mr-1" /> Save General Settings</Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Currency */}
+        <TabsContent value="currency">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2"><DollarSign className="h-5 w-5" /><span>Global Currency Calculator</span></CardTitle>
+              <CardDescription>
+                Live FX rates power the site-wide currency selector and every <code>&lt;Money /&gt;</code> value.
+                All amounts are stored as USD and converted on the fly.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label>ExchangeRate-API Key</Label>
+                <p className="text-xs text-muted-foreground">
+                  Get one free at{" "}
+                  <a href="https://www.exchangerate-api.com/" target="_blank" rel="noreferrer" className="underline">exchangerate-api.com</a>.
+                  Endpoint used: <code>https://v6.exchangerate-api.com/v6/&lt;KEY&gt;/latest/USD</code>
+                </p>
+                <div className="flex gap-2">
+                  <Input value={fxKey} onChange={(e) => setFxKeyState(e.target.value)} placeholder="bb1b109d19268225ece96fe6" className="flex-1 font-mono text-xs" />
+                  <Button onClick={saveFxKey} disabled={fxTesting}>
+                    {fxTesting ? <RefreshCw className="h-4 w-4 mr-1 animate-spin" /> : <Save className="h-4 w-4 mr-1" />}
+                    Save &amp; Test
+                  </Button>
+                </div>
+              </div>
+              <div className="flex items-center justify-between p-3 border rounded-lg">
+                <div>
+                  <p className="font-medium text-sm">Last live fetch</p>
+                  <p className="text-xs text-muted-foreground">{fxLastFetched || "Never — using fallback rates"}</p>
+                </div>
+                <Button variant="outline" size="sm" onClick={async () => { const r = await fetchLiveRates(true); if (r) { await refreshRates(); toast({ title: "Rates refreshed" }); } }}>
+                  <RefreshCw className="h-3 w-3 mr-1" /> Refresh Now
+                </Button>
+              </div>
+              <div>
+                <p className="text-sm font-medium mb-2">Live preview — $10,000 USD in each currency</p>
+                <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
+                  {SUPPORTED_CURRENCIES.map((c) => (
+                    <div key={c} className="p-2 border rounded text-center">
+                      <div className="text-xs text-muted-foreground">{c}</div>
+                      <div className="text-sm font-semibold">{formatMoney(10000, c, { compact: true })}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -262,11 +345,14 @@ const ConfigurationPanel = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Default Currency</Label>
-                  <Select defaultValue="inr">
+                  <Select defaultValue="usd">
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="inr">INR ($)</SelectItem>
                       <SelectItem value="usd">USD ($)</SelectItem>
+                      <SelectItem value="inr">INR (₹)</SelectItem>
+                      <SelectItem value="eur">EUR (€)</SelectItem>
+                      <SelectItem value="gbp">GBP (£)</SelectItem>
+                      <SelectItem value="sgd">SGD (S$)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

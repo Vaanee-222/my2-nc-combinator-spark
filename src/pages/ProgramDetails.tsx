@@ -21,7 +21,7 @@ const ProgramDetails = () => {
         "Expert mentorship during the event",
         "Industry-relevant problem statements",
         "Networking with peers and professionals",
-        "Prize pool up to $10 lakhs",
+        "Prize pool up to $12,000",
         "Opportunity to showcase solutions",
         "Potential for startup incubation"
       ],
@@ -56,7 +56,7 @@ const ProgramDetails = () => {
         "Market validation assistance"
       ],
       benefits: [
-        "$5-50 lakhs potential funding",
+        "$6,000–$60,000 potential funding",
         "Expert guidance and mentorship",
         "Access to co-working spaces",
         "Legal and financial support",

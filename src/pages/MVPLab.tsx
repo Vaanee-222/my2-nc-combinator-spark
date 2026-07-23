@@ -240,7 +240,7 @@ const MVPLab = () => {
               </h3>
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 Every MVP Lab participant gets access to enterprise cloud infrastructure 
-                worth lakhs of rupees, completely free for the first year.
+                worth thousands of dollars, completely free for the first year.
               </p>
             </div>
           </Card>
