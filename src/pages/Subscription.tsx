@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { Money } from "@/components/Money";
 
 const subscriptionPlans = [
   {
@@ -241,7 +242,7 @@ const Subscription = () => {
                     </CardHeader>
                     <CardContent className="text-center">
                       <div className="mb-6">
-                        <span className="text-4xl font-bold text-foreground">${tier.price}</span>
+                        <Money usd={tier.price} className="text-4xl font-bold text-foreground" />
                         <span className="text-muted-foreground">{tier.period}</span>
                       </div>
                       <ul className="space-y-2 text-left text-sm">
@@ -294,7 +295,7 @@ const Subscription = () => {
                     </CardHeader>
                     <CardContent className="text-center">
                       <div className="mb-6">
-                        <span className="text-5xl font-bold text-foreground">${plan.price}</span>
+                        <Money usd={plan.price} className="text-5xl font-bold text-foreground" />
                         <span className="text-muted-foreground">{plan.period}</span>
                       </div>
                       <ul className="space-y-2 text-left text-sm">
