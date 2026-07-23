@@ -124,6 +124,56 @@ const ConfigurationPanel = () => {
           </Card>
         </TabsContent>
 
+        {/* Currency */}
+        <TabsContent value="currency">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2"><DollarSign className="h-5 w-5" /><span>Global Currency Calculator</span></CardTitle>
+              <CardDescription>
+                Live FX rates power the site-wide currency selector and every <code>&lt;Money /&gt;</code> value.
+                All amounts are stored as USD and converted on the fly.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label>ExchangeRate-API Key</Label>
+                <p className="text-xs text-muted-foreground">
+                  Get one free at{" "}
+                  <a href="https://www.exchangerate-api.com/" target="_blank" rel="noreferrer" className="underline">exchangerate-api.com</a>.
+                  Endpoint used: <code>https://v6.exchangerate-api.com/v6/&lt;KEY&gt;/latest/USD</code>
+                </p>
+                <div className="flex gap-2">
+                  <Input value={fxKey} onChange={(e) => setFxKeyState(e.target.value)} placeholder="bb1b109d19268225ece96fe6" className="flex-1 font-mono text-xs" />
+                  <Button onClick={saveFxKey} disabled={fxTesting}>
+                    {fxTesting ? <RefreshCw className="h-4 w-4 mr-1 animate-spin" /> : <Save className="h-4 w-4 mr-1" />}
+                    Save &amp; Test
+                  </Button>
+                </div>
+              </div>
+              <div className="flex items-center justify-between p-3 border rounded-lg">
+                <div>
+                  <p className="font-medium text-sm">Last live fetch</p>
+                  <p className="text-xs text-muted-foreground">{fxLastFetched || "Never — using fallback rates"}</p>
+                </div>
+                <Button variant="outline" size="sm" onClick={async () => { const r = await fetchLiveRates(true); if (r) { await refreshRates(); toast({ title: "Rates refreshed" }); } }}>
+                  <RefreshCw className="h-3 w-3 mr-1" /> Refresh Now
+                </Button>
+              </div>
+              <div>
+                <p className="text-sm font-medium mb-2">Live preview — $10,000 USD in each currency</p>
+                <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
+                  {SUPPORTED_CURRENCIES.map((c) => (
+                    <div key={c} className="p-2 border rounded text-center">
+                      <div className="text-xs text-muted-foreground">{c}</div>
+                      <div className="text-sm font-semibold">{formatMoney(10000, c, { compact: true })}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         {/* Auth */}
         <TabsContent value="auth">
           <Card>
