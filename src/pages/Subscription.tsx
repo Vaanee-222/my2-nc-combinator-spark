@@ -381,7 +381,9 @@ const Subscription = () => {
             <div>
               <Label>Plan</Label>
               <p className="font-semibold text-foreground">
-                {selectedPlan?.name} — {typeof selectedPlan?.price === "number" ? `$${selectedPlan.price}` : selectedPlan?.price}
+                {selectedPlan?.name} — {typeof selectedPlan?.price === "number"
+                  ? <Money usd={selectedPlan.price} />
+                  : selectedPlan?.price}
               </p>
             </div>
             <div>
