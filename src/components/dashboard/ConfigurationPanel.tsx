@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,11 +7,38 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Key, Bot, Mail, MessageSquare, CreditCard, Globe, Shield, Eye, EyeOff, Save } from "lucide-react";
+import { Key, Bot, Mail, MessageSquare, CreditCard, Globe, Shield, Eye, EyeOff, Save, RefreshCw, DollarSign } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { getFxApiKey, setFxApiKey, fetchLiveRates, SUPPORTED_CURRENCIES, formatMoney } from "@/lib/currency";
+import { useCurrency } from "@/contexts/CurrencyContext";
 
 const ConfigurationPanel = () => {
   const { toast } = useToast();
+  const { refreshRates, ratesVersion } = useCurrency();
+  const [fxKey, setFxKeyState] = useState("");
+  const [fxTesting, setFxTesting] = useState(false);
+  const [fxLastFetched, setFxLastFetched] = useState<string | null>(null);
+
+  useEffect(() => {
+    setFxKeyState(getFxApiKey());
+    try {
+      const raw = localStorage.getItem("xi.fx.rates.v1");
+      if (raw) setFxLastFetched(new Date(JSON.parse(raw).fetchedAt).toLocaleString());
+    } catch {}
+  }, [ratesVersion]);
+
+  const saveFxKey = async () => {
+    setFxApiKey(fxKey.trim());
+    setFxTesting(true);
+    const r = await fetchLiveRates(true);
+    setFxTesting(false);
+    if (r) {
+      await refreshRates();
+      toast({ title: "Currency API connected", description: "Live FX rates fetched successfully." });
+    } else {
+      toast({ title: "Currency API failed", description: "Rates could not be fetched. Falling back to cached/static rates.", variant: "destructive" });
+    }
+  };
   const [showKeys, setShowKeys] = useState<Record<string, boolean>>({});
 
   const toggleKeyVisibility = (key: string) => {
@@ -61,8 +88,10 @@ const ConfigurationPanel = () => {
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="en">English</SelectItem>
+                      <SelectItem value="es">Spanish</SelectItem>
+                      <SelectItem value="fr">French</SelectItem>
+                      <SelectItem value="de">German</SelectItem>
                       <SelectItem value="hi">Hindi</SelectItem>
-                      <SelectItem value="ta">Tamil</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
