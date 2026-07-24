@@ -15,7 +15,7 @@ const CurrentCohort = () => {
       name: "NeoFinance",
       founder: "Rahul Sharma & Team",
       category: "FinTech",
-      description: "Digital banking platform for rural India with micro-lending capabilities",
+      description: "Digital banking platform for underserved communities with micro-lending capabilities",
       stage: "MVP",
       funding: "$30K",
       traction: "5,000+ users, $2L MRR",
@@ -193,7 +193,7 @@ const CurrentCohort = () => {
                 </h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                   Applications for Q2 2026 cohort are now open. Join the next batch of 
-                  revolutionary startups transforming India.
+                  revolutionary startups transforming industries worldwide.
                 </p>
                 <div className="flex flex-col md:flex-row gap-4 justify-center">
                   <ApplicationDialog program="Q2 2026 Cohort">

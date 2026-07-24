@@ -65,7 +65,7 @@ const IncApplicationDialog = ({ children }: IncApplicationDialogProps) => {
         <DialogHeader>
           <DialogTitle>Apply to Xi Combinator</DialogTitle>
           <DialogDescription>
-            Join India's premier startup incubator and accelerate your growth with mentorship, funding, and resources.
+            Join the world's premier startup incubator and accelerate your growth with mentorship, funding, and resources.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-6">

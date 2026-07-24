@@ -95,7 +95,7 @@ const InclabApplicationDialog = ({ children, title = "Apply to Xi Lab" }: Props)
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>
-            India's most selective accelerator. Tell us about your startup — our team reviews every application within 1-2 weeks.
+            the world's most selective accelerator. Tell us about your startup — our team reviews every application within 1-2 weeks.
           </DialogDescription>
         </DialogHeader>
 

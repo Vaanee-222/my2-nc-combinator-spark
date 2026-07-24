@@ -73,7 +73,7 @@ const HackathonRegistrationForm = ({ children }: HackathonRegistrationFormProps)
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-card">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center text-primary">Hackathon Registration</DialogTitle>
-          <p className="text-center text-muted-foreground">Join India's premier hackathon for innovative problem solvers</p>
+          <p className="text-center text-muted-foreground">Join the world's premier hackathon for innovative problem solvers</p>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-8">
           <PersonalInfoSection formData={formData} onInputChange={handleInputChange} />
