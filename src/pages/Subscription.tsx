@@ -135,28 +135,28 @@ const membershipTiers = [
 const services = [
   {
     name: "Pitch Deck Design",
-    price: "From $500",
+    priceUsd: 500,
     icon: BookOpen,
     description: "Professional pitch deck creation with storytelling and data visualization",
     details: ["10-15 slide deck", "2 revision rounds", "Investor-ready format", "Data visualization"],
   },
   {
     name: "Market Research",
-    price: "From $1,200",
+    priceUsd: 1200,
     icon: Globe,
     description: "Comprehensive market analysis with competitive landscape and sizing",
     details: ["TAM/SAM/SOM analysis", "Competitor mapping", "Customer persona research", "Industry trend report"],
   },
   {
     name: "Legal Advisory",
-    price: "From $800",
+    priceUsd: 800,
     icon: Shield,
     description: "Startup legal support including incorporation and IP protection",
     details: ["Company incorporation", "IP protection guidance", "Term sheet review", "Compliance checklist"],
   },
   {
     name: "Technical Consulting",
-    price: "From $1,500",
+    priceUsd: 1500,
     icon: Headphones,
     description: "CTO-level technical guidance for architecture and MVP development",
     details: ["Architecture review", "Tech stack advisory", "MVP roadmap", "Security audit"],
@@ -336,7 +336,9 @@ const Subscription = () => {
                         </div>
                         <div>
                           <CardTitle className="text-lg">{svc.name}</CardTitle>
-                          <p className="text-primary font-semibold text-sm">{svc.price}</p>
+                          <p className="text-primary font-semibold text-sm">
+                            From <Money usd={svc.priceUsd} />
+                          </p>
                         </div>
                       </div>
                       <CardDescription>{svc.description}</CardDescription>
@@ -352,7 +354,7 @@ const Subscription = () => {
                       </ul>
                     </CardContent>
                     <CardFooter>
-                      <Button variant="outline" className="w-full" onClick={() => handleSubscribe({ name: svc.name, price: svc.price })}>
+                      <Button variant="outline" className="w-full" onClick={() => handleSubscribe({ name: svc.name, price: svc.priceUsd })}>
                         Request Quote
                       </Button>
                     </CardFooter>
