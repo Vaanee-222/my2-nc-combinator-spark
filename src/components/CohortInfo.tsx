@@ -22,7 +22,7 @@ const CohortInfo = () => {
       name: "NeoFinance",
       founder: "Rahul Sharma",
       category: "FinTech",
-      description: "Digital banking for rural India",
+      description: "Digital banking for underserved communities",
       status: "Selected"
     },
     {
@@ -79,7 +79,7 @@ const CohortInfo = () => {
                   {currentCohort.name}
                 </h2>
                 <p className="text-muted-foreground text-lg">
-                  Join India's most ambitious startup accelerator program. 
+                  Join the world's most ambitious startup accelerator program. 
                   Transform your crazy idea into a scalable business.
                 </p>
               </div>

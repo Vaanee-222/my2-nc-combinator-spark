@@ -107,7 +107,7 @@ const AboutUs = () => {
                     <h2 className="text-2xl font-bold">Our Vision</h2>
                   </div>
                   <p className="text-muted-foreground leading-relaxed">
-                    To be the leading catalyst for innovation in India, fostering a thriving 
+                    To be the leading catalyst for global innovation, fostering a thriving 
                     ecosystem where entrepreneurs can transform their ideas into successful, 
                     globally competitive businesses.
                   </p>

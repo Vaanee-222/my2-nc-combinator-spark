@@ -11,7 +11,7 @@ export const searchIndex: SearchEntry[] = [
   { title: "Xi Lab", path: "/xi-lab", description: "Flagship accelerator program with funding, mentorship and resources.", keywords: ["accelerator", "inclab", "apply", "cohort", "funding"], category: "Programs" },
   { title: "MVP Lab", path: "/mvp-lab", description: "Build your MVP with our tech team in 90 days.", keywords: ["mvp", "prototype", "build", "product", "tech"], category: "Programs" },
   { title: "Incubation", path: "/incubation", description: "Long-term incubation program with workspace and support.", keywords: ["incubation", "incubator", "early stage"], category: "Programs" },
-  { title: "Hackathon", path: "/hackathon", description: "Compete in our flagship hackathons across India.", keywords: ["hackathon", "compete", "code", "event"], category: "Programs" },
+  { title: "Hackathon", path: "/hackathon", description: "Compete in our flagship hackathons worldwide.", keywords: ["hackathon", "compete", "code", "event"], category: "Programs" },
 
   // Cohorts
   { title: "Monthly Top 10 Startups", path: "/monthly-top-10", description: "Top 10 startups selected every month from applications.", keywords: ["top 10", "monthly", "selected", "cohort"], category: "Cohorts" },

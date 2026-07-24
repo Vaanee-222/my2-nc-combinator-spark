@@ -31,7 +31,7 @@ const MeetCofounder = () => {
       experience: "8 years",
       location: "Bangalore",
       company: "Ex-Google",
-      bio: "Former ML engineer at Google, looking to build the next big thing in HealthTech. Passionate about using AI to solve healthcare challenges in India.",
+      bio: "Former ML engineer at Google, looking to build the next big thing in HealthTech. Passionate about using AI to solve healthcare challenges globally.",
       skills: ["Python", "TensorFlow", "AWS", "Microservices"],
       lookingFor: "Business Co-founder",
       availability: "Immediately Available",
@@ -205,7 +205,7 @@ const MeetCofounder = () => {
             Find Your Co-founder
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Connect with like-minded entrepreneurs and build something amazing together. Join India's largest co-founder matching platform.
+            Connect with like-minded entrepreneurs and build something amazing together. Join the world's largest co-founder matching platform.
           </p>
           <div className="flex justify-center space-x-4">
             <CofounderPostDialog>

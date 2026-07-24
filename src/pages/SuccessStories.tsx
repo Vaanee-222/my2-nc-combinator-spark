@@ -16,7 +16,7 @@ const SuccessStories = () => {
       program: "Incubation",
       cohort: "2023",
       funding: "$1.8M Series A",
-      description: "AI-powered diagnostic platform revolutionizing healthcare delivery across rural India",
+      description: "AI-powered diagnostic platform revolutionizing healthcare delivery across underserved markets",
       metrics: {
         hospitals: "50+",
         patients: "100K+",
@@ -95,7 +95,7 @@ const SuccessStories = () => {
             Success Stories
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Discover how our incubated startups are transforming industries and creating impact across India and beyond.
+            Discover how our incubated startups are transforming industries and creating impact across the globe.
           </p>
         </section>
 

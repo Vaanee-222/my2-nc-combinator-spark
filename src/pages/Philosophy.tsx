@@ -27,7 +27,7 @@ const Philosophy = () => {
     {
       icon: CheckCircle,
       title: "Scalable Impact",
-      description: "We're looking for solutions that can scale to impact millions while remaining sustainable and profitable in the Indian context."
+      description: "We're looking for solutions that can scale to impact millions while remaining sustainable and profitable in emerging markets globally."
     }
   ];
 

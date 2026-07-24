@@ -163,7 +163,7 @@ const INCLab = () => {
                 </span>
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-                The exclusive application portal for India's most ambitious startup accelerator. 
+                The exclusive application portal for the world's most ambitious startup accelerator. 
                 Where crazy founders transform impossible ideas into scalable solutions.
               </p>
             </div>
@@ -341,7 +341,7 @@ const INCLab = () => {
 
           <div className="text-center">
             <p className="text-muted-foreground mb-4">
-              Join these exceptional founders in building India's next unicorns
+              Join these exceptional founders in building the world's next unicorns
             </p>
             <InclabApplicationDialog
               title="Apply to Next Cohort"

@@ -160,7 +160,7 @@ const Resources = () => {
                 <CardHeader>
                   <CardTitle>Incorporation Guide</CardTitle>
                   <CardDescription>
-                    Step-by-step guide to incorporate your startup in India
+                    Step-by-step guide to incorporate your startup globally
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">

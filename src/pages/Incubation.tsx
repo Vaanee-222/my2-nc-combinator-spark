@@ -49,7 +49,7 @@ const Incubation = () => {
       name: "HealthTech Pro",
       sector: "HealthTech",
       funding: "$1.8M Series A",
-      description: "AI-powered diagnostic platform serving 50+ hospitals across India",
+      description: "AI-powered diagnostic platform serving 50+ hospitals worldwide",
       year: "2023 Cohort"
     },
     {

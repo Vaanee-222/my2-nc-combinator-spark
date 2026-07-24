@@ -120,7 +120,7 @@ const FeaturedStartups = () => {
                 </span>
               </h1>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Discover the most promising Indian startups across various disciplines, 
+                Discover the most promising global startups across various disciplines, 
                 making real impact and solving mass problems through innovation.
               </p>
             </div>

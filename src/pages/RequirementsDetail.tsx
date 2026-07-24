@@ -142,7 +142,7 @@ const RequirementsDetail = () => {
               </span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Everything you need to know before applying to India's most selective startup accelerator program.
+              Everything you need to know before applying to the world's most selective startup accelerator program.
             </p>
           </div>
 
@@ -320,7 +320,7 @@ const RequirementsDetail = () => {
                   </span>
                 </div>
                 <p className="text-muted-foreground text-sm">
-                  Empowering crazy founders to build scalable solutions for India's biggest challenges.
+                  Empowering crazy founders to build scalable solutions for the world's biggest challenges.
                 </p>
               </div>
               
@@ -367,7 +367,7 @@ const RequirementsDetail = () => {
             
             <div className="border-t border-border mt-8 pt-8 text-center">
               <p className="text-sm text-muted-foreground">
-                © 2024 Xi Combinator. Inspired by the vision of transforming India through innovation.
+                © 2026 Xi Combinator. Inspired by the vision of transforming industries through innovation.
               </p>
             </div>
           </div>
