@@ -4,6 +4,7 @@ import { ArrowDown, Rocket, TrendingUp, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-image.jpg";
 import ApplicationDialog from "@/components/ApplicationDialog";
+import { PLATFORM_STAT_LABELS } from "@/lib/platformStats";
 
 const Hero = () => {
   return (
@@ -53,9 +54,9 @@ const Hero = () => {
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-12 max-w-4xl mx-auto">
           {[
-            { icon: Rocket, value: "500+", label: "Startups Accelerated" },
-            { icon: TrendingUp, value: "$1.2B+", label: "Total Funding Raised" },
-            { icon: Users, value: "50+", label: "Unicorn Potential" },
+            { icon: Rocket, value: PLATFORM_STAT_LABELS.startupsAccelerated, label: "Startups Accelerated" },
+            { icon: TrendingUp, value: PLATFORM_STAT_LABELS.totalFundingRaised, label: "Total Funding Raised" },
+            { icon: Users, value: PLATFORM_STAT_LABELS.unicornPotential, label: "Unicorn Potential" },
           ].map((stat) => (
             <Card key={stat.label} className="p-6 border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/30 transition-all duration-300">
               <div className="text-center space-y-2">
