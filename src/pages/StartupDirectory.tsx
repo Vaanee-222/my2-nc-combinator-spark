@@ -160,7 +160,7 @@ const StartupDirectory = () => {
                 </div>
                 <div className="flex space-x-2 pt-2">
                   <Button className="flex-1" size="sm" onClick={() => handleView(s)}>View Profile</Button>
-                  <StatefulCTA variant="outline" size="sm" ctaKey={`connect:startup:${s.id ?? s.name}`} idleLabel="Connect" actedLabel="Request Sent" onAct={() => handleConnect(s)} />
+                  <StatefulCTA variant="outline" size="sm" ctaKey={`connect:startup:${s.id ?? s.name}`} idleLabel="Connect" actedLabel="Request Sent" onAct={() => { handleConnect(s); }} />
                 </div>
               </CardContent>
             </Card>
