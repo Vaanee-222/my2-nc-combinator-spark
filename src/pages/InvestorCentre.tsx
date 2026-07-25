@@ -386,13 +386,14 @@ const InvestorCentre = () => {
                       </div>
 
                       <div className="flex space-x-2">
-                        <Button 
-                          className="flex-1" 
+                        <StatefulCTA
+                          className="flex-1"
                           size="sm"
-                          onClick={() => handleGetIntroduction(investor)}
-                        >
-                          Get Introduction
-                        </Button>
+                          ctaKey={`intro:investor:${investor.id}`}
+                          idleLabel="Get Introduction"
+                          actedLabel="Request Sent"
+                          onAct={() => handleGetIntroduction(investor)}
+                        />
                         <Button 
                           variant="outline" 
                           size="sm"
@@ -444,12 +445,13 @@ const InvestorCentre = () => {
                             >
                               View
                             </Button>
-                            <Button 
+                            <StatefulCTA
                               size="sm"
-                              onClick={() => handleConnectWithInvestor(investor)}
-                            >
-                              Connect
-                            </Button>
+                              ctaKey={`connect:investor:${investor.id}`}
+                              idleLabel="Connect"
+                              actedLabel="Request Sent"
+                              onAct={() => handleConnectWithInvestor(investor)}
+                            />
                           </div>
                         </div>
                       </div>
@@ -508,12 +510,13 @@ const InvestorCentre = () => {
                       </div>
                     </div>
 
-                    <Button 
+                    <StatefulCTA
                       className="w-full"
-                      onClick={() => handleGetIntroduction(angel)}
-                    >
-                      Request Introduction
-                    </Button>
+                      ctaKey={`intro:angel:${angel.id}`}
+                      idleLabel="Request Introduction"
+                      actedLabel="Request Sent"
+                      onAct={() => handleGetIntroduction(angel)}
+                    />
                   </CardContent>
                 </Card>
               ))}
