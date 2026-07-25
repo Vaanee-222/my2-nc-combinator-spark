@@ -9,6 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { trackEvent } from "@/lib/analytics";
+import { markCta, useCtaState } from "@/hooks/useCtaState";
+import { Check } from "lucide-react";
 
 interface ApplicationDialogProps {
   children: React.ReactNode;
@@ -23,6 +25,7 @@ const ApplicationDialog = ({ children, program = "Xi Lab", title }: ApplicationD
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const { user } = useAuth();
+  const { acted: applied } = useCtaState(`apply:${program}`);
 
   const [formData, setFormData] = useState({
     firstName: "", lastName: "", email: "", phone: "",
@@ -58,7 +61,8 @@ const ApplicationDialog = ({ children, program = "Xi Lab", title }: ApplicationD
       if (error) throw error;
 
       trackEvent("application_submitted", { program, startup_name: formData.startupName });
-      toast({ title: "Application Submitted! ", description: `Your application to ${program} has been submitted successfully.` });
+      markCta(`apply:${program}`);
+      toast({ title: "Application Submitted!", description: `Your application to ${program} has been submitted successfully.` });
       setOpen(false);
       setFormData({ firstName: "", lastName: "", email: "", phone: "", startupName: "", stage: "", problem: "", solution: "", market: "", traction: "", funding: "", why: "" });
     } catch (error: any) {
@@ -70,7 +74,20 @@ const ApplicationDialog = ({ children, program = "Xi Lab", title }: ApplicationD
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogTrigger asChild disabled={applied}>
+        {applied ? (
+          <button
+            type="button"
+            aria-pressed="true"
+            disabled
+            className="inline-flex items-center justify-center gap-2 rounded-md border border-emerald-600/40 bg-emerald-600/15 px-6 py-3 text-base font-semibold text-emerald-500 cursor-default"
+          >
+            <Check className="h-4 w-4" /> Applied
+          </button>
+        ) : (
+          children
+        )}
+      </DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{title || `Apply to ${program}`}</DialogTitle>
