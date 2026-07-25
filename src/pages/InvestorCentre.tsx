@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import PitchSubmissionDialog from "@/components/PitchSubmissionDialog";
 import ConsultationDialog from "@/components/ConsultationDialog";
 import Footer from "@/components/Footer";
+import { StatefulCTA } from "@/components/StatefulCTA";
 
 const InvestorCentre = () => {
   const { toast } = useToast();
