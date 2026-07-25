@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CofounderPostDialog from "@/components/CofounderPostDialog";
+import { StatefulCTA } from "@/components/StatefulCTA";
 import CofounderDetailsDialog from "@/components/CofounderDetailsDialog";
 
 const MeetCofounder = () => {
@@ -452,7 +453,7 @@ const MeetCofounder = () => {
                           <Badge variant="outline" className="mb-2">{profile.lookingFor}</Badge>
                           <div className="flex space-x-1">
                             <Button size="sm" variant="outline" onClick={() => handleViewDetails(profile)}>View</Button>
-                            <Button size="sm" onClick={() => handleConnect(profile)}>Connect</Button>
+                            <StatefulCTA size="sm" ctaKey={`connect:cofounder:${profile.id}`} idleLabel="Connect" actedLabel="Request Sent" onAct={() => handleConnect(profile)} />
                           </div>
                         </div>
                       </div>

@@ -13,6 +13,7 @@ import IncApplicationDialog from "@/components/IncApplicationDialog";
 import { supabase } from "@/integrations/supabase/client";
 import { GLOBAL_STARTUPS, COUNTRIES, REGIONS, type StartupSeed } from "@/data/globalStartups";
 import { trackEvent } from "@/lib/analytics";
+import { StatefulCTA } from "@/components/StatefulCTA";
 
 type StartupRow = StartupSeed & { id?: string };
 
@@ -159,7 +160,7 @@ const StartupDirectory = () => {
                 </div>
                 <div className="flex space-x-2 pt-2">
                   <Button className="flex-1" size="sm" onClick={() => handleView(s)}>View Profile</Button>
-                  <Button variant="outline" size="sm" onClick={() => handleConnect(s)}>Connect</Button>
+                  <StatefulCTA variant="outline" size="sm" ctaKey={`connect:startup:${s.id ?? s.name}`} idleLabel="Connect" actedLabel="Request Sent" onAct={() => { handleConnect(s); }} />
                 </div>
               </CardContent>
             </Card>
