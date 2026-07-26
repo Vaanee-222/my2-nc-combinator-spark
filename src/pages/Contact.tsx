@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MapPin, Phone, Mail, Clock, MessageSquare, Users } from "lucide-react";
+import ConsultationDialog from "@/components/ConsultationDialog";
 
 const Contact = () => {
   const contactInfo = [
@@ -301,9 +302,11 @@ const Contact = () => {
             <p className="text-muted-foreground mb-4">
               Don't see your question? We're here to help!
             </p>
-            <Button variant="hero" size="lg">
-              Schedule a Call
-            </Button>
+            <ConsultationDialog title="Schedule a Call" description="Tell us what to discuss and we'll get back within 24 hours.">
+              <Button variant="hero" size="lg">
+                Schedule a Call
+              </Button>
+            </ConsultationDialog>
           </div>
         </div>
       </section>

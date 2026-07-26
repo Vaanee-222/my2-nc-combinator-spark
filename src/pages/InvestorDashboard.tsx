@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import BlogManagement from "@/components/dashboard/BlogManagement";
 import PortfolioManagement from "@/components/dashboard/PortfolioManagement";
 import InvestorSettings from "@/components/dashboard/InvestorSettings";
+import ConsultationDialog from "@/components/ConsultationDialog";
 
 const InvestorDashboard = () => {
   const { toast } = useToast();
@@ -250,9 +251,11 @@ const InvestorDashboard = () => {
                           <Button size="sm" onClick={() => handleReviewDeal(deal.id)}>
                             Review
                           </Button>
-                          <Button variant="outline" size="sm">
-                            Schedule Call
-                          </Button>
+                          <ConsultationDialog title={`Schedule Call: ${deal.company}`} description="Set up a call with the founder.">
+                            <Button variant="outline" size="sm">
+                              Schedule Call
+                            </Button>
+                          </ConsultationDialog>
                         </div>
                       </div>
                     </div>

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Target, Users, Lightbulb } from "lucide-react";
 import ApplicationDialog from "@/components/ApplicationDialog";
+import ConsultationDialog from "@/components/ConsultationDialog";
 
 const Philosophy = () => {
   const principles = [
@@ -216,9 +217,11 @@ const Philosophy = () => {
                       Start Your Application
                     </Button>
                   </ApplicationDialog>
-                  <Button variant="outline" size="lg">
-                    Schedule a Call
-                  </Button>
+                  <ConsultationDialog title="Schedule a Call" description="Chat with our program team.">
+                    <Button variant="outline" size="lg">
+                      Schedule a Call
+                    </Button>
+                  </ConsultationDialog>
                 </div>
               </div>
             </Card>

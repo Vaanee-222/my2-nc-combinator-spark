@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MapPin, Users, DollarSign, TrendingUp, Building, Calendar, ExternalLink, Mail, Phone } from "lucide-react";
+import ConsultationDialog from "@/components/ConsultationDialog";
+import { StatefulCTA } from "@/components/StatefulCTA";
 
 const InvestorProfile = () => {
   const investorData = {
@@ -58,14 +60,17 @@ const InvestorProfile = () => {
                   <p className="mt-4 text-muted-foreground max-w-2xl">{investorData.description}</p>
                 </div>
                 <div className="flex flex-col space-y-2">
-                  <Button>
-                    <Mail className="mr-2 h-4 w-4" />
-                    Get Introduction
-                  </Button>
-                  <Button variant="outline">
-                    <Phone className="mr-2 h-4 w-4" />
-                    Schedule Call
-                  </Button>
+                  <StatefulCTA
+                    ctaKey={`intro:investor:${investorData.name}`}
+                    idleLabel={<><Mail className="mr-2 h-4 w-4" />Get Introduction</>}
+                    actedLabel="Request Sent"
+                  />
+                  <ConsultationDialog title={`Schedule Call with ${investorData.name}`} description="Book a 30-minute intro call.">
+                    <Button variant="outline">
+                      <Phone className="mr-2 h-4 w-4" />
+                      Schedule Call
+                    </Button>
+                  </ConsultationDialog>
                 </div>
               </div>
             </CardContent>
