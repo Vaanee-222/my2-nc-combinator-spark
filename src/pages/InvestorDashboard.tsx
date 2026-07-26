@@ -251,7 +251,7 @@ const InvestorDashboard = () => {
                           <Button size="sm" onClick={() => handleReviewDeal(deal.id)}>
                             Review
                           </Button>
-                          <ConsultationDialog title={`Schedule Call: ${deal.startup ?? "Deal"}`} description="Set up a call with the founder.">
+                          <ConsultationDialog title={`Schedule Call: ${deal.company}`} description="Set up a call with the founder.">
                             <Button variant="outline" size="sm">
                               Schedule Call
                             </Button>
