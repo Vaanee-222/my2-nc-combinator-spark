@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MapPin, Phone, Mail, Clock, MessageSquare, Users } from "lucide-react";
+import ConsultationDialog from "@/components/ConsultationDialog";
 
 const Contact = () => {
   const contactInfo = [
