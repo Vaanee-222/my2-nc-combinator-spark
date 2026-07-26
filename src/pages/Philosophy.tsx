@@ -217,9 +217,11 @@ const Philosophy = () => {
                       Start Your Application
                     </Button>
                   </ApplicationDialog>
-                  <Button variant="outline" size="lg">
-                    Schedule a Call
-                  </Button>
+                  <ConsultationDialog title="Schedule a Call" description="Chat with our program team.">
+                    <Button variant="outline" size="lg">
+                      Schedule a Call
+                    </Button>
+                  </ConsultationDialog>
                 </div>
               </div>
             </Card>
