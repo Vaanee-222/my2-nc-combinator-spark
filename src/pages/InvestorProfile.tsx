@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MapPin, Users, DollarSign, TrendingUp, Building, Calendar, ExternalLink, Mail, Phone } from "lucide-react";
+import ConsultationDialog from "@/components/ConsultationDialog";
+import { StatefulCTA } from "@/components/StatefulCTA";
 
 const InvestorProfile = () => {
   const investorData = {
