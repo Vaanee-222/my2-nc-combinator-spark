@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Target, Users, Lightbulb } from "lucide-react";
 import ApplicationDialog from "@/components/ApplicationDialog";
+import ConsultationDialog from "@/components/ConsultationDialog";
 
 const Philosophy = () => {
   const principles = [
