@@ -1,5 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import Navigation from "@/components/Navigation";
+import AdminPostedEvents from "@/components/AdminPostedEvents";
+
 import IncubationApplicationForm from "@/components/IncubationApplicationForm";
 import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
