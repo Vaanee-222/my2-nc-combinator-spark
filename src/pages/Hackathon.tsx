@@ -118,10 +118,13 @@ const Hackathon = () => {
           ))}
         </div>
 
+        <AdminPostedEvents programType="hackathon" title="New Hackathon Announcements" />
+
         {/* Upcoming */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold text-center mb-8">Upcoming Hackathons</h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
             {upcomingHackathons.map((h) => (
               <Card key={h.id} className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
                 <CardHeader>
