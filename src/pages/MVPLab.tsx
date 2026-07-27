@@ -162,6 +162,13 @@ const MVPLab = () => {
         </div>
       </section>
 
+      <section className="py-8">
+        <div className="container mx-auto px-4">
+          <AdminPostedEvents programType="mvplab" title="New MVP Lab Programs" />
+        </div>
+      </section>
+
+
       {/* Services */}
       <section className="py-20">
         <div className="container mx-auto px-4">
