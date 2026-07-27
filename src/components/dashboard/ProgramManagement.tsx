@@ -96,27 +96,30 @@ const ProgramManagement = ({ lockedType, heading }: ProgramManagementProps = {})
 
   return (
     <div className="space-y-6">
-      {/* Program Type Selector */}
-      <div className="flex space-x-2 mb-6">
-        {programTypes.map(({ key, label, icon: Icon }) => (
-          <Button
-            key={key}
-            variant={selectedProgram === key ? "default" : "outline"}
-            onClick={() => setSelectedProgram(key)}
-            className="flex items-center space-x-2"
-          >
-            <Icon className="h-4 w-4" />
-            <span>{label}</span>
-          </Button>
-        ))}
-      </div>
+      {/* Program Type Selector — hidden when lockedType is provided */}
+      {!lockedType && (
+        <div className="flex flex-wrap gap-2 mb-6">
+          {programTypes.map(({ key, label, icon: Icon }) => (
+            <Button
+              key={key}
+              variant={selectedProgram === key ? "default" : "outline"}
+              onClick={() => setSelectedProgram(key)}
+              className="flex items-center space-x-2"
+            >
+              <Icon className="h-4 w-4" />
+              <span>{label}</span>
+            </Button>
+          ))}
+        </div>
+      )}
 
       {/* Program Management Content */}
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold capitalize">{selectedProgram} Management</h2>
-          <Button onClick={() => setEditing({ ...emptyProgram, program_type: selectedProgram })}><Plus className="mr-2 h-4 w-4" />Add Program</Button>
+          <h2 className="text-2xl font-bold capitalize">{heading ?? `${selectedProgram} Events & Programs`}</h2>
+          <Button onClick={() => setEditing({ ...emptyProgram, program_type: selectedProgram })}><Plus className="mr-2 h-4 w-4" />Post New Event</Button>
         </div>
+
 
         <Card>
           <CardContent className="p-0">
