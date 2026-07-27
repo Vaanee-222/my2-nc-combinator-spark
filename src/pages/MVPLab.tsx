@@ -1,5 +1,7 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import AdminPostedEvents from "@/components/AdminPostedEvents";
+
 import Breadcrumbs from "@/components/Breadcrumbs";
 import IncubationApplicationForm from "@/components/IncubationApplicationForm";
 import ConsultationDialog from "@/components/ConsultationDialog";
