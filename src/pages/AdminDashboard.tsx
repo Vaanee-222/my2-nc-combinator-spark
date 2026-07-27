@@ -43,10 +43,12 @@ const adminMenuGroups = [
       { value: "applications", label: "Applications", icon: ClipboardList },
       { value: "hackathons", label: "Hackathons", icon: Trophy },
       { value: "incubation", label: "Incubation", icon: Rocket },
+      { value: "mvplab", label: "MVP Lab", icon: Code2 },
       { value: "inclab", label: "Xi Lab", icon: FlaskConical },
       { value: "cofounders", label: "Co-founders", icon: Users },
       { value: "health", label: "Health Score", icon: HeartPulse },
     ],
+
   },
   {
     label: "Ecosystem",
