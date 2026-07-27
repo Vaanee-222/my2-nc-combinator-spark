@@ -1,5 +1,7 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import AdminPostedEvents from "@/components/AdminPostedEvents";
+
 import Breadcrumbs from "@/components/Breadcrumbs";
 import IncubationApplicationForm from "@/components/IncubationApplicationForm";
 import ConsultationDialog from "@/components/ConsultationDialog";
@@ -159,6 +161,13 @@ const MVPLab = () => {
           </div>
         </div>
       </section>
+
+      <section className="py-8">
+        <div className="container mx-auto px-4">
+          <AdminPostedEvents programType="mvplab" title="New MVP Lab Programs" />
+        </div>
+      </section>
+
 
       {/* Services */}
       <section className="py-20">

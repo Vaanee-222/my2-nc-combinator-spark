@@ -1,5 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import Navigation from "@/components/Navigation";
+import AdminPostedEvents from "@/components/AdminPostedEvents";
+
 import IncubationApplicationForm from "@/components/IncubationApplicationForm";
 import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -165,6 +167,9 @@ const Incubation = () => {
       <Navigation />
       <main className="container mx-auto px-4 pt-20 pb-12">
         <Breadcrumbs />
+        <AdminPostedEvents programType="incubation" title="New Incubation Cohorts" />
+        
+
         
         {/* Hero Section */}
         <section className="text-center mb-16">

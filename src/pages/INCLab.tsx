@@ -1,5 +1,7 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import AdminPostedEvents from "@/components/AdminPostedEvents";
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -222,6 +224,13 @@ const INCLab = () => {
           </div>
         </div>
       </section>
+
+      <section className="py-8">
+        <div className="container mx-auto px-4">
+          <AdminPostedEvents programType="inclab" title="New Xi Lab Programs" />
+        </div>
+      </section>
+
 
       {/* Application Status */}
       <section className="py-20">
