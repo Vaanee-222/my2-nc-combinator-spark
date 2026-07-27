@@ -1,6 +1,7 @@
 import Navigation from "@/components/Navigation";
 import HackathonRegistrationForm from "@/components/HackathonRegistrationForm";
 import Footer from "@/components/Footer";
+import AdminPostedEvents from "@/components/AdminPostedEvents";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +11,7 @@ import {
 } from "lucide-react";
 import { Money } from "@/components/Money";
 import { Link } from "react-router-dom";
+
 
 const Hackathon = () => {
   const upcomingHackathons = [
