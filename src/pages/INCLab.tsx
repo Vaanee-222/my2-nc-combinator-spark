@@ -225,6 +225,13 @@ const INCLab = () => {
         </div>
       </section>
 
+      <section className="py-8">
+        <div className="container mx-auto px-4">
+          <AdminPostedEvents programType="inclab" title="New Xi Lab Programs" />
+        </div>
+      </section>
+
+
       {/* Application Status */}
       <section className="py-20">
         <div className="container mx-auto px-4">
