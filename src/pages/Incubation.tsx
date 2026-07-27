@@ -167,6 +167,9 @@ const Incubation = () => {
       <Navigation />
       <main className="container mx-auto px-4 pt-20 pb-12">
         <Breadcrumbs />
+        <AdminPostedEvents programType="incubation" title="New Incubation Cohorts" />
+        
+
         
         {/* Hero Section */}
         <section className="text-center mb-16">
