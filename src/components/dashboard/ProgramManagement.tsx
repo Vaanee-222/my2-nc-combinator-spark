@@ -29,14 +29,23 @@ const emptyProgram = {
   description: "",
 };
 
-const ProgramManagement = () => {
+interface ProgramManagementProps {
+  lockedType?: string;
+  heading?: string;
+}
+
+const ProgramManagement = ({ lockedType, heading }: ProgramManagementProps = {}) => {
   const { toast } = useToast();
-  const [selectedProgram, setSelectedProgram] = useState<string>("hackathon");
+  const [selectedProgram, setSelectedProgram] = useState<string>(lockedType ?? "hackathon");
   const [programs, setPrograms] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<any | null>(null);
   const [viewing, setViewing] = useState<any | null>(null);
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (lockedType) setSelectedProgram(lockedType);
+  }, [lockedType]);
 
   const load = async () => {
     setLoading(true);
@@ -52,6 +61,7 @@ const ProgramManagement = () => {
     () => programs.filter((program) => program.program_type === selectedProgram),
     [programs, selectedProgram]
   );
+
 
   const save = async () => {
     if (!editing?.name) return toast({ title: "Program name required", variant: "destructive" });
