@@ -224,27 +224,47 @@ const AdminDashboard = () => {
           </TabsContent>
 
           <TabsContent value="hackathons" forceMount className="space-y-6 data-[state=inactive]:hidden">
-            <ProgramManagement lockedType="hackathon" heading="Hackathon Events" />
-            <HackathonManagement registrations={hackathonRegs} onRefresh={fetchData} />
+            <InnerTabs
+              storageKey="xi-admin-hack-inner"
+              tabs={[
+                { value: "events", label: "Posted Events", content: <ProgramManagement lockedType="hackathon" heading="Hackathon Events" /> },
+                { value: "apps", label: `Registrations (${hackathonRegs.length})`, content: <HackathonManagement registrations={hackathonRegs} onRefresh={fetchData} /> },
+              ]}
+            />
           </TabsContent>
 
           <TabsContent value="incubation" forceMount className="space-y-6 data-[state=inactive]:hidden">
-            <ProgramManagement lockedType="incubation" heading="Incubation Cohorts" />
-            <IncubationManagement applications={incubationApps} onRefresh={fetchData} />
+            <InnerTabs
+              storageKey="xi-admin-incu-inner"
+              tabs={[
+                { value: "events", label: "Posted Cohorts", content: <ProgramManagement lockedType="incubation" heading="Incubation Cohorts" /> },
+                { value: "apps", label: `Applications (${incubationApps.length})`, content: <IncubationManagement applications={incubationApps} onRefresh={fetchData} /> },
+              ]}
+            />
           </TabsContent>
 
           <TabsContent value="mvplab" forceMount className="space-y-6 data-[state=inactive]:hidden">
-            <ProgramManagement lockedType="mvplab" heading="MVP Lab Programs" />
+            <InnerTabs
+              storageKey="xi-admin-mvp-inner"
+              tabs={[
+                { value: "events", label: "Posted Programs", content: <ProgramManagement lockedType="mvplab" heading="MVP Lab Programs" /> },
+              ]}
+            />
           </TabsContent>
 
           <TabsContent value="inclab" forceMount className="space-y-6 data-[state=inactive]:hidden">
-            <ProgramManagement lockedType="inclab" heading="Xi Lab Programs" />
-            <InclabApplications />
+            <InnerTabs
+              storageKey="xi-admin-xilab-inner"
+              tabs={[
+                { value: "events", label: "Posted Programs", content: <ProgramManagement lockedType="inclab" heading="Xi Lab Programs" /> },
+                { value: "apps", label: "Applications", content: <InclabApplications /> },
+              ]}
+            />
           </TabsContent>
 
 
           <TabsContent value="cofounders" forceMount className="space-y-6 data-[state=inactive]:hidden">
-            <CofounderManagement requests={cofounderReqs} />
+            <CofounderManagement requests={cofounderReqs} onRefresh={fetchData} />
           </TabsContent>
 
           <TabsContent value="health" forceMount className="space-y-6 data-[state=inactive]:hidden">
@@ -476,26 +496,115 @@ const IncubationManagement = ({ applications, onRefresh }: { applications: any[]
   );
 };
 
-// ── Co-founder Management Tab ──
-const CofounderManagement = ({ requests }: { requests: any[] }) => {
+// ── Inner Tabs helper: toggle sub-view within a parent tab, persisted ──
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+
+const InnerTabs = ({ storageKey, tabs }: { storageKey: string; tabs: { value: string; label: string; content: React.ReactNode }[] }) => {
+  const [active, setActive] = useState<string>(() => {
+    if (typeof window === "undefined") return tabs[0].value;
+    const saved = window.localStorage.getItem(storageKey);
+    return saved && tabs.some((t) => t.value === saved) ? saved : tabs[0].value;
+  });
+  const onChange = (v: string) => { setActive(v); window.localStorage.setItem(storageKey, v); };
+  return (
+    <Tabs value={active} onValueChange={onChange} className="space-y-6">
+      <TabsList className="w-full sm:w-auto">
+        {tabs.map((t) => (
+          <TabsTrigger key={t.value} value={t.value} className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            {t.label}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+      {tabs.map((t) => (
+        <TabsContent key={t.value} value={t.value} forceMount className="data-[state=inactive]:hidden">
+          {t.content}
+        </TabsContent>
+      ))}
+    </Tabs>
+  );
+};
+
+// ── Co-founder Management Tab (CRUD) ──
+const CofounderManagement = ({ requests, onRefresh }: { requests: any[]; onRefresh: () => void }) => {
+  const { toast } = useToast();
+  const [filter, setFilter] = useState("all");
+  const [editing, setEditing] = useState<any | null>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+
+  const filtered = filter === "all" ? requests : requests.filter((r) => r.status === filter);
+
+  const updateStatus = async (id: string, status: string) => {
+    const { error } = await supabase.from("cofounder_requests").update({ status }).eq("id", id);
+    if (error) return toast({ title: "Error", description: error.message, variant: "destructive" });
+    toast({ title: "Status updated", description: `Marked as ${status}` });
+    onRefresh();
+  };
+
+  const save = async () => {
+    if (!editing?.title) return toast({ title: "Title required", variant: "destructive" });
+    setSaving(true);
+    const payload = {
+      title: editing.title,
+      skills_needed: editing.skills_needed || null,
+      equity_offered: editing.equity_offered || null,
+      commitment: editing.commitment || null,
+      location: editing.location || null,
+      contact_email: editing.contact_email || null,
+      description: editing.description || null,
+      status: editing.status || "active",
+    };
+    const { error } = await supabase.from("cofounder_requests").update(payload).eq("id", editing.id);
+    setSaving(false);
+    if (error) return toast({ title: "Save failed", description: error.message, variant: "destructive" });
+    toast({ title: "Request updated" });
+    setEditing(null);
+    onRefresh();
+  };
+
+  const remove = async () => {
+    if (!deleteId) return;
+    const { error } = await supabase.from("cofounder_requests").delete().eq("id", deleteId);
+    setDeleteId(null);
+    if (error) return toast({ title: "Delete failed", description: error.message, variant: "destructive" });
+    toast({ title: "Request deleted" });
+    onRefresh();
+  };
+
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Co-founder Requests ({requests.length})</h2>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 className="text-2xl font-bold">Co-founder Requests ({requests.length})</h2>
+        <Select value={filter} onValueChange={setFilter}>
+          <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All</SelectItem>
+            <SelectItem value="active">Active</SelectItem>
+            <SelectItem value="paused">Paused</SelectItem>
+            <SelectItem value="closed">Closed</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
       <Card><CardContent className="p-0">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Title</TableHead>
-              <TableHead>Skills Needed</TableHead>
+              <TableHead>Skills</TableHead>
               <TableHead>Equity</TableHead>
               <TableHead>Commitment</TableHead>
               <TableHead>Location</TableHead>
               <TableHead>Contact</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {requests.map((req) => (
+            {filtered.map((req) => (
               <TableRow key={req.id}>
                 <TableCell className="font-medium">{req.title}</TableCell>
                 <TableCell className="max-w-[150px] truncate">{req.skills_needed || "—"}</TableCell>
@@ -506,14 +615,60 @@ const CofounderManagement = ({ requests }: { requests: any[] }) => {
                 <TableCell>
                   <Badge variant={req.status === "active" ? "default" : "secondary"}>{req.status}</Badge>
                 </TableCell>
+                <TableCell>
+                  <div className="flex flex-wrap gap-1">
+                    <Button size="sm" variant="outline" onClick={() => setEditing({ ...req })}>Edit</Button>
+                    <Button size="sm" variant="outline" onClick={() => updateStatus(req.id, req.status === "active" ? "closed" : "active")}>
+                      {req.status === "active" ? "Close" : "Reopen"}
+                    </Button>
+                    <Button size="sm" variant="destructive" onClick={() => setDeleteId(req.id)}>Delete</Button>
+                  </div>
+                </TableCell>
               </TableRow>
             ))}
-            {requests.length === 0 && (
-              <TableRow><TableCell colSpan={7} className="text-center py-8 text-muted-foreground">No requests found</TableCell></TableRow>
+            {filtered.length === 0 && (
+              <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">No requests found</TableCell></TableRow>
             )}
           </TableBody>
         </Table>
       </CardContent></Card>
+
+      <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader><DialogTitle>Edit Co-founder Request</DialogTitle></DialogHeader>
+          {editing && (
+            <div className="space-y-4">
+              <div><Label>Title *</Label><Input value={editing.title ?? ""} onChange={(e) => setEditing({ ...editing, title: e.target.value })} /></div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div><Label>Skills Needed</Label><Input value={editing.skills_needed ?? ""} onChange={(e) => setEditing({ ...editing, skills_needed: e.target.value })} /></div>
+                <div><Label>Equity Offered</Label><Input value={editing.equity_offered ?? ""} onChange={(e) => setEditing({ ...editing, equity_offered: e.target.value })} /></div>
+                <div><Label>Commitment</Label><Input value={editing.commitment ?? ""} onChange={(e) => setEditing({ ...editing, commitment: e.target.value })} /></div>
+                <div><Label>Location</Label><Input value={editing.location ?? ""} onChange={(e) => setEditing({ ...editing, location: e.target.value })} /></div>
+                <div><Label>Contact Email</Label><Input value={editing.contact_email ?? ""} onChange={(e) => setEditing({ ...editing, contact_email: e.target.value })} /></div>
+                <div><Label>Status</Label><Input value={editing.status ?? "active"} onChange={(e) => setEditing({ ...editing, status: e.target.value })} /></div>
+              </div>
+              <div><Label>Description</Label><Textarea rows={4} value={editing.description ?? ""} onChange={(e) => setEditing({ ...editing, description: e.target.value })} /></div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditing(null)}>Cancel</Button>
+            <Button onClick={save} disabled={saving}>{saving ? "Saving..." : "Save"}</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <AlertDialog open={!!deleteId} onOpenChange={(o) => !o && setDeleteId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this request?</AlertDialogTitle>
+            <AlertDialogDescription>This action cannot be undone.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={remove}>Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
