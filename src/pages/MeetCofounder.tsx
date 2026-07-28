@@ -275,8 +275,9 @@ const MeetCofounder = () => {
         </div>
 
         <Tabs defaultValue="browse" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="browse">Browse Co-founders</TabsTrigger>
+            <TabsTrigger value="community">Community Posts</TabsTrigger>
             <TabsTrigger value="opportunities">Startup Opportunities</TabsTrigger>
             <TabsTrigger value="create">Post Requirement</TabsTrigger>
           </TabsList>
