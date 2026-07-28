@@ -1,58 +1,96 @@
-
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { MapPin, Users, DollarSign, TrendingUp, Building, Calendar, ExternalLink, Mail, Phone } from "lucide-react";
+import { MapPin, DollarSign, TrendingUp, Building, Calendar, Mail, Phone } from "lucide-react";
 import ConsultationDialog from "@/components/ConsultationDialog";
 import { StatefulCTA } from "@/components/StatefulCTA";
+import { useParams, useNavigate } from "react-router-dom";
+import { getInvestorById } from "@/data/investors";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 const InvestorProfile = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { user, userRole } = useAuth();
+  const { toast } = useToast();
+  const investor = getInvestorById(id);
+
   const investorData = {
-    name: "Ravi Sharma",
-    title: "Managing Partner",
-    company: "Prime Ventures",
-    location: "Mumbai, India",
+    name: investor?.name ?? "Investor",
+    title: investor?.type ?? "Investor",
+    company: investor?.name ?? "",
+    location: investor?.location ?? "Global",
     image: "/placeholder.svg",
-    totalInvestments: "$30M",
-    portfolioSize: 42,
-    avgTicketSize: "$0.6M–$1.8M",
-    industries: ["FinTech", "SaaS", "E-commerce", "HealthTech"],
-    investmentStage: ["Series A", "Series B", "Growth"],
-    description: "Seasoned investor with 15+ years of experience in scaling technology companies. Focus on B2B SaaS and FinTech startups with strong unit economics and clear path to profitability."
+    totalInvestments: investor?.aum ?? "$30M",
+    portfolioSize: investor?.portfolio ?? investor?.investments ?? 20,
+    avgTicketSize: investor?.checkSize ?? "$100K – $2M",
+    industries: investor?.sectors ?? ["FinTech", "SaaS"],
+    investmentStage: (investor?.stage ?? "Seed, Series A").split(",").map((s) => s.trim()),
+    description:
+      investor?.description ??
+      `${investor?.name ?? "This investor"} focuses on ${(investor?.sectors ?? []).slice(0, 3).join(", ") || "technology"} companies with strong founding teams.`,
   };
 
-  const portfolioCompanies = [
-    { name: "PayNext", sector: "FinTech", stage: "Series B", valuation: "$60M" },
-    { name: "HealthConnect", sector: "HealthTech", stage: "Series A", valuation: "$24.0M" },
-    { name: "EduPlatform", sector: "EdTech", stage: "Growth", valuation: "$96.0M" },
-    { name: "LogiTech Pro", sector: "SaaS", stage: "Series A", valuation: "$18.0M" }
-  ];
+  const portfolioCompanies = (investor?.recentInvestments ?? investor?.notable ?? [
+    "PortfolioCo A",
+    "PortfolioCo B",
+    "PortfolioCo C",
+  ]).map((name, i) => ({
+    name,
+    sector: (investorData.industries[i % investorData.industries.length] as string) || "Tech",
+    stage: (investorData.investmentStage[i % investorData.investmentStage.length] as string) || "Series A",
+    valuation: ["$60M", "$24M", "$96M", "$18M"][i % 4],
+  }));
 
   const recentActivity = [
-    { type: "Investment", company: "DataFlow Systems", amount: "$1.5M", date: "2026-01-15" },
-    { type: "Exit", company: "MobileFirst", amount: "$5.4M", date: "2026-01-10" },
-    { type: "Follow-on", company: "HealthConnect", amount: "$1M", date: "2026-01-05" }
+    { type: "Investment", company: portfolioCompanies[0]?.name ?? "DataFlow", amount: "$1.5M", date: "2026-01-15" },
+    { type: "Exit", company: portfolioCompanies[1]?.name ?? "MobileFirst", amount: "$5.4M", date: "2026-01-10" },
+    { type: "Follow-on", company: portfolioCompanies[2]?.name ?? "HealthConnect", amount: "$1M", date: "2026-01-05" },
   ];
+
+  const handleGetIntroduction = () => {
+    if (!user) {
+      toast({
+        title: "Sign in required",
+        description: "Please sign in as a founder or startup to request an introduction.",
+        variant: "destructive",
+      });
+      navigate("/login", { state: { from: `/investor-profile/${id ?? ""}` } });
+      return;
+    }
+    if (userRole && !["startup", "cofounder", "admin"].includes(userRole)) {
+      toast({
+        title: "Founders only",
+        description: "Only startup/founder accounts can request investor introductions.",
+        variant: "destructive",
+      });
+      return;
+    }
+    toast({
+      title: "Introduction Request Sent",
+      description: `We'll facilitate an intro with ${investorData.name} within 48 hours.`,
+    });
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
       <main className="container mx-auto px-4 pt-20 pb-12">
-        {/* Header */}
         <div className="mb-8">
           <Card>
             <CardContent className="pt-6">
               <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6">
                 <Avatar className="h-24 w-24">
                   <AvatarImage src={investorData.image} alt={investorData.name} />
-                  <AvatarFallback className="text-2xl">RS</AvatarFallback>
+                  <AvatarFallback className="text-2xl">{investorData.name.substring(0, 2)}</AvatarFallback>
                 </Avatar>
                 <div className="flex-1">
                   <h1 className="text-3xl font-bold">{investorData.name}</h1>
-                  <p className="text-xl text-muted-foreground">{investorData.title} at {investorData.company}</p>
+                  <p className="text-xl text-muted-foreground">{investorData.title}</p>
                   <div className="flex items-center space-x-2 mt-2">
                     <MapPin className="h-4 w-4 text-muted-foreground" />
                     <span className="text-muted-foreground">{investorData.location}</span>
@@ -61,9 +99,10 @@ const InvestorProfile = () => {
                 </div>
                 <div className="flex flex-col space-y-2">
                   <StatefulCTA
-                    ctaKey={`intro:investor:${investorData.name}`}
+                    ctaKey={`intro:investor:${id ?? investorData.name}`}
                     idleLabel={<><Mail className="mr-2 h-4 w-4" />Get Introduction</>}
                     actedLabel="Request Sent"
+                    onAct={handleGetIntroduction}
                   />
                   <ConsultationDialog title={`Schedule Call with ${investorData.name}`} description="Book a 30-minute intro call.">
                     <Button variant="outline">
@@ -77,53 +116,41 @@ const InvestorProfile = () => {
           </Card>
         </div>
 
-        {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Investments</CardTitle>
+              <CardTitle className="text-sm font-medium">AUM / Total</CardTitle>
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-primary">{investorData.totalInvestments}</div>
-            </CardContent>
+            <CardContent><div className="text-2xl font-bold text-primary">{investorData.totalInvestments}</div></CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Portfolio Size</CardTitle>
               <Building className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-primary">{investorData.portfolioSize}</div>
-            </CardContent>
+            <CardContent><div className="text-2xl font-bold text-primary">{investorData.portfolioSize}</div></CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Avg Ticket Size</CardTitle>
+              <CardTitle className="text-sm font-medium">Check Size</CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-primary">{investorData.avgTicketSize}</div>
-            </CardContent>
+            <CardContent><div className="text-2xl font-bold text-primary">{investorData.avgTicketSize}</div></CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Active Since</CardTitle>
               <Calendar className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-primary">2009</div>
-            </CardContent>
+            <CardContent><div className="text-2xl font-bold text-primary">{investor?.founded ?? "—"}</div></CardContent>
           </Card>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Investment Focus */}
           <div className="lg:col-span-2 space-y-6">
             <Card>
-              <CardHeader>
-                <CardTitle>Investment Focus</CardTitle>
-              </CardHeader>
+              <CardHeader><CardTitle>Investment Focus</CardTitle></CardHeader>
               <CardContent className="space-y-4">
                 <div>
                   <h4 className="font-medium mb-2">Industries</h4>
@@ -144,7 +171,6 @@ const InvestorProfile = () => {
               </CardContent>
             </Card>
 
-            {/* Portfolio Companies */}
             <Card>
               <CardHeader>
                 <CardTitle>Portfolio Companies</CardTitle>
@@ -172,11 +198,8 @@ const InvestorProfile = () => {
             </Card>
           </div>
 
-          {/* Recent Activity */}
           <Card>
-            <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
-            </CardHeader>
+            <CardHeader><CardTitle>Recent Activity</CardTitle></CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {recentActivity.map((activity, index) => (
