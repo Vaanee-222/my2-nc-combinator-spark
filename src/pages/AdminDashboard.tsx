@@ -224,27 +224,47 @@ const AdminDashboard = () => {
           </TabsContent>
 
           <TabsContent value="hackathons" forceMount className="space-y-6 data-[state=inactive]:hidden">
-            <ProgramManagement lockedType="hackathon" heading="Hackathon Events" />
-            <HackathonManagement registrations={hackathonRegs} onRefresh={fetchData} />
+            <InnerTabs
+              storageKey="xi-admin-hack-inner"
+              tabs={[
+                { value: "events", label: "Posted Events", content: <ProgramManagement lockedType="hackathon" heading="Hackathon Events" /> },
+                { value: "apps", label: `Registrations (${hackathonRegs.length})`, content: <HackathonManagement registrations={hackathonRegs} onRefresh={fetchData} /> },
+              ]}
+            />
           </TabsContent>
 
           <TabsContent value="incubation" forceMount className="space-y-6 data-[state=inactive]:hidden">
-            <ProgramManagement lockedType="incubation" heading="Incubation Cohorts" />
-            <IncubationManagement applications={incubationApps} onRefresh={fetchData} />
+            <InnerTabs
+              storageKey="xi-admin-incu-inner"
+              tabs={[
+                { value: "events", label: "Posted Cohorts", content: <ProgramManagement lockedType="incubation" heading="Incubation Cohorts" /> },
+                { value: "apps", label: `Applications (${incubationApps.length})`, content: <IncubationManagement applications={incubationApps} onRefresh={fetchData} /> },
+              ]}
+            />
           </TabsContent>
 
           <TabsContent value="mvplab" forceMount className="space-y-6 data-[state=inactive]:hidden">
-            <ProgramManagement lockedType="mvplab" heading="MVP Lab Programs" />
+            <InnerTabs
+              storageKey="xi-admin-mvp-inner"
+              tabs={[
+                { value: "events", label: "Posted Programs", content: <ProgramManagement lockedType="mvplab" heading="MVP Lab Programs" /> },
+              ]}
+            />
           </TabsContent>
 
           <TabsContent value="inclab" forceMount className="space-y-6 data-[state=inactive]:hidden">
-            <ProgramManagement lockedType="inclab" heading="Xi Lab Programs" />
-            <InclabApplications />
+            <InnerTabs
+              storageKey="xi-admin-xilab-inner"
+              tabs={[
+                { value: "events", label: "Posted Programs", content: <ProgramManagement lockedType="inclab" heading="Xi Lab Programs" /> },
+                { value: "apps", label: "Applications", content: <InclabApplications /> },
+              ]}
+            />
           </TabsContent>
 
 
           <TabsContent value="cofounders" forceMount className="space-y-6 data-[state=inactive]:hidden">
-            <CofounderManagement requests={cofounderReqs} />
+            <CofounderManagement requests={cofounderReqs} onRefresh={fetchData} />
           </TabsContent>
 
           <TabsContent value="health" forceMount className="space-y-6 data-[state=inactive]:hidden">
