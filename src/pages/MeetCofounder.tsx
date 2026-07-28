@@ -8,13 +8,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { MapPin, Briefcase, Star, Search, Users, Plus, ExternalLink, Mail, Linkedin } from "lucide-react";
+import { MapPin, Briefcase, Star, Search, Users, Plus, ExternalLink, Mail, Linkedin, Megaphone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CofounderPostDialog from "@/components/CofounderPostDialog";
 import { StatefulCTA } from "@/components/StatefulCTA";
 import CofounderDetailsDialog from "@/components/CofounderDetailsDialog";
+import { supabase } from "@/integrations/supabase/client";
 
 const MeetCofounder = () => {
   const { toast } = useToast();
@@ -22,6 +23,26 @@ const MeetCofounder = () => {
   const [connectMessage, setConnectMessage] = useState("");
   const [selectedCofounder, setSelectedCofounder] = useState<any>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [communityPosts, setCommunityPosts] = useState<any[]>([]);
+  const [postsLoading, setPostsLoading] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+    setPostsLoading(true);
+    supabase
+      .from("cofounder_requests")
+      .select("id,title,role_seeking,description,equity,commitment,skills_required,status,created_at")
+      .eq("status", "Active")
+      .order("created_at", { ascending: false })
+      .limit(30)
+      .then(({ data }) => {
+        if (mounted) {
+          setCommunityPosts(data ?? []);
+          setPostsLoading(false);
+        }
+      });
+    return () => { mounted = false; };
+  }, []);
 
   const featuredProfiles = [
     {
