@@ -15,10 +15,12 @@ import PitchSubmissionDialog from "@/components/PitchSubmissionDialog";
 import ConsultationDialog from "@/components/ConsultationDialog";
 import Footer from "@/components/Footer";
 import { StatefulCTA } from "@/components/StatefulCTA";
+import { useAuth } from "@/contexts/AuthContext";
 
 const InvestorCentre = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { user, userRole } = useAuth();
   const [pitchMessage, setPitchMessage] = useState("");
   const [selectedInvestor, setSelectedInvestor] = useState<any>(null);
   
@@ -172,9 +174,25 @@ const InvestorCentre = () => {
   const sectors = ["All Sectors", "FinTech", "HealthTech", "EdTech", "SaaS", "E-commerce", "Consumer"];
 
   const handleGetIntroduction = (investor: any) => {
-    console.log("Getting introduction for:", investor.name);
+    if (!user) {
+      toast({
+        title: "Sign in required",
+        description: "Please sign in as a founder to request investor introductions.",
+        variant: "destructive",
+      });
+      navigate("/login", { state: { from: "/investor-centre" } });
+      return;
+    }
+    if (userRole && !["startup", "cofounder", "admin"].includes(userRole)) {
+      toast({
+        title: "Founders only",
+        description: "Only startup/founder accounts can request investor introductions.",
+        variant: "destructive",
+      });
+      return;
+    }
     toast({
-      title: "Introduction Request Sent!",
+      title: "Introduction Request Sent",
       description: `We'll facilitate an introduction with ${investor.name} within 48 hours.`,
     });
   };

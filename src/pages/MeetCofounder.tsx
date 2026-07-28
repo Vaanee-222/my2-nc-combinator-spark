@@ -8,13 +8,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { MapPin, Briefcase, Star, Search, Users, Plus, ExternalLink, Mail, Linkedin } from "lucide-react";
+import { MapPin, Briefcase, Star, Search, Users, Plus, ExternalLink, Mail, Linkedin, Megaphone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CofounderPostDialog from "@/components/CofounderPostDialog";
 import { StatefulCTA } from "@/components/StatefulCTA";
 import CofounderDetailsDialog from "@/components/CofounderDetailsDialog";
+import { supabase } from "@/integrations/supabase/client";
 
 const MeetCofounder = () => {
   const { toast } = useToast();
@@ -22,6 +23,26 @@ const MeetCofounder = () => {
   const [connectMessage, setConnectMessage] = useState("");
   const [selectedCofounder, setSelectedCofounder] = useState<any>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [communityPosts, setCommunityPosts] = useState<any[]>([]);
+  const [postsLoading, setPostsLoading] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+    setPostsLoading(true);
+    supabase
+      .from("cofounder_requests")
+      .select("id,title,role_seeking,description,equity,commitment,skills_required,status,created_at")
+      .eq("status", "Active")
+      .order("created_at", { ascending: false })
+      .limit(30)
+      .then(({ data }) => {
+        if (mounted) {
+          setCommunityPosts(data ?? []);
+          setPostsLoading(false);
+        }
+      });
+    return () => { mounted = false; };
+  }, []);
 
   const featuredProfiles = [
     {
@@ -254,8 +275,9 @@ const MeetCofounder = () => {
         </div>
 
         <Tabs defaultValue="browse" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="browse">Browse Co-founders</TabsTrigger>
+            <TabsTrigger value="community">Community Posts</TabsTrigger>
             <TabsTrigger value="opportunities">Startup Opportunities</TabsTrigger>
             <TabsTrigger value="create">Post Requirement</TabsTrigger>
           </TabsList>
@@ -465,6 +487,49 @@ const MeetCofounder = () => {
                 <Button variant="outline" size="lg">Load More Profiles</Button>
               </div>
             </section>
+          </TabsContent>
+
+          <TabsContent value="community" className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold flex items-center gap-2"><Megaphone className="h-6 w-6 text-primary" /> Community Posts</h2>
+              <CofounderPostDialog><Button size="sm"><Plus className="h-4 w-4 mr-1" />Add Post</Button></CofounderPostDialog>
+            </div>
+            {postsLoading ? (
+              <p className="text-muted-foreground text-sm">Loading community posts…</p>
+            ) : communityPosts.length === 0 ? (
+              <Card><CardContent className="pt-6 text-center text-muted-foreground">No published co-founder posts yet. Be the first to post!</CardContent></Card>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {communityPosts.map((p) => (
+                  <Card key={p.id} className="hover:shadow-md transition-all">
+                    <CardHeader>
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <CardTitle className="text-lg">{p.title || "Untitled post"}</CardTitle>
+                          <CardDescription className="text-primary font-medium">Seeking: {p.role_seeking || "Co-founder"}</CardDescription>
+                        </div>
+                        <Badge variant="secondary">{p.status}</Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      {p.description && <p className="text-sm text-muted-foreground line-clamp-3">{p.description}</p>}
+                      <div className="flex flex-wrap gap-2 text-xs">
+                        {p.equity && <Badge variant="outline">Equity: {p.equity}</Badge>}
+                        {p.commitment && <Badge variant="outline">{p.commitment}</Badge>}
+                      </div>
+                      {Array.isArray(p.skills_required) && p.skills_required.length > 0 && (
+                        <div className="flex flex-wrap gap-1">
+                          {p.skills_required.slice(0, 5).map((s: string) => (
+                            <Badge key={s} variant="secondary" className="text-xs">{s}</Badge>
+                          ))}
+                        </div>
+                      )}
+                      <p className="text-xs text-muted-foreground">Posted {new Date(p.created_at).toLocaleDateString()}</p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="opportunities" className="space-y-6">
