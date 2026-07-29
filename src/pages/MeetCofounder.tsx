@@ -17,6 +17,14 @@ import { StatefulCTA } from "@/components/StatefulCTA";
 import CofounderDetailsDialog from "@/components/CofounderDetailsDialog";
 import { supabase } from "@/integrations/supabase/client";
 
+const POSTS_PER_PAGE = 6;
+
+const POST_STATUS_BADGES: Record<string, { label: string; className: string }> = {
+  active: { label: "Open", className: "bg-emerald-600/15 text-emerald-500 border border-emerald-600/40" },
+  paused: { label: "Paused", className: "bg-amber-500/15 text-amber-500 border border-amber-500/40" },
+  closed: { label: "Closed", className: "bg-muted text-muted-foreground border border-border" },
+};
+
 const MeetCofounder = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -25,24 +33,45 @@ const MeetCofounder = () => {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [communityPosts, setCommunityPosts] = useState<any[]>([]);
   const [postsLoading, setPostsLoading] = useState(false);
+  const [postSearch, setPostSearch] = useState("");
+  const [postStatus, setPostStatus] = useState("all");
+  const [postCommitment, setPostCommitment] = useState("all");
+  const [postPage, setPostPage] = useState(1);
+  const [postTotal, setPostTotal] = useState(0);
+  const totalPostPages = Math.max(1, Math.ceil(postTotal / POSTS_PER_PAGE));
 
   useEffect(() => {
     let mounted = true;
     setPostsLoading(true);
-    supabase
-      .from("cofounder_requests")
-      .select("id,title,role_seeking,description,equity,commitment,skills_required,status,created_at")
-      .eq("status", "Active")
-      .order("created_at", { ascending: false })
-      .limit(30)
-      .then(({ data }) => {
-        if (mounted) {
-          setCommunityPosts(data ?? []);
-          setPostsLoading(false);
-        }
-      });
-    return () => { mounted = false; };
-  }, []);
+    const handle = setTimeout(async () => {
+      let query = supabase
+        .from("cofounder_requests")
+        .select("id,title,description,skills_needed,equity_offered,commitment,location,status,created_at", { count: "exact" })
+        .eq("review_status", "approved");
+
+      if (postStatus !== "all") query = query.eq("status", postStatus);
+      if (postCommitment !== "all") query = query.eq("commitment", postCommitment);
+      const term = postSearch.trim();
+      if (term) {
+        query = query.or(
+          `title.ilike.%${term}%,skills_needed.ilike.%${term}%,location.ilike.%${term}%,description.ilike.%${term}%`,
+        );
+      }
+
+      const from = (postPage - 1) * POSTS_PER_PAGE;
+      const { data, count } = await query
+        .order("created_at", { ascending: false })
+        .range(from, from + POSTS_PER_PAGE - 1);
+
+      if (mounted) {
+        setCommunityPosts(data ?? []);
+        setPostTotal(count ?? 0);
+        setPostsLoading(false);
+      }
+    }, 250);
+    return () => { mounted = false; clearTimeout(handle); };
+  }, [postSearch, postStatus, postCommitment, postPage]);
+
 
   const featuredProfiles = [
     {
