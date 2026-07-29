@@ -17,6 +17,14 @@ import { StatefulCTA } from "@/components/StatefulCTA";
 import CofounderDetailsDialog from "@/components/CofounderDetailsDialog";
 import { supabase } from "@/integrations/supabase/client";
 
+const POSTS_PER_PAGE = 6;
+
+const POST_STATUS_BADGES: Record<string, { label: string; className: string }> = {
+  active: { label: "Open", className: "bg-emerald-600/15 text-emerald-500 border border-emerald-600/40" },
+  paused: { label: "Paused", className: "bg-amber-500/15 text-amber-500 border border-amber-500/40" },
+  closed: { label: "Closed", className: "bg-muted text-muted-foreground border border-border" },
+};
+
 const MeetCofounder = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -25,24 +33,45 @@ const MeetCofounder = () => {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [communityPosts, setCommunityPosts] = useState<any[]>([]);
   const [postsLoading, setPostsLoading] = useState(false);
+  const [postSearch, setPostSearch] = useState("");
+  const [postStatus, setPostStatus] = useState("all");
+  const [postCommitment, setPostCommitment] = useState("all");
+  const [postPage, setPostPage] = useState(1);
+  const [postTotal, setPostTotal] = useState(0);
+  const totalPostPages = Math.max(1, Math.ceil(postTotal / POSTS_PER_PAGE));
 
   useEffect(() => {
     let mounted = true;
     setPostsLoading(true);
-    supabase
-      .from("cofounder_requests")
-      .select("id,title,role_seeking,description,equity,commitment,skills_required,status,created_at")
-      .eq("status", "Active")
-      .order("created_at", { ascending: false })
-      .limit(30)
-      .then(({ data }) => {
-        if (mounted) {
-          setCommunityPosts(data ?? []);
-          setPostsLoading(false);
-        }
-      });
-    return () => { mounted = false; };
-  }, []);
+    const handle = setTimeout(async () => {
+      let query = supabase
+        .from("cofounder_requests")
+        .select("id,title,description,skills_needed,equity_offered,commitment,location,status,created_at", { count: "exact" })
+        .eq("review_status", "approved");
+
+      if (postStatus !== "all") query = query.eq("status", postStatus);
+      if (postCommitment !== "all") query = query.eq("commitment", postCommitment);
+      const term = postSearch.trim();
+      if (term) {
+        query = query.or(
+          `title.ilike.%${term}%,skills_needed.ilike.%${term}%,location.ilike.%${term}%,description.ilike.%${term}%`,
+        );
+      }
+
+      const from = (postPage - 1) * POSTS_PER_PAGE;
+      const { data, count } = await query
+        .order("created_at", { ascending: false })
+        .range(from, from + POSTS_PER_PAGE - 1);
+
+      if (mounted) {
+        setCommunityPosts(data ?? []);
+        setPostTotal(count ?? 0);
+        setPostsLoading(false);
+      }
+    }, 250);
+    return () => { mounted = false; clearTimeout(handle); };
+  }, [postSearch, postStatus, postCommitment, postPage]);
+
 
   const featuredProfiles = [
     {
@@ -494,43 +523,97 @@ const MeetCofounder = () => {
               <h2 className="text-2xl font-bold flex items-center gap-2"><Megaphone className="h-6 w-6 text-primary" /> Community Posts</h2>
               <CofounderPostDialog><Button size="sm"><Plus className="h-4 w-4 mr-1" />Add Post</Button></CofounderPostDialog>
             </div>
+
+            <Card>
+              <CardContent className="pt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    className="pl-10"
+                    placeholder="Search title, skills or location..."
+                    value={postSearch}
+                    onChange={(e) => { setPostPage(1); setPostSearch(e.target.value); }}
+                    aria-label="Search community posts"
+                  />
+                </div>
+                <Select value={postStatus} onValueChange={(v) => { setPostPage(1); setPostStatus(v); }}>
+                  <SelectTrigger aria-label="Filter by status"><SelectValue placeholder="Status" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All statuses</SelectItem>
+                    <SelectItem value="active">Open</SelectItem>
+                    <SelectItem value="paused">Paused</SelectItem>
+                    <SelectItem value="closed">Closed</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Select value={postCommitment} onValueChange={(v) => { setPostPage(1); setPostCommitment(v); }}>
+                  <SelectTrigger aria-label="Filter by commitment"><SelectValue placeholder="Commitment" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Any commitment</SelectItem>
+                    <SelectItem value="Full-time">Full-time</SelectItem>
+                    <SelectItem value="Part-time">Part-time</SelectItem>
+                    <SelectItem value="Advisory">Advisory</SelectItem>
+                  </SelectContent>
+                </Select>
+              </CardContent>
+            </Card>
+
             {postsLoading ? (
               <p className="text-muted-foreground text-sm">Loading community posts…</p>
             ) : communityPosts.length === 0 ? (
-              <Card><CardContent className="pt-6 text-center text-muted-foreground">No published co-founder posts yet. Be the first to post!</CardContent></Card>
+              <Card><CardContent className="pt-6 text-center text-muted-foreground">No approved co-founder posts match your filters yet.</CardContent></Card>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {communityPosts.map((p) => (
-                  <Card key={p.id} className="hover:shadow-md transition-all">
-                    <CardHeader>
-                      <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <CardTitle className="text-lg">{p.title || "Untitled post"}</CardTitle>
-                          <CardDescription className="text-primary font-medium">Seeking: {p.role_seeking || "Co-founder"}</CardDescription>
-                        </div>
-                        <Badge variant="secondary">{p.status}</Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      {p.description && <p className="text-sm text-muted-foreground line-clamp-3">{p.description}</p>}
-                      <div className="flex flex-wrap gap-2 text-xs">
-                        {p.equity && <Badge variant="outline">Equity: {p.equity}</Badge>}
-                        {p.commitment && <Badge variant="outline">{p.commitment}</Badge>}
-                      </div>
-                      {Array.isArray(p.skills_required) && p.skills_required.length > 0 && (
-                        <div className="flex flex-wrap gap-1">
-                          {p.skills_required.slice(0, 5).map((s: string) => (
-                            <Badge key={s} variant="secondary" className="text-xs">{s}</Badge>
-                          ))}
-                        </div>
-                      )}
-                      <p className="text-xs text-muted-foreground">Posted {new Date(p.created_at).toLocaleDateString()}</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {communityPosts.map((p) => {
+                    const badge = POST_STATUS_BADGES[String(p.status ?? "").toLowerCase()] ?? POST_STATUS_BADGES.active;
+                    const skills = String(p.skills_needed || "").split(",").map((s) => s.trim()).filter(Boolean);
+                    return (
+                      <Card key={p.id} className="hover:shadow-md transition-all">
+                        <CardHeader>
+                          <div className="flex items-start justify-between gap-2">
+                            <div>
+                              <CardTitle className="text-lg">{p.title || "Untitled post"}</CardTitle>
+                              <CardDescription className="text-primary font-medium">
+                                {p.location ? `Based in ${p.location}` : "Location flexible"}
+                              </CardDescription>
+                            </div>
+                            <Badge className={badge.className}>{badge.label}</Badge>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="space-y-3">
+                          {p.description && <p className="text-sm text-muted-foreground line-clamp-3">{p.description}</p>}
+                          <div className="flex flex-wrap gap-2 text-xs">
+                            {p.equity_offered && <Badge variant="outline">Equity: {p.equity_offered}</Badge>}
+                            {p.commitment && <Badge variant="outline">{p.commitment}</Badge>}
+                          </div>
+                          {skills.length > 0 && (
+                            <div className="flex flex-wrap gap-1">
+                              {skills.slice(0, 5).map((s) => (
+                                <Badge key={s} variant="secondary" className="text-xs">{s}</Badge>
+                              ))}
+                            </div>
+                          )}
+                          <p className="text-xs text-muted-foreground">Posted {new Date(p.created_at).toLocaleDateString()}</p>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+
+                <div className="flex items-center justify-between pt-2">
+                  <p className="text-sm text-muted-foreground">
+                    Showing {(postPage - 1) * POSTS_PER_PAGE + 1}–{Math.min(postPage * POSTS_PER_PAGE, postTotal)} of {postTotal} posts
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" size="sm" disabled={postPage === 1} onClick={() => setPostPage((p) => p - 1)}>Previous</Button>
+                    <span className="text-sm text-muted-foreground">Page {postPage} of {totalPostPages}</span>
+                    <Button variant="outline" size="sm" disabled={postPage >= totalPostPages} onClick={() => setPostPage((p) => p + 1)}>Next</Button>
+                  </div>
+                </div>
+              </>
             )}
           </TabsContent>
+
 
           <TabsContent value="opportunities" className="space-y-6">
             <h2 className="text-2xl font-bold mb-6">Startup Co-founder Opportunities</h2>
