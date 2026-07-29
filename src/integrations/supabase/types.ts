@@ -167,9 +167,14 @@ export type Database = {
           equity_offered: string | null
           id: string
           location: string | null
+          review_notes: string | null
+          review_status: string
+          reviewed_at: string | null
+          reviewed_by: string | null
           skills_needed: string | null
           status: string
           title: string
+          updated_at: string
           user_id: string | null
         }
         Insert: {
@@ -180,9 +185,14 @@ export type Database = {
           equity_offered?: string | null
           id?: string
           location?: string | null
+          review_notes?: string | null
+          review_status?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           skills_needed?: string | null
           status?: string
           title: string
+          updated_at?: string
           user_id?: string | null
         }
         Update: {
@@ -193,9 +203,14 @@ export type Database = {
           equity_offered?: string | null
           id?: string
           location?: string | null
+          review_notes?: string | null
+          review_status?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           skills_needed?: string | null
           status?: string
           title?: string
+          updated_at?: string
           user_id?: string | null
         }
         Relationships: []
@@ -383,6 +398,57 @@ export type Database = {
           status?: string
           team_size?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      introduction_requests: {
+        Row: {
+          admin_notes: string | null
+          contact_email: string
+          created_at: string
+          id: string
+          investor_id: string
+          investor_name: string
+          message: string
+          requester_id: string
+          requester_name: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          startup_name: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          contact_email: string
+          created_at?: string
+          id?: string
+          investor_id: string
+          investor_name: string
+          message: string
+          requester_id: string
+          requester_name: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          startup_name?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          admin_notes?: string | null
+          contact_email?: string
+          created_at?: string
+          id?: string
+          investor_id?: string
+          investor_name?: string
+          message?: string
+          requester_id?: string
+          requester_name?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          startup_name?: string | null
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }
