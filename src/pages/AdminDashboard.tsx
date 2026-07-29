@@ -532,11 +532,30 @@ const InnerTabs = ({ storageKey, tabs }: { storageKey: string; tabs: { value: st
 const CofounderManagement = ({ requests, onRefresh }: { requests: any[]; onRefresh: () => void }) => {
   const { toast } = useToast();
   const [filter, setFilter] = useState("all");
+  const [reviewFilter, setReviewFilter] = useState("pending");
   const [editing, setEditing] = useState<any | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
-  const filtered = filter === "all" ? requests : requests.filter((r) => r.status === filter);
+  const filtered = requests.filter(
+    (r) =>
+      (filter === "all" || r.status === filter) &&
+      (reviewFilter === "all" || (r.review_status ?? "pending") === reviewFilter),
+  );
+  const pendingCount = requests.filter((r) => (r.review_status ?? "pending") === "pending").length;
+
+  const setReview = async (id: string, review_status: "approved" | "rejected" | "pending") => {
+    const { error } = await supabase
+      .from("cofounder_requests")
+      .update({ review_status, reviewed_at: new Date().toISOString() })
+      .eq("id", id);
+    if (error) return toast({ title: "Error", description: error.message, variant: "destructive" });
+    toast({
+      title: review_status === "approved" ? "Post approved" : review_status === "rejected" ? "Post rejected" : "Moved back to review",
+      description: review_status === "approved" ? "It is now visible on the public Community Posts tab." : "It is hidden from the public site.",
+    });
+    onRefresh();
+  };
 
   const updateStatus = async (id: string, status: string) => {
     const { error } = await supabase.from("cofounder_requests").update({ status }).eq("id", id);
@@ -557,6 +576,9 @@ const CofounderManagement = ({ requests, onRefresh }: { requests: any[]; onRefre
       contact_email: editing.contact_email || null,
       description: editing.description || null,
       status: editing.status || "active",
+      review_status: editing.review_status || "pending",
+      review_notes: editing.review_notes || null,
+      reviewed_at: new Date().toISOString(),
     };
     const { error } = await supabase.from("cofounder_requests").update(payload).eq("id", editing.id);
     setSaving(false);
@@ -578,7 +600,20 @@ const CofounderManagement = ({ requests, onRefresh }: { requests: any[]; onRefre
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-2xl font-bold">Co-founder Requests ({requests.length})</h2>
+        <div>
+          <h2 className="text-2xl font-bold">Co-founder Review Queue ({requests.length})</h2>
+          <p className="text-sm text-muted-foreground">{pendingCount} awaiting review. Approved posts appear publicly under Community Posts.</p>
+        </div>
+        <div className="flex gap-3">
+        <Select value={reviewFilter} onValueChange={setReviewFilter}>
+          <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All reviews</SelectItem>
+            <SelectItem value="pending">Pending</SelectItem>
+            <SelectItem value="approved">Approved</SelectItem>
+            <SelectItem value="rejected">Rejected</SelectItem>
+          </SelectContent>
+        </Select>
         <Select value={filter} onValueChange={setFilter}>
           <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
           <SelectContent>
@@ -588,6 +623,7 @@ const CofounderManagement = ({ requests, onRefresh }: { requests: any[]; onRefre
             <SelectItem value="closed">Closed</SelectItem>
           </SelectContent>
         </Select>
+        </div>
       </div>
       <Card><CardContent className="p-0">
         <Table>
@@ -600,6 +636,7 @@ const CofounderManagement = ({ requests, onRefresh }: { requests: any[]; onRefre
               <TableHead>Location</TableHead>
               <TableHead>Contact</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>Review</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -616,7 +653,26 @@ const CofounderManagement = ({ requests, onRefresh }: { requests: any[]; onRefre
                   <Badge variant={req.status === "active" ? "default" : "secondary"}>{req.status}</Badge>
                 </TableCell>
                 <TableCell>
+                  <Badge
+                    className={
+                      (req.review_status ?? "pending") === "approved"
+                        ? "bg-emerald-600/15 text-emerald-500 border border-emerald-600/40"
+                        : (req.review_status ?? "pending") === "rejected"
+                        ? "bg-destructive/15 text-destructive border border-destructive/40"
+                        : "bg-amber-500/15 text-amber-500 border border-amber-500/40"
+                    }
+                  >
+                    {req.review_status ?? "pending"}
+                  </Badge>
+                </TableCell>
+                <TableCell>
                   <div className="flex flex-wrap gap-1">
+                    {(req.review_status ?? "pending") !== "approved" && (
+                      <Button size="sm" onClick={() => setReview(req.id, "approved")}>Approve</Button>
+                    )}
+                    {(req.review_status ?? "pending") !== "rejected" && (
+                      <Button size="sm" variant="outline" onClick={() => setReview(req.id, "rejected")}>Reject</Button>
+                    )}
                     <Button size="sm" variant="outline" onClick={() => setEditing({ ...req })}>Edit</Button>
                     <Button size="sm" variant="outline" onClick={() => updateStatus(req.id, req.status === "active" ? "closed" : "active")}>
                       {req.status === "active" ? "Close" : "Reopen"}
@@ -627,7 +683,7 @@ const CofounderManagement = ({ requests, onRefresh }: { requests: any[]; onRefre
               </TableRow>
             ))}
             {filtered.length === 0 && (
-              <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">No requests found</TableCell></TableRow>
+              <TableRow><TableCell colSpan={9} className="text-center py-8 text-muted-foreground">No requests found</TableCell></TableRow>
             )}
           </TableBody>
         </Table>
@@ -646,7 +702,19 @@ const CofounderManagement = ({ requests, onRefresh }: { requests: any[]; onRefre
                 <div><Label>Location</Label><Input value={editing.location ?? ""} onChange={(e) => setEditing({ ...editing, location: e.target.value })} /></div>
                 <div><Label>Contact Email</Label><Input value={editing.contact_email ?? ""} onChange={(e) => setEditing({ ...editing, contact_email: e.target.value })} /></div>
                 <div><Label>Status</Label><Input value={editing.status ?? "active"} onChange={(e) => setEditing({ ...editing, status: e.target.value })} /></div>
+                <div>
+                  <Label>Review Status</Label>
+                  <Select value={editing.review_status ?? "pending"} onValueChange={(v) => setEditing({ ...editing, review_status: v })}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="pending">Pending</SelectItem>
+                      <SelectItem value="approved">Approved (public)</SelectItem>
+                      <SelectItem value="rejected">Rejected (hidden)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
+              <div><Label>Reviewer Notes</Label><Textarea rows={3} value={editing.review_notes ?? ""} onChange={(e) => setEditing({ ...editing, review_notes: e.target.value })} /></div>
               <div><Label>Description</Label><Textarea rows={4} value={editing.description ?? ""} onChange={(e) => setEditing({ ...editing, description: e.target.value })} /></div>
             </div>
           )}
