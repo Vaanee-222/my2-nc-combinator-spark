@@ -28,6 +28,7 @@ import NewsManagement from "@/components/dashboard/NewsManagement";
 import StartupDirectoryManagement from "@/components/dashboard/StartupDirectoryManagement";
 import AuditLog from "@/components/dashboard/AuditLog";
 import RoleManagement from "@/components/dashboard/RoleManagement";
+import IntroductionRequests from "@/components/dashboard/IntroductionRequests";
 
 const adminMenuGroups = [
   {
@@ -46,6 +47,7 @@ const adminMenuGroups = [
       { value: "mvplab", label: "MVP Lab", icon: Code2 },
       { value: "inclab", label: "Xi Lab", icon: FlaskConical },
       { value: "cofounders", label: "Co-founders", icon: Users },
+      { value: "introductions", label: "Introductions", icon: Handshake },
       { value: "health", label: "Health Score", icon: HeartPulse },
     ],
 
@@ -262,6 +264,10 @@ const AdminDashboard = () => {
             />
           </TabsContent>
 
+
+          <TabsContent value="introductions" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <IntroductionRequests />
+          </TabsContent>
 
           <TabsContent value="cofounders" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <CofounderManagement requests={cofounderReqs} onRefresh={fetchData} />
