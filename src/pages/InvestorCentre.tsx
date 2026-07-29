@@ -15,6 +15,7 @@ import PitchSubmissionDialog from "@/components/PitchSubmissionDialog";
 import ConsultationDialog from "@/components/ConsultationDialog";
 import Footer from "@/components/Footer";
 import { StatefulCTA } from "@/components/StatefulCTA";
+import IntroductionRequestButton from "@/components/IntroductionRequestButton";
 import { useAuth } from "@/contexts/AuthContext";
 
 const InvestorCentre = () => {
@@ -404,13 +405,13 @@ const InvestorCentre = () => {
                       </div>
 
                       <div className="flex space-x-2">
-                        <StatefulCTA
+                        <IntroductionRequestButton
                           className="flex-1"
                           size="sm"
-                          ctaKey={`intro:investor:${investor.id}`}
+                          investorId={investor.id}
+                          investorName={investor.name}
                           idleLabel="Get Introduction"
-                          actedLabel="Request Sent"
-                          onAct={() => handleGetIntroduction(investor)}
+                          redirectPath="/investor-centre"
                         />
                         <Button 
                           variant="outline" 
@@ -528,12 +529,12 @@ const InvestorCentre = () => {
                       </div>
                     </div>
 
-                    <StatefulCTA
+                    <IntroductionRequestButton
                       className="w-full"
-                      ctaKey={`intro:angel:${angel.id}`}
+                      investorId={`angel-${angel.id}`}
+                      investorName={angel.name}
                       idleLabel="Request Introduction"
-                      actedLabel="Request Sent"
-                      onAct={() => handleGetIntroduction(angel)}
+                      redirectPath="/investor-centre"
                     />
                   </CardContent>
                 </Card>

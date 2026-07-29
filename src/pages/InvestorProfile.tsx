@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MapPin, DollarSign, TrendingUp, Building, Calendar, Mail, Phone } from "lucide-react";
 import ConsultationDialog from "@/components/ConsultationDialog";
 import { StatefulCTA } from "@/components/StatefulCTA";
+import IntroductionRequestButton from "@/components/IntroductionRequestButton";
 import { useParams, useNavigate } from "react-router-dom";
 import { getInvestorById } from "@/data/investors";
 import { useAuth } from "@/contexts/AuthContext";
@@ -98,11 +99,11 @@ const InvestorProfile = () => {
                   <p className="mt-4 text-muted-foreground max-w-2xl">{investorData.description}</p>
                 </div>
                 <div className="flex flex-col space-y-2">
-                  <StatefulCTA
-                    ctaKey={`intro:investor:${id ?? investorData.name}`}
-                    idleLabel={<><Mail className="mr-2 h-4 w-4" />Get Introduction</>}
-                    actedLabel="Request Sent"
-                    onAct={handleGetIntroduction}
+                  <IntroductionRequestButton
+                    investorId={id ?? investorData.name}
+                    investorName={investorData.name}
+                    idleLabel="Get Introduction"
+                    redirectPath={`/investor-profile/${id ?? ""}`}
                   />
                   <ConsultationDialog title={`Schedule Call with ${investorData.name}`} description="Book a 30-minute intro call.">
                     <Button variant="outline">
