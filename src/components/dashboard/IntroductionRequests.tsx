@@ -35,29 +35,27 @@ const IntroductionRequests = () => {
 
   const filtered = filter === "all" ? rows : rows.filter((r) => r.status === filter);
 
-  const setStatus = async (id: string, status: "approved" | "rejected" | "pending") => {
-    const { error } = await supabase
-      .from("introduction_requests")
-      .update({ status, reviewed_at: new Date().toISOString() })
-      .eq("id", id);
-    if (error) return toast({ title: "Update failed", description: error.message, variant: "destructive" });
-    toast({ title: `Request ${status}` });
+  const setStatus = async (row: any, status: "approved" | "rejected" | "pending") => {
+    const { error } = await api.introductions.setStatus(row, status);
+    if (error) return toast({ title: "Update failed", description: error, variant: "destructive" });
+    toast({
+      title: `Request ${status}`,
+      description: row.contact_email && status !== "pending" ? `Notification email sent to ${row.contact_email}.` : undefined,
+    });
     load();
   };
 
   const saveNotes = async () => {
     if (!notesFor) return;
     setSaving(true);
-    const { error } = await supabase
-      .from("introduction_requests")
-      .update({ admin_notes: notesFor.admin_notes || null })
-      .eq("id", notesFor.id);
+    const { error } = await api.introductions.setNotes(notesFor, notesFor.admin_notes || null);
     setSaving(false);
-    if (error) return toast({ title: "Save failed", description: error.message, variant: "destructive" });
+    if (error) return toast({ title: "Save failed", description: error, variant: "destructive" });
     setNotesFor(null);
-    toast({ title: "Notes saved" });
+    toast({ title: "Notes saved", description: "Requester notified and change recorded in the audit log." });
     load();
   };
+
 
   return (
     <div className="space-y-6">
