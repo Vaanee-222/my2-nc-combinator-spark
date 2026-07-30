@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 
 const STATUS_CLASS: Record<string, string> = {
   pending: "bg-amber-500/15 text-amber-500 border border-amber-500/40",
@@ -35,29 +36,27 @@ const IntroductionRequests = () => {
 
   const filtered = filter === "all" ? rows : rows.filter((r) => r.status === filter);
 
-  const setStatus = async (id: string, status: "approved" | "rejected" | "pending") => {
-    const { error } = await supabase
-      .from("introduction_requests")
-      .update({ status, reviewed_at: new Date().toISOString() })
-      .eq("id", id);
-    if (error) return toast({ title: "Update failed", description: error.message, variant: "destructive" });
-    toast({ title: `Request ${status}` });
+  const setStatus = async (row: any, status: "approved" | "rejected" | "pending") => {
+    const { error } = await api.introductions.setStatus(row, status);
+    if (error) return toast({ title: "Update failed", description: error, variant: "destructive" });
+    toast({
+      title: `Request ${status}`,
+      description: row.contact_email && status !== "pending" ? `Notification email sent to ${row.contact_email}.` : undefined,
+    });
     load();
   };
 
   const saveNotes = async () => {
     if (!notesFor) return;
     setSaving(true);
-    const { error } = await supabase
-      .from("introduction_requests")
-      .update({ admin_notes: notesFor.admin_notes || null })
-      .eq("id", notesFor.id);
+    const { error } = await api.introductions.setNotes(notesFor, notesFor.admin_notes || null);
     setSaving(false);
-    if (error) return toast({ title: "Save failed", description: error.message, variant: "destructive" });
+    if (error) return toast({ title: "Save failed", description: error, variant: "destructive" });
     setNotesFor(null);
-    toast({ title: "Notes saved" });
+    toast({ title: "Notes saved", description: "Requester notified and change recorded in the audit log." });
     load();
   };
+
 
   return (
     <div className="space-y-6">
@@ -103,8 +102,8 @@ const IntroductionRequests = () => {
                 <TableCell><Badge className={STATUS_CLASS[r.status]}>{r.status}</Badge></TableCell>
                 <TableCell>
                   <div className="flex flex-wrap gap-1">
-                    {r.status !== "approved" && <Button size="sm" onClick={() => setStatus(r.id, "approved")}>Approve</Button>}
-                    {r.status !== "rejected" && <Button size="sm" variant="outline" onClick={() => setStatus(r.id, "rejected")}>Reject</Button>}
+                    {r.status !== "approved" && <Button size="sm" onClick={() => setStatus(r, "approved")}>Approve</Button>}
+                    {r.status !== "rejected" && <Button size="sm" variant="outline" onClick={() => setStatus(r, "rejected")}>Reject</Button>}
                     <Button size="sm" variant="outline" onClick={() => setNotesFor({ ...r })}>Notes</Button>
                   </div>
                 </TableCell>
