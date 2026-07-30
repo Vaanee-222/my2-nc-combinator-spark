@@ -110,7 +110,7 @@ export const cofoundersApi = {
   async review(id: string, review_status: ReviewStatus, review_notes?: string | null): Promise<ApiResult<true>> {
     const payload: Record<string, any> = { review_status, reviewed_at: new Date().toISOString() };
     if (review_notes !== undefined) payload.review_notes = review_notes || null;
-    const { error } = await supabase.from("cofounder_requests").update(payload).eq("id", id);
+    const { error } = await supabase.from("cofounder_requests").update(payload as any).eq("id", id);
     if (error) return fail(error);
     await auditApi.record(
       review_status === "approved" ? "status_change" : review_status === "rejected" ? "status_change" : "update",
@@ -126,7 +126,7 @@ export const cofoundersApi = {
     if (!ids.length) return ok([]);
     const payload: Record<string, any> = { review_status, reviewed_at: new Date().toISOString() };
     if (review_notes) payload.review_notes = review_notes;
-    const { error } = await supabase.from("cofounder_requests").update(payload).in("id", ids);
+    const { error } = await supabase.from("cofounder_requests").update(payload as any).in("id", ids);
     if (error) return fail(error);
     await auditApi.record("bulk_update", "cofounder_requests", null, {
       ids,
@@ -138,7 +138,7 @@ export const cofoundersApi = {
   },
 
   async update(id: string, patch: Record<string, any>): Promise<ApiResult<true>> {
-    const { error } = await supabase.from("cofounder_requests").update(patch).eq("id", id);
+    const { error } = await supabase.from("cofounder_requests").update(patch as any).eq("id", id);
     if (error) return fail(error);
     await auditApi.record("update", "cofounder_requests", id, patch);
     return ok(true as const);
