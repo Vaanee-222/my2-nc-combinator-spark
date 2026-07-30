@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 
 const STATUS_CLASS: Record<string, string> = {
   pending: "bg-amber-500/15 text-amber-500 border border-amber-500/40",
@@ -101,8 +102,8 @@ const IntroductionRequests = () => {
                 <TableCell><Badge className={STATUS_CLASS[r.status]}>{r.status}</Badge></TableCell>
                 <TableCell>
                   <div className="flex flex-wrap gap-1">
-                    {r.status !== "approved" && <Button size="sm" onClick={() => setStatus(r.id, "approved")}>Approve</Button>}
-                    {r.status !== "rejected" && <Button size="sm" variant="outline" onClick={() => setStatus(r.id, "rejected")}>Reject</Button>}
+                    {r.status !== "approved" && <Button size="sm" onClick={() => setStatus(r, "approved")}>Approve</Button>}
+                    {r.status !== "rejected" && <Button size="sm" variant="outline" onClick={() => setStatus(r, "rejected")}>Reject</Button>}
                     <Button size="sm" variant="outline" onClick={() => setNotesFor({ ...r })}>Notes</Button>
                   </div>
                 </TableCell>
