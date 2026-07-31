@@ -11,6 +11,7 @@ import { type AdvisorTier } from "@/data/advisoryBoard";
 import { useAdvisors } from "@/hooks/useAdvisors";
 
 const AboutUs = () => {
+  const { data: advisors = [] } = useAdvisors();
   const values = [
     {
       icon: Heart,
