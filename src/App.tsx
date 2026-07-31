@@ -7,6 +7,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { lazy, Suspense } from "react";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAnalyticsPageViews } from "@/hooks/useAnalyticsPageViews";
+import SiteMeta from "@/components/SiteMeta";
 
 // Eager-loaded core routes
 import Index from "./pages/Index";
