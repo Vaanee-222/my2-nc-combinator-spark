@@ -6,6 +6,7 @@ import ApplicationDialog from "./ApplicationDialog";
 import GlobalSearch from "./GlobalSearch";
 import CurrencySelector from "./CurrencySelector";
 import { useAuth } from "@/contexts/AuthContext";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const Navigation = () => {
+  const { data: siteSettings } = useSiteSettings();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { user, userRole, signOut } = useAuth();
