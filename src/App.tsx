@@ -104,6 +104,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
+          <SiteMeta />
           <AppRoutes />
         </AuthProvider>
       </BrowserRouter>
