@@ -6,19 +6,27 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Link } from "react-router-dom";
-import { quarterlyTop5, availableQuarters, availableCategories } from "@/data/cohorts";
+import { useCohortStartups, uniquePeriods, uniqueCategories } from "@/hooks/useCohortStartups";
 import { trackEvent } from "@/lib/analytics";
 import { Trophy, TrendingUp } from "lucide-react";
 
 const QuarterlyTop5 = () => {
-  const [quarter, setQuarter] = useState(availableQuarters[0]);
+  const { data: quarterlyTop5 = [] } = useCohortStartups("quarterly");
+  const availableQuarters = useMemo(() => uniquePeriods(quarterlyTop5), [quarterlyTop5]);
+  const availableCategories = useMemo(() => uniqueCategories(quarterlyTop5), [quarterlyTop5]);
+  const [quarter, setQuarter] = useState("");
   const [category, setCategory] = useState("All");
 
   useEffect(() => {
+    if (!quarter && availableQuarters.length) setQuarter(availableQuarters[0]);
+  }, [availableQuarters, quarter]);
+
+  useEffect(() => {
+    if (!quarter) return;
     trackEvent("cohort_announcement_viewed", { cohort_type: "quarterly_top_5", period: quarter });
   }, [quarter]);
 
-  const filtered = useMemo(() => quarterlyTop5.filter((s) => s.period === quarter && (category === "All" || s.category === category)), [quarter, category]);
+  const filtered = useMemo(() => quarterlyTop5.filter((s) => s.period === quarter && (category === "All" || s.category === category)), [quarterlyTop5, quarter, category]);
 
   return (
     <div className="min-h-screen bg-background">

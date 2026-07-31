@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { BarChart3, BookOpen, Building2, ClipboardList, Code2, FlaskConical, Handshake, HeartPulse, LayoutDashboard, Mail, Newspaper, Rocket, Search, Settings, ShieldCheck, SlidersHorizontal, Trophy, UserCog, Users, ChevronLeft, ChevronRight, ScrollText, Workflow } from "lucide-react";
+import { BarChart3, BookOpen, Building2, ClipboardList, Code2, FlaskConical, Handshake, HeartPulse, LayoutDashboard, Mail, Newspaper, Rocket, Search, Settings, ShieldCheck, SlidersHorizontal, Trophy, Globe, UserCog, Users, ChevronLeft, ChevronRight, ScrollText, Workflow } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import AdminOverview from "@/components/dashboard/AdminOverview";
@@ -30,6 +30,9 @@ import AuditLog from "@/components/dashboard/AuditLog";
 import RoleManagement from "@/components/dashboard/RoleManagement";
 import IntroductionRequests from "@/components/dashboard/IntroductionRequests";
 import CofounderManagement from "@/components/dashboard/CofounderManagement";
+import SiteSettingsCMS from "@/components/dashboard/SiteSettingsCMS";
+import CohortManagement from "@/components/dashboard/CohortManagement";
+import AdvisorManagement from "@/components/dashboard/AdvisorManagement";
 
 const adminMenuGroups = [
   {
@@ -61,6 +64,8 @@ const adminMenuGroups = [
       { value: "programs", label: "Programs", icon: Rocket },
       { value: "partners", label: "Partners", icon: Handshake },
       { value: "directory", label: "Directory", icon: Search },
+      { value: "cohorts", label: "Cohorts", icon: Trophy },
+      { value: "advisors", label: "Advisory Board", icon: Users },
     ],
   },
   {
@@ -68,6 +73,7 @@ const adminMenuGroups = [
     items: [
       { value: "blogs", label: "Blogs", icon: BookOpen },
       { value: "news", label: "News", icon: Newspaper },
+      { value: "cms", label: "Website CMS", icon: Globe },
       { value: "emails", label: "Emails", icon: Mail },
     ],
   },
@@ -308,6 +314,18 @@ const AdminDashboard = () => {
 
           <TabsContent value="news" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <NewsManagement />
+          </TabsContent>
+
+          <TabsContent value="cms" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <SiteSettingsCMS />
+          </TabsContent>
+
+          <TabsContent value="cohorts" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <CohortManagement />
+          </TabsContent>
+
+          <TabsContent value="advisors" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <AdvisorManagement />
           </TabsContent>
 
 

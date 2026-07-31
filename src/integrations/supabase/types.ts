@@ -47,6 +47,57 @@ export type Database = {
         }
         Relationships: []
       }
+      advisors: {
+        Row: {
+          avatar_url: string | null
+          company: string | null
+          country: string | null
+          created_at: string
+          description: string | null
+          expertise: string | null
+          id: string
+          is_active: boolean
+          linkedin_url: string | null
+          name: string
+          role: string | null
+          sort_order: number
+          tier: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          company?: string | null
+          country?: string | null
+          created_at?: string
+          description?: string | null
+          expertise?: string | null
+          id?: string
+          is_active?: boolean
+          linkedin_url?: string | null
+          name: string
+          role?: string | null
+          sort_order?: number
+          tier?: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          company?: string | null
+          country?: string | null
+          created_at?: string
+          description?: string | null
+          expertise?: string | null
+          id?: string
+          is_active?: boolean
+          linkedin_url?: string | null
+          name?: string
+          role?: string | null
+          sort_order?: number
+          tier?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       applications: {
         Row: {
           applicant_name: string
@@ -212,6 +263,63 @@ export type Database = {
           title?: string
           updated_at?: string
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      cohort_startups: {
+        Row: {
+          category: string | null
+          cohort_type: string
+          created_at: string
+          description: string | null
+          external_id: string | null
+          founder: string | null
+          highlight: string | null
+          id: string
+          is_visible: boolean
+          name: string
+          period: string
+          sort_order: number
+          stage: string | null
+          status: string
+          traction: string | null
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          cohort_type?: string
+          created_at?: string
+          description?: string | null
+          external_id?: string | null
+          founder?: string | null
+          highlight?: string | null
+          id?: string
+          is_visible?: boolean
+          name: string
+          period: string
+          sort_order?: number
+          stage?: string | null
+          status?: string
+          traction?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          cohort_type?: string
+          created_at?: string
+          description?: string | null
+          external_id?: string | null
+          founder?: string | null
+          highlight?: string | null
+          id?: string
+          is_visible?: boolean
+          name?: string
+          period?: string
+          sort_order?: number
+          stage?: string | null
+          status?: string
+          traction?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -766,6 +874,75 @@ export type Database = {
           start_date?: string | null
           status?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          address: string | null
+          announcement_enabled: boolean
+          announcement_text: string | null
+          contact_email: string | null
+          contact_phone: string | null
+          created_at: string
+          favicon_url: string | null
+          footer_text: string | null
+          id: string
+          linkedin_url: string | null
+          logo_url: string | null
+          meta_description: string | null
+          meta_title: string | null
+          og_image_url: string | null
+          site_name: string
+          tagline: string | null
+          twitter_handle: string | null
+          twitter_url: string | null
+          updated_at: string
+          youtube_url: string | null
+        }
+        Insert: {
+          address?: string | null
+          announcement_enabled?: boolean
+          announcement_text?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          favicon_url?: string | null
+          footer_text?: string | null
+          id?: string
+          linkedin_url?: string | null
+          logo_url?: string | null
+          meta_description?: string | null
+          meta_title?: string | null
+          og_image_url?: string | null
+          site_name?: string
+          tagline?: string | null
+          twitter_handle?: string | null
+          twitter_url?: string | null
+          updated_at?: string
+          youtube_url?: string | null
+        }
+        Update: {
+          address?: string | null
+          announcement_enabled?: boolean
+          announcement_text?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          favicon_url?: string | null
+          footer_text?: string | null
+          id?: string
+          linkedin_url?: string | null
+          logo_url?: string | null
+          meta_description?: string | null
+          meta_title?: string | null
+          og_image_url?: string | null
+          site_name?: string
+          tagline?: string | null
+          twitter_handle?: string | null
+          twitter_url?: string | null
+          updated_at?: string
+          youtube_url?: string | null
         }
         Relationships: []
       }

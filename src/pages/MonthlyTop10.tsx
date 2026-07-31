@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Link } from "react-router-dom";
-import { monthlyTop10, availableMonths, availableCategories } from "@/data/cohorts";
+import { useCohortStartups, uniquePeriods, uniqueCategories } from "@/hooks/useCohortStartups";
 import { trackEvent } from "@/lib/analytics";
 
 const formatMonth = (m: string) => {
@@ -15,11 +15,19 @@ const formatMonth = (m: string) => {
 };
 
 const MonthlyTop10 = () => {
-  const [month, setMonth] = useState(availableMonths[0]);
+  const { data: monthlyTop10 = [] } = useCohortStartups("monthly");
+  const availableMonths = useMemo(() => uniquePeriods(monthlyTop10), [monthlyTop10]);
+  const availableCategories = useMemo(() => uniqueCategories(monthlyTop10), [monthlyTop10]);
+  const [month, setMonth] = useState("");
   const [category, setCategory] = useState("All");
   const [status, setStatus] = useState("all");
 
   useEffect(() => {
+    if (!month && availableMonths.length) setMonth(availableMonths[0]);
+  }, [availableMonths, month]);
+
+  useEffect(() => {
+    if (!month) return;
     trackEvent("cohort_announcement_viewed", { cohort_type: "monthly_top_10", period: month });
   }, [month]);
 
@@ -29,7 +37,7 @@ const MonthlyTop10 = () => {
       (category === "All" || s.category === category) &&
       (status === "all" || s.status.toLowerCase().replace(" ", "_") === status)
     );
-  }, [month, category, status]);
+  }, [monthlyTop10, month, category, status]);
 
   return (
     <div className="min-h-screen bg-background">

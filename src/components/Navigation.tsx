@@ -6,6 +6,7 @@ import ApplicationDialog from "./ApplicationDialog";
 import GlobalSearch from "./GlobalSearch";
 import CurrencySelector from "./CurrencySelector";
 import { useAuth } from "@/contexts/AuthContext";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const Navigation = () => {
+  const { data: siteSettings } = useSiteSettings();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { user, userRole, signOut } = useAuth();
@@ -69,11 +71,15 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2.5 group">
-            <div className="w-9 h-9 bg-gradient-to-br from-primary to-orange-500 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-primary/25 transition-shadow">
-              <span className="text-white font-bold text-sm tracking-tight">Xi</span>
-            </div>
+            {siteSettings?.logo_url ? (
+              <img src={siteSettings.logo_url} alt={`${siteSettings.site_name} logo`} className="w-9 h-9 rounded-xl object-contain" />
+            ) : (
+              <div className="w-9 h-9 bg-gradient-to-br from-primary to-orange-500 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-primary/25 transition-shadow">
+                <span className="text-primary-foreground font-bold text-sm tracking-tight">Xi</span>
+              </div>
+            )}
             <span className="text-xl font-bold bg-gradient-to-r from-primary to-orange-500 bg-clip-text text-transparent">
-              Xi Combinator
+              {siteSettings?.site_name || "Xi Combinator"}
             </span>
           </Link>
 

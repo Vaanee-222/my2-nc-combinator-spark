@@ -7,9 +7,11 @@ import { Badge } from "@/components/ui/badge";
 import { Users, Target, Award, Globe, Heart, Lightbulb, Linkedin } from "lucide-react";
 import ApplicationDialog from "@/components/ApplicationDialog";
 import { Link } from "react-router-dom";
-import { advisoryBoard, type AdvisorTier } from "@/data/advisoryBoard";
+import { type AdvisorTier } from "@/data/advisoryBoard";
+import { useAdvisors } from "@/hooks/useAdvisors";
 
 const AboutUs = () => {
+  const { data: advisors = [] } = useAdvisors();
   const values = [
     {
       icon: Heart,
@@ -155,7 +157,7 @@ const AboutUs = () => {
             </div>
 
             {tiers.map((tier) => {
-              const members = advisoryBoard.filter((a) => a.tier === tier);
+              const members = advisors.filter((a) => a.tier === tier);
               if (!members.length) return null;
               return (
                 <div key={tier} className="mb-12">
