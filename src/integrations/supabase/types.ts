@@ -599,6 +599,48 @@ export type Database = {
         }
         Relationships: []
       }
+      media_assets: {
+        Row: {
+          alt_text: string | null
+          created_at: string
+          file_name: string
+          folder: string
+          id: string
+          mime_type: string | null
+          size_bytes: number | null
+          storage_path: string
+          updated_at: string
+          uploaded_by: string | null
+          url: string
+        }
+        Insert: {
+          alt_text?: string | null
+          created_at?: string
+          file_name: string
+          folder?: string
+          id?: string
+          mime_type?: string | null
+          size_bytes?: number | null
+          storage_path: string
+          updated_at?: string
+          uploaded_by?: string | null
+          url: string
+        }
+        Update: {
+          alt_text?: string | null
+          created_at?: string
+          file_name?: string
+          folder?: string
+          id?: string
+          mime_type?: string | null
+          size_bytes?: number | null
+          storage_path?: string
+          updated_at?: string
+          uploaded_by?: string | null
+          url?: string
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
           content: string
@@ -885,15 +927,20 @@ export type Database = {
           contact_email: string | null
           contact_phone: string | null
           created_at: string
+          draft_settings: Json | null
           favicon_url: string | null
           footer_text: string | null
+          has_draft: boolean
           id: string
           linkedin_url: string | null
           logo_url: string | null
           meta_description: string | null
           meta_title: string | null
           og_image_url: string | null
+          robots_txt: string | null
           site_name: string
+          sitemap_enabled: boolean
+          sitemap_extra_paths: string[]
           tagline: string | null
           twitter_handle: string | null
           twitter_url: string | null
@@ -907,15 +954,20 @@ export type Database = {
           contact_email?: string | null
           contact_phone?: string | null
           created_at?: string
+          draft_settings?: Json | null
           favicon_url?: string | null
           footer_text?: string | null
+          has_draft?: boolean
           id?: string
           linkedin_url?: string | null
           logo_url?: string | null
           meta_description?: string | null
           meta_title?: string | null
           og_image_url?: string | null
+          robots_txt?: string | null
           site_name?: string
+          sitemap_enabled?: boolean
+          sitemap_extra_paths?: string[]
           tagline?: string | null
           twitter_handle?: string | null
           twitter_url?: string | null
@@ -929,15 +981,20 @@ export type Database = {
           contact_email?: string | null
           contact_phone?: string | null
           created_at?: string
+          draft_settings?: Json | null
           favicon_url?: string | null
           footer_text?: string | null
+          has_draft?: boolean
           id?: string
           linkedin_url?: string | null
           logo_url?: string | null
           meta_description?: string | null
           meta_title?: string | null
           og_image_url?: string | null
+          robots_txt?: string | null
           site_name?: string
+          sitemap_enabled?: boolean
+          sitemap_extra_paths?: string[]
           tagline?: string | null
           twitter_handle?: string | null
           twitter_url?: string | null
@@ -945,6 +1002,41 @@ export type Database = {
           youtube_url?: string | null
         }
         Relationships: []
+      }
+      site_settings_versions: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          note: string | null
+          settings_id: string | null
+          snapshot: Json
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          note?: string | null
+          settings_id?: string | null
+          snapshot: Json
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          note?: string | null
+          settings_id?: string | null
+          snapshot?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "site_settings_versions_settings_id_fkey"
+            columns: ["settings_id"]
+            isOneToOne: false
+            referencedRelation: "site_settings"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       startups: {
         Row: {
