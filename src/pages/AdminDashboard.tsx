@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { BarChart3, BookOpen, Building2, ClipboardList, Code2, FlaskConical, Handshake, HeartPulse, LayoutDashboard, Mail, Newspaper, Rocket, Search, Settings, ShieldCheck, SlidersHorizontal, Trophy, Globe, UserCog, Users, ChevronLeft, ChevronRight, ScrollText, Workflow } from "lucide-react";
+import { BarChart3, BookOpen, Building2, ClipboardList, Code2, FlaskConical, Handshake, HeartPulse, LayoutDashboard, Mail, Newspaper, Rocket, Search, Settings, ShieldCheck, SlidersHorizontal, Trophy, Globe, UserCog, Users, ChevronLeft, ChevronRight, ScrollText, Workflow, Image as ImageIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import AdminOverview from "@/components/dashboard/AdminOverview";
@@ -33,6 +33,7 @@ import CofounderManagement from "@/components/dashboard/CofounderManagement";
 import SiteSettingsCMS from "@/components/dashboard/SiteSettingsCMS";
 import CohortManagement from "@/components/dashboard/CohortManagement";
 import AdvisorManagement from "@/components/dashboard/AdvisorManagement";
+import MediaLibrary from "@/components/dashboard/MediaLibrary";
 
 const adminMenuGroups = [
   {
@@ -74,6 +75,7 @@ const adminMenuGroups = [
       { value: "blogs", label: "Blogs", icon: BookOpen },
       { value: "news", label: "News", icon: Newspaper },
       { value: "cms", label: "Website CMS", icon: Globe },
+      { value: "media", label: "Media Library", icon: ImageIcon },
       { value: "emails", label: "Emails", icon: Mail },
     ],
   },
@@ -318,6 +320,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="cms" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <SiteSettingsCMS />
+          </TabsContent>
+
+          <TabsContent value="media" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <MediaLibrary />
           </TabsContent>
 
           <TabsContent value="cohorts" forceMount className="space-y-6 data-[state=inactive]:hidden">
