@@ -33,6 +33,7 @@ import CofounderManagement from "@/components/dashboard/CofounderManagement";
 import SiteSettingsCMS from "@/components/dashboard/SiteSettingsCMS";
 import CohortManagement from "@/components/dashboard/CohortManagement";
 import AdvisorManagement from "@/components/dashboard/AdvisorManagement";
+import MediaLibrary from "@/components/dashboard/MediaLibrary";
 
 const adminMenuGroups = [
   {
@@ -74,6 +75,7 @@ const adminMenuGroups = [
       { value: "blogs", label: "Blogs", icon: BookOpen },
       { value: "news", label: "News", icon: Newspaper },
       { value: "cms", label: "Website CMS", icon: Globe },
+      { value: "media", label: "Media Library", icon: ImageIcon },
       { value: "emails", label: "Emails", icon: Mail },
     ],
   },
@@ -318,6 +320,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="cms" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <SiteSettingsCMS />
+          </TabsContent>
+
+          <TabsContent value="media" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <MediaLibrary />
           </TabsContent>
 
           <TabsContent value="cohorts" forceMount className="space-y-6 data-[state=inactive]:hidden">
