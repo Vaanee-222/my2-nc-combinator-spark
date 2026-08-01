@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
-Sitemap: /sitemap.xml
+Disallow: /admin-dashboard
+Disallow: /admin-workflow
+Disallow: /messages
+
+Sitemap: https://xicombinator.lovable.app/sitemap.xml
