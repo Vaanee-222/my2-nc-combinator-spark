@@ -13,6 +13,7 @@ import StartupManagement from "@/components/dashboard/StartupManagement";
 import ApplicationManagement from "@/components/dashboard/ApplicationManagement";
 import InvestorManagement from "@/components/dashboard/InvestorManagement";
 import AdminSettings from "@/components/dashboard/AdminSettings";
+import ApiDocumentation from "@/components/dashboard/ApiDocumentation";
 import ProgramManagement from "@/components/dashboard/ProgramManagement";
 import AnalyticsDashboard from "@/components/dashboard/AnalyticsDashboard";
 import StartupHealthScore from "@/components/dashboard/StartupHealthScore";
@@ -89,6 +90,7 @@ const adminMenuGroups = [
       { value: "config", label: "Config", icon: SlidersHorizontal },
       { value: "header-scripts", label: "Header Scripts", icon: Code2 },
       { value: "docs", label: "Docs", icon: BookOpen },
+      { value: "api-docs", label: "API & Docs", icon: Code2 },
       { value: "settings", label: "Settings", icon: Settings },
     ],
   },
@@ -363,6 +365,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="docs" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <DocumentationView />
+          </TabsContent>
+
+          <TabsContent value="api-docs" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <ApiDocumentation />
           </TabsContent>
 
           <TabsContent value="settings" forceMount className="space-y-6 data-[state=inactive]:hidden">

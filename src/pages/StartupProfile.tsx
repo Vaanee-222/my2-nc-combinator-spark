@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MapPin, Users, DollarSign, TrendingUp, Calendar, ExternalLink, Mail, Phone, Globe } from "lucide-react";
 import { useParams } from "react-router-dom";
-import ApplicationDialog from "@/components/ApplicationDialog";
+import InvestorInquiryDialog from "@/components/InvestorInquiryDialog";
 import { resolveStartupProfile } from "@/data/startupProfiles";
 
 const StartupProfile = () => {
@@ -46,12 +46,12 @@ const StartupProfile = () => {
                   <p className="text-muted-foreground">{startupData.description}</p>
                 </div>
                 <div className="flex flex-col space-y-2">
-                  <ApplicationDialog program="Investment" title="Investment Inquiry" description={`Express your interest in investing in ${startupData.name}`}>
+                  <InvestorInquiryDialog startupName={startupData.name}>
                     <Button className="bg-gradient-to-r from-primary to-orange-400">
                       <DollarSign className="mr-2 h-4 w-4" />
                       Invest Now
                     </Button>
-                  </ApplicationDialog>
+                  </InvestorInquiryDialog>
                   <Button variant="outline" onClick={() => window.open(startupData.website, "_blank")}>
                     <ExternalLink className="mr-2 h-4 w-4" />
                     Visit Website

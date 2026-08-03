@@ -367,11 +367,11 @@ const PartnerManagement = () => {
 
       {/* Partner dialog */}
       <Dialog open={partnerDialog} onOpenChange={setPartnerDialog}>
-        <DialogContent className="max-w-lg">
-          <DialogHeader>
+        <DialogContent className="max-w-lg max-h-[90vh] flex flex-col p-0">
+          <DialogHeader className="p-6 pb-4 border-b border-border">
             <DialogTitle>{editingPartner.id ? "Edit Partner" : "New Partner"}</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4">
+          <div className="space-y-4 flex-1 overflow-y-auto px-6 py-4">
             <div>
               <Label>Region *</Label>
               <Select value={editingPartner.region_id} onValueChange={(v) => setEditingPartner({ ...editingPartner, region_id: v })}>
