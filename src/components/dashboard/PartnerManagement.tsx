@@ -494,7 +494,7 @@ const PartnerManagement = () => {
               />
             </div>
           </div>
-          <DialogFooter>
+          <DialogFooter className="p-6 pt-4 border-t border-border">
             <Button variant="outline" onClick={() => setPartnerDialog(false)}>Cancel</Button>
             <Button onClick={savePartner}>Save</Button>
           </DialogFooter>
