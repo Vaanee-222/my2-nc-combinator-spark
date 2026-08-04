@@ -10,6 +10,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { ReactNode, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 
 const consultationSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -29,7 +31,9 @@ interface ConsultationDialogProps {
 const ConsultationDialog = ({ children, title = "Schedule Consultation", description = "Book a consultation with our experts" }: ConsultationDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
-  
+  const { user } = useAuth();
+  const [submitting, setSubmitting] = useState(false);
+
   const form = useForm<z.infer<typeof consultationSchema>>({
     resolver: zodResolver(consultationSchema),
     defaultValues: {
@@ -42,14 +46,30 @@ const ConsultationDialog = ({ children, title = "Schedule Consultation", descrip
     },
   });
 
-  const onSubmit = (values: z.infer<typeof consultationSchema>) => {
-    console.log("Consultation request:", values);
-    toast({
-      title: "Consultation Scheduled!",
-      description: "We'll contact you within 24 hours to confirm your consultation.",
-    });
-    form.reset();
-    setIsOpen(false);
+  const onSubmit = async (values: z.infer<typeof consultationSchema>) => {
+    setSubmitting(true);
+    try {
+      const { error } = await supabase.from("consultation_bookings").insert({
+        user_id: user?.id ?? null,
+        name: values.name,
+        email: values.email,
+        phone: values.phone,
+        company: values.company,
+        consultation_type: values.consultationType,
+        message: values.message,
+      });
+      if (error) throw error;
+      toast({
+        title: "Consultation Scheduled",
+        description: "We'll contact you within 24 hours to confirm your consultation.",
+      });
+      form.reset();
+      setIsOpen(false);
+    } catch (err: any) {
+      toast({ title: "Booking failed", description: err.message, variant: "destructive" });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const consultationTypes = [
@@ -66,7 +86,7 @@ const ConsultationDialog = ({ children, title = "Schedule Consultation", descrip
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px] max-h-[90dvh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
