@@ -65,6 +65,17 @@ const adminMenuGroups = [
       { value: "cofounders", label: "Co-founders", icon: Users },
       { value: "introductions", label: "Introductions", icon: Handshake },
       { value: "health", label: "Health Score", icon: HeartPulse },
+      { value: "inquiries", label: "Investor Inquiries", icon: Handshake },
+      { value: "consultations", label: "Consultations", icon: CalendarClock },
+      { value: "grants", label: "Grants", icon: HandCoins },
+      { value: "credits", label: "Cloud Credits", icon: Cloud },
+    ],
+  },
+  {
+    label: "Commerce",
+    items: [
+      { value: "plans", label: "Subscriptions", icon: CreditCard },
+      { value: "deals", label: "Deals & Offers", icon: Tag },
     ],
 
   },
