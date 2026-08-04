@@ -371,7 +371,7 @@ const PartnerManagement = () => {
           <DialogHeader className="p-6 pb-4 border-b border-border">
             <DialogTitle>{editingPartner.id ? "Edit Partner" : "New Partner"}</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4 flex-1 overflow-y-auto px-6 py-4">
+          <div className="space-y-4 flex-1 min-h-0 overflow-y-auto px-6 py-4">
             <div>
               <Label>Region *</Label>
               <Select value={editingPartner.region_id} onValueChange={(v) => setEditingPartner({ ...editingPartner, region_id: v })}>
