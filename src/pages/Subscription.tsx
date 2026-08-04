@@ -182,10 +182,24 @@ const Subscription = () => {
     setProcessing(true);
     // Simulate demo payment processing
     await new Promise((r) => setTimeout(r, 2000));
+    try {
+      const { data: auth } = await supabase.auth.getUser();
+      const price = typeof selectedPlan?.price === "number" ? selectedPlan.price : 0;
+      await supabase.from("subscription_purchases").insert({
+        user_id: auth?.user?.id ?? null,
+        plan_name: selectedPlan?.name ?? "Unknown plan",
+        amount_usd: price,
+        buyer_email: auth?.user?.email ?? null,
+        status: "demo",
+        reference: `DEMO-${Date.now()}`,
+      });
+    } catch {
+      // demo purchase logging is non-blocking
+    }
     setProcessing(false);
     setPaymentOpen(false);
     toast({
-      title: " Payment Successful (Demo)",
+      title: "Payment Successful (Demo)",
       description: `You've subscribed to the ${selectedPlan?.name} plan. This is a demo transaction — no real charges were made.`,
     });
   };
