@@ -360,6 +360,42 @@ const AdminDashboard = () => {
 
 
 
+          <TabsContent value="inquiries" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <InvestorInquiriesAdmin />
+          </TabsContent>
+
+          <TabsContent value="consultations" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <ConsultationsAdmin />
+          </TabsContent>
+
+          <TabsContent value="grants" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <InnerTabs
+              storageKey="xi-admin-grants-inner"
+              tabs={[
+                { value: "grants", label: "Published Grants", content: <GrantsAdmin /> },
+                { value: "apps", label: "Applications", content: <GrantApplicationsAdmin /> },
+              ]}
+            />
+          </TabsContent>
+
+          <TabsContent value="credits" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <CloudCreditsAdmin />
+          </TabsContent>
+
+          <TabsContent value="plans" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <InnerTabs
+              storageKey="xi-admin-plans-inner"
+              tabs={[
+                { value: "plans", label: "Plans & Services", content: <SubscriptionPlansAdmin /> },
+                { value: "purchases", label: "Purchase History", content: <SubscriptionPurchasesAdmin /> },
+              ]}
+            />
+          </TabsContent>
+
+          <TabsContent value="deals" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <DealsAdmin />
+          </TabsContent>
+
           <TabsContent value="emails" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <EmailManagement />
           </TabsContent>
