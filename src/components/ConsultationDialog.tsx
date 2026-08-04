@@ -194,8 +194,8 @@ const ConsultationDialog = ({ children, title = "Schedule Consultation", descrip
               )}
             />
 
-            <Button type="submit" className="w-full">
-              Schedule Consultation
+            <Button type="submit" className="w-full" disabled={submitting}>
+              {submitting ? "Scheduling..." : "Schedule Consultation"}
             </Button>
           </form>
         </Form>
