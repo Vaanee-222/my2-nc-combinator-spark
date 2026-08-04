@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { BarChart3, BookOpen, Building2, ClipboardList, Code2, FlaskConical, Handshake, HeartPulse, LayoutDashboard, Mail, Newspaper, Rocket, Search, Settings, ShieldCheck, SlidersHorizontal, Trophy, Globe, UserCog, Users, ChevronLeft, ChevronRight, ScrollText, Workflow, Image as ImageIcon } from "lucide-react";
+import { BarChart3, BookOpen, Building2, ClipboardList, Code2, FlaskConical, Handshake, HeartPulse, LayoutDashboard, Mail, Newspaper, Rocket, Search, Settings, ShieldCheck, SlidersHorizontal, Trophy, Globe, UserCog, Users, ChevronLeft, ChevronRight, ScrollText, Workflow, Image as ImageIcon, CalendarClock, HandCoins, Cloud, Tag } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import AdminOverview from "@/components/dashboard/AdminOverview";
@@ -35,6 +35,16 @@ import SiteSettingsCMS from "@/components/dashboard/SiteSettingsCMS";
 import CohortManagement from "@/components/dashboard/CohortManagement";
 import AdvisorManagement from "@/components/dashboard/AdvisorManagement";
 import MediaLibrary from "@/components/dashboard/MediaLibrary";
+import {
+  ConsultationsAdmin,
+  GrantsAdmin,
+  GrantApplicationsAdmin,
+  SubscriptionPlansAdmin,
+  SubscriptionPurchasesAdmin,
+  DealsAdmin,
+  CloudCreditsAdmin,
+  InvestorInquiriesAdmin,
+} from "@/components/dashboard/OperationsManagement";
 
 const adminMenuGroups = [
   {
@@ -55,6 +65,17 @@ const adminMenuGroups = [
       { value: "cofounders", label: "Co-founders", icon: Users },
       { value: "introductions", label: "Introductions", icon: Handshake },
       { value: "health", label: "Health Score", icon: HeartPulse },
+      { value: "inquiries", label: "Investor Inquiries", icon: Handshake },
+      { value: "consultations", label: "Consultations", icon: CalendarClock },
+      { value: "grants", label: "Grants", icon: HandCoins },
+      { value: "credits", label: "Cloud Credits", icon: Cloud },
+    ],
+  },
+  {
+    label: "Commerce",
+    items: [
+      { value: "plans", label: "Subscriptions", icon: CreditCard },
+      { value: "deals", label: "Deals & Offers", icon: Tag },
     ],
 
   },
@@ -338,6 +359,42 @@ const AdminDashboard = () => {
 
 
 
+
+          <TabsContent value="inquiries" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <InvestorInquiriesAdmin />
+          </TabsContent>
+
+          <TabsContent value="consultations" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <ConsultationsAdmin />
+          </TabsContent>
+
+          <TabsContent value="grants" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <InnerTabs
+              storageKey="xi-admin-grants-inner"
+              tabs={[
+                { value: "grants", label: "Published Grants", content: <GrantsAdmin /> },
+                { value: "apps", label: "Applications", content: <GrantApplicationsAdmin /> },
+              ]}
+            />
+          </TabsContent>
+
+          <TabsContent value="credits" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <CloudCreditsAdmin />
+          </TabsContent>
+
+          <TabsContent value="plans" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <InnerTabs
+              storageKey="xi-admin-plans-inner"
+              tabs={[
+                { value: "plans", label: "Plans & Services", content: <SubscriptionPlansAdmin /> },
+                { value: "purchases", label: "Purchase History", content: <SubscriptionPurchasesAdmin /> },
+              ]}
+            />
+          </TabsContent>
+
+          <TabsContent value="deals" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <DealsAdmin />
+          </TabsContent>
 
           <TabsContent value="emails" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <EmailManagement />

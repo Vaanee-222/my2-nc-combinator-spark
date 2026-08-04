@@ -35,6 +35,7 @@ const Footer = () => {
               <Link to="/investor-centre" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Investor Centre</Link>
               <Link to="/startup-directory" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Startup Directory</Link>
               <Link to="/news" className="block text-sm text-muted-foreground hover:text-primary transition-colors">News</Link>
+              <Link to="/contact" className="block text-sm text-muted-foreground hover:text-primary transition-colors">Contact Us</Link>
             </div>
           </div>
 
@@ -68,7 +69,9 @@ const Footer = () => {
 
           {/* Contact & Newsletter */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Contact Us</h3>
+            <h3 className="text-lg font-semibold">
+              <Link to="/contact" className="hover:text-primary transition-colors">Contact Us</Link>
+            </h3>
             <div className="space-y-2">
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <MapPin className="h-4 w-4" />
