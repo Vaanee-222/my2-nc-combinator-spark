@@ -209,6 +209,54 @@ export type Database = {
         }
         Relationships: []
       }
+      cloud_credit_requests: {
+        Row: {
+          admin_notes: string | null
+          applicant_name: string
+          created_at: string
+          credit_amount: string | null
+          email: string
+          id: string
+          provider: string
+          stage: string | null
+          startup_name: string | null
+          status: string
+          updated_at: string
+          use_case: string | null
+          user_id: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          applicant_name: string
+          created_at?: string
+          credit_amount?: string | null
+          email: string
+          id?: string
+          provider: string
+          stage?: string | null
+          startup_name?: string | null
+          status?: string
+          updated_at?: string
+          use_case?: string | null
+          user_id: string
+        }
+        Update: {
+          admin_notes?: string | null
+          applicant_name?: string
+          created_at?: string
+          credit_amount?: string | null
+          email?: string
+          id?: string
+          provider?: string
+          stage?: string | null
+          startup_name?: string | null
+          status?: string
+          updated_at?: string
+          use_case?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       cofounder_requests: {
         Row: {
           commitment: string | null
@@ -319,6 +367,242 @@ export type Database = {
           stage?: string | null
           status?: string
           traction?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      consultation_bookings: {
+        Row: {
+          admin_notes: string | null
+          company: string | null
+          consultation_type: string
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          name: string
+          phone: string | null
+          preferred_date: string | null
+          preferred_time: string | null
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          company?: string | null
+          consultation_type: string
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          phone?: string | null
+          preferred_date?: string | null
+          preferred_time?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          company?: string | null
+          consultation_type?: string
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          phone?: string | null
+          preferred_date?: string | null
+          preferred_time?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      deal_offers: {
+        Row: {
+          admin_notes: string | null
+          category: string | null
+          company_name: string
+          contact_email: string
+          created_at: string
+          description: string | null
+          discount: string | null
+          id: string
+          is_featured: boolean
+          logo_url: string | null
+          offer_value: string | null
+          promo_code: string | null
+          redemption_url: string | null
+          status: string
+          submitted_by: string | null
+          title: string
+          updated_at: string
+          valid_until: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          category?: string | null
+          company_name: string
+          contact_email: string
+          created_at?: string
+          description?: string | null
+          discount?: string | null
+          id?: string
+          is_featured?: boolean
+          logo_url?: string | null
+          offer_value?: string | null
+          promo_code?: string | null
+          redemption_url?: string | null
+          status?: string
+          submitted_by?: string | null
+          title: string
+          updated_at?: string
+          valid_until?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          category?: string | null
+          company_name?: string
+          contact_email?: string
+          created_at?: string
+          description?: string | null
+          discount?: string | null
+          id?: string
+          is_featured?: boolean
+          logo_url?: string | null
+          offer_value?: string | null
+          promo_code?: string | null
+          redemption_url?: string | null
+          status?: string
+          submitted_by?: string | null
+          title?: string
+          updated_at?: string
+          valid_until?: string | null
+        }
+        Relationships: []
+      }
+      grant_applications: {
+        Row: {
+          admin_notes: string | null
+          applicant_name: string
+          created_at: string
+          email: string
+          funding_ask: string | null
+          grant_id: string | null
+          grant_name: string
+          id: string
+          phone: string | null
+          proposal: string | null
+          sector: string | null
+          stage: string | null
+          startup_name: string | null
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          applicant_name: string
+          created_at?: string
+          email: string
+          funding_ask?: string | null
+          grant_id?: string | null
+          grant_name: string
+          id?: string
+          phone?: string | null
+          proposal?: string | null
+          sector?: string | null
+          stage?: string | null
+          startup_name?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          applicant_name?: string
+          created_at?: string
+          email?: string
+          funding_ask?: string | null
+          grant_id?: string | null
+          grant_name?: string
+          id?: string
+          phone?: string | null
+          proposal?: string | null
+          sector?: string | null
+          stage?: string | null
+          startup_name?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "grant_applications_grant_id_fkey"
+            columns: ["grant_id"]
+            isOneToOne: false
+            referencedRelation: "grants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      grants: {
+        Row: {
+          amount: string | null
+          application_process: string | null
+          benefits: string[]
+          created_at: string
+          deadline: string | null
+          description: string | null
+          eligibility: string[]
+          focus: string | null
+          grant_type: string | null
+          id: string
+          is_active: boolean
+          name: string
+          sectors: string[]
+          sort_order: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount?: string | null
+          application_process?: string | null
+          benefits?: string[]
+          created_at?: string
+          deadline?: string | null
+          description?: string | null
+          eligibility?: string[]
+          focus?: string | null
+          grant_type?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          sectors?: string[]
+          sort_order?: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: string | null
+          application_process?: string | null
+          benefits?: string[]
+          created_at?: string
+          deadline?: string | null
+          description?: string | null
+          eligibility?: string[]
+          focus?: string | null
+          grant_type?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          sectors?: string[]
+          sort_order?: number
+          status?: string
           updated_at?: string
         }
         Relationships: []
@@ -557,6 +841,69 @@ export type Database = {
           startup_name?: string | null
           status?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      investor_inquiries: {
+        Row: {
+          admin_notes: string | null
+          created_at: string
+          email: string
+          firm: string | null
+          id: string
+          instrument: string | null
+          investor_name: string
+          investor_type: string
+          message: string | null
+          phone: string | null
+          profile_url: string | null
+          stage_preference: string | null
+          startup_name: string
+          status: string
+          ticket_size: string
+          timeline: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string
+          email: string
+          firm?: string | null
+          id?: string
+          instrument?: string | null
+          investor_name: string
+          investor_type: string
+          message?: string | null
+          phone?: string | null
+          profile_url?: string | null
+          stage_preference?: string | null
+          startup_name: string
+          status?: string
+          ticket_size: string
+          timeline?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string
+          email?: string
+          firm?: string | null
+          id?: string
+          instrument?: string | null
+          investor_name?: string
+          investor_type?: string
+          message?: string | null
+          phone?: string | null
+          profile_url?: string | null
+          stage_preference?: string | null
+          startup_name?: string
+          status?: string
+          ticket_size?: string
+          timeline?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -1103,6 +1450,110 @@ export type Database = {
           website?: string | null
         }
         Relationships: []
+      }
+      subscription_plans: {
+        Row: {
+          billing_period: string
+          category: string
+          created_at: string
+          description: string | null
+          features: string[]
+          id: string
+          is_active: boolean
+          is_popular: boolean
+          name: string
+          price_usd: number
+          sort_order: number
+          tier: string | null
+          updated_at: string
+        }
+        Insert: {
+          billing_period?: string
+          category?: string
+          created_at?: string
+          description?: string | null
+          features?: string[]
+          id?: string
+          is_active?: boolean
+          is_popular?: boolean
+          name: string
+          price_usd?: number
+          sort_order?: number
+          tier?: string | null
+          updated_at?: string
+        }
+        Update: {
+          billing_period?: string
+          category?: string
+          created_at?: string
+          description?: string | null
+          features?: string[]
+          id?: string
+          is_active?: boolean
+          is_popular?: boolean
+          name?: string
+          price_usd?: number
+          sort_order?: number
+          tier?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      subscription_purchases: {
+        Row: {
+          amount_usd: number
+          billing_period: string | null
+          buyer_email: string | null
+          created_at: string
+          expires_at: string | null
+          id: string
+          plan_id: string | null
+          plan_name: string
+          purchased_at: string
+          reference: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount_usd?: number
+          billing_period?: string | null
+          buyer_email?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          plan_id?: string | null
+          plan_name: string
+          purchased_at?: string
+          reference?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount_usd?: number
+          billing_period?: string | null
+          buyer_email?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          plan_id?: string | null
+          plan_name?: string
+          purchased_at?: string
+          reference?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscription_purchases_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "subscription_plans"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
