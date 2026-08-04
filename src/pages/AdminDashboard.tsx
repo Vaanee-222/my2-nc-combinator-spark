@@ -35,6 +35,16 @@ import SiteSettingsCMS from "@/components/dashboard/SiteSettingsCMS";
 import CohortManagement from "@/components/dashboard/CohortManagement";
 import AdvisorManagement from "@/components/dashboard/AdvisorManagement";
 import MediaLibrary from "@/components/dashboard/MediaLibrary";
+import {
+  ConsultationsAdmin,
+  GrantsAdmin,
+  GrantApplicationsAdmin,
+  SubscriptionPlansAdmin,
+  SubscriptionPurchasesAdmin,
+  DealsAdmin,
+  CloudCreditsAdmin,
+  InvestorInquiriesAdmin,
+} from "@/components/dashboard/OperationsManagement";
 
 const adminMenuGroups = [
   {
