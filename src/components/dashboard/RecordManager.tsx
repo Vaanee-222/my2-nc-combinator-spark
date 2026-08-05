@@ -29,7 +29,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Pencil, Plus, RefreshCw, Trash2, Search } from "lucide-react";
+import { Pencil, Plus, RefreshCw, Trash2, Search, Download } from "lucide-react";
 
 export type FieldType = "text" | "textarea" | "number" | "select" | "switch" | "array";
 
