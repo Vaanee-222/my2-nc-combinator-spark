@@ -406,7 +406,13 @@ const AdminDashboard = () => {
           </TabsContent>
 
           <TabsContent value="credits" forceMount className="space-y-6 data-[state=inactive]:hidden">
-            <CloudCreditsAdmin />
+            <InnerTabs
+              storageKey="xi-admin-credits-inner"
+              tabs={[
+                { value: "requests", label: "Credit Requests", content: <CloudCreditsAdmin /> },
+                { value: "ledger", label: "Credit Ledger", content: <CloudCreditLedger /> },
+              ]}
+            />
           </TabsContent>
 
           <TabsContent value="plans" forceMount className="space-y-6 data-[state=inactive]:hidden">
