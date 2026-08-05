@@ -225,41 +225,41 @@ const Contact = () => {
             </div>
 
             <Card className="p-8 bg-card-gradient border-border">
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <Label htmlFor="firstName">First Name *</Label>
-                    <Input id="firstName" placeholder="Your first name" required />
+                    <Input id="firstName" placeholder="Your first name" required value={form.firstName} onChange={(e) => setField("firstName", e.target.value)} />
                   </div>
                   <div>
                     <Label htmlFor="lastName">Last Name *</Label>
-                    <Input id="lastName" placeholder="Your last name" required />
+                    <Input id="lastName" placeholder="Your last name" required value={form.lastName} onChange={(e) => setField("lastName", e.target.value)} />
                   </div>
                   <div>
                     <Label htmlFor="email">Email *</Label>
-                    <Input id="email" type="email" placeholder="your@email.com" required />
+                    <Input id="email" type="email" placeholder="your@email.com" required value={form.email} onChange={(e) => setField("email", e.target.value)} />
                   </div>
                   <div>
                     <Label htmlFor="phone">Phone Number</Label>
-                    <Input id="phone" placeholder="+91 XXXXX XXXXX" />
+                    <Input id="phone" placeholder="+1 555 000 1234" value={form.phone} onChange={(e) => setField("phone", e.target.value)} />
                   </div>
                   <div>
                     <Label htmlFor="company">Company/Startup</Label>
-                    <Input id="company" placeholder="Company name (optional)" />
+                    <Input id="company" placeholder="Company name (optional)" value={form.company} onChange={(e) => setField("company", e.target.value)} />
                   </div>
                   <div>
                     <Label htmlFor="inquiryType">Inquiry Type *</Label>
-                    <Select>
-                      <SelectTrigger>
+                    <Select value={form.inquiryType} onValueChange={(v) => setField("inquiryType", v)}>
+                      <SelectTrigger id="inquiryType">
                         <SelectValue placeholder="Select inquiry type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="application">Program Application</SelectItem>
-                        <SelectItem value="partnership">Partnership</SelectItem>
-                        <SelectItem value="mentorship">Mentorship</SelectItem>
-                        <SelectItem value="investment">Investment</SelectItem>
-                        <SelectItem value="media">Media & Press</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
+                        <SelectItem value="Program Application">Program Application</SelectItem>
+                        <SelectItem value="Partnership">Partnership</SelectItem>
+                        <SelectItem value="Mentorship">Mentorship</SelectItem>
+                        <SelectItem value="Investment">Investment</SelectItem>
+                        <SelectItem value="Media & Press">Media & Press</SelectItem>
+                        <SelectItem value="Other">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -267,7 +267,7 @@ const Contact = () => {
 
                 <div>
                   <Label htmlFor="subject">Subject *</Label>
-                  <Input id="subject" placeholder="Brief subject line" required />
+                  <Input id="subject" placeholder="Brief subject line" required value={form.subject} onChange={(e) => setField("subject", e.target.value)} />
                 </div>
 
                 <div>
@@ -277,12 +277,14 @@ const Contact = () => {
                     placeholder="Tell us more about your inquiry..."
                     rows={6}
                     required
+                    value={form.message}
+                    onChange={(e) => setField("message", e.target.value)}
                   />
                 </div>
 
                 <div className="flex gap-4 pt-4">
-                  <Button type="submit" variant="hero" className="flex-1">
-                    Send Message
+                  <Button type="submit" variant="hero" className="flex-1" disabled={submitting}>
+                    {submitting ? "Sending..." : "Send Message"}
                   </Button>
                 </div>
               </form>
