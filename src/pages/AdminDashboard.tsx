@@ -224,7 +224,7 @@ const AdminDashboard = () => {
             </div>
             <TabsList className="h-auto w-full flex-col items-stretch justify-start gap-4 rounded-lg border bg-card p-2">
               <TooltipProvider delayDuration={100}>
-                {adminMenuGroups.map((group) => (
+                {visibleGroups.map((group) => (
                   <div key={group.label} className="space-y-1 w-full">
                     {!collapsed && (
                       <div className="px-2 py-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
