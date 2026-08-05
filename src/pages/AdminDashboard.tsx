@@ -61,6 +61,7 @@ const adminMenuGroups = [
   {
     label: "Applications",
     items: [
+      { value: "inbox", label: "Inbox", icon: Inbox },
       { value: "applications", label: "Applications", icon: ClipboardList },
       { value: "hackathons", label: "Hackathons", icon: Trophy },
       { value: "incubation", label: "Incubation", icon: Rocket },
