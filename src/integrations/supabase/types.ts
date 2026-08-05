@@ -209,6 +209,74 @@ export type Database = {
         }
         Relationships: []
       }
+      cloud_credit_ledger: {
+        Row: {
+          amount_usd: number
+          approved_at: string | null
+          approved_by: string | null
+          beneficiary_email: string | null
+          created_at: string
+          entry_type: string
+          id: string
+          notes: string | null
+          occurred_on: string
+          provider: string
+          reference: string | null
+          request_id: string | null
+          startup_name: string | null
+          status: string
+          supporting_url: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          amount_usd?: number
+          approved_at?: string | null
+          approved_by?: string | null
+          beneficiary_email?: string | null
+          created_at?: string
+          entry_type?: string
+          id?: string
+          notes?: string | null
+          occurred_on?: string
+          provider: string
+          reference?: string | null
+          request_id?: string | null
+          startup_name?: string | null
+          status?: string
+          supporting_url?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          amount_usd?: number
+          approved_at?: string | null
+          approved_by?: string | null
+          beneficiary_email?: string | null
+          created_at?: string
+          entry_type?: string
+          id?: string
+          notes?: string | null
+          occurred_on?: string
+          provider?: string
+          reference?: string | null
+          request_id?: string | null
+          startup_name?: string | null
+          status?: string
+          supporting_url?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cloud_credit_ledger_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "cloud_credit_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cloud_credit_requests: {
         Row: {
           admin_notes: string | null
@@ -417,6 +485,48 @@ export type Database = {
           preferred_date?: string | null
           preferred_time?: string | null
           status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      contact_messages: {
+        Row: {
+          admin_notes: string | null
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          phone: string | null
+          status: string
+          subject: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          phone?: string | null
+          status?: string
+          subject?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          phone?: string | null
+          status?: string
+          subject?: string | null
           updated_at?: string
           user_id?: string | null
         }
