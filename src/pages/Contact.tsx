@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -10,8 +11,51 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MapPin, Phone, Mail, Clock, MessageSquare, Users } from "lucide-react";
 import ConsultationDialog from "@/components/ConsultationDialog";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+
+const emptyForm = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  company: "",
+  inquiryType: "",
+  subject: "",
+  message: "",
+};
 
 const Contact = () => {
+  const { toast } = useToast();
+  const [form, setForm] = useState(emptyForm);
+  const [submitting, setSubmitting] = useState(false);
+  const setField = (key: keyof typeof emptyForm, value: string) => setForm((p) => ({ ...p, [key]: value }));
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.firstName.trim() || !form.email.trim() || !form.subject.trim() || !form.message.trim()) {
+      toast({ title: "Missing details", description: "Name, email, subject and message are required.", variant: "destructive" });
+      return;
+    }
+    setSubmitting(true);
+    const { data: auth } = await supabase.auth.getUser();
+    const { error } = await supabase.from("contact_messages").insert({
+      user_id: auth?.user?.id ?? null,
+      name: `${form.firstName} ${form.lastName}`.trim(),
+      email: form.email.trim().toLowerCase(),
+      phone: form.phone || null,
+      subject: [form.inquiryType, form.subject].filter(Boolean).join(" · "),
+      message: [form.company ? `Company: ${form.company}` : "", form.message].filter(Boolean).join("\n\n"),
+    });
+    setSubmitting(false);
+    if (error) {
+      toast({ title: "Could not send message", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({ title: "Message sent", description: "Our team will get back to you within 24 hours." });
+    setForm(emptyForm);
+  };
+
   const contactInfo = [
     {
       icon: MapPin,
