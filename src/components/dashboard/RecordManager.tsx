@@ -254,7 +254,12 @@ const RecordManager = ({
               </SelectContent>
             </Select>
           )}
+          <Input type="date" className="w-[150px]" value={fromDate} onChange={(e) => setFromDate(e.target.value)} title="From date" />
+          <Input type="date" className="w-[150px]" value={toDate} onChange={(e) => setToDate(e.target.value)} title="To date" />
           <Button variant="outline" size="icon" onClick={load} title="Refresh"><RefreshCw className="h-4 w-4" /></Button>
+          <Button variant="outline" size="sm" onClick={exportCsv} title="Export the filtered rows to CSV">
+            <Download className="mr-2 h-4 w-4" /> CSV
+          </Button>
           {allowCreate && <Button onClick={openNew}><Plus className="mr-2 h-4 w-4" /> New</Button>}
         </div>
       </CardHeader>
