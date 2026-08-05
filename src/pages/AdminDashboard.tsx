@@ -133,9 +133,20 @@ const getInitialAdminTab = () => {
   return savedTab && adminTabValues.includes(savedTab) ? savedTab : DEFAULT_ADMIN_TAB;
 };
 
+/**
+ * Role-based access control: which admin sections each role may open.
+ * `admin` always sees everything. Data itself stays protected by RLS.
+ */
+const ROLE_TAB_ACCESS: Record<string, string[]> = {
+  investor: ["overview", "analytics", "inbox", "inquiries", "introductions", "startups", "directory", "cohorts"],
+  mentor: ["overview", "applications", "hackathons", "incubation", "mvplab", "inclab", "cofounders", "health", "advisors"],
+  startup: ["overview", "applications", "credits", "plans", "deals", "grants"],
+  cofounder: ["overview", "cofounders"],
+};
 
 const AdminDashboard = () => {
   const { toast } = useToast();
+  const { userRole } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
   const [applications, setApplications] = useState<any[]>([]);
   const [hackathonRegs, setHackathonRegs] = useState<any[]>([]);
@@ -144,6 +155,17 @@ const AdminDashboard = () => {
   const [profiles, setProfiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState(getInitialAdminTab);
+
+  const isAdmin = userRole === "admin" || !userRole;
+  const allowedTabs = isAdmin ? adminTabValues : ROLE_TAB_ACCESS[userRole ?? ""] ?? ["overview"];
+  const visibleGroups = adminMenuGroups
+    .map((group) => ({ ...group, items: group.items.filter((i) => allowedTabs.includes(i.value)) }))
+    .filter((group) => group.items.length > 0);
+
+  useEffect(() => {
+    if (!allowedTabs.includes(activeTab)) setActiveTab(allowedTabs[0] ?? DEFAULT_ADMIN_TAB);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userRole]);
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
