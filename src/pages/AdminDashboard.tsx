@@ -35,6 +35,9 @@ import SiteSettingsCMS from "@/components/dashboard/SiteSettingsCMS";
 import CohortManagement from "@/components/dashboard/CohortManagement";
 import AdvisorManagement from "@/components/dashboard/AdvisorManagement";
 import MediaLibrary from "@/components/dashboard/MediaLibrary";
+import AdminInbox from "@/components/dashboard/AdminInbox";
+import CloudCreditLedger from "@/components/dashboard/CloudCreditLedger";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   ConsultationsAdmin,
   GrantsAdmin,
@@ -44,6 +47,7 @@ import {
   DealsAdmin,
   CloudCreditsAdmin,
   InvestorInquiriesAdmin,
+  ContactMessagesAdmin,
 } from "@/components/dashboard/OperationsManagement";
 
 const adminMenuGroups = [
