@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { BarChart3, BookOpen, Building2, ClipboardList, Code2, FlaskConical, Handshake, HeartPulse, LayoutDashboard, Mail, Newspaper, Rocket, Search, Settings, ShieldCheck, SlidersHorizontal, Trophy, Globe, UserCog, Users, ChevronLeft, ChevronRight, ScrollText, Workflow, Image as ImageIcon, CalendarClock, HandCoins, Cloud, Tag } from "lucide-react";
+import { BarChart3, BookOpen, Building2, ClipboardList, Code2, FlaskConical, Handshake, HeartPulse, LayoutDashboard, Mail, Newspaper, Rocket, Search, Settings, ShieldCheck, SlidersHorizontal, Trophy, Globe, UserCog, Users, ChevronLeft, ChevronRight, ScrollText, Workflow, Image as ImageIcon, CalendarClock, HandCoins, Cloud, Tag, Inbox } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import AdminOverview from "@/components/dashboard/AdminOverview";
@@ -35,6 +35,9 @@ import SiteSettingsCMS from "@/components/dashboard/SiteSettingsCMS";
 import CohortManagement from "@/components/dashboard/CohortManagement";
 import AdvisorManagement from "@/components/dashboard/AdvisorManagement";
 import MediaLibrary from "@/components/dashboard/MediaLibrary";
+import AdminInbox from "@/components/dashboard/AdminInbox";
+import CloudCreditLedger from "@/components/dashboard/CloudCreditLedger";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   ConsultationsAdmin,
   GrantsAdmin,
@@ -44,6 +47,7 @@ import {
   DealsAdmin,
   CloudCreditsAdmin,
   InvestorInquiriesAdmin,
+  ContactMessagesAdmin,
 } from "@/components/dashboard/OperationsManagement";
 
 const adminMenuGroups = [
@@ -57,6 +61,7 @@ const adminMenuGroups = [
   {
     label: "Applications",
     items: [
+      { value: "inbox", label: "Inbox", icon: Inbox },
       { value: "applications", label: "Applications", icon: ClipboardList },
       { value: "hackathons", label: "Hackathons", icon: Trophy },
       { value: "incubation", label: "Incubation", icon: Rocket },
@@ -128,9 +133,20 @@ const getInitialAdminTab = () => {
   return savedTab && adminTabValues.includes(savedTab) ? savedTab : DEFAULT_ADMIN_TAB;
 };
 
+/**
+ * Role-based access control: which admin sections each role may open.
+ * `admin` always sees everything. Data itself stays protected by RLS.
+ */
+const ROLE_TAB_ACCESS: Record<string, string[]> = {
+  investor: ["overview", "analytics", "inbox", "inquiries", "introductions", "startups", "directory", "cohorts"],
+  mentor: ["overview", "applications", "hackathons", "incubation", "mvplab", "inclab", "cofounders", "health", "advisors"],
+  startup: ["overview", "applications", "credits", "plans", "deals", "grants"],
+  cofounder: ["overview", "cofounders"],
+};
 
 const AdminDashboard = () => {
   const { toast } = useToast();
+  const { userRole } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
   const [applications, setApplications] = useState<any[]>([]);
   const [hackathonRegs, setHackathonRegs] = useState<any[]>([]);
@@ -139,6 +155,17 @@ const AdminDashboard = () => {
   const [profiles, setProfiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState(getInitialAdminTab);
+
+  const isAdmin = userRole === "admin" || !userRole;
+  const allowedTabs = isAdmin ? adminTabValues : ROLE_TAB_ACCESS[userRole ?? ""] ?? ["overview"];
+  const visibleGroups = adminMenuGroups
+    .map((group) => ({ ...group, items: group.items.filter((i) => allowedTabs.includes(i.value)) }))
+    .filter((group) => group.items.length > 0);
+
+  useEffect(() => {
+    if (!allowedTabs.includes(activeTab)) setActiveTab(allowedTabs[0] ?? DEFAULT_ADMIN_TAB);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userRole]);
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
@@ -197,7 +224,7 @@ const AdminDashboard = () => {
             </div>
             <TabsList className="h-auto w-full flex-col items-stretch justify-start gap-4 rounded-lg border bg-card p-2">
               <TooltipProvider delayDuration={100}>
-                {adminMenuGroups.map((group) => (
+                {visibleGroups.map((group) => (
                   <div key={group.label} className="space-y-1 w-full">
                     {!collapsed && (
                       <div className="px-2 py-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -250,6 +277,16 @@ const AdminDashboard = () => {
               incubationApps={incubationApps}
               cofounderReqs={cofounderReqs}
               profiles={profiles}
+            />
+          </TabsContent>
+
+          <TabsContent value="inbox" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <InnerTabs
+              storageKey="xi-admin-inbox-inner"
+              tabs={[
+                { value: "all", label: "Unified Inbox", content: <AdminInbox /> },
+                { value: "contact", label: "Contact Messages", content: <ContactMessagesAdmin /> },
+              ]}
             />
           </TabsContent>
 
@@ -379,7 +416,13 @@ const AdminDashboard = () => {
           </TabsContent>
 
           <TabsContent value="credits" forceMount className="space-y-6 data-[state=inactive]:hidden">
-            <CloudCreditsAdmin />
+            <InnerTabs
+              storageKey="xi-admin-credits-inner"
+              tabs={[
+                { value: "requests", label: "Credit Requests", content: <CloudCreditsAdmin /> },
+                { value: "ledger", label: "Credit Ledger", content: <CloudCreditLedger /> },
+              ]}
+            />
           </TabsContent>
 
           <TabsContent value="plans" forceMount className="space-y-6 data-[state=inactive]:hidden">

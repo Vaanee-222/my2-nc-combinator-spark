@@ -29,7 +29,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Pencil, Plus, RefreshCw, Trash2, Search } from "lucide-react";
+import { Pencil, Plus, RefreshCw, Trash2, Search, Download } from "lucide-react";
 
 export type FieldType = "text" | "textarea" | "number" | "select" | "switch" | "array";
 
@@ -101,6 +101,8 @@ const RecordManager = ({
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<any | null>(null);
   const [saving, setSaving] = useState(false);
@@ -123,13 +125,39 @@ const RecordManager = ({
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
+    const fromTs = fromDate ? new Date(fromDate).getTime() : null;
+    const toTs = toDate ? new Date(toDate).getTime() + 24 * 3600 * 1000 : null;
     return rows.filter((r) => {
       if (statusKey && statusFilter !== "all" && r[statusKey] !== statusFilter) return false;
+      if (fromTs || toTs) {
+        const ts = new Date(r[orderBy] ?? r.created_at ?? 0).getTime();
+        if (fromTs && ts < fromTs) return false;
+        if (toTs && ts > toTs) return false;
+      }
       if (!q) return true;
       const keys = searchKeys.length ? searchKeys : columns.map((c) => c.key);
       return keys.some((k) => String(r[k] ?? "").toLowerCase().includes(q));
     });
-  }, [rows, query, statusFilter, statusKey, searchKeys, columns]);
+  }, [rows, query, statusFilter, statusKey, searchKeys, columns, fromDate, toDate, orderBy]);
+
+  const exportCsv = () => {
+    if (!filtered.length) {
+      toast({ title: "Nothing to export", description: "No records match the current filters." });
+      return;
+    }
+    const keys = Array.from(new Set(filtered.flatMap((r) => Object.keys(r))));
+    const escape = (v: any) =>
+      `"${(typeof v === "object" && v !== null ? JSON.stringify(v) : String(v ?? "")).replace(/"/g, '""')}"`;
+    const csv = [keys.join(",")]
+      .concat(filtered.map((r) => keys.map((k) => escape(r[k])).join(",")))
+      .join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `${table}-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
 
   const openNew = () => {
     const blank: Record<string, any> = { ...defaults };
@@ -226,7 +254,12 @@ const RecordManager = ({
               </SelectContent>
             </Select>
           )}
+          <Input type="date" className="w-[150px]" value={fromDate} onChange={(e) => setFromDate(e.target.value)} title="From date" />
+          <Input type="date" className="w-[150px]" value={toDate} onChange={(e) => setToDate(e.target.value)} title="To date" />
           <Button variant="outline" size="icon" onClick={load} title="Refresh"><RefreshCw className="h-4 w-4" /></Button>
+          <Button variant="outline" size="sm" onClick={exportCsv} title="Export the filtered rows to CSV">
+            <Download className="mr-2 h-4 w-4" /> CSV
+          </Button>
           {allowCreate && <Button onClick={openNew}><Plus className="mr-2 h-4 w-4" /> New</Button>}
         </div>
       </CardHeader>
