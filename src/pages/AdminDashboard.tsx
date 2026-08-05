@@ -280,6 +280,16 @@ const AdminDashboard = () => {
             />
           </TabsContent>
 
+          <TabsContent value="inbox" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <InnerTabs
+              storageKey="xi-admin-inbox-inner"
+              tabs={[
+                { value: "all", label: "Unified Inbox", content: <AdminInbox /> },
+                { value: "contact", label: "Contact Messages", content: <ContactMessagesAdmin /> },
+              ]}
+            />
+          </TabsContent>
+
           <TabsContent value="applications" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <ApplicationManagement applications={applications} onRefresh={fetchData} />
           </TabsContent>
