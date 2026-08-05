@@ -303,3 +303,38 @@ export const InvestorInquiriesAdmin = () => (
     ]}
   />
 );
+
+/* ------------------------------------------------------------------ */
+/* Contact messages                                                    */
+/* ------------------------------------------------------------------ */
+export const ContactMessagesAdmin = () => (
+  <RecordManager
+    table="contact_messages"
+    title="Contact Message"
+    description="Messages submitted from the public Contact page."
+    allowCreate={false}
+    statusKey="status"
+    statusOptions={["new", "in_progress", "responded", "closed"]}
+    searchKeys={["name", "email", "subject", "message"]}
+    columns={[
+      { key: "name", label: "Name" },
+      { key: "email", label: "Email" },
+      { key: "phone", label: "Phone" },
+      { key: "subject", label: "Subject" },
+      { key: "message", label: "Message" },
+      { key: "status", label: "Status", render: (r) => <StatusBadge value={r.status} /> },
+      { key: "created_at", label: "Received", render: dateCell },
+    ]}
+    editableFields={["status", "admin_notes"]}
+    fields={[
+      { key: "name", label: "Name" },
+      { key: "email", label: "Email" },
+      { key: "phone", label: "Phone" },
+      { key: "subject", label: "Subject" },
+      { key: "message", label: "Message", type: "textarea" },
+      { key: "status", label: "Status", type: "select", options: ["new", "in_progress", "responded", "closed"] },
+      { key: "admin_notes", label: "Admin notes", type: "textarea" },
+    ]}
+    emptyMessage="No contact messages yet."
+  />
+);
