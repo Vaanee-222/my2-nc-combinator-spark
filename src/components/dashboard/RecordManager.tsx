@@ -125,13 +125,39 @@ const RecordManager = ({
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
+    const fromTs = fromDate ? new Date(fromDate).getTime() : null;
+    const toTs = toDate ? new Date(toDate).getTime() + 24 * 3600 * 1000 : null;
     return rows.filter((r) => {
       if (statusKey && statusFilter !== "all" && r[statusKey] !== statusFilter) return false;
+      if (fromTs || toTs) {
+        const ts = new Date(r[orderBy] ?? r.created_at ?? 0).getTime();
+        if (fromTs && ts < fromTs) return false;
+        if (toTs && ts > toTs) return false;
+      }
       if (!q) return true;
       const keys = searchKeys.length ? searchKeys : columns.map((c) => c.key);
       return keys.some((k) => String(r[k] ?? "").toLowerCase().includes(q));
     });
-  }, [rows, query, statusFilter, statusKey, searchKeys, columns]);
+  }, [rows, query, statusFilter, statusKey, searchKeys, columns, fromDate, toDate, orderBy]);
+
+  const exportCsv = () => {
+    if (!filtered.length) {
+      toast({ title: "Nothing to export", description: "No records match the current filters." });
+      return;
+    }
+    const keys = Array.from(new Set(filtered.flatMap((r) => Object.keys(r))));
+    const escape = (v: any) =>
+      `"${(typeof v === "object" && v !== null ? JSON.stringify(v) : String(v ?? "")).replace(/"/g, '""')}"`;
+    const csv = [keys.join(",")]
+      .concat(filtered.map((r) => keys.map((k) => escape(r[k])).join(",")))
+      .join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `${table}-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
 
   const openNew = () => {
     const blank: Record<string, any> = { ...defaults };
