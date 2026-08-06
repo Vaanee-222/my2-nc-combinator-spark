@@ -84,6 +84,8 @@ export const notificationsApi = {
     subjectContext?: string | null;
     notes?: string | null;
     recordId?: string | null;
+    label?: string | null;
+    status?: string | null;
   }): Promise<ApiResult<{ delivered: boolean; reason?: string }>> {
     try {
       const { data, error } = await supabase.functions.invoke("send-notification", { body: params });
