@@ -225,11 +225,37 @@ const RecordManager = ({
     setDeleteTarget(null);
   };
 
+  const notifyStatus = async (row: any, value: string, notes?: string | null) => {
+    if (!notify || !row?.[notify.emailKey]) return;
+    const v = String(value ?? "").toLowerCase();
+    const event =
+      (notify.approvedValues ?? ["approved", "accepted"]).includes(v)
+        ? "record_approved"
+        : (notify.rejectedValues ?? ["rejected", "declined"]).includes(v)
+          ? "record_rejected"
+          : "record_updated";
+    const { data } = await api.notifications.send({
+      event: event as any,
+      to: row[notify.emailKey],
+      recipientName: notify.nameKey ? row[notify.nameKey] : null,
+      subjectContext: notify.contextKey ? row[notify.contextKey] : title,
+      notes: notes ?? row.admin_notes ?? null,
+      recordId: row.id,
+      label: notify.label ?? title,
+      status: value,
+    });
+    toast({
+      title: data?.delivered ? "Applicant notified by email" : "Status saved",
+      description: data?.delivered ? undefined : "Email provider not configured — notification logged only.",
+    });
+  };
+
   const quickStatus = async (row: any, value: string) => {
     if (!statusKey) return;
     const { error } = await (supabase as any).from(table).update({ [statusKey]: value }).eq("id", row.id);
     if (error) return toast({ title: "Update failed", description: error.message, variant: "destructive" });
     await logAudit({ action: "status_change", table, recordId: row.id, details: { [statusKey]: value } });
+    await notifyStatus(row, value);
     load();
   };
 
