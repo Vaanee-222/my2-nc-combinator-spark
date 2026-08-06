@@ -12,6 +12,7 @@ const dateCell = (row: any) => (
 export const ConsultationsAdmin = () => (
   <RecordManager
     table="consultation_bookings"
+    notify={{ emailKey: "email", nameKey: "name", contextKey: "consultation_type", label: "Consultation booking", approvedValues: ["scheduled", "completed"], rejectedValues: ["cancelled"] }}
     title="Consultation Booking"
     description="Every consultation request submitted from the website."
     allowCreate={false}
@@ -87,6 +88,7 @@ export const GrantsAdmin = () => (
 export const GrantApplicationsAdmin = () => (
   <RecordManager
     table="grant_applications"
+    notify={{ emailKey: "email", nameKey: "applicant_name", contextKey: "grant_name", label: "Grant application", approvedValues: ["approved", "shortlisted"], rejectedValues: ["rejected"] }}
     title="Grant Application"
     description="Review founder applications submitted against published grants."
     allowCreate={false}
@@ -191,6 +193,7 @@ export const SubscriptionPurchasesAdmin = () => (
 export const DealsAdmin = () => (
   <RecordManager
     table="deal_offers"
+    notify={{ emailKey: "contact_email", nameKey: "company_name", contextKey: "title", label: "Deal submission" }}
     title="Deal"
     description="Offers submitted by startups and partners. Approve to publish on the Deals page."
     statusKey="status"
@@ -232,6 +235,7 @@ export const DealsAdmin = () => (
 export const CloudCreditsAdmin = () => (
   <RecordManager
     table="cloud_credit_requests"
+    notify={{ emailKey: "email", nameKey: "applicant_name", contextKey: "provider", label: "Cloud credit request" }}
     title="Cloud Credit Request"
     description="Founder requests for cloud credits across providers."
     allowCreate={false}
@@ -268,6 +272,7 @@ export const CloudCreditsAdmin = () => (
 export const InvestorInquiriesAdmin = () => (
   <RecordManager
     table="investor_inquiries"
+    notify={{ emailKey: "email", nameKey: "investor_name", contextKey: "startup_name", label: "Investment inquiry", approvedValues: ["accepted"], rejectedValues: ["declined"] }}
     title="Investor Inquiry"
     description="Investor-side interest. Pitch decks are never collected on this form."
     allowCreate={false}

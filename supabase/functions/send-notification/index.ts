@@ -15,7 +15,10 @@ type Event =
   | "introduction_updated"
   | "cofounder_approved"
   | "cofounder_rejected"
-  | "cofounder_updated";
+  | "cofounder_updated"
+  | "record_approved"
+  | "record_rejected"
+  | "record_updated";
 
 const TEMPLATES: Record<Event, (ctx: Ctx) => { subject: string; html: string }> = {
   introduction_approved: (c) => ({
@@ -42,9 +45,21 @@ const TEMPLATES: Record<Event, (ctx: Ctx) => { subject: string; html: string }> 
     subject: `Your co-founder post was updated by a reviewer`,
     html: body(c, `Hi ${c.name}, a reviewer updated your co-founder post <b>${c.context}</b>.`),
   }),
+  record_approved: (c) => ({
+    subject: `${c.label ?? "Your submission"} was approved`,
+    html: body(c, `Hi ${c.name}, your ${(c.label ?? "submission").toLowerCase()} <b>${c.context}</b> has been <b>approved</b>. Our team will follow up with next steps.`),
+  }),
+  record_rejected: (c) => ({
+    subject: `Update on your ${(c.label ?? "submission").toLowerCase()}`,
+    html: body(c, `Hi ${c.name}, after review your ${(c.label ?? "submission").toLowerCase()} <b>${c.context}</b> was <b>not approved</b> at this time.`),
+  }),
+  record_updated: (c) => ({
+    subject: `Your ${(c.label ?? "submission").toLowerCase()} status changed to ${c.status ?? "updated"}`,
+    html: body(c, `Hi ${c.name}, the status of your ${(c.label ?? "submission").toLowerCase()} <b>${c.context}</b> is now <b>${c.status ?? "updated"}</b>.`),
+  }),
 };
 
-interface Ctx { name: string; context: string; notes?: string | null }
+interface Ctx { name: string; context: string; notes?: string | null; label?: string | null; status?: string | null }
 
 function body(c: Ctx, message: string) {
   return `<div style="font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#0b0b0d;color:#e8e8ea;padding:32px">
@@ -58,7 +73,7 @@ function body(c: Ctx, message: string) {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
   try {
-    const { event, to, recipientName, subjectContext, notes, recordId } = await req.json();
+    const { event, to, recipientName, subjectContext, notes, recordId, label, status } = await req.json();
     if (!event || !to) throw new Error("event and to are required");
     const tpl = TEMPLATES[event as Event];
     if (!tpl) throw new Error(`Unknown event: ${event}`);
@@ -67,6 +82,8 @@ Deno.serve(async (req) => {
       name: recipientName || "there",
       context: subjectContext || "your request",
       notes,
+      label,
+      status,
     });
 
     const apiKey = Deno.env.get("RESEND_API_KEY");

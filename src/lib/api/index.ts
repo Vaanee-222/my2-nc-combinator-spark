@@ -66,7 +66,10 @@ export type NotificationEvent =
   | "introduction_updated"
   | "cofounder_approved"
   | "cofounder_rejected"
-  | "cofounder_updated";
+  | "cofounder_updated"
+  | "record_approved"
+  | "record_rejected"
+  | "record_updated";
 
 export const notificationsApi = {
   /**
@@ -81,6 +84,8 @@ export const notificationsApi = {
     subjectContext?: string | null;
     notes?: string | null;
     recordId?: string | null;
+    label?: string | null;
+    status?: string | null;
   }): Promise<ApiResult<{ delivered: boolean; reason?: string }>> {
     try {
       const { data, error } = await supabase.functions.invoke("send-notification", { body: params });
