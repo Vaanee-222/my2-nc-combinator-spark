@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { logAudit } from "@/lib/audit";
+import { api } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -66,6 +67,15 @@ interface RecordManagerProps {
   statusOptions?: string[];
   orderBy?: string;
   emptyMessage?: string;
+  /** Email the submitter when an admin changes the record status. */
+  notify?: {
+    emailKey: string;
+    nameKey?: string;
+    contextKey?: string;
+    label?: string;
+    approvedValues?: string[];
+    rejectedValues?: string[];
+  };
 }
 
 const statusTone = (value?: string) => {
@@ -95,6 +105,7 @@ const RecordManager = ({
   statusOptions = [],
   orderBy = "created_at",
   emptyMessage = "No records yet.",
+  notify,
 }: RecordManagerProps) => {
   const { toast } = useToast();
   const [rows, setRows] = useState<any[]>([]);
@@ -196,6 +207,12 @@ const RecordManager = ({
         return;
       }
       await logAudit({ action: "update", table, recordId: editing.id, details: payload });
+      if (statusKey && payload[statusKey] !== undefined) {
+        const before = rows.find((r) => r.id === editing.id);
+        if (!before || before[statusKey] !== payload[statusKey]) {
+          await notifyStatus({ ...before, ...editing }, payload[statusKey], payload.admin_notes ?? null);
+        }
+      }
     } else {
       const { data, error } = await (supabase as any).from(table).insert({ ...defaults, ...payload }).select().single();
       if (error) {
