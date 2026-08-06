@@ -66,7 +66,10 @@ export type NotificationEvent =
   | "introduction_updated"
   | "cofounder_approved"
   | "cofounder_rejected"
-  | "cofounder_updated";
+  | "cofounder_updated"
+  | "record_approved"
+  | "record_rejected"
+  | "record_updated";
 
 export const notificationsApi = {
   /**
