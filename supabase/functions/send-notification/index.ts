@@ -73,7 +73,7 @@ function body(c: Ctx, message: string) {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
   try {
-    const { event, to, recipientName, subjectContext, notes, recordId } = await req.json();
+    const { event, to, recipientName, subjectContext, notes, recordId, label, status } = await req.json();
     if (!event || !to) throw new Error("event and to are required");
     const tpl = TEMPLATES[event as Event];
     if (!tpl) throw new Error(`Unknown event: ${event}`);
@@ -82,6 +82,8 @@ Deno.serve(async (req) => {
       name: recipientName || "there",
       context: subjectContext || "your request",
       notes,
+      label,
+      status,
     });
 
     const apiKey = Deno.env.get("RESEND_API_KEY");
