@@ -12,11 +12,22 @@ interface StartupOverviewProps {
     progress: number;
     submittedDate: string;
     nextReview: string;
+    program?: string;
+    notes?: string | null;
+  };
+  stats?: {
+    applications: number;
+    deals: number;
+    credits: number;
+    inquiries: number;
+    cofounderPosts: number;
   };
 }
 
-const StartupOverview = ({ applicationStatus }: StartupOverviewProps) => {
+const StartupOverview = ({ applicationStatus, stats }: StartupOverviewProps) => {
   const navigate = useNavigate();
+  const s = stats ?? { applications: 0, deals: 0, credits: 0, inquiries: 0, cofounderPosts: 0 };
+
 
   return (
     <div className="space-y-6">
