@@ -49,19 +49,19 @@ const StartupOverview = ({ applicationStatus, stats }: StartupOverviewProps) => 
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">3</div>
-            <p className="text-xs text-muted-foreground">Worth $2.5L+ in value</p>
+            <div className="text-2xl font-bold text-primary">{s.deals}</div>
+            <p className="text-xs text-muted-foreground">{s.credits} cloud credit requests</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Investment Apps</CardTitle>
+            <CardTitle className="text-sm font-medium">Investor Inquiries</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">3</div>
-            <p className="text-xs text-muted-foreground">$0.9M total applied</p>
+            <div className="text-2xl font-bold text-primary">{s.inquiries}</div>
+            <p className="text-xs text-muted-foreground">{s.applications} total submissions</p>
           </CardContent>
         </Card>
 
@@ -71,8 +71,8 @@ const StartupOverview = ({ applicationStatus, stats }: StartupOverviewProps) => 
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">2</div>
-            <p className="text-xs text-muted-foreground">12 applications received</p>
+            <div className="text-2xl font-bold text-primary">{s.cofounderPosts}</div>
+            <p className="text-xs text-muted-foreground">Posted by you</p>
           </CardContent>
         </Card>
       </div>
@@ -80,32 +80,29 @@ const StartupOverview = ({ applicationStatus, stats }: StartupOverviewProps) => 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
+            <CardTitle>Latest Submission</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex items-center space-x-4">
-              <div className="w-2 h-2 bg-primary rounded-full"></div>
-              <div className="flex-1">
-                <p className="text-sm">Application moved to review stage</p>
-                <p className="text-xs text-muted-foreground">2 hours ago</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
-              <div className="flex-1">
-                <p className="text-sm">New co-founder application received</p>
-                <p className="text-xs text-muted-foreground">1 day ago</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-              <div className="flex-1">
-                <p className="text-sm">AWS credits deal activated</p>
-                <p className="text-xs text-muted-foreground">3 days ago</p>
-              </div>
-            </div>
+            {applicationStatus.program ? (
+              <>
+                <div>
+                  <p className="text-sm font-medium">{applicationStatus.program}</p>
+                  <p className="text-xs text-muted-foreground">Submitted {applicationStatus.submittedDate}</p>
+                </div>
+                <div>
+                  <p className="text-sm">Stage: <span className="capitalize font-medium">{applicationStatus.stage}</span></p>
+                  <Progress value={applicationStatus.progress} className="mt-2" />
+                </div>
+                {applicationStatus.notes && (
+                  <p className="text-xs text-muted-foreground">Reviewer note: {applicationStatus.notes}</p>
+                )}
+              </>
+            ) : (
+              <p className="text-sm text-muted-foreground">No submissions yet — apply to a program to track progress here.</p>
+            )}
           </CardContent>
         </Card>
+
 
         <Card>
           <CardHeader>
