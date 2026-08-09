@@ -15,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 import CofounderPostDialog from "@/components/CofounderPostDialog";
 import { StatefulCTA } from "@/components/StatefulCTA";
 import CofounderDetailsDialog from "@/components/CofounderDetailsDialog";
+import CofounderOpportunityDialog from "@/components/CofounderOpportunityDialog";
+
 import { supabase } from "@/integrations/supabase/client";
 
 const POSTS_PER_PAGE = 6;
@@ -38,7 +40,40 @@ const MeetCofounder = () => {
   const [postCommitment, setPostCommitment] = useState("all");
   const [postPage, setPostPage] = useState(1);
   const [postTotal, setPostTotal] = useState(0);
+  const [opportunities, setOpportunities] = useState<any[]>([]);
+  const [opportunitiesLoading, setOpportunitiesLoading] = useState(true);
+  const [selectedOpportunity, setSelectedOpportunity] = useState<any>(null);
+  const [opportunityOpen, setOpportunityOpen] = useState(false);
+  const [opportunityApplyMode, setOpportunityApplyMode] = useState(false);
   const totalPostPages = Math.max(1, Math.ceil(postTotal / POSTS_PER_PAGE));
+
+  useEffect(() => {
+    let mounted = true;
+    supabase
+      .from("cofounder_requests")
+      .select("id,title,description,skills_needed,equity_offered,commitment,location,status,created_at")
+      .eq("review_status", "approved")
+      .order("created_at", { ascending: false })
+      .limit(24)
+      .then(({ data }) => {
+        if (!mounted) return;
+        setOpportunities(data ?? []);
+        setOpportunitiesLoading(false);
+
+        // Deep link: /meet-cofounder?post=<id> opens that listing
+        const postId = new URLSearchParams(window.location.search).get("post");
+        if (postId) {
+          const match = (data ?? []).find((p: any) => p.id === postId);
+          if (match) {
+            setSelectedOpportunity(match);
+            setOpportunityApplyMode(false);
+            setOpportunityOpen(true);
+          }
+        }
+      });
+    return () => { mounted = false; };
+  }, []);
+
 
   useEffect(() => {
     let mounted = true;
@@ -187,47 +222,12 @@ const MeetCofounder = () => {
     }
   ];
 
-  const startupPosts = [
-    {
-      id: 1,
-      startup: "HealthTech Solutions",
-      founder: "Dr. Amit Sharma",
-      stage: "Pre-Seed",
-      sector: "HealthTech",
-      seeking: "Technical Co-founder (CTO)",
-      equity: "15-25%",
-      description: "Building AI-powered diagnostic tools for rural healthcare. Looking for a tech co-founder with ML/AI expertise.",
-      requirements: ["5+ years ML experience", "Healthcare domain knowledge", "Full-stack capabilities"],
-      posted: "2 days ago",
-      applications: 12
-    },
-    {
-      id: 2,
-      startup: "EduLearn Platform",
-      founder: "Priya Mehta",
-      stage: "MVP",
-      sector: "EdTech",
-      seeking: "Business Co-founder (COO)",
-      equity: "20-30%",
-      description: "Personalized learning platform for K-12 students. Need someone to handle operations and business development.",
-      requirements: ["Education industry experience", "Operations expertise", "Fundraising experience"],
-      posted: "1 week ago",
-      applications: 8
-    },
-    {
-      id: 3,
-      startup: "GreenTech Innovations",
-      founder: "Rajesh Kumar",
-      stage: "Seed",
-      sector: "CleanTech",
-      seeking: "Product Co-founder (CPO)",
-      equity: "10-20%",
-      description: "Renewable energy solutions for residential complexes. Looking for product leader to scale our offerings.",
-      requirements: ["Product management experience", "B2B SaaS background", "Energy sector knowledge"],
-      posted: "3 days ago",
-      applications: 15
-    }
-  ];
+  const openOpportunity = (post: any, applyMode: boolean) => {
+    setSelectedOpportunity(post);
+    setOpportunityApplyMode(applyMode);
+    setOpportunityOpen(true);
+  };
+
 
   const roles = ["All Roles", "CTO", "CEO", "CPO", "CMO", "CFO", "COO"];
   const locations = ["All Locations", "Bangalore", "Mumbai", "Delhi", "Pune", "Hyderabad", "Chennai"];
@@ -594,7 +594,12 @@ const MeetCofounder = () => {
                             </div>
                           )}
                           <p className="text-xs text-muted-foreground">Posted {new Date(p.created_at).toLocaleDateString()}</p>
+                          <div className="flex gap-2 pt-1">
+                            <Button variant="outline" size="sm" onClick={() => openOpportunity(p, false)}>View Details</Button>
+                            <Button size="sm" onClick={() => openOpportunity(p, true)}>Apply Now</Button>
+                          </div>
                         </CardContent>
+
                       </Card>
                     );
                   })}
@@ -617,58 +622,68 @@ const MeetCofounder = () => {
 
           <TabsContent value="opportunities" className="space-y-6">
             <h2 className="text-2xl font-bold mb-6">Startup Co-founder Opportunities</h2>
-            <div className="space-y-6">
-              {startupPosts.map((post) => (
-                <Card key={post.id} className="hover:shadow-lg transition-all duration-300">
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <CardTitle className="text-xl">{post.startup}</CardTitle>
-                        <CardDescription className="text-lg font-medium text-primary">
-                          Seeking: {post.seeking}
-                        </CardDescription>
-                        <div className="flex items-center space-x-4 mt-2">
-                          <Badge variant="outline">{post.stage}</Badge>
-                          <Badge variant="secondary">{post.sector}</Badge>
-                          <span className="text-sm text-muted-foreground">by {post.founder}</span>
+            {opportunitiesLoading ? (
+              <p className="text-muted-foreground text-sm">Loading opportunities…</p>
+            ) : opportunities.length === 0 ? (
+              <Card><CardContent className="pt-6 text-center text-muted-foreground">No open co-founder opportunities right now.</CardContent></Card>
+            ) : (
+              <div className="space-y-6">
+                {opportunities.map((post) => {
+                  const reqs = String(post.skills_needed || "").split(",").map((s: string) => s.trim()).filter(Boolean);
+                  return (
+                    <Card key={post.id} className="hover:shadow-lg transition-all duration-300">
+                      <CardHeader>
+                        <div className="flex items-start justify-between gap-4">
+                          <div>
+                            <CardTitle className="text-xl">{post.title || "Co-founder opportunity"}</CardTitle>
+                            <CardDescription className="text-lg font-medium text-primary">
+                              {post.location ? `Based in ${post.location}` : "Location flexible"}
+                            </CardDescription>
+                            <div className="flex items-center gap-3 mt-2 flex-wrap">
+                              {post.commitment && <Badge variant="outline">{post.commitment}</Badge>}
+                              <Badge variant="secondary" className="capitalize">{post.status || "active"}</Badge>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-bold text-primary text-lg">{post.equity_offered || "—"}</p>
+                            <p className="text-sm text-muted-foreground">Equity Offered</p>
+                          </div>
                         </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-bold text-primary text-lg">{post.equity}</p>
-                        <p className="text-sm text-muted-foreground">Equity Offered</p>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-muted-foreground">{post.description}</p>
-                    
-                    <div>
-                      <p className="font-medium mb-2">Requirements:</p>
-                      <ul className="text-sm text-muted-foreground space-y-1">
-                        {post.requirements.map((req, index) => (
-                          <li key={index} className="flex items-center space-x-2">
-                            <div className="w-1 h-1 bg-primary rounded-full"></div>
-                            <span>{req}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {post.description && <p className="text-muted-foreground line-clamp-4">{post.description}</p>}
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                        <span>Posted {post.posted}</span>
-                        <span>{post.applications} applications</span>
-                      </div>
-                      <div className="flex space-x-2">
-                        <Button variant="outline" size="sm">Learn More</Button>
-                        <Button size="sm">Apply Now</Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                        {reqs.length > 0 && (
+                          <div>
+                            <p className="font-medium mb-2">Requirements:</p>
+                            <ul className="text-sm text-muted-foreground space-y-1">
+                              {reqs.map((req: string) => (
+                                <li key={req} className="flex items-center space-x-2">
+                                  <div className="w-1 h-1 bg-primary rounded-full"></div>
+                                  <span>{req}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+
+                        <div className="flex items-center justify-between flex-wrap gap-3">
+                          <div className="text-sm text-muted-foreground">
+                            Posted {new Date(post.created_at).toLocaleDateString()}
+                          </div>
+                          <div className="flex space-x-2">
+                            <Button variant="outline" size="sm" onClick={() => openOpportunity(post, false)}>Learn More</Button>
+                            <Button size="sm" onClick={() => openOpportunity(post, true)}>Apply Now</Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
           </TabsContent>
+
 
           <TabsContent value="create" className="space-y-6">
             <CofounderPostDialog>
@@ -714,7 +729,15 @@ const MeetCofounder = () => {
         />
       )}
 
+      <CofounderOpportunityDialog
+        opportunity={selectedOpportunity}
+        open={opportunityOpen}
+        onOpenChange={setOpportunityOpen}
+        startInApplyMode={opportunityApplyMode}
+      />
+
       <Footer />
+
     </div>
   );
 };

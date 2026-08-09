@@ -1,16 +1,16 @@
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
 import InvestmentApplicationDialog from "@/components/InvestmentApplicationDialog";
+import { useMyInvestorInquiries, formatDate } from "@/hooks/useMyData";
 
 const InvestmentTable = () => {
-  const investmentApplications = [
-    { id: 1, investor: "Sequoia Capital", amount: "$300K", status: "In Progress", date: "Dec 20, 2026" },
-    { id: 2, investor: "Accel Partners", amount: "$220K", status: "Pending", date: "Dec 18, 2026" },
-    { id: 3, investor: "Matrix Partners", amount: "$385K", status: "Under Review", date: "Dec 10, 2026" }
-  ];
+  const { data: inquiries = [], isLoading } = useMyInvestorInquiries();
+  const [selected, setSelected] = useState<any>(null);
 
   return (
     <div className="space-y-6">
@@ -25,36 +25,79 @@ const InvestmentTable = () => {
       </div>
       <Card>
         <CardContent className="p-0">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Investor</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {investmentApplications.map((app) => (
-                <TableRow key={app.id}>
-                  <TableCell className="font-medium">{app.investor}</TableCell>
-                  <TableCell>{app.amount}</TableCell>
-                  <TableCell>
-                    <Badge variant={app.status === "In Progress" ? "default" : "secondary"}>
-                      {app.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>{app.date}</TableCell>
-                  <TableCell>
-                    <Button variant="outline" size="sm">View Details</Button>
-                  </TableCell>
+          {isLoading ? (
+            <p className="p-6 text-sm text-muted-foreground">Loading investment applications…</p>
+          ) : inquiries.length === 0 ? (
+            <p className="p-6 text-sm text-muted-foreground">No investment applications yet.</p>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Investor</TableHead>
+                  <TableHead>Ticket Size</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Actions</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {inquiries.map((app: any) => (
+                  <TableRow key={app.id}>
+                    <TableCell className="font-medium">{app.investor_name}{app.firm ? ` — ${app.firm}` : ""}</TableCell>
+                    <TableCell>{app.ticket_size}</TableCell>
+                    <TableCell>
+                      <Badge variant={app.status === "accepted" ? "default" : "secondary"} className="capitalize">
+                        {app.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>{formatDate(app.created_at)}</TableCell>
+                    <TableCell>
+                      <Button variant="outline" size="sm" onClick={() => setSelected(app)}>View Details</Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
         </CardContent>
       </Card>
+
+      <Dialog open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
+        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{selected?.investor_name}</DialogTitle>
+            <DialogDescription>
+              Submitted {formatDate(selected?.created_at)} • Status: {selected?.status}
+            </DialogDescription>
+          </DialogHeader>
+          {selected && (
+            <div className="space-y-3 text-sm">
+              {[
+                ["Startup", selected.startup_name],
+                ["Firm", selected.firm],
+                ["Email", selected.email],
+                ["Phone", selected.phone],
+                ["Investor type", selected.investor_type],
+                ["Ticket size", selected.ticket_size],
+                ["Stage preference", selected.stage_preference],
+                ["Instrument", selected.instrument],
+                ["Timeline", selected.timeline],
+                ["Profile", selected.profile_url],
+                ["Message", selected.message],
+                ["Admin notes", selected.admin_notes],
+              ].map(([label, value]) => (
+                <div key={label as string} className="flex justify-between gap-4 border-b pb-2 last:border-0">
+                  <span className="text-muted-foreground">{label}</span>
+                  <span className="text-right font-medium break-all">{value || "—"}</span>
+                </div>
+              ))}
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setSelected(null)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

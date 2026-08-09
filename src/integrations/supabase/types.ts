@@ -325,6 +325,62 @@ export type Database = {
         }
         Relationships: []
       }
+      cofounder_applications: {
+        Row: {
+          applicant_id: string
+          applicant_name: string
+          created_at: string
+          email: string
+          founder_notes: string | null
+          headline: string | null
+          id: string
+          linkedin_url: string | null
+          message: string
+          request_id: string
+          skills: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          applicant_id: string
+          applicant_name: string
+          created_at?: string
+          email: string
+          founder_notes?: string | null
+          headline?: string | null
+          id?: string
+          linkedin_url?: string | null
+          message: string
+          request_id: string
+          skills?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          applicant_id?: string
+          applicant_name?: string
+          created_at?: string
+          email?: string
+          founder_notes?: string | null
+          headline?: string | null
+          id?: string
+          linkedin_url?: string | null
+          message?: string
+          request_id?: string
+          skills?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cofounder_applications_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "cofounder_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cofounder_requests: {
         Row: {
           commitment: string | null
@@ -531,6 +587,56 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      deal_claims: {
+        Row: {
+          company_name: string | null
+          created_at: string
+          deal_id: string | null
+          deal_title: string
+          id: string
+          notes: string | null
+          offer_value: string | null
+          redemption_url: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          company_name?: string | null
+          created_at?: string
+          deal_id?: string | null
+          deal_title: string
+          id?: string
+          notes?: string | null
+          offer_value?: string | null
+          redemption_url?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          company_name?: string | null
+          created_at?: string
+          deal_id?: string | null
+          deal_title?: string
+          id?: string
+          notes?: string | null
+          offer_value?: string | null
+          redemption_url?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deal_claims_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: false
+            referencedRelation: "deal_offers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       deal_offers: {
         Row: {
