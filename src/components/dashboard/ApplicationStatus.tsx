@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { AlertCircle } from "lucide-react";
 import { MyApplication, progressForStatus, formatDate } from "@/hooks/useMyData";
 
@@ -16,8 +19,20 @@ interface ApplicationStatusProps {
   applications?: MyApplication[];
 }
 
+const STAGE_TIMELINE = ["Submitted", "Under Review", "Shortlisted", "Decision"];
+
+const timelineFor = (status: string) => {
+  const s = status.toLowerCase();
+  if (["approved", "accepted", "registered", "rejected", "declined"].includes(s)) return 4;
+  if (["shortlisted"].includes(s)) return 3;
+  if (["reviewing", "under review"].includes(s)) return 2;
+  return 1;
+};
+
 const ApplicationStatus = ({ applicationStatus, applications = [] }: ApplicationStatusProps) => {
   const stageIndex = applicationStatus.progress >= 100 ? 3 : applicationStatus.progress >= 60 ? 2 : 1;
+  const [selected, setSelected] = useState<MyApplication | null>(null);
+
 
   return (
     <div className="space-y-6">
@@ -84,13 +99,57 @@ const ApplicationStatus = ({ applicationStatus, applications = [] }: Application
                 <div className="flex items-center gap-3">
                   <Progress value={progressForStatus(a.status)} className="w-24 h-2" />
                   <Badge variant="outline" className="capitalize">{a.status}</Badge>
+                  <Button variant="outline" size="sm" onClick={() => setSelected(a)}>View</Button>
                 </div>
               </div>
             ))
           )}
         </CardContent>
       </Card>
+
+      <Dialog open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>{selected?.program}</DialogTitle>
+            <DialogDescription>
+              {selected?.source} • Submitted {formatDate(selected?.submittedAt)}
+            </DialogDescription>
+          </DialogHeader>
+          {selected && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <Badge variant="outline" className="capitalize">{selected.status}</Badge>
+                <span className="text-sm text-muted-foreground">{progressForStatus(selected.status)}% complete</span>
+              </div>
+              <Progress value={progressForStatus(selected.status)} className="h-2" />
+              <ol className="space-y-3">
+                {STAGE_TIMELINE.map((label, i) => {
+                  const reached = timelineFor(selected.status) >= i + 1;
+                  return (
+                    <li key={label} className="flex items-start gap-3">
+                      <span className={`mt-1 h-2.5 w-2.5 rounded-full ${reached ? "bg-primary" : "bg-muted"}`} />
+                      <div>
+                        <p className={`text-sm font-medium ${reached ? "" : "text-muted-foreground"}`}>{label}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {i === 0 ? formatDate(selected.submittedAt) : reached ? "Reached" : "Pending"}
+                        </p>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ol>
+              {selected.notes && (
+                <div className="rounded-lg bg-muted/50 p-3 text-sm">Reviewer note: {selected.notes}</div>
+              )}
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setSelected(null)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
+
   );
 };
 

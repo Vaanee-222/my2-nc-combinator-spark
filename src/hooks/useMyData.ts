@@ -192,3 +192,62 @@ export const useLearningResources = () =>
       return data ?? [];
     },
   });
+
+export const useMyCofounderApplications = () => {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: ["my-cofounder-applications", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("cofounder_applications")
+        .select("*, cofounder_requests(title, location, equity_offered, commitment)")
+        .eq("applicant_id", user!.id)
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+};
+
+export const useApplicationsToMyPosts = () => {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: ["applications-to-my-posts", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data: posts, error: postErr } = await supabase
+        .from("cofounder_requests")
+        .select("id, title")
+        .eq("user_id", user!.id);
+      if (postErr) throw postErr;
+      const ids = (posts ?? []).map((p) => p.id);
+      if (ids.length === 0) return [];
+      const { data, error } = await supabase
+        .from("cofounder_applications")
+        .select("*")
+        .in("request_id", ids)
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      const titles = new Map((posts ?? []).map((p) => [p.id, p.title]));
+      return (data ?? []).map((a) => ({ ...a, post_title: titles.get(a.request_id) ?? "Co-founder post" }));
+    },
+  });
+};
+
+export const useMyDealClaims = () => {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: ["my-deal-claims", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("deal_claims")
+        .select("*")
+        .eq("user_id", user!.id)
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+};
