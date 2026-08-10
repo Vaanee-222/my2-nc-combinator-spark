@@ -1060,6 +1060,71 @@ export type Database = {
         }
         Relationships: []
       }
+      investor_deals: {
+        Row: {
+          ask_amount: number | null
+          company_name: string
+          contact_email: string | null
+          created_at: string
+          founded_year: number | null
+          id: string
+          notes: string | null
+          progress: number
+          revenue: string | null
+          sector: string | null
+          source: string | null
+          stage: string
+          startup_id: string | null
+          team_size: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ask_amount?: number | null
+          company_name: string
+          contact_email?: string | null
+          created_at?: string
+          founded_year?: number | null
+          id?: string
+          notes?: string | null
+          progress?: number
+          revenue?: string | null
+          sector?: string | null
+          source?: string | null
+          stage?: string
+          startup_id?: string | null
+          team_size?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ask_amount?: number | null
+          company_name?: string
+          contact_email?: string | null
+          created_at?: string
+          founded_year?: number | null
+          id?: string
+          notes?: string | null
+          progress?: number
+          revenue?: string | null
+          sector?: string | null
+          source?: string | null
+          stage?: string
+          startup_id?: string | null
+          team_size?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "investor_deals_startup_id_fkey"
+            columns: ["startup_id"]
+            isOneToOne: false
+            referencedRelation: "startups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       investor_inquiries: {
         Row: {
           admin_notes: string | null
@@ -1118,6 +1183,131 @@ export type Database = {
           status?: string
           ticket_size?: string
           timeline?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      investor_portfolio: {
+        Row: {
+          amount_invested: number
+          company_name: string
+          created_at: string
+          current_valuation: number
+          id: string
+          invested_on: string | null
+          notes: string | null
+          ownership_pct: number
+          sector: string | null
+          stage: string | null
+          startup_id: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount_invested?: number
+          company_name: string
+          created_at?: string
+          current_valuation?: number
+          id?: string
+          invested_on?: string | null
+          notes?: string | null
+          ownership_pct?: number
+          sector?: string | null
+          stage?: string | null
+          startup_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount_invested?: number
+          company_name?: string
+          created_at?: string
+          current_valuation?: number
+          id?: string
+          invested_on?: string | null
+          notes?: string | null
+          ownership_pct?: number
+          sector?: string | null
+          stage?: string | null
+          startup_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "investor_portfolio_startup_id_fkey"
+            columns: ["startup_id"]
+            isOneToOne: false
+            referencedRelation: "startups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      investor_preferences: {
+        Row: {
+          bio: string | null
+          check_size_max: number | null
+          check_size_min: number | null
+          contact_person: string | null
+          created_at: string
+          email: string | null
+          firm_name: string | null
+          id: string
+          investor_type: string | null
+          notify_market_insights: boolean
+          notify_new_deals: boolean
+          notify_portfolio_updates: boolean
+          notify_weekly_digest: boolean
+          phone: string | null
+          regions: string[]
+          sectors: string[]
+          stages: string[]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          bio?: string | null
+          check_size_max?: number | null
+          check_size_min?: number | null
+          contact_person?: string | null
+          created_at?: string
+          email?: string | null
+          firm_name?: string | null
+          id?: string
+          investor_type?: string | null
+          notify_market_insights?: boolean
+          notify_new_deals?: boolean
+          notify_portfolio_updates?: boolean
+          notify_weekly_digest?: boolean
+          phone?: string | null
+          regions?: string[]
+          sectors?: string[]
+          stages?: string[]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          bio?: string | null
+          check_size_max?: number | null
+          check_size_min?: number | null
+          contact_person?: string | null
+          created_at?: string
+          email?: string | null
+          firm_name?: string | null
+          id?: string
+          investor_type?: string | null
+          notify_market_insights?: boolean
+          notify_new_deals?: boolean
+          notify_portfolio_updates?: boolean
+          notify_weekly_digest?: boolean
+          phone?: string | null
+          regions?: string[]
+          sectors?: string[]
+          stages?: string[]
           updated_at?: string
           user_id?: string
         }
