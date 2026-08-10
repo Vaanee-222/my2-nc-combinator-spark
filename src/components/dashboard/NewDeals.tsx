@@ -9,7 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { useSourceableStartups, useMyDeals, useIncomingIntroductions, formatDealDate } from "@/hooks/useInvestorDataExtras";
+import { useSourceableStartups, useMyDeals, useIncomingIntroductions } from "@/hooks/useInvestorData";
+import { formatDate as formatDealDate } from "@/hooks/useMyData";
 
 const NewDeals = () => {
   const navigate = useNavigate();
