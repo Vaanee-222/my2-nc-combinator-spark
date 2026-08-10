@@ -1,92 +1,55 @@
-# Xi Combinator — Site-wide Refresh Plan
+# Investor Dashboard — make it real
 
-This is a large, multi-area request. I've grouped it into work packages so we can ship incrementally. Each package is independently shippable.
+Today the investor dashboard is almost entirely hardcoded demo data: profile, metrics, portfolio table, deal pipeline, new deals, analytics and settings are all static, and most buttons only fire a toast. This plan wires every tab to the database with working CRUD, matching the pattern already used in the Startup and Co-founder dashboards.
 
----
+## What changes, tab by tab
 
-## 1. Currency → USD everywhere
-- Replace all ₹/INR strings across pages (Subscription, Deals, Grants & Funding, Investor Centre, Cohort, Startup cards, dashboards) with `$` / USD.
-- Add a lightweight **global currency context** (`CurrencyProvider`) with a selector in the top nav (USD default; INR, EUR, GBP, SGD as options) — converts displayed amounts using static FX rates stored in `src/lib/currency.ts`.
-- Wrap all price displays in a `<Money amount={...} />` component.
+### Overview header + metrics
+- Investor identity and stats come from the signed-in user's investor profile instead of "Sarah Investment Capital".
+- Total invested, portfolio value, avg ROI and success rate are computed from actual portfolio rows, not typed in.
 
-## 2. Remove all emoticons / emoji
-Sweep across: Hero, ProgramOverview, Incubation, Investor Centre, Hackathon, Grants, News, About, Footer. Replace with `lucide-react` icons matching the brand.
+### Portfolio
+- Real table of holdings with Add / Edit / Remove, each saved to the database and scoped to the investor.
+- Fields: company, sector, stage, invested amount, ownership %, current valuation, investment date, status (active / exited / written off), notes.
+- Growth % and portfolio totals calculated automatically from invested vs current valuation.
+- "Add startup to portfolio" picks from the live startup directory or accepts a manual entry.
+- Search, status filter and CSV export.
 
-## 3. Branding sweep — "Xi" / "Xi Combinator"
-- Audit all remaining "INC", "IC", "INCLab", "Inc Combinator" strings → "Xi" / "Xi Combinator" / "Xi Lab".
-- Update route slug `/inclab` → `/xi-lab` (keep `/inclab` as a redirect for back-compat).
-- Update `Breadcrumbs` route labels, search index, sitemap entries, OG/meta.
+### Deal Pipeline
+- Kanban-style stage workflow: Sourced → Screening → Due Diligence → Term Sheet → Closed / Passed.
+- "Add New Deal" opens a working form; stage changes update progress and are saved.
+- Each deal card supports: view details, move stage, add reviewer notes, schedule call (existing consultation dialog), and convert a closed deal into a portfolio holding in one click.
 
-## 4. 404 redirection
-- Rewrite `NotFound.tsx` to match dark theme + branded styling, with auto-redirect to `/` after 5s and a manual "Go home" CTA. Log the bad path to analytics (`page_not_found`).
+### New Deals
+- Replaces the two fake cards with live startups from the directory that are open to investment, plus incoming introduction requests addressed to this investor.
+- Filters by sector and stage; "Review Deal" adds the startup into the pipeline at Sourced; "Learn More" opens the startup profile.
 
-## 5. Partners page expansion
-- Add 12+ new global partners (Nvidia, Stripe, AWS, Google for Startups, Microsoft for Startups, HubSpot, Notion, Figma, OpenAI, Vercel, MongoDB, Snowflake, etc.) to the `partners` table via insert migration.
-- Convert region grids to a **carousel/slider** (embla) when >6 partners.
-- Expand the **View Details** dialog with new fields: `founded_year`, `headquarters`, `partnership_tier` (Strategic/Platform/Ecosystem), `benefits` (text[]), `case_study_url`. Migration adds columns + admin CRUD form fields in `PartnerManagement.tsx`.
+### Analytics
+- Charts computed from the investor's own data: capital deployed over time, sector distribution, stage distribution, pipeline conversion funnel, portfolio value vs cost.
+- Uses Recharts, consistent with the admin analytics tab.
 
-## 6. Hackathon page — 2026 refresh
-- Update all event seed/static content to **2026 dates and themes** (AI Agents, Climate Tech, FinTech, DeepTech).
-- Standardize **Prizes & Rewards** card colors to a single token (`bg-primary/10 border-primary/30`) — no rainbow palette.
+### Settings
+- Profile, investment preferences (check size range, sectors, stages, geography) and notification toggles persist to the database instead of resetting on reload.
+- Working Change Password, and Download Investment History as CSV.
 
-## 7. Investor Centre
-- Remove emojis; replace with `TrendingUp`, `BarChart3`, `Globe2`, `Briefcase` icons.
-- Update market-insight stats to **2025/2026 numbers** (India + global VC data, refreshed copy).
-
-## 8. News + Blogs — content refresh
-- Replace stale articles with **2026-dated** thought-leadership pieces: funding analysis ("Why X raised $Y"), founder playbooks, ecosystem insights, market commentary.
-- Add categories: *Funding Analysis*, *Founder Playbook*, *Ecosystem Insights*, *Market Commentary*.
-- Seed 12 new articles via insert migration (if blogs/news are DB-backed) or static data.
-
-## 9. INC Lab page polish
-- **Application Process** arrows → left-to-right horizontal flow with `ArrowRight` icon and connecting line.
-- **What You Get** section: replace emojis with branded lucide icons (`Rocket`, `Users`, `Coins`, `Network`, `Shield`, `Sparkles`).
-
-## 10. About — Advisory Board (global, 16+ members)
-Add a structured `advisoryBoard` array with **16 members across tiers** (Founding Advisors, Strategic Advisors, Regional Partners, Industry Experts), each with name, role, company, country, photo placeholder, LinkedIn URL. **Sunny Ahlawat (California)** included with provided LinkedIn. Members span US, India, UK, Singapore, UAE, Germany, Canada, Australia, Japan, Brazil.
-
-## 11. Grants & Funding fixes
-- Embed YouTube video `https://www.youtube.com/watch?v=RFN47c9HZAc` (responsive iframe).
-- Wire **Apply** button → opens `ApplicationDialog` with `program="grants"`.
-- Replace section icons with theme-consistent lucide icons (`Coins`, `Landmark`, `HandCoins`, `PiggyBank`, `Award`).
-
-## 12. Footer phone number
-Update phone to a new number — **please confirm the number to use** (placeholder: `+1 (415) 555-0142`).
-
-## 13. Startup Directory — global
-- Add **country dropdown filter** (All, USA, India, UK, Singapore, UAE, Germany, Canada, etc.).
-- Replace "India's biggest challenges" copy with **global** framing.
-- Seed 30+ global startups via migration (US, EU, APAC, MENA).
-- Make **Load More** functional (paginate 9 at a time from the dataset).
-- Admin Dashboard → `StartupManagement.tsx` gains `country`, `region`, `headquarters` fields with country picker.
-
-## 14. Incubation program
-Strip all emoticons; swap for lucide icons.
-
----
+### Cross-cutting fixes
+- Tab selection persists across reload/tab switching (same fix already applied to admin).
+- Access restricted to investor and admin roles.
+- All money values render through the shared currency component.
+- Empty states and loading states everywhere instead of blank tables.
 
 ## Technical notes
-- DB migrations needed: extend `partners` columns; new `startups` table OR extend existing seed; optional `blogs`/`news` tables if not already present.
-- New files: `src/lib/currency.ts`, `src/contexts/CurrencyContext.tsx`, `src/components/Money.tsx`, `src/components/CurrencySelector.tsx`, `src/data/advisoryBoard.ts`, `src/data/globalStartups.ts`.
-- Analytics: track `currency_changed`, `partner_viewed`, `startup_filter_country`, `page_not_found`.
 
----
+New tables (all row-level-secured to the owning investor, with admin read):
+- `investor_portfolio` — holdings: startup reference or manual name, sector, stage, amount_invested, ownership_pct, current_valuation, invested_on, status, notes.
+- `investor_deals` — pipeline: company, sector, stage enum, progress, ask amount, revenue, team size, founded year, source, notes, linked startup id.
+- `investor_preferences` — one row per investor: firm name, contact, bio, check size min/max, sectors[], stages[], geographies[], notification flags.
 
-## Suggested shipping order
-1. Branding + 404 + footer phone + emoticon sweep (quick wins).
-2. Currency system + USD conversion.
-3. Partners expansion (DB + carousel + details).
-4. About advisory board.
-5. Grants page fixes + Hackathon 2026 + Investor Centre refresh.
-6. Startup Directory global + admin updates.
-7. News/Blogs content refresh.
+Front end:
+- New `src/hooks/useInvestorData.ts` with React Query hooks (5-minute staleTime, matching the rest of the app).
+- `PortfolioManagement.tsx` and `InvestorSettings.tsx` rewritten as DB-driven components; new `DealPipeline.tsx`, `NewDeals.tsx` and `InvestorAnalytics.tsx` under `src/components/dashboard/`.
+- `InvestorDashboard.tsx` becomes a thin shell around those tabs with derived metrics.
 
----
-
-## Questions before I start
-1. **Footer phone** — which number should I use?
-2. **Currency selector** — OK to default USD with INR/EUR/GBP/SGD options, using static FX rates (no live API)?
-3. **Startup Directory data** — happy with curated seed data (30+ real, well-known global startups), or do you want a CSV/list from you?
-4. **News/Blogs** — is content currently in the DB or static files? Want me to author new articles, or just placeholders for your team to fill?
-
-Reply with answers + which package you'd like me to ship first (or "all in order").
+## Out of scope
+- No payment or cap-table integrations.
+- Blog Management tab stays as-is.
