@@ -139,7 +139,7 @@ export const useMentorMutations = () => {
     mutationFn: async (values: Record<string, unknown>) => {
       const { error } = await supabase
         .from("mentor_profiles")
-        .upsert({ ...values, user_id: user!.id }, { onConflict: "user_id" });
+        .upsert({ ...values, user_id: user!.id } as never, { onConflict: "user_id" });
       if (error) throw error;
     },
     onSuccess: () => {
@@ -152,7 +152,7 @@ export const useMentorMutations = () => {
   const saveMentee = useMutation({
     mutationFn: async ({ id, values }: { id?: string; values: Record<string, unknown> }) => {
       if (id) {
-        const { error } = await supabase.from("mentorships").update(values).eq("id", id);
+        const { error } = await supabase.from("mentorships").update(values as never).eq("id", id);
         if (error) throw error;
       } else {
         const { error } = await supabase
@@ -183,7 +183,7 @@ export const useMentorMutations = () => {
   const saveSession = useMutation({
     mutationFn: async ({ id, values }: { id?: string; values: Record<string, unknown> }) => {
       if (id) {
-        const { error } = await supabase.from("mentor_sessions").update(values).eq("id", id);
+        const { error } = await supabase.from("mentor_sessions").update(values as never).eq("id", id);
         if (error) throw error;
       } else {
         const { error } = await supabase
