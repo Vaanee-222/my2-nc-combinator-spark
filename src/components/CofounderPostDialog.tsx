@@ -13,16 +13,23 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 
 interface CofounderPostDialogProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  /** Existing cofounder_requests row to edit */
+  post?: any;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-const CofounderPostDialog = ({ children }: CofounderPostDialogProps) => {
-  const [open, setOpen] = useState(false);
+const CofounderPostDialog = ({ children, post, open: openProp, onOpenChange }: CofounderPostDialogProps) => {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = openProp ?? internalOpen;
+  const setOpen = (v: boolean) => (onOpenChange ? onOpenChange(v) : setInternalOpen(v));
   const [skills, setSkills] = useState<string[]>([]);
   const [newSkill, setNewSkill] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const { user } = useAuth();
+  const queryClient = useQueryClient();
 
   const [formData, setFormData] = useState({
     title: "",
@@ -34,6 +41,26 @@ const CofounderPostDialog = ({ children }: CofounderPostDialogProps) => {
     commitment: "",
     salary: ""
   });
+
+  useEffect(() => {
+    if (!open) return;
+    if (post) {
+      setFormData({
+        title: post.title ?? "",
+        role: "",
+        description: post.description ?? "",
+        experience: "",
+        equity: post.equity_offered ?? "",
+        location: post.location ?? "",
+        commitment: post.commitment ?? "",
+        salary: "",
+      });
+      setSkills(String(post.skills_needed ?? "").split(",").map((s: string) => s.trim()).filter(Boolean));
+    } else {
+      setFormData({ title: "", role: "", description: "", experience: "", equity: "", location: "", commitment: "", salary: "" });
+      setSkills([]);
+    }
+  }, [open, post]);
 
   const addSkill = () => {
     if (newSkill.trim() && !skills.includes(newSkill.trim())) {
@@ -54,29 +81,46 @@ const CofounderPostDialog = ({ children }: CofounderPostDialogProps) => {
     }
     setIsSubmitting(true);
     try {
-      const { error } = await supabase.from("cofounder_requests").insert({
-        user_id: user.id,
+      const payload = {
         title: formData.title,
-        description: `${formData.description}\nRole: ${formData.role}\nExperience: ${formData.experience}`,
+        description: post
+          ? formData.description
+          : `${formData.description}${formData.role ? `\nRole: ${formData.role}` : ""}${formData.experience ? `\nExperience: ${formData.experience}` : ""}`,
         skills_needed: skills.join(", "),
         equity_offered: formData.equity,
         commitment: formData.commitment,
         location: formData.location,
-        contact_email: user.email || "",
-      });
-      if (error) throw error;
-      toast({ title: "Co-founder Requirement Posted ", description: "Your requirement has been posted successfully." });
+      };
+
+      if (post) {
+        const { error } = await supabase
+          .from("cofounder_requests")
+          .update({ ...payload, review_status: "pending" })
+          .eq("id", post.id);
+        if (error) throw error;
+        toast({ title: "Post updated", description: "Your edit was saved and sent for review." });
+      } else {
+        const { error } = await supabase.from("cofounder_requests").insert({
+          user_id: user.id,
+          ...payload,
+          contact_email: user.email || "",
+        });
+        if (error) throw error;
+        toast({ title: "Co-founder requirement posted", description: "Your requirement will appear publicly once approved." });
+      }
+
+      queryClient.invalidateQueries({ queryKey: ["my-cofounder-posts"] });
+      queryClient.invalidateQueries({ queryKey: ["open-cofounder-posts"] });
       setOpen(false);
-      setFormData({ title: "", role: "", description: "", experience: "", equity: "", location: "", commitment: "", salary: "" });
-      setSkills([]);
     } catch (error: any) {
-      toast({ title: "Post Failed", description: error.message, variant: "destructive" });
+      toast({ title: post ? "Update failed" : "Post failed", description: error.message, variant: "destructive" });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
+
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {children}
