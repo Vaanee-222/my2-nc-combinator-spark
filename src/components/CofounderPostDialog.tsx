@@ -260,7 +260,9 @@ const CofounderPostDialog = ({ children, post, open: openProp, onOpenChange }: C
             <Button type="button" variant="outline" onClick={() => setOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit">Post Requirement</Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Saving…" : post ? "Save Changes" : "Post Requirement"}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
