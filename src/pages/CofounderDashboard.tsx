@@ -324,34 +324,88 @@ const CofounderDashboard = () => {
           </TabsContent>
 
           <TabsContent value="opportunities" className="space-y-6">
-            <h2 className="text-2xl font-bold">Open Opportunities</h2>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <h2 className="text-2xl font-bold">Open Opportunities</h2>
+              <div className="relative w-full sm:w-72">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  className="pl-9"
+                  placeholder="Search roles, skills, location…"
+                  value={oppSearch}
+                  onChange={(e) => setOppSearch(e.target.value)}
+                />
+              </div>
+            </div>
             {oppLoading ? (
               <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">Loading…</CardContent></Card>
-            ) : opportunities.length === 0 ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">No open opportunities right now.</CardContent></Card>
+            ) : visibleOpportunities.length === 0 ? (
+              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">No open opportunities match your search.</CardContent></Card>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {opportunities.map((post: any) => (
-                  <Card key={post.id}>
-                    <CardHeader>
-                      <CardTitle className="text-lg">{post.title}</CardTitle>
-                      <CardDescription>{post.location ? `Based in ${post.location}` : "Location flexible"}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      <p className="text-sm text-muted-foreground line-clamp-3">{post.description}</p>
-                      <div className="flex flex-wrap gap-2 text-xs">
-                        {post.equity_offered && <Badge variant="outline">Equity: {post.equity_offered}</Badge>}
-                        {post.commitment && <Badge variant="outline">{post.commitment}</Badge>}
-                      </div>
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm" onClick={() => openOpportunity(post, false)}>Learn More</Button>
-                        <Button size="sm" onClick={() => openOpportunity(post, true)}>Apply Now</Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                {visibleOpportunities.map((post: any) => {
+                  const applied = appliedIds.has(post.id);
+                  return (
+                    <Card key={post.id}>
+                      <CardHeader>
+                        <div className="flex justify-between items-start gap-2">
+                          <CardTitle className="text-lg">{post.title}</CardTitle>
+                          {applied && <Badge variant="secondary">Applied</Badge>}
+                        </div>
+                        <CardDescription>{post.location ? `Based in ${post.location}` : "Location flexible"}</CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        <p className="text-sm text-muted-foreground line-clamp-3">{post.description}</p>
+                        <div className="flex flex-wrap gap-2 text-xs">
+                          {post.equity_offered && <Badge variant="outline">Equity: {post.equity_offered}</Badge>}
+                          {post.commitment && <Badge variant="outline">{post.commitment}</Badge>}
+                        </div>
+                        <div className="flex gap-2">
+                          <Button variant="outline" size="sm" onClick={() => openOpportunity(post, false)}>Learn More</Button>
+                          <Button size="sm" disabled={applied} onClick={() => openOpportunity(post, true)}>
+                            {applied ? "Application Sent" : "Apply Now"}
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
             )}
+          </TabsContent>
+
+          <TabsContent value="profile" className="space-y-6">
+            <h2 className="text-2xl font-bold">My Profile</h2>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Founder details</CardTitle>
+                <CardDescription>Shown to founders when you apply to their posts.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="p-name">Full name</Label>
+                    <Input id="p-name" value={profileForm.full_name} onChange={(e) => setProfileForm({ ...profileForm, full_name: e.target.value })} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="p-phone">Phone</Label>
+                    <Input id="p-phone" value={profileForm.phone} onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="p-city">City</Label>
+                    <Input id="p-city" value={profileForm.city} onChange={(e) => setProfileForm({ ...profileForm, city: e.target.value })} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Email</Label>
+                    <Input value={profile?.email ?? user?.email ?? ""} disabled />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="p-bio">Bio</Label>
+                  <Textarea id="p-bio" rows={4} value={profileForm.bio} onChange={(e) => setProfileForm({ ...profileForm, bio: e.target.value })} />
+                </div>
+                <Button onClick={saveProfile} disabled={savingProfile}>{savingProfile ? "Saving…" : "Save Profile"}</Button>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="advisor" className="space-y-6">
@@ -370,8 +424,26 @@ const CofounderDashboard = () => {
         onOpenChange={setOppOpen}
         startInApplyMode={oppApply}
       />
+
+      <CofounderPostDialog post={editPost} open={!!editPost} onOpenChange={(o) => !o && setEditPost(null)} />
+
+      <AlertDialog open={!!deleteTarget} onOpenChange={(o) => !o && setDeleteTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this post?</AlertDialogTitle>
+            <AlertDialogDescription>
+              “{deleteTarget?.title}” and its public listing will be removed. This cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={deletePost}>Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
+
 
 export default CofounderDashboard;
