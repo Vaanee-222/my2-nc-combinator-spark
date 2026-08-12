@@ -120,18 +120,18 @@ const CofounderPostDialog = ({ children, post, open: openProp, onOpenChange }: C
   };
 
   return (
-
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {children}
-      </DialogTrigger>
+      {children && <DialogTrigger asChild>{children}</DialogTrigger>}
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Post Co-founder Requirement</DialogTitle>
+          <DialogTitle>{post ? "Edit Co-founder Requirement" : "Post Co-founder Requirement"}</DialogTitle>
           <DialogDescription>
-            Find the perfect co-founder for your startup by posting detailed requirements.
+            {post
+              ? "Edits are re-submitted for admin review before appearing publicly."
+              : "Find the perfect co-founder for your startup by posting detailed requirements."}
           </DialogDescription>
         </DialogHeader>
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
