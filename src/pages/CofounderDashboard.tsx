@@ -3,14 +3,22 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Users, TrendingUp, Star, BrainCircuit } from "lucide-react";
-import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Plus, Users, TrendingUp, Star, BrainCircuit, Pencil, Trash2, Search } from "lucide-react";
+import { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import CofounderPostDialog from "@/components/CofounderPostDialog";
 import AdvisorPanel from "@/components/AdvisorPanel";
 import CofounderOpportunityDialog from "@/components/CofounderOpportunityDialog";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import {
   useMyCofounderPosts,
@@ -27,6 +35,7 @@ const CofounderDashboard = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { user } = useAuth();
   const { data: profile } = useMyProfile();
   const { data: myPosts = [], isLoading: postsLoading } = useMyCofounderPosts();
   const { data: received = [], isLoading: receivedLoading } = useApplicationsToMyPosts();
@@ -35,6 +44,35 @@ const CofounderDashboard = () => {
   const [selectedOpportunity, setSelectedOpportunity] = useState<any>(null);
   const [oppOpen, setOppOpen] = useState(false);
   const [oppApply, setOppApply] = useState(false);
+  const [oppSearch, setOppSearch] = useState("");
+  const [editPost, setEditPost] = useState<any>(null);
+  const [deleteTarget, setDeleteTarget] = useState<any>(null);
+  const [notesDraft, setNotesDraft] = useState<Record<string, string>>({});
+  const [profileForm, setProfileForm] = useState({ full_name: "", phone: "", city: "", bio: "" });
+  const [savingProfile, setSavingProfile] = useState(false);
+
+  useEffect(() => {
+    if (profile) {
+      setProfileForm({
+        full_name: profile.full_name ?? "",
+        phone: profile.phone ?? "",
+        city: profile.city ?? "",
+        bio: profile.bio ?? "",
+      });
+    }
+  }, [profile]);
+
+  const appliedIds = useMemo(() => new Set(sent.map((a: any) => a.request_id)), [sent]);
+  const myPostIds = useMemo(() => new Set(myPosts.map((p: any) => p.id)), [myPosts]);
+  const visibleOpportunities = useMemo(() => {
+    const q = oppSearch.trim().toLowerCase();
+    return opportunities.filter((p: any) => {
+      if (myPostIds.has(p.id)) return false;
+      if (!q) return true;
+      return [p.title, p.description, p.skills_needed, p.location].some((v: any) =>
+        String(v ?? "").toLowerCase().includes(q));
+    });
+  }, [opportunities, myPostIds, oppSearch]);
 
   const openOpportunity = (post: any, applyMode: boolean) => {
     setSelectedOpportunity(post);
@@ -51,6 +89,46 @@ const CofounderDashboard = () => {
     queryClient.invalidateQueries({ queryKey: ["applications-to-my-posts"] });
     toast({ title: "Applicant updated", description: `Moved to ${status}.` });
   };
+
+  const saveFounderNote = async (id: string) => {
+    const { error } = await supabase
+      .from("cofounder_applications")
+      .update({ founder_notes: notesDraft[id] ?? "" })
+      .eq("id", id);
+    if (error) {
+      toast({ title: "Could not save note", description: error.message, variant: "destructive" });
+      return;
+    }
+    queryClient.invalidateQueries({ queryKey: ["applications-to-my-posts"] });
+    toast({ title: "Note saved" });
+  };
+
+  const deletePost = async () => {
+    if (!deleteTarget) return;
+    const { error } = await supabase.from("cofounder_requests").delete().eq("id", deleteTarget.id);
+    setDeleteTarget(null);
+    if (error) {
+      toast({ title: "Delete failed", description: error.message, variant: "destructive" });
+      return;
+    }
+    queryClient.invalidateQueries({ queryKey: ["my-cofounder-posts"] });
+    queryClient.invalidateQueries({ queryKey: ["open-cofounder-posts"] });
+    toast({ title: "Post deleted" });
+  };
+
+  const saveProfile = async () => {
+    if (!user) return;
+    setSavingProfile(true);
+    const { error } = await supabase.from("profiles").update(profileForm).eq("user_id", user.id);
+    setSavingProfile(false);
+    if (error) {
+      toast({ title: "Could not save profile", description: error.message, variant: "destructive" });
+      return;
+    }
+    queryClient.invalidateQueries({ queryKey: ["my-profile"] });
+    toast({ title: "Profile updated" });
+  };
+
 
   return (
     <div className="min-h-screen bg-background">
