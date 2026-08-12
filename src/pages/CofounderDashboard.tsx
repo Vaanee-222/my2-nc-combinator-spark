@@ -275,7 +275,22 @@ const CofounderDashboard = () => {
                             Mark {s}
                           </Button>
                         ))}
+                        <Button size="sm" variant="ghost" asChild>
+                          <a href={`mailto:${a.email}`}>Email applicant</a>
+                        </Button>
                       </div>
+                      <div className="space-y-2 pt-2">
+                        <Label htmlFor={`note-${a.id}`} className="text-xs">Private note to applicant</Label>
+                        <Textarea
+                          id={`note-${a.id}`}
+                          rows={2}
+                          placeholder="Add feedback or next steps…"
+                          value={notesDraft[a.id] ?? a.founder_notes ?? ""}
+                          onChange={(e) => setNotesDraft({ ...notesDraft, [a.id]: e.target.value })}
+                        />
+                        <Button size="sm" variant="secondary" onClick={() => saveFounderNote(a.id)}>Save note</Button>
+                      </div>
+
                     </CardContent>
                   </Card>
                 ))}
