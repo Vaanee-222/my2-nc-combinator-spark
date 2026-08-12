@@ -163,13 +163,15 @@ const CofounderDashboard = () => {
         </Card>
 
         <Tabs defaultValue="posts" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 md:grid-cols-5">
+          <TabsList className="grid w-full grid-cols-3 md:grid-cols-6">
             <TabsTrigger value="posts">My Posts</TabsTrigger>
             <TabsTrigger value="received">Applications Received</TabsTrigger>
             <TabsTrigger value="sent">My Applications</TabsTrigger>
             <TabsTrigger value="opportunities">Opportunities</TabsTrigger>
+            <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="advisor">Advisor</TabsTrigger>
           </TabsList>
+
 
           <TabsContent value="posts" className="space-y-6">
             <div className="flex justify-between items-center">
