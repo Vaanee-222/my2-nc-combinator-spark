@@ -207,14 +207,23 @@ const CofounderDashboard = () => {
                           <div className="text-2xl font-bold text-primary">{count}</div>
                           <div className="text-xs text-muted-foreground">Applications received</div>
                         </div>
-                        <Button
-                          size="sm"
-                          disabled={post.review_status !== "approved"}
-                          onClick={() => navigate(`/meet-cofounder?post=${post.id}`)}
-                        >
-                          {post.review_status === "approved" ? "View Public Listing" : "Awaiting approval"}
-                        </Button>
+                        <div className="flex flex-wrap gap-2">
+                          <Button
+                            size="sm"
+                            disabled={post.review_status !== "approved"}
+                            onClick={() => navigate(`/meet-cofounder?post=${post.id}`)}
+                          >
+                            {post.review_status === "approved" ? "View Public Listing" : "Awaiting approval"}
+                          </Button>
+                          <Button size="sm" variant="outline" onClick={() => setEditPost(post)}>
+                            <Pencil className="mr-2 h-3 w-3" />Edit
+                          </Button>
+                          <Button size="sm" variant="outline" onClick={() => setDeleteTarget(post)}>
+                            <Trash2 className="mr-2 h-3 w-3" />Delete
+                          </Button>
+                        </div>
                       </CardContent>
+
                     </Card>
                   );
                 })}
