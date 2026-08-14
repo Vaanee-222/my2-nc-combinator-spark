@@ -49,6 +49,9 @@ const StartupDashboard = () => {
   const { data: applicants = [], isLoading: applicantsLoading } = useApplicationsToMyPosts();
   const { data: dealClaims = [] } = useMyDealClaims();
   const [claiming, setClaiming] = useState<string | null>(null);
+  const [tab, setTab] = useDashboardTab("startup-dashboard-tab", "overview");
+  const { unreadCount } = useNotifications();
+
 
   const primary = applications[0];
   const applicationStatus = {
