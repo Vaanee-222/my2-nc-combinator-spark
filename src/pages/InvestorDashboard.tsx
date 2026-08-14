@@ -11,7 +11,12 @@ import DealPipeline from "@/components/dashboard/DealPipeline";
 import NewDeals from "@/components/dashboard/NewDeals";
 import InvestorAnalytics from "@/components/dashboard/InvestorAnalytics";
 import InvestorSettings from "@/components/dashboard/InvestorSettings";
+import DashboardHeader from "@/components/dashboard/DashboardHeader";
+import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
+import AccountSettingsPanel from "@/components/dashboard/AccountSettingsPanel";
+import { useNotifications } from "@/hooks/useNotifications";
 import Money from "@/components/Money";
+
 import { useAuth } from "@/contexts/AuthContext";
 import { useMyProfile } from "@/hooks/useMyData";
 import { useMyPortfolio, useInvestorPreferences, portfolioMetrics } from "@/hooks/useInvestorData";
@@ -24,6 +29,8 @@ const InvestorDashboard = () => {
   const { data: prefs } = useInvestorPreferences();
   const { data: holdings = [] } = useMyPortfolio();
   const [tab, setTab] = useState(() => localStorage.getItem(TAB_KEY) || "portfolio");
+  const { unreadCount } = useNotifications();
+
 
   useEffect(() => {
     localStorage.setItem(TAB_KEY, tab);
@@ -43,41 +50,25 @@ const InvestorDashboard = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       <main className="container mx-auto px-4 pt-20 pb-12">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent mb-2">
-            Investor Dashboard
-          </h1>
-          <p className="text-muted-foreground">Manage your investment portfolio and deal pipeline</p>
-        </div>
+        <DashboardHeader
+          title="Investor Dashboard"
+          subtitle="Manage your portfolio, pipeline and sourcing in one place"
+          onOpenNotifications={() => setTab("notifications")}
+          onOpenSettings={() => setTab("settings")}
+          meta={
+            <>
+              <Badge variant="outline">{displayName}</Badge>
+              <Badge variant="secondary">{checkSize}</Badge>
+              <Badge variant="outline">{stages}</Badge>
+            </>
+          }
+          stats={[
+            { label: "Total portfolio", value: metrics.total },
+            { label: "Active", value: metrics.active },
+            { label: "Exits", value: metrics.exits },
+          ]}
+        />
 
-        <Card className="mb-8 bg-card-gradient border-border">
-          <CardHeader>
-            <div className="flex flex-wrap justify-between items-start gap-4">
-              <div>
-                <CardTitle className="text-2xl">{displayName}</CardTitle>
-                <CardDescription className="text-lg">{prefs?.investor_type || "Investor"}</CardDescription>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  <Badge variant="secondary">{checkSize}</Badge>
-                  <Badge variant="outline">{stages}</Badge>
-                </div>
-              </div>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">{metrics.total}</div>
-                  <div className="text-xs text-muted-foreground">Total Portfolio</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">{metrics.active}</div>
-                  <div className="text-xs text-muted-foreground">Active</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">{metrics.exits}</div>
-                  <div className="text-xs text-muted-foreground">Exits</div>
-                </div>
-              </div>
-            </div>
-          </CardHeader>
-        </Card>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card className="bg-card-gradient border-border">
@@ -127,13 +118,15 @@ const InvestorDashboard = () => {
         </div>
 
         <Tabs value={tab} onValueChange={setTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 md:grid-cols-6">
+          <TabsList className="grid w-full grid-cols-3 md:grid-cols-8">
             <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
             <TabsTrigger value="pipeline">Deal Pipeline</TabsTrigger>
             <TabsTrigger value="opportunities">New Deals</TabsTrigger>
-            <TabsTrigger value="blogs">Blog Management</TabsTrigger>
+            <TabsTrigger value="blogs">Blogs</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsTrigger value="notifications">Alerts{unreadCount > 0 ? ` (${unreadCount})` : ""}</TabsTrigger>
+            <TabsTrigger value="settings">Preferences</TabsTrigger>
+            <TabsTrigger value="account">Account</TabsTrigger>
           </TabsList>
 
           <TabsContent value="portfolio" forceMount className="space-y-6 data-[state=inactive]:hidden">
@@ -151,10 +144,17 @@ const InvestorDashboard = () => {
           <TabsContent value="analytics" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <InvestorAnalytics />
           </TabsContent>
+          <TabsContent value="notifications" className="space-y-6">
+            <NotificationsPanel />
+          </TabsContent>
           <TabsContent value="settings" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <InvestorSettings />
           </TabsContent>
+          <TabsContent value="account" className="space-y-6">
+            <AccountSettingsPanel />
+          </TabsContent>
         </Tabs>
+
       </main>
     </div>
   );

@@ -13,7 +13,13 @@ import ApplicationStatus from "@/components/dashboard/ApplicationStatus";
 import InvestmentTable from "@/components/dashboard/InvestmentTable";
 import CofounderPostDialog from "@/components/CofounderPostDialog";
 import AdvisorPanel from "@/components/AdvisorPanel";
+import DashboardHeader from "@/components/dashboard/DashboardHeader";
+import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
+import AccountSettingsPanel from "@/components/dashboard/AccountSettingsPanel";
+import { useDashboardTab } from "@/hooks/useDashboardTab";
+import { useNotifications } from "@/hooks/useNotifications";
 import { supabase } from "@/integrations/supabase/client";
+
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -43,6 +49,9 @@ const StartupDashboard = () => {
   const { data: applicants = [], isLoading: applicantsLoading } = useApplicationsToMyPosts();
   const { data: dealClaims = [] } = useMyDealClaims();
   const [claiming, setClaiming] = useState<string | null>(null);
+  const [tab, setTab] = useDashboardTab("startup-dashboard-tab", "overview");
+  const { unreadCount } = useNotifications();
+
 
   const primary = applications[0];
   const applicationStatus = {
@@ -103,15 +112,21 @@ const StartupDashboard = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       <main className="container mx-auto px-4 pt-20 pb-12">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent mb-2">
-            Startup Dashboard
-          </h1>
-          <p className="text-muted-foreground">Manage your startup journey with Xi Combinator</p>
-        </div>
+        <DashboardHeader
+          title="Startup Dashboard"
+          subtitle="Track applications, funding conversations and perks in one place"
+          onOpenNotifications={() => setTab("notifications")}
+          onOpenSettings={() => setTab("account")}
+          stats={[
+            { label: "Applications", value: stats.applications },
+            { label: "Investor inquiries", value: stats.inquiries },
+            { label: "Cloud credits", value: stats.credits },
+            { label: "Co-founder posts", value: stats.cofounderPosts },
+          ]}
+        />
 
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 md:grid-cols-7">
+        <Tabs value={tab} onValueChange={setTab} className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3 md:grid-cols-9">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="application">Application</TabsTrigger>
             <TabsTrigger value="investment">Investment</TabsTrigger>
@@ -119,7 +134,12 @@ const StartupDashboard = () => {
             <TabsTrigger value="cofounder">Co-founder</TabsTrigger>
             <TabsTrigger value="applicants">Applicants</TabsTrigger>
             <TabsTrigger value="advisor">Advisor</TabsTrigger>
+            <TabsTrigger value="notifications" className="relative">
+              Alerts{unreadCount > 0 ? ` (${unreadCount})` : ""}
+            </TabsTrigger>
+            <TabsTrigger value="account">Account</TabsTrigger>
           </TabsList>
+
 
           <TabsContent value="overview" className="space-y-6">
             <StartupOverview applicationStatus={applicationStatus} stats={stats} />
@@ -376,7 +396,16 @@ const StartupDashboard = () => {
             </p>
             <AdvisorPanel compact />
           </TabsContent>
+
+          <TabsContent value="notifications" className="space-y-6">
+            <NotificationsPanel />
+          </TabsContent>
+
+          <TabsContent value="account" className="space-y-6">
+            <AccountSettingsPanel />
+          </TabsContent>
         </Tabs>
+
       </main>
     </div>
   );

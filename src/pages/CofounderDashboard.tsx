@@ -28,6 +28,12 @@ import {
   useMyProfile,
   formatDate,
 } from "@/hooks/useMyData";
+import DashboardHeader from "@/components/dashboard/DashboardHeader";
+import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
+import AccountSettingsPanel from "@/components/dashboard/AccountSettingsPanel";
+import { useDashboardTab } from "@/hooks/useDashboardTab";
+import { useNotifications } from "@/hooks/useNotifications";
+
 
 const APPLICANT_STAGES = ["new", "shortlisted", "accepted", "rejected"];
 
@@ -36,6 +42,9 @@ const CofounderDashboard = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { user } = useAuth();
+  const [tab, setTab] = useDashboardTab("cofounder-dashboard-tab", "posts");
+  const { unreadCount } = useNotifications();
+
   const { data: profile } = useMyProfile();
   const { data: myPosts = [], isLoading: postsLoading } = useMyCofounderPosts();
   const { data: received = [], isLoading: receivedLoading } = useApplicationsToMyPosts();
@@ -134,43 +143,29 @@ const CofounderDashboard = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       <main className="container mx-auto px-4 pt-20 pb-12">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent mb-2">
-            Co-founder Dashboard
-          </h1>
-          <p className="text-muted-foreground">Manage your co-founder search and applications</p>
-        </div>
+        <DashboardHeader
+          title="Co-founder Dashboard"
+          subtitle="Manage your co-founder search, applications and profile"
+          onOpenNotifications={() => setTab("notifications")}
+          onOpenSettings={() => setTab("account")}
+          stats={[
+            { label: "My posts", value: myPosts.length },
+            { label: "Applications received", value: received.length },
+            { label: "Applications sent", value: sent.length },
+          ]}
+        />
 
-        <Card className="mb-8">
-          <CardContent className="pt-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div>
-              <p className="text-sm text-muted-foreground">Profile</p>
-              <p className="font-semibold">{profile?.full_name || "Complete your profile"}</p>
-            </div>
-            <div>
-              <p className="text-3xl font-bold text-primary">{myPosts.length}</p>
-              <p className="text-xs text-muted-foreground flex items-center justify-center gap-1"><Star className="h-3 w-3" /> My Posts</p>
-            </div>
-            <div>
-              <p className="text-3xl font-bold text-primary">{received.length}</p>
-              <p className="text-xs text-muted-foreground flex items-center justify-center gap-1"><Users className="h-3 w-3" /> Applications Received</p>
-            </div>
-            <div>
-              <p className="text-3xl font-bold text-primary">{sent.length}</p>
-              <p className="text-xs text-muted-foreground flex items-center justify-center gap-1"><TrendingUp className="h-3 w-3" /> Applications Sent</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Tabs defaultValue="posts" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 md:grid-cols-6">
+        <Tabs value={tab} onValueChange={setTab} className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3 md:grid-cols-7">
             <TabsTrigger value="posts">My Posts</TabsTrigger>
-            <TabsTrigger value="received">Applications Received</TabsTrigger>
+            <TabsTrigger value="received">Received</TabsTrigger>
             <TabsTrigger value="sent">My Applications</TabsTrigger>
             <TabsTrigger value="opportunities">Opportunities</TabsTrigger>
-            <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="advisor">Advisor</TabsTrigger>
+            <TabsTrigger value="notifications">Alerts{unreadCount > 0 ? ` (${unreadCount})` : ""}</TabsTrigger>
+            <TabsTrigger value="account">Profile &amp; Settings</TabsTrigger>
           </TabsList>
+
 
 
           <TabsContent value="posts" className="space-y-6">
@@ -373,40 +368,14 @@ const CofounderDashboard = () => {
             )}
           </TabsContent>
 
-          <TabsContent value="profile" className="space-y-6">
-            <h2 className="text-2xl font-bold">My Profile</h2>
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Founder details</CardTitle>
-                <CardDescription>Shown to founders when you apply to their posts.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="p-name">Full name</Label>
-                    <Input id="p-name" value={profileForm.full_name} onChange={(e) => setProfileForm({ ...profileForm, full_name: e.target.value })} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="p-phone">Phone</Label>
-                    <Input id="p-phone" value={profileForm.phone} onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="p-city">City</Label>
-                    <Input id="p-city" value={profileForm.city} onChange={(e) => setProfileForm({ ...profileForm, city: e.target.value })} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Email</Label>
-                    <Input value={profile?.email ?? user?.email ?? ""} disabled />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="p-bio">Bio</Label>
-                  <Textarea id="p-bio" rows={4} value={profileForm.bio} onChange={(e) => setProfileForm({ ...profileForm, bio: e.target.value })} />
-                </div>
-                <Button onClick={saveProfile} disabled={savingProfile}>{savingProfile ? "Saving…" : "Save Profile"}</Button>
-              </CardContent>
-            </Card>
+          <TabsContent value="notifications" className="space-y-6">
+            <NotificationsPanel />
           </TabsContent>
+
+          <TabsContent value="account" className="space-y-6">
+            <AccountSettingsPanel />
+          </TabsContent>
+
 
           <TabsContent value="advisor" className="space-y-6">
             <div className="flex items-center gap-2">

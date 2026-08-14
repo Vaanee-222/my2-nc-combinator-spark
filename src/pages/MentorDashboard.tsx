@@ -29,6 +29,12 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Plus, Pencil, Trash2, Clock, Star, Calendar, CheckCircle2, Users } from "lucide-react";
 import AdvisorPanel from "@/components/AdvisorPanel";
+import DashboardHeader from "@/components/dashboard/DashboardHeader";
+import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
+import AccountSettingsPanel from "@/components/dashboard/AccountSettingsPanel";
+import { useDashboardTab } from "@/hooks/useDashboardTab";
+import { useNotifications } from "@/hooks/useNotifications";
+
 import { useAuth } from "@/contexts/AuthContext";
 import {
   useMentorProfile,
@@ -71,6 +77,9 @@ const formatTime = (value?: string | null) =>
 
 const MentorDashboard = () => {
   const { user } = useAuth();
+  const [tab, setTab] = useDashboardTab("mentor-dashboard-tab", "mentees");
+  const { unreadCount } = useNotifications();
+
   const { data: profile } = useMentorProfile();
   const { data: mentees = [], isLoading: menteesLoading } = useMentorships();
   const { data: sessions = [], isLoading: sessionsLoading } = useMentorSessions();
@@ -222,67 +231,39 @@ const MentorDashboard = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       <main className="container mx-auto px-4 pt-20 pb-12">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent mb-2">
-            Mentor Dashboard
-          </h1>
-          <p className="text-muted-foreground">Guide the next generation of entrepreneurs</p>
-        </div>
+        <DashboardHeader
+          title="Mentor Dashboard"
+          subtitle="Guide founders, run sessions and keep your profile discoverable"
+          onOpenNotifications={() => setTab("notifications")}
+          onOpenSettings={() => setTab("account")}
+          meta={
+            <>
+              {profile?.expertise && <Badge variant="outline">{profile.expertise}</Badge>}
+              {specializations.slice(0, 3).map((spec) => (
+                <Badge key={spec} variant="secondary">{spec}</Badge>
+              ))}
+            </>
+          }
+          stats={[
+            { label: "Mentees", value: mentees.length },
+            { label: "Active", value: activeMentees.length },
+            { label: "Sessions done", value: completedSessions },
+            { label: "Pending requests", value: pendingRequests.length },
+            { label: "Rating", value: Number(profile?.rating ?? 0).toFixed(1) },
+          ]}
+        />
 
-        <Card className="mb-8 bg-card-gradient border-border">
-          <CardHeader>
-            <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-start">
-              <div>
-                <CardTitle className="text-2xl">
-                  {profile?.full_name || user?.email || "Your mentor profile"}
-                </CardTitle>
-                <CardDescription className="text-lg">
-                  {profile?.expertise || "Add your expertise in the Profile tab"}
-                </CardDescription>
-                <p className="text-sm text-muted-foreground mt-1">
-                  {[profile?.company, profile?.experience].filter(Boolean).join(" • ") || "—"}
-                </p>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {specializations.slice(0, 4).map((spec) => (
-                    <Badge key={spec} variant="secondary">
-                      {spec}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-              <div className="grid grid-cols-4 gap-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">{mentees.length}</div>
-                  <div className="text-xs text-muted-foreground">Total Mentees</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">{activeMentees.length}</div>
-                  <div className="text-xs text-muted-foreground">Active</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">{completedSessions}</div>
-                  <div className="text-xs text-muted-foreground">Sessions</div>
-                </div>
-                <div className="text-center">
-                  <div className="flex items-center justify-center space-x-1">
-                    <Star className="w-4 h-4 text-yellow-500" />
-                    <span className="text-2xl font-bold text-primary">{Number(profile?.rating ?? 0).toFixed(1)}</span>
-                  </div>
-                  <div className="text-xs text-muted-foreground">Rating</div>
-                </div>
-              </div>
-            </div>
-          </CardHeader>
-        </Card>
-
-        <Tabs defaultValue="mentees" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+        <Tabs value={tab} onValueChange={setTab} className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3 md:grid-cols-7">
             <TabsTrigger value="mentees">Mentees</TabsTrigger>
             <TabsTrigger value="sessions">Sessions</TabsTrigger>
             <TabsTrigger value="requests">Requests {pendingRequests.length > 0 && `(${pendingRequests.length})`}</TabsTrigger>
             <TabsTrigger value="advisor">AI Advisor</TabsTrigger>
-            <TabsTrigger value="profile">Profile</TabsTrigger>
+            <TabsTrigger value="profile">Mentor Profile</TabsTrigger>
+            <TabsTrigger value="notifications">Alerts{unreadCount > 0 ? ` (${unreadCount})` : ""}</TabsTrigger>
+            <TabsTrigger value="account">Account</TabsTrigger>
           </TabsList>
+
 
           <TabsContent value="mentees" className="space-y-6">
             <div className="flex justify-between items-center">
@@ -591,7 +572,15 @@ const MentorDashboard = () => {
               </CardContent>
             </Card>
           </TabsContent>
+          <TabsContent value="notifications" className="space-y-6">
+            <NotificationsPanel />
+          </TabsContent>
+
+          <TabsContent value="account" className="space-y-6">
+            <AccountSettingsPanel />
+          </TabsContent>
         </Tabs>
+
       </main>
 
       {/* Mentee dialog */}
