@@ -29,6 +29,12 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Plus, Pencil, Trash2, Clock, Star, Calendar, CheckCircle2, Users } from "lucide-react";
 import AdvisorPanel from "@/components/AdvisorPanel";
+import DashboardHeader from "@/components/dashboard/DashboardHeader";
+import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
+import AccountSettingsPanel from "@/components/dashboard/AccountSettingsPanel";
+import { useDashboardTab } from "@/hooks/useDashboardTab";
+import { useNotifications } from "@/hooks/useNotifications";
+
 import { useAuth } from "@/contexts/AuthContext";
 import {
   useMentorProfile,
