@@ -396,7 +396,16 @@ const StartupDashboard = () => {
             </p>
             <AdvisorPanel compact />
           </TabsContent>
+
+          <TabsContent value="notifications" className="space-y-6">
+            <NotificationsPanel />
+          </TabsContent>
+
+          <TabsContent value="account" className="space-y-6">
+            <AccountSettingsPanel />
+          </TabsContent>
         </Tabs>
+
       </main>
     </div>
   );
