@@ -368,40 +368,14 @@ const CofounderDashboard = () => {
             )}
           </TabsContent>
 
-          <TabsContent value="profile" className="space-y-6">
-            <h2 className="text-2xl font-bold">My Profile</h2>
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Founder details</CardTitle>
-                <CardDescription>Shown to founders when you apply to their posts.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="p-name">Full name</Label>
-                    <Input id="p-name" value={profileForm.full_name} onChange={(e) => setProfileForm({ ...profileForm, full_name: e.target.value })} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="p-phone">Phone</Label>
-                    <Input id="p-phone" value={profileForm.phone} onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="p-city">City</Label>
-                    <Input id="p-city" value={profileForm.city} onChange={(e) => setProfileForm({ ...profileForm, city: e.target.value })} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Email</Label>
-                    <Input value={profile?.email ?? user?.email ?? ""} disabled />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="p-bio">Bio</Label>
-                  <Textarea id="p-bio" rows={4} value={profileForm.bio} onChange={(e) => setProfileForm({ ...profileForm, bio: e.target.value })} />
-                </div>
-                <Button onClick={saveProfile} disabled={savingProfile}>{savingProfile ? "Saving…" : "Save Profile"}</Button>
-              </CardContent>
-            </Card>
+          <TabsContent value="notifications" className="space-y-6">
+            <NotificationsPanel />
           </TabsContent>
+
+          <TabsContent value="account" className="space-y-6">
+            <AccountSettingsPanel />
+          </TabsContent>
+
 
           <TabsContent value="advisor" className="space-y-6">
             <div className="flex items-center gap-2">
