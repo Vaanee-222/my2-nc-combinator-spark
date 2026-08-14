@@ -591,7 +591,15 @@ const MentorDashboard = () => {
               </CardContent>
             </Card>
           </TabsContent>
+          <TabsContent value="notifications" className="space-y-6">
+            <NotificationsPanel />
+          </TabsContent>
+
+          <TabsContent value="account" className="space-y-6">
+            <AccountSettingsPanel />
+          </TabsContent>
         </Tabs>
+
       </main>
 
       {/* Mentee dialog */}
