@@ -13,7 +13,13 @@ import ApplicationStatus from "@/components/dashboard/ApplicationStatus";
 import InvestmentTable from "@/components/dashboard/InvestmentTable";
 import CofounderPostDialog from "@/components/CofounderPostDialog";
 import AdvisorPanel from "@/components/AdvisorPanel";
+import DashboardHeader from "@/components/dashboard/DashboardHeader";
+import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
+import AccountSettingsPanel from "@/components/dashboard/AccountSettingsPanel";
+import { useDashboardTab } from "@/hooks/useDashboardTab";
+import { useNotifications } from "@/hooks/useNotifications";
 import { supabase } from "@/integrations/supabase/client";
+
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import {
