@@ -28,6 +28,12 @@ import {
   useMyProfile,
   formatDate,
 } from "@/hooks/useMyData";
+import DashboardHeader from "@/components/dashboard/DashboardHeader";
+import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
+import AccountSettingsPanel from "@/components/dashboard/AccountSettingsPanel";
+import { useDashboardTab } from "@/hooks/useDashboardTab";
+import { useNotifications } from "@/hooks/useNotifications";
+
 
 const APPLICANT_STAGES = ["new", "shortlisted", "accepted", "rejected"];
 
