@@ -36,6 +36,9 @@ const CofounderDashboard = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { user } = useAuth();
+  const [tab, setTab] = useDashboardTab("cofounder-dashboard-tab", "posts");
+  const { unreadCount } = useNotifications();
+
   const { data: profile } = useMyProfile();
   const { data: myPosts = [], isLoading: postsLoading } = useMyCofounderPosts();
   const { data: received = [], isLoading: receivedLoading } = useApplicationsToMyPosts();
