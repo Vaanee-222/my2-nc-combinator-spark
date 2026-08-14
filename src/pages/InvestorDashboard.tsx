@@ -11,7 +11,12 @@ import DealPipeline from "@/components/dashboard/DealPipeline";
 import NewDeals from "@/components/dashboard/NewDeals";
 import InvestorAnalytics from "@/components/dashboard/InvestorAnalytics";
 import InvestorSettings from "@/components/dashboard/InvestorSettings";
+import DashboardHeader from "@/components/dashboard/DashboardHeader";
+import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
+import AccountSettingsPanel from "@/components/dashboard/AccountSettingsPanel";
+import { useNotifications } from "@/hooks/useNotifications";
 import Money from "@/components/Money";
+
 import { useAuth } from "@/contexts/AuthContext";
 import { useMyProfile } from "@/hooks/useMyData";
 import { useMyPortfolio, useInvestorPreferences, portfolioMetrics } from "@/hooks/useInvestorData";
