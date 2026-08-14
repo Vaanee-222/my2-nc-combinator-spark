@@ -29,6 +29,8 @@ const InvestorDashboard = () => {
   const { data: prefs } = useInvestorPreferences();
   const { data: holdings = [] } = useMyPortfolio();
   const [tab, setTab] = useState(() => localStorage.getItem(TAB_KEY) || "portfolio");
+  const { unreadCount } = useNotifications();
+
 
   useEffect(() => {
     localStorage.setItem(TAB_KEY, tab);
