@@ -116,13 +116,15 @@ const InvestorDashboard = () => {
         </div>
 
         <Tabs value={tab} onValueChange={setTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 md:grid-cols-6">
+          <TabsList className="grid w-full grid-cols-3 md:grid-cols-8">
             <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
             <TabsTrigger value="pipeline">Deal Pipeline</TabsTrigger>
             <TabsTrigger value="opportunities">New Deals</TabsTrigger>
-            <TabsTrigger value="blogs">Blog Management</TabsTrigger>
+            <TabsTrigger value="blogs">Blogs</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsTrigger value="notifications">Alerts{unreadCount > 0 ? ` (${unreadCount})` : ""}</TabsTrigger>
+            <TabsTrigger value="settings">Preferences</TabsTrigger>
+            <TabsTrigger value="account">Account</TabsTrigger>
           </TabsList>
 
           <TabsContent value="portfolio" forceMount className="space-y-6 data-[state=inactive]:hidden">
@@ -140,10 +142,17 @@ const InvestorDashboard = () => {
           <TabsContent value="analytics" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <InvestorAnalytics />
           </TabsContent>
+          <TabsContent value="notifications" className="space-y-6">
+            <NotificationsPanel />
+          </TabsContent>
           <TabsContent value="settings" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <InvestorSettings />
           </TabsContent>
+          <TabsContent value="account" className="space-y-6">
+            <AccountSettingsPanel />
+          </TabsContent>
         </Tabs>
+
       </main>
     </div>
   );
