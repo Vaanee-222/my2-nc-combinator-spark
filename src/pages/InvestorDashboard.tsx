@@ -43,41 +43,25 @@ const InvestorDashboard = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       <main className="container mx-auto px-4 pt-20 pb-12">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent mb-2">
-            Investor Dashboard
-          </h1>
-          <p className="text-muted-foreground">Manage your investment portfolio and deal pipeline</p>
-        </div>
+        <DashboardHeader
+          title="Investor Dashboard"
+          subtitle="Manage your portfolio, pipeline and sourcing in one place"
+          onOpenNotifications={() => setTab("notifications")}
+          onOpenSettings={() => setTab("settings")}
+          meta={
+            <>
+              <Badge variant="outline">{displayName}</Badge>
+              <Badge variant="secondary">{checkSize}</Badge>
+              <Badge variant="outline">{stages}</Badge>
+            </>
+          }
+          stats={[
+            { label: "Total portfolio", value: metrics.total },
+            { label: "Active", value: metrics.active },
+            { label: "Exits", value: metrics.exits },
+          ]}
+        />
 
-        <Card className="mb-8 bg-card-gradient border-border">
-          <CardHeader>
-            <div className="flex flex-wrap justify-between items-start gap-4">
-              <div>
-                <CardTitle className="text-2xl">{displayName}</CardTitle>
-                <CardDescription className="text-lg">{prefs?.investor_type || "Investor"}</CardDescription>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  <Badge variant="secondary">{checkSize}</Badge>
-                  <Badge variant="outline">{stages}</Badge>
-                </div>
-              </div>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">{metrics.total}</div>
-                  <div className="text-xs text-muted-foreground">Total Portfolio</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">{metrics.active}</div>
-                  <div className="text-xs text-muted-foreground">Active</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">{metrics.exits}</div>
-                  <div className="text-xs text-muted-foreground">Exits</div>
-                </div>
-              </div>
-            </div>
-          </CardHeader>
-        </Card>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card className="bg-card-gradient border-border">
