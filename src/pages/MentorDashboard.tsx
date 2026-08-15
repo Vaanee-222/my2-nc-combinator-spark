@@ -27,11 +27,13 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Switch } from "@/components/ui/switch";
-import { Plus, Pencil, Trash2, Clock, Star, Calendar, CheckCircle2, Users } from "lucide-react";
+import { Plus, Pencil, Trash2, Clock, Star, Calendar, CheckCircle2, Users, LayoutDashboard, Inbox, Bell, Settings, UserCog, BrainCircuit } from "lucide-react";
 import AdvisorPanel from "@/components/AdvisorPanel";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
 import AccountSettingsPanel from "@/components/dashboard/AccountSettingsPanel";
+import DashboardNav, { type DashboardNavGroup } from "@/components/dashboard/DashboardNav";
+import DashboardOverview from "@/components/dashboard/DashboardOverview";
 import { useDashboardTab } from "@/hooks/useDashboardTab";
 import { useNotifications } from "@/hooks/useNotifications";
 
@@ -612,6 +614,7 @@ const MentorDashboard = () => {
           <TabsContent value="account" className="space-y-6">
             <AccountSettingsPanel />
           </TabsContent>
+          </div>
         </Tabs>
 
       </main>
