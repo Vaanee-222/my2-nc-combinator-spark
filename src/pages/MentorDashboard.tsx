@@ -79,7 +79,7 @@ const formatTime = (value?: string | null) =>
 
 const MentorDashboard = () => {
   const { user } = useAuth();
-  const [tab, setTab] = useDashboardTab("mentor-dashboard-tab", "mentees");
+  const [tab, setTab] = useDashboardTab("mentor-dashboard-tab", "overview");
   const { unreadCount } = useNotifications();
 
   const { data: profile } = useMentorProfile();

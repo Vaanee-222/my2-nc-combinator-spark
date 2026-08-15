@@ -10,7 +10,7 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Plus, Users, TrendingUp, Star, BrainCircuit, Pencil, Trash2, Search } from "lucide-react";
+import { Plus, Users, TrendingUp, Star, BrainCircuit, Pencil, Trash2, Search, LayoutDashboard, FileText, Inbox, Send, Bell, Settings } from "lucide-react";
 import { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
@@ -31,6 +31,8 @@ import {
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
 import AccountSettingsPanel from "@/components/dashboard/AccountSettingsPanel";
+import DashboardNav, { type DashboardNavGroup } from "@/components/dashboard/DashboardNav";
+import DashboardOverview from "@/components/dashboard/DashboardOverview";
 import { useDashboardTab } from "@/hooks/useDashboardTab";
 import { useNotifications } from "@/hooks/useNotifications";
 
@@ -42,7 +44,7 @@ const CofounderDashboard = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { user } = useAuth();
-  const [tab, setTab] = useDashboardTab("cofounder-dashboard-tab", "posts");
+  const [tab, setTab] = useDashboardTab("cofounder-dashboard-tab", "overview");
   const { unreadCount } = useNotifications();
 
   const { data: profile } = useMyProfile();
@@ -421,6 +423,7 @@ const CofounderDashboard = () => {
             </div>
             <AdvisorPanel compact />
           </TabsContent>
+          </div>
         </Tabs>
       </main>
 
