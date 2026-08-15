@@ -208,9 +208,9 @@ const StartupDashboard = () => {
               <Button variant="outline" onClick={() => navigate('/deals')}>Browse All Deals</Button>
             </div>
             {dealsLoading ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">Loading deals…</CardContent></Card>
+              <SkeletonCards />
             ) : deals.length === 0 ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">No approved deals available yet.</CardContent></Card>
+              <EmptyState icon={Gift} title="No deals available yet" description="Partner offers appear here once they are approved." actionLabel="Browse deals" onAction={() => navigate("/deals")} />
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {deals.map((deal: any) => {
