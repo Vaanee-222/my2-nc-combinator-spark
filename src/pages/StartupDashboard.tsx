@@ -123,6 +123,36 @@ const StartupDashboard = () => {
     toast({ title: "Applicant updated", description: `Moved to ${status}.` });
   };
 
+  const newApplicants = applicants.filter((a: any) => (a.status ?? "new") === "new").length;
+
+  const navGroups: DashboardNavGroup[] = [
+    {
+      label: "Overview",
+      items: [{ value: "overview", label: "Today", icon: LayoutDashboard }],
+    },
+    {
+      label: "Work",
+      items: [
+        { value: "application", label: "Application", icon: FileText },
+        { value: "investment", label: "Investment", icon: TrendingUp },
+        { value: "deals", label: "Deals & Credits", icon: Gift },
+        { value: "cofounder", label: "Co-founder posts", icon: Users },
+        { value: "applicants", label: "Applicants", icon: Inbox, badge: newApplicants },
+      ],
+    },
+    {
+      label: "Growth",
+      items: [{ value: "advisor", label: "AI Advisor", icon: BrainCircuit }],
+    },
+    {
+      label: "Account",
+      items: [
+        { value: "notifications", label: "Alerts", icon: Bell, badge: unreadCount },
+        { value: "account", label: "Account", icon: Settings },
+      ],
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -132,33 +162,37 @@ const StartupDashboard = () => {
           subtitle="Track applications, funding conversations and perks in one place"
           onOpenNotifications={() => setTab("notifications")}
           onOpenSettings={() => setTab("account")}
-          stats={[
-            { label: "Applications", value: stats.applications },
-            { label: "Investor inquiries", value: stats.inquiries },
-            { label: "Cloud credits", value: stats.credits },
-            { label: "Co-founder posts", value: stats.cofounderPosts },
-          ]}
         />
 
-        <Tabs value={tab} onValueChange={setTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 md:grid-cols-9">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="application">Application</TabsTrigger>
-            <TabsTrigger value="investment">Investment</TabsTrigger>
-            <TabsTrigger value="deals">Deals</TabsTrigger>
-            <TabsTrigger value="cofounder">Co-founder</TabsTrigger>
-            <TabsTrigger value="applicants">Applicants</TabsTrigger>
-            <TabsTrigger value="advisor">Advisor</TabsTrigger>
-            <TabsTrigger value="notifications" className="relative">
-              Alerts{unreadCount > 0 ? ` (${unreadCount})` : ""}
-            </TabsTrigger>
-            <TabsTrigger value="account">Account</TabsTrigger>
-          </TabsList>
+        <Tabs value={tab} onValueChange={setTab} className="flex flex-col lg:flex-row lg:gap-8">
+          <DashboardNav groups={navGroups} value={tab} onChange={setTab} />
 
+          <div className="min-w-0 flex-1 space-y-6">
 
           <TabsContent value="overview" className="space-y-6">
+            <DashboardOverview
+              onOpenAccount={() => setTab("account")}
+              onOpenAlerts={() => setTab("notifications")}
+              kpis={[
+                { label: "Applications", value: stats.applications, icon: FileText },
+                { label: "Investor inquiries", value: stats.inquiries, icon: TrendingUp },
+                { label: "Co-founder applicants", value: applicants.length, icon: Users },
+              ]}
+              steps={[
+                ...(stats.applications === 0
+                  ? [{ id: "apply", label: "Submit your first program application", description: "Apply to incubation, MVP Lab or Xi Lab.", actionLabel: "Apply", onAction: () => navigate("/incubation") }]
+                  : []),
+                ...(newApplicants > 0
+                  ? [{ id: "applicants", label: `${newApplicants} new co-founder applicant(s)`, description: "Review and move them through your pipeline.", actionLabel: "Review", onAction: () => setTab("applicants") }]
+                  : []),
+                ...(stats.credits === 0
+                  ? [{ id: "credits", label: "Claim your cloud credits", description: "Free infra credits from partner providers.", actionLabel: "Browse", onAction: () => navigate("/cloud-credits") }]
+                  : []),
+              ]}
+            />
             <StartupOverview applicationStatus={applicationStatus} stats={stats} />
           </TabsContent>
+
 
           <TabsContent value="application" className="space-y-6">
             <ApplicationStatus applicationStatus={applicationStatus} applications={applications} />
