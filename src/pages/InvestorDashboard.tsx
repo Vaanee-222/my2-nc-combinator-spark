@@ -1,9 +1,21 @@
 import { useEffect, useMemo, useState } from "react";
 import Navigation from "@/components/Navigation";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, Star, DollarSign, Target } from "lucide-react";
+import {
+  TrendingUp,
+  DollarSign,
+  Target,
+  LayoutDashboard,
+  Briefcase,
+  KanbanSquare,
+  Sparkles,
+  FileText,
+  BarChart3,
+  Bell,
+  Settings,
+  SlidersHorizontal,
+} from "lucide-react";
 
 import BlogManagement from "@/components/dashboard/BlogManagement";
 import PortfolioManagement from "@/components/dashboard/PortfolioManagement";
@@ -14,6 +26,8 @@ import InvestorSettings from "@/components/dashboard/InvestorSettings";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
 import AccountSettingsPanel from "@/components/dashboard/AccountSettingsPanel";
+import DashboardNav, { type DashboardNavGroup } from "@/components/dashboard/DashboardNav";
+import DashboardOverview from "@/components/dashboard/DashboardOverview";
 import { useNotifications } from "@/hooks/useNotifications";
 import Money from "@/components/Money";
 
