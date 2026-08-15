@@ -42,7 +42,7 @@ const InvestorDashboard = () => {
   const { data: profile } = useMyProfile();
   const { data: prefs } = useInvestorPreferences();
   const { data: holdings = [] } = useMyPortfolio();
-  const [tab, setTab] = useState(() => localStorage.getItem(TAB_KEY) || "portfolio");
+  const [tab, setTab] = useState(() => localStorage.getItem(TAB_KEY) || "overview");
   const { unreadCount } = useNotifications();
 
 
@@ -149,6 +149,7 @@ const InvestorDashboard = () => {
           <TabsContent value="account" className="space-y-6">
             <AccountSettingsPanel />
           </TabsContent>
+          </div>
         </Tabs>
 
       </main>
