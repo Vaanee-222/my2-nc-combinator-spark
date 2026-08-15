@@ -453,6 +453,7 @@ const StartupDashboard = () => {
           <TabsContent value="account" className="space-y-6">
             <AccountSettingsPanel />
           </TabsContent>
+          </div>
         </Tabs>
 
       </main>
