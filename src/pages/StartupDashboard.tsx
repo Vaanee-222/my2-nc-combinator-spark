@@ -332,9 +332,9 @@ const StartupDashboard = () => {
               </CofounderPostDialog>
             </div>
             {postsLoading ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">Loading your posts…</CardContent></Card>
+              <SkeletonCards count={2} />
             ) : myPosts.length === 0 ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">You haven't posted a co-founder requirement yet.</CardContent></Card>
+              <EmptyState icon={Users} title="No co-founder requirement posted" description="Describe the co-founder you need and receive applications directly here." />
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {myPosts.map((post: any) => {
