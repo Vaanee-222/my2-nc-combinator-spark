@@ -1,9 +1,21 @@
 import { useEffect, useMemo, useState } from "react";
 import Navigation from "@/components/Navigation";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, Star, DollarSign, Target } from "lucide-react";
+import {
+  TrendingUp,
+  DollarSign,
+  Target,
+  LayoutDashboard,
+  Briefcase,
+  KanbanSquare,
+  Sparkles,
+  FileText,
+  BarChart3,
+  Bell,
+  Settings,
+  SlidersHorizontal,
+} from "lucide-react";
 
 import BlogManagement from "@/components/dashboard/BlogManagement";
 import PortfolioManagement from "@/components/dashboard/PortfolioManagement";
@@ -14,6 +26,8 @@ import InvestorSettings from "@/components/dashboard/InvestorSettings";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
 import AccountSettingsPanel from "@/components/dashboard/AccountSettingsPanel";
+import DashboardNav, { type DashboardNavGroup } from "@/components/dashboard/DashboardNav";
+import DashboardOverview from "@/components/dashboard/DashboardOverview";
 import { useNotifications } from "@/hooks/useNotifications";
 import Money from "@/components/Money";
 
@@ -28,7 +42,7 @@ const InvestorDashboard = () => {
   const { data: profile } = useMyProfile();
   const { data: prefs } = useInvestorPreferences();
   const { data: holdings = [] } = useMyPortfolio();
-  const [tab, setTab] = useState(() => localStorage.getItem(TAB_KEY) || "portfolio");
+  const [tab, setTab] = useState(() => localStorage.getItem(TAB_KEY) || "overview");
   const { unreadCount } = useNotifications();
 
 
@@ -46,6 +60,28 @@ const InvestorDashboard = () => {
       : "Check size not set";
   const stages = (prefs?.stages ?? []).join(", ") || "Stages not set";
 
+  const navGroups: DashboardNavGroup[] = [
+    { label: "Overview", items: [{ value: "overview", label: "Today", icon: LayoutDashboard }] },
+    {
+      label: "Work",
+      items: [
+        { value: "portfolio", label: "Portfolio", icon: Briefcase },
+        { value: "pipeline", label: "Deal Pipeline", icon: KanbanSquare },
+        { value: "opportunities", label: "New Deals", icon: Sparkles },
+        { value: "blogs", label: "Blogs", icon: FileText },
+      ],
+    },
+    { label: "Growth", items: [{ value: "analytics", label: "Analytics", icon: BarChart3 }] },
+    {
+      label: "Account",
+      items: [
+        { value: "notifications", label: "Alerts", icon: Bell, badge: unreadCount },
+        { value: "settings", label: "Preferences", icon: SlidersHorizontal },
+        { value: "account", label: "Account", icon: Settings },
+      ],
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -62,72 +98,32 @@ const InvestorDashboard = () => {
               <Badge variant="outline">{stages}</Badge>
             </>
           }
-          stats={[
-            { label: "Total portfolio", value: metrics.total },
-            { label: "Active", value: metrics.active },
-            { label: "Exits", value: metrics.exits },
-          ]}
         />
 
+        <Tabs value={tab} onValueChange={setTab} className="flex flex-col lg:flex-row lg:gap-8">
+          <DashboardNav groups={navGroups} value={tab} onChange={setTab} />
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-card-gradient border-border">
-            <CardContent className="p-6">
-              <div className="flex items-center space-x-2">
-                <DollarSign className="h-8 w-8 text-primary" />
-                <div>
-                  <p className="text-2xl font-bold"><Money usd={metrics.invested} compact /></p>
-                  <p className="text-xs text-muted-foreground">Total Invested</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="bg-card-gradient border-border">
-            <CardContent className="p-6">
-              <div className="flex items-center space-x-2">
-                <TrendingUp className="h-8 w-8 text-green-500" />
-                <div>
-                  <p className="text-2xl font-bold"><Money usd={metrics.value} compact /></p>
-                  <p className="text-xs text-muted-foreground">Portfolio Value</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="bg-card-gradient border-border">
-            <CardContent className="p-6">
-              <div className="flex items-center space-x-2">
-                <Star className="h-8 w-8 text-yellow-500" />
-                <div>
-                  <p className="text-2xl font-bold">{metrics.roi}%</p>
-                  <p className="text-xs text-muted-foreground">Value / Cost</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="bg-card-gradient border-border">
-            <CardContent className="p-6">
-              <div className="flex items-center space-x-2">
-                <Target className="h-8 w-8 text-blue-500" />
-                <div>
-                  <p className="text-2xl font-bold">{metrics.successRate}%</p>
-                  <p className="text-xs text-muted-foreground">Above Cost</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+          <div className="min-w-0 flex-1 space-y-6">
 
-        <Tabs value={tab} onValueChange={setTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 md:grid-cols-8">
-            <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
-            <TabsTrigger value="pipeline">Deal Pipeline</TabsTrigger>
-            <TabsTrigger value="opportunities">New Deals</TabsTrigger>
-            <TabsTrigger value="blogs">Blogs</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="notifications">Alerts{unreadCount > 0 ? ` (${unreadCount})` : ""}</TabsTrigger>
-            <TabsTrigger value="settings">Preferences</TabsTrigger>
-            <TabsTrigger value="account">Account</TabsTrigger>
-          </TabsList>
+          <TabsContent value="overview" className="space-y-6">
+            <DashboardOverview
+              onOpenAccount={() => setTab("account")}
+              onOpenAlerts={() => setTab("notifications")}
+              kpis={[
+                { label: "Total invested", value: <Money usd={metrics.invested} compact />, icon: DollarSign },
+                { label: "Portfolio value", value: <Money usd={metrics.value} compact />, hint: `${metrics.roi}% value / cost`, icon: TrendingUp },
+                { label: "Active companies", value: metrics.active, hint: `${metrics.exits} exits`, icon: Target },
+              ]}
+              steps={[
+                ...(metrics.total === 0
+                  ? [{ id: "portfolio", label: "Add your first portfolio company", description: "Track investments, valuations and outcomes.", actionLabel: "Add", onAction: () => setTab("portfolio") }]
+                  : []),
+                ...(!prefs?.check_size_min && !prefs?.check_size_max
+                  ? [{ id: "prefs", label: "Set your investment preferences", description: "Check size and stages improve deal matching.", actionLabel: "Set preferences", onAction: () => setTab("settings") }]
+                  : []),
+              ]}
+            />
+          </TabsContent>
 
           <TabsContent value="portfolio" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <PortfolioManagement />
@@ -153,6 +149,7 @@ const InvestorDashboard = () => {
           <TabsContent value="account" className="space-y-6">
             <AccountSettingsPanel />
           </TabsContent>
+          </div>
         </Tabs>
 
       </main>

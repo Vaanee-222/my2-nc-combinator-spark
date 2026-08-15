@@ -1,11 +1,23 @@
 import { useState } from "react";
 import Navigation from "@/components/Navigation";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, BrainCircuit } from "lucide-react";
+import {
+  Plus,
+  BrainCircuit,
+  LayoutDashboard,
+  FileText,
+  TrendingUp,
+  Gift,
+  Users,
+  Inbox,
+  Bell,
+  Settings,
+  Handshake,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import StartupOverview from "@/components/dashboard/StartupOverview";
@@ -16,6 +28,9 @@ import AdvisorPanel from "@/components/AdvisorPanel";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
 import AccountSettingsPanel from "@/components/dashboard/AccountSettingsPanel";
+import DashboardNav, { type DashboardNavGroup } from "@/components/dashboard/DashboardNav";
+import DashboardOverview from "@/components/dashboard/DashboardOverview";
+import { EmptyState, SkeletonCards } from "@/components/dashboard/EmptyState";
 import { useDashboardTab } from "@/hooks/useDashboardTab";
 import { useNotifications } from "@/hooks/useNotifications";
 import { supabase } from "@/integrations/supabase/client";
@@ -108,6 +123,36 @@ const StartupDashboard = () => {
     toast({ title: "Applicant updated", description: `Moved to ${status}.` });
   };
 
+  const newApplicants = applicants.filter((a: any) => (a.status ?? "new") === "new").length;
+
+  const navGroups: DashboardNavGroup[] = [
+    {
+      label: "Overview",
+      items: [{ value: "overview", label: "Today", icon: LayoutDashboard }],
+    },
+    {
+      label: "Work",
+      items: [
+        { value: "application", label: "Application", icon: FileText },
+        { value: "investment", label: "Investment", icon: TrendingUp },
+        { value: "deals", label: "Deals & Credits", icon: Gift },
+        { value: "cofounder", label: "Co-founder posts", icon: Users },
+        { value: "applicants", label: "Applicants", icon: Inbox, badge: newApplicants },
+      ],
+    },
+    {
+      label: "Growth",
+      items: [{ value: "advisor", label: "AI Advisor", icon: BrainCircuit }],
+    },
+    {
+      label: "Account",
+      items: [
+        { value: "notifications", label: "Alerts", icon: Bell, badge: unreadCount },
+        { value: "account", label: "Account", icon: Settings },
+      ],
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -117,33 +162,37 @@ const StartupDashboard = () => {
           subtitle="Track applications, funding conversations and perks in one place"
           onOpenNotifications={() => setTab("notifications")}
           onOpenSettings={() => setTab("account")}
-          stats={[
-            { label: "Applications", value: stats.applications },
-            { label: "Investor inquiries", value: stats.inquiries },
-            { label: "Cloud credits", value: stats.credits },
-            { label: "Co-founder posts", value: stats.cofounderPosts },
-          ]}
         />
 
-        <Tabs value={tab} onValueChange={setTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 md:grid-cols-9">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="application">Application</TabsTrigger>
-            <TabsTrigger value="investment">Investment</TabsTrigger>
-            <TabsTrigger value="deals">Deals</TabsTrigger>
-            <TabsTrigger value="cofounder">Co-founder</TabsTrigger>
-            <TabsTrigger value="applicants">Applicants</TabsTrigger>
-            <TabsTrigger value="advisor">Advisor</TabsTrigger>
-            <TabsTrigger value="notifications" className="relative">
-              Alerts{unreadCount > 0 ? ` (${unreadCount})` : ""}
-            </TabsTrigger>
-            <TabsTrigger value="account">Account</TabsTrigger>
-          </TabsList>
+        <Tabs value={tab} onValueChange={setTab} className="flex flex-col lg:flex-row lg:gap-8">
+          <DashboardNav groups={navGroups} value={tab} onChange={setTab} />
 
+          <div className="min-w-0 flex-1 space-y-6">
 
           <TabsContent value="overview" className="space-y-6">
+            <DashboardOverview
+              onOpenAccount={() => setTab("account")}
+              onOpenAlerts={() => setTab("notifications")}
+              kpis={[
+                { label: "Applications", value: stats.applications, icon: FileText },
+                { label: "Investor inquiries", value: stats.inquiries, icon: TrendingUp },
+                { label: "Co-founder applicants", value: applicants.length, icon: Users },
+              ]}
+              steps={[
+                ...(stats.applications === 0
+                  ? [{ id: "apply", label: "Submit your first program application", description: "Apply to incubation, MVP Lab or Xi Lab.", actionLabel: "Apply", onAction: () => navigate("/incubation") }]
+                  : []),
+                ...(newApplicants > 0
+                  ? [{ id: "applicants", label: `${newApplicants} new co-founder applicant(s)`, description: "Review and move them through your pipeline.", actionLabel: "Review", onAction: () => setTab("applicants") }]
+                  : []),
+                ...(stats.credits === 0
+                  ? [{ id: "credits", label: "Claim your cloud credits", description: "Free infra credits from partner providers.", actionLabel: "Browse", onAction: () => navigate("/cloud-credits") }]
+                  : []),
+              ]}
+            />
             <StartupOverview applicationStatus={applicationStatus} stats={stats} />
           </TabsContent>
+
 
           <TabsContent value="application" className="space-y-6">
             <ApplicationStatus applicationStatus={applicationStatus} applications={applications} />
@@ -159,9 +208,9 @@ const StartupDashboard = () => {
               <Button variant="outline" onClick={() => navigate('/deals')}>Browse All Deals</Button>
             </div>
             {dealsLoading ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">Loading deals…</CardContent></Card>
+              <SkeletonCards />
             ) : deals.length === 0 ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">No approved deals available yet.</CardContent></Card>
+              <EmptyState icon={Gift} title="No deals available yet" description="Partner offers appear here once they are approved." actionLabel="Browse deals" onAction={() => navigate("/deals")} />
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {deals.map((deal: any) => {
@@ -283,9 +332,9 @@ const StartupDashboard = () => {
               </CofounderPostDialog>
             </div>
             {postsLoading ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">Loading your posts…</CardContent></Card>
+              <SkeletonCards count={2} />
             ) : myPosts.length === 0 ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">You haven't posted a co-founder requirement yet.</CardContent></Card>
+              <EmptyState icon={Users} title="No co-founder requirement posted" description="Describe the co-founder you need and receive applications directly here." />
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {myPosts.map((post: any) => {
@@ -336,9 +385,9 @@ const StartupDashboard = () => {
               <Badge variant="secondary">{applicants.length} total</Badge>
             </div>
             {applicantsLoading ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">Loading applications…</CardContent></Card>
+              <SkeletonCards count={2} />
             ) : applicants.length === 0 ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">No one has applied to your co-founder requirements yet.</CardContent></Card>
+              <EmptyState icon={Inbox} title="No applicants yet" description="Applications to your co-founder posts will show up here." actionLabel="Post a requirement" onAction={() => setTab("cofounder")} />
             ) : (
               <div className="space-y-4">
                 {applicants.map((a: any) => (
@@ -404,6 +453,7 @@ const StartupDashboard = () => {
           <TabsContent value="account" className="space-y-6">
             <AccountSettingsPanel />
           </TabsContent>
+          </div>
         </Tabs>
 
       </main>

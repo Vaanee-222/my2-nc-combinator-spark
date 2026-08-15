@@ -1,5 +1,5 @@
 import Navigation from "@/components/Navigation";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,7 +10,7 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Plus, Users, TrendingUp, Star, BrainCircuit, Pencil, Trash2, Search } from "lucide-react";
+import { Plus, Users, TrendingUp, Star, BrainCircuit, Pencil, Trash2, Search, LayoutDashboard, FileText, Inbox, Send, Bell, Settings } from "lucide-react";
 import { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
@@ -31,6 +31,8 @@ import {
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
 import AccountSettingsPanel from "@/components/dashboard/AccountSettingsPanel";
+import DashboardNav, { type DashboardNavGroup } from "@/components/dashboard/DashboardNav";
+import DashboardOverview from "@/components/dashboard/DashboardOverview";
 import { useDashboardTab } from "@/hooks/useDashboardTab";
 import { useNotifications } from "@/hooks/useNotifications";
 
@@ -42,7 +44,7 @@ const CofounderDashboard = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { user } = useAuth();
-  const [tab, setTab] = useDashboardTab("cofounder-dashboard-tab", "posts");
+  const [tab, setTab] = useDashboardTab("cofounder-dashboard-tab", "overview");
   const { unreadCount } = useNotifications();
 
   const { data: profile } = useMyProfile();
@@ -139,6 +141,29 @@ const CofounderDashboard = () => {
   };
 
 
+  const newReceived = received.filter((a: any) => (a.status ?? "new") === "new").length;
+
+  const navGroups: DashboardNavGroup[] = [
+    { label: "Overview", items: [{ value: "overview", label: "Today", icon: LayoutDashboard }] },
+    {
+      label: "Work",
+      items: [
+        { value: "posts", label: "My posts", icon: FileText },
+        { value: "received", label: "Received", icon: Inbox, badge: newReceived },
+        { value: "sent", label: "My applications", icon: Send },
+        { value: "opportunities", label: "Opportunities", icon: Search },
+      ],
+    },
+    { label: "Growth", items: [{ value: "advisor", label: "AI Advisor", icon: BrainCircuit }] },
+    {
+      label: "Account",
+      items: [
+        { value: "notifications", label: "Alerts", icon: Bell, badge: unreadCount },
+        { value: "account", label: "Account", icon: Settings },
+      ],
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -148,23 +173,37 @@ const CofounderDashboard = () => {
           subtitle="Manage your co-founder search, applications and profile"
           onOpenNotifications={() => setTab("notifications")}
           onOpenSettings={() => setTab("account")}
-          stats={[
-            { label: "My posts", value: myPosts.length },
-            { label: "Applications received", value: received.length },
-            { label: "Applications sent", value: sent.length },
-          ]}
         />
 
-        <Tabs value={tab} onValueChange={setTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 md:grid-cols-7">
-            <TabsTrigger value="posts">My Posts</TabsTrigger>
-            <TabsTrigger value="received">Received</TabsTrigger>
-            <TabsTrigger value="sent">My Applications</TabsTrigger>
-            <TabsTrigger value="opportunities">Opportunities</TabsTrigger>
-            <TabsTrigger value="advisor">Advisor</TabsTrigger>
-            <TabsTrigger value="notifications">Alerts{unreadCount > 0 ? ` (${unreadCount})` : ""}</TabsTrigger>
-            <TabsTrigger value="account">Profile &amp; Settings</TabsTrigger>
-          </TabsList>
+        <Tabs value={tab} onValueChange={setTab} className="flex flex-col lg:flex-row lg:gap-8">
+          <DashboardNav groups={navGroups} value={tab} onChange={setTab} />
+
+          <div className="min-w-0 flex-1 space-y-6">
+
+          <TabsContent value="overview" className="space-y-6">
+            <DashboardOverview
+              onOpenAccount={() => setTab("account")}
+              onOpenAlerts={() => setTab("notifications")}
+              kpis={[
+                { label: "My posts", value: myPosts.length, icon: FileText },
+                { label: "Applications received", value: received.length, hint: `${newReceived} new`, icon: Inbox },
+                { label: "Applications sent", value: sent.length, icon: Send },
+              ]}
+              steps={[
+                ...(myPosts.length === 0
+                  ? [{ id: "post", label: "Post your co-founder requirement", description: "Get discovered by matching co-founders.", actionLabel: "Create post", onAction: () => setTab("posts") }]
+                  : []),
+                ...(newReceived > 0
+                  ? [{ id: "received", label: `${newReceived} new application(s) received`, description: "Shortlist or reply to interested co-founders.", actionLabel: "Review", onAction: () => setTab("received") }]
+                  : []),
+                ...(sent.length === 0
+                  ? [{ id: "apply", label: "Apply to an open opportunity", description: "Browse founders looking for a co-founder.", actionLabel: "Browse", onAction: () => setTab("opportunities") }]
+                  : []),
+              ]}
+            />
+          </TabsContent>
+
+
 
 
 
@@ -384,6 +423,7 @@ const CofounderDashboard = () => {
             </div>
             <AdvisorPanel compact />
           </TabsContent>
+          </div>
         </Tabs>
       </main>
 
