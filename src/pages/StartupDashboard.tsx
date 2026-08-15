@@ -385,9 +385,9 @@ const StartupDashboard = () => {
               <Badge variant="secondary">{applicants.length} total</Badge>
             </div>
             {applicantsLoading ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">Loading applications…</CardContent></Card>
+              <SkeletonCards count={2} />
             ) : applicants.length === 0 ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">No one has applied to your co-founder requirements yet.</CardContent></Card>
+              <EmptyState icon={Inbox} title="No applicants yet" description="Applications to your co-founder posts will show up here." actionLabel="Post a requirement" onAction={() => setTab("cofounder")} />
             ) : (
               <div className="space-y-4">
                 {applicants.map((a: any) => (
