@@ -5,7 +5,19 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, BrainCircuit } from "lucide-react";
+import {
+  Plus,
+  BrainCircuit,
+  LayoutDashboard,
+  FileText,
+  TrendingUp,
+  Gift,
+  Users,
+  Inbox,
+  Bell,
+  Settings,
+  Handshake,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import StartupOverview from "@/components/dashboard/StartupOverview";
