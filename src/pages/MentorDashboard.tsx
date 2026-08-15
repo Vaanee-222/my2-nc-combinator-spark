@@ -227,6 +227,27 @@ const MentorDashboard = () => {
     );
   };
 
+  const navGroups: DashboardNavGroup[] = [
+    { label: "Overview", items: [{ value: "overview", label: "Today", icon: LayoutDashboard }] },
+    {
+      label: "Work",
+      items: [
+        { value: "mentees", label: "Mentees", icon: Users },
+        { value: "sessions", label: "Sessions", icon: Calendar },
+        { value: "requests", label: "Requests", icon: Inbox, badge: pendingRequests.length },
+      ],
+    },
+    { label: "Growth", items: [{ value: "advisor", label: "AI Advisor", icon: BrainCircuit }] },
+    {
+      label: "Account",
+      items: [
+        { value: "profile", label: "Mentor profile", icon: UserCog },
+        { value: "notifications", label: "Alerts", icon: Bell, badge: unreadCount },
+        { value: "account", label: "Account", icon: Settings },
+      ],
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -244,25 +265,37 @@ const MentorDashboard = () => {
               ))}
             </>
           }
-          stats={[
-            { label: "Mentees", value: mentees.length },
-            { label: "Active", value: activeMentees.length },
-            { label: "Sessions done", value: completedSessions },
-            { label: "Pending requests", value: pendingRequests.length },
-            { label: "Rating", value: Number(profile?.rating ?? 0).toFixed(1) },
-          ]}
         />
 
-        <Tabs value={tab} onValueChange={setTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 md:grid-cols-7">
-            <TabsTrigger value="mentees">Mentees</TabsTrigger>
-            <TabsTrigger value="sessions">Sessions</TabsTrigger>
-            <TabsTrigger value="requests">Requests {pendingRequests.length > 0 && `(${pendingRequests.length})`}</TabsTrigger>
-            <TabsTrigger value="advisor">AI Advisor</TabsTrigger>
-            <TabsTrigger value="profile">Mentor Profile</TabsTrigger>
-            <TabsTrigger value="notifications">Alerts{unreadCount > 0 ? ` (${unreadCount})` : ""}</TabsTrigger>
-            <TabsTrigger value="account">Account</TabsTrigger>
-          </TabsList>
+        <Tabs value={tab} onValueChange={setTab} className="flex flex-col lg:flex-row lg:gap-8">
+          <DashboardNav groups={navGroups} value={tab} onChange={setTab} />
+
+          <div className="min-w-0 flex-1 space-y-6">
+
+          <TabsContent value="overview" className="space-y-6">
+            <DashboardOverview
+              onOpenAccount={() => setTab("account")}
+              onOpenAlerts={() => setTab("notifications")}
+              kpis={[
+                { label: "Active mentees", value: activeMentees.length, hint: `${mentees.length} total`, icon: Users },
+                { label: "Sessions completed", value: completedSessions, icon: Calendar },
+                { label: "Rating", value: Number(profile?.rating ?? 0).toFixed(1), icon: Star },
+              ]}
+              steps={[
+                ...(pendingRequests.length > 0
+                  ? [{ id: "requests", label: `${pendingRequests.length} mentorship request(s) waiting`, description: "Founders are waiting for your response.", actionLabel: "Review", onAction: () => setTab("requests") }]
+                  : []),
+                ...(!profile?.expertise
+                  ? [{ id: "mentor-profile", label: "Complete your mentor profile", description: "Expertise and specializations make you discoverable.", actionLabel: "Edit profile", onAction: () => setTab("profile") }]
+                  : []),
+                ...(mentees.length === 0
+                  ? [{ id: "mentees", label: "Add your first mentee", description: "Track focus areas and session history.", actionLabel: "Add mentee", onAction: () => setTab("mentees") }]
+                  : []),
+              ]}
+            />
+          </TabsContent>
+
+
 
 
           <TabsContent value="mentees" className="space-y-6">
