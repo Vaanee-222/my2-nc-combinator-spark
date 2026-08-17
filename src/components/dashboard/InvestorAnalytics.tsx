@@ -14,6 +14,8 @@ import {
   Legend,
 } from "recharts";
 import Money from "@/components/Money";
+import { EmptyState, SkeletonCards } from "@/components/dashboard/EmptyState";
+import { BarChart3 } from "lucide-react";
 import { useMyPortfolio, useMyDeals, portfolioMetrics, PIPELINE_STAGES, num } from "@/hooks/useInvestorData";
 
 const COLORS = ["hsl(var(--primary))", "#22c55e", "#3b82f6", "#eab308", "#a855f7", "#ef4444"];

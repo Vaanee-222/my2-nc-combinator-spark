@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Plus } from "lucide-react";
 import InvestmentApplicationDialog from "@/components/InvestmentApplicationDialog";
 import { useMyInvestorInquiries, formatDate } from "@/hooks/useMyData";
+import { EmptyState, SkeletonList } from "@/components/dashboard/EmptyState";
 
 const InvestmentTable = () => {
   const { data: inquiries = [], isLoading } = useMyInvestorInquiries();

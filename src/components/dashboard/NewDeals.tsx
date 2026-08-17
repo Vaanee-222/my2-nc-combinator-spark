@@ -11,6 +11,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSourceableStartups, useMyDeals, useIncomingIntroductions } from "@/hooks/useInvestorData";
 import { formatDate as formatDealDate } from "@/hooks/useMyData";
+import { EmptyState, SkeletonCards } from "@/components/dashboard/EmptyState";
+import { Sparkles } from "lucide-react";
 
 const NewDeals = () => {
   const navigate = useNavigate();
