@@ -166,17 +166,59 @@ export const useNotifications = () => {
     },
   });
 
+  // Read state lives in the database so it follows the user across devices.
+  // localStorage stays as an offline-first fallback and instant hydration source.
   const [read, setRead] = useState<string[]>(readIds);
 
   useEffect(() => {
     localStorage.setItem(READ_KEY, JSON.stringify(read.slice(-500)));
   }, [read]);
 
+  useEffect(() => {
+    if (!user?.id) return;
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase
+        .from("notification_reads")
+        .select("notification_key")
+        .eq("user_id", user.id);
+      if (cancelled || !data) return;
+      setRead((prev) => Array.from(new Set([...prev, ...data.map((r: any) => r.notification_key)])));
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id]);
+
+  const persist = useCallback(
+    async (ids: string[]) => {
+      if (!user?.id || ids.length === 0) return;
+      await supabase
+        .from("notification_reads")
+        .upsert(
+          ids.map((notification_key) => ({ user_id: user.id, notification_key })),
+          { onConflict: "user_id,notification_key" },
+        );
+    },
+    [user?.id],
+  );
+
   const items = query.data ?? [];
   const unread = useMemo(() => items.filter((i) => !read.includes(i.id)), [items, read]);
 
-  const markRead = useCallback((id: string) => setRead((prev) => (prev.includes(id) ? prev : [...prev, id])), []);
-  const markAllRead = useCallback(() => setRead((prev) => Array.from(new Set([...prev, ...items.map((i) => i.id)]))), [items]);
+  const markRead = useCallback(
+    (id: string) => {
+      setRead((prev) => (prev.includes(id) ? prev : [...prev, id]));
+      void persist([id]);
+    },
+    [persist],
+  );
+
+  const markAllRead = useCallback(() => {
+    const ids = items.map((i) => i.id);
+    setRead((prev) => Array.from(new Set([...prev, ...ids])));
+    void persist(ids);
+  }, [items, persist]);
 
   return {
     items,
@@ -188,3 +230,4 @@ export const useNotifications = () => {
     refetch: query.refetch,
   };
 };
+
