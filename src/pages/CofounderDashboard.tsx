@@ -33,6 +33,7 @@ import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
 import AccountSettingsPanel from "@/components/dashboard/AccountSettingsPanel";
 import DashboardNav, { type DashboardNavGroup } from "@/components/dashboard/DashboardNav";
 import DashboardOverview from "@/components/dashboard/DashboardOverview";
+import { EmptyState, SkeletonCards, SkeletonList } from "@/components/dashboard/EmptyState";
 import { useDashboardTab } from "@/hooks/useDashboardTab";
 import { useNotifications } from "@/hooks/useNotifications";
 
@@ -385,9 +386,13 @@ const CofounderDashboard = () => {
               </div>
             </div>
             {oppLoading ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">Loading…</CardContent></Card>
+              <SkeletonCards count={2} />
             ) : visibleOpportunities.length === 0 ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">No open opportunities match your search.</CardContent></Card>
+              <EmptyState
+                icon={Search}
+                title="No open opportunities match your search"
+                description="Clear the search or check back soon — new founder posts arrive regularly."
+              />
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {visibleOpportunities.map((post: any) => {

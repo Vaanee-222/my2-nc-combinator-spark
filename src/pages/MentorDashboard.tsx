@@ -34,6 +34,8 @@ import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
 import AccountSettingsPanel from "@/components/dashboard/AccountSettingsPanel";
 import DashboardNav, { type DashboardNavGroup } from "@/components/dashboard/DashboardNav";
 import DashboardOverview from "@/components/dashboard/DashboardOverview";
+import { EmptyState, SkeletonList } from "@/components/dashboard/EmptyState";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useDashboardTab } from "@/hooks/useDashboardTab";
 import { useNotifications } from "@/hooks/useNotifications";
 
