@@ -323,17 +323,22 @@ const MentorDashboard = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {menteesLoading && (
-                      <TableRow>
-                        <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
-                          Loading mentees…
-                        </TableCell>
-                      </TableRow>
-                    )}
+                    {menteesLoading &&
+                      Array.from({ length: 3 }).map((_, i) => (
+                        <TableRow key={`mentee-skeleton-${i}`}>
+                          <TableCell colSpan={8} className="py-4">
+                            <Skeleton className="h-6 w-full" />
+                          </TableCell>
+                        </TableRow>
+                      ))}
                     {!menteesLoading && mentees.length === 0 && (
                       <TableRow>
-                        <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
-                          No mentees yet. Accept a request or add one manually.
+                        <TableCell colSpan={8} className="p-4">
+                          <EmptyState
+                            icon={Users}
+                            title="No mentees yet"
+                            description="Accept a mentorship request or add a mentee manually to get started."
+                          />
                         </TableCell>
                       </TableRow>
                     )}
@@ -384,13 +389,15 @@ const MentorDashboard = () => {
                 <Plus className="mr-2 h-4 w-4" /> Schedule Session
               </Button>
             </div>
-            {sessionsLoading && <p className="text-muted-foreground">Loading sessions…</p>}
+            {sessionsLoading && <SkeletonList count={3} />}
             {!sessionsLoading && upcomingSessions.length === 0 && (
-              <Card>
-                <CardContent className="py-10 text-center text-muted-foreground">
-                  No upcoming sessions scheduled.
-                </CardContent>
-              </Card>
+              <EmptyState
+                icon={Calendar}
+                title="No upcoming sessions"
+                description="Schedule a session with a mentee and it will appear here."
+                actionLabel="Schedule session"
+                onAction={() => openSession()}
+              />
             )}
             <div className="space-y-4">
               {upcomingSessions.map((session) => (
@@ -451,13 +458,13 @@ const MentorDashboard = () => {
               <h2 className="text-2xl font-bold">Mentorship Requests</h2>
               <Badge variant="secondary">{pendingRequests.length} Pending</Badge>
             </div>
-            {requestsLoading && <p className="text-muted-foreground">Loading requests…</p>}
+            {requestsLoading && <SkeletonList count={3} />}
             {!requestsLoading && requests.length === 0 && (
-              <Card>
-                <CardContent className="py-10 text-center text-muted-foreground">
-                  No mentorship requests yet.
-                </CardContent>
-              </Card>
+              <EmptyState
+                icon={Inbox}
+                title="No mentorship requests yet"
+                description="Founders looking for your expertise will show up here."
+              />
             )}
             <div className="space-y-4">
               {requests.map((request) => (
