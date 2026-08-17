@@ -184,13 +184,13 @@ const DealPipeline = () => {
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading pipeline…</p>
+        <SkeletonList count={3} />
       ) : filtered.length === 0 ? (
-        <Card>
-          <CardContent className="p-6 text-sm text-muted-foreground">
-            No deals in this view. Add a deal manually or source one from the New Deals tab.
-          </CardContent>
-        </Card>
+        <EmptyState
+          icon={KanbanSquare}
+          title="No deals in this view"
+          description="Add a deal manually or source one from the New Deals tab to start tracking your pipeline."
+        />
       ) : (
         <div className="space-y-4">
           {filtered.map((deal: any) => (

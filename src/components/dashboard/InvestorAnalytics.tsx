@@ -60,15 +60,15 @@ const InvestorAnalytics = () => {
 
   const conversion = deals.length > 0 ? Math.round((deals.filter((d: any) => d.stage === "Closed").length / deals.length) * 100) : 0;
 
-  if (isLoading) return <p className="text-sm text-muted-foreground">Loading analytics…</p>;
+  if (isLoading) return <SkeletonCards count={3} />;
 
   if (holdings.length === 0 && deals.length === 0) {
     return (
-      <Card>
-        <CardContent className="p-6 text-sm text-muted-foreground">
-          Analytics appear once you add portfolio holdings or pipeline deals.
-        </CardContent>
-      </Card>
+      <EmptyState
+        icon={BarChart3}
+        title="No analytics yet"
+        description="Charts appear once you add portfolio holdings or pipeline deals."
+      />
     );
   }
 
