@@ -23,6 +23,7 @@ const readIds = (): string[] => {
   }
 };
 
+
 const toneForStatus = (status?: string | null): NotificationItem["tone"] => {
   const s = (status ?? "").toLowerCase();
   if (["approved", "accepted", "shortlisted", "completed", "registered"].includes(s)) return "success";
