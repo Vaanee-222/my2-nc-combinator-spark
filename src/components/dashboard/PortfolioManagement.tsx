@@ -223,12 +223,17 @@ const PortfolioManagement = () => {
       <Card>
         <CardContent className="p-0">
           {isLoading ? (
-            <p className="p-6 text-sm text-muted-foreground">Loading portfolio…</p>
+            <div className="p-4"><SkeletonList count={4} /></div>
           ) : filtered.length === 0 ? (
-            <p className="p-6 text-sm text-muted-foreground">
-              No holdings yet. Add one manually or pull a company from the startup directory.
-            </p>
+            <div className="p-4">
+              <EmptyState
+                icon={Briefcase}
+                title="No portfolio companies yet"
+                description="Add one manually or pull a company from the startup directory to start tracking value."
+              />
+            </div>
           ) : (
+
             <Table>
               <TableHeader>
                 <TableRow>
