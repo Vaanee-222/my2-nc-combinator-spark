@@ -14,6 +14,8 @@ import {
   Legend,
 } from "recharts";
 import Money from "@/components/Money";
+import { EmptyState, SkeletonCards } from "@/components/dashboard/EmptyState";
+import { BarChart3 } from "lucide-react";
 import { useMyPortfolio, useMyDeals, portfolioMetrics, PIPELINE_STAGES, num } from "@/hooks/useInvestorData";
 
 const COLORS = ["hsl(var(--primary))", "#22c55e", "#3b82f6", "#eab308", "#a855f7", "#ef4444"];
@@ -58,15 +60,15 @@ const InvestorAnalytics = () => {
 
   const conversion = deals.length > 0 ? Math.round((deals.filter((d: any) => d.stage === "Closed").length / deals.length) * 100) : 0;
 
-  if (isLoading) return <p className="text-sm text-muted-foreground">Loading analytics…</p>;
+  if (isLoading) return <SkeletonCards count={3} />;
 
   if (holdings.length === 0 && deals.length === 0) {
     return (
-      <Card>
-        <CardContent className="p-6 text-sm text-muted-foreground">
-          Analytics appear once you add portfolio holdings or pipeline deals.
-        </CardContent>
-      </Card>
+      <EmptyState
+        icon={BarChart3}
+        title="No analytics yet"
+        description="Charts appear once you add portfolio holdings or pipeline deals."
+      />
     );
   }
 

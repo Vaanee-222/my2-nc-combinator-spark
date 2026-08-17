@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Plus } from "lucide-react";
 import InvestmentApplicationDialog from "@/components/InvestmentApplicationDialog";
 import { useMyInvestorInquiries, formatDate } from "@/hooks/useMyData";
+import { EmptyState, SkeletonList } from "@/components/dashboard/EmptyState";
 
 const InvestmentTable = () => {
   const { data: inquiries = [], isLoading } = useMyInvestorInquiries();
@@ -26,9 +27,15 @@ const InvestmentTable = () => {
       <Card>
         <CardContent className="p-0">
           {isLoading ? (
-            <p className="p-6 text-sm text-muted-foreground">Loading investment applications…</p>
+            <div className="p-4"><SkeletonList count={3} /></div>
           ) : inquiries.length === 0 ? (
-            <p className="p-6 text-sm text-muted-foreground">No investment applications yet.</p>
+            <div className="p-4">
+              <EmptyState
+                icon={Plus}
+                title="No investment applications yet"
+                description="Submit an application to start conversations with investors on the platform."
+              />
+            </div>
           ) : (
             <Table>
               <TableHeader>

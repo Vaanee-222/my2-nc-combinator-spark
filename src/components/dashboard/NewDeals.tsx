@@ -11,6 +11,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSourceableStartups, useMyDeals, useIncomingIntroductions } from "@/hooks/useInvestorData";
 import { formatDate as formatDealDate } from "@/hooks/useMyData";
+import { EmptyState, SkeletonCards } from "@/components/dashboard/EmptyState";
+import { Sparkles } from "lucide-react";
 
 const NewDeals = () => {
   const navigate = useNavigate();
@@ -118,9 +120,13 @@ const NewDeals = () => {
       )}
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading opportunities…</p>
+        <SkeletonCards count={4} />
       ) : filtered.length === 0 ? (
-        <Card><CardContent className="p-6 text-sm text-muted-foreground">No startups match these filters.</CardContent></Card>
+        <EmptyState
+          icon={Sparkles}
+          title="No startups match these filters"
+          description="Widen the sector, stage or search terms to see more sourcing opportunities."
+        />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {filtered.map((s: any) => (

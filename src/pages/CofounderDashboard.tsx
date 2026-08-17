@@ -33,6 +33,7 @@ import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
 import AccountSettingsPanel from "@/components/dashboard/AccountSettingsPanel";
 import DashboardNav, { type DashboardNavGroup } from "@/components/dashboard/DashboardNav";
 import DashboardOverview from "@/components/dashboard/DashboardOverview";
+import { EmptyState, SkeletonCards, SkeletonList } from "@/components/dashboard/EmptyState";
 import { useDashboardTab } from "@/hooks/useDashboardTab";
 import { useNotifications } from "@/hooks/useNotifications";
 
@@ -215,9 +216,13 @@ const CofounderDashboard = () => {
               </CofounderPostDialog>
             </div>
             {postsLoading ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">Loading your posts…</CardContent></Card>
+              <SkeletonCards count={2} />
             ) : myPosts.length === 0 ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">You haven't posted a requirement yet.</CardContent></Card>
+              <EmptyState
+                icon={Users}
+                title="No co-founder post yet"
+                description="Describe the co-founder you are looking for and start receiving applications."
+              />
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {myPosts.map((post: any) => {
@@ -271,9 +276,13 @@ const CofounderDashboard = () => {
               <Badge variant="secondary">{received.length} total</Badge>
             </div>
             {receivedLoading ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">Loading…</CardContent></Card>
+              <SkeletonList count={3} />
             ) : received.length === 0 ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">No applications yet.</CardContent></Card>
+              <EmptyState
+                icon={Inbox}
+                title="No applications yet"
+                description="Applications to your co-founder posts will appear here."
+              />
             ) : (
               <div className="space-y-4">
                 {received.map((a: any) => (
@@ -335,7 +344,13 @@ const CofounderDashboard = () => {
           <TabsContent value="sent" className="space-y-6">
             <h2 className="text-2xl font-bold">My Applications</h2>
             {sent.length === 0 ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">You haven't applied to any co-founder opportunity yet.</CardContent></Card>
+              <EmptyState
+                icon={Send}
+                title="No applications sent"
+                description="Browse open opportunities and apply to founders looking for a co-founder."
+                actionLabel="Browse opportunities"
+                onAction={() => setTab("opportunities")}
+              />
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {sent.map((a: any) => (
@@ -371,9 +386,13 @@ const CofounderDashboard = () => {
               </div>
             </div>
             {oppLoading ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">Loading…</CardContent></Card>
+              <SkeletonCards count={2} />
             ) : visibleOpportunities.length === 0 ? (
-              <Card><CardContent className="py-10 text-center text-sm text-muted-foreground">No open opportunities match your search.</CardContent></Card>
+              <EmptyState
+                icon={Search}
+                title="No open opportunities match your search"
+                description="Clear the search or check back soon — new founder posts arrive regularly."
+              />
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {visibleOpportunities.map((post: any) => {

@@ -8,13 +8,14 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Download, Trash2 } from "lucide-react";
+import { Plus, Download, Trash2, KanbanSquare } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import ConsultationDialog from "@/components/ConsultationDialog";
 import Money from "@/components/Money";
+import { EmptyState, SkeletonList } from "@/components/dashboard/EmptyState";
 import { useMyDeals, PIPELINE_STAGES, progressForStage, num, toCsv } from "@/hooks/useInvestorData";
 
 const emptyDeal = {
@@ -183,13 +184,13 @@ const DealPipeline = () => {
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading pipeline…</p>
+        <SkeletonList count={3} />
       ) : filtered.length === 0 ? (
-        <Card>
-          <CardContent className="p-6 text-sm text-muted-foreground">
-            No deals in this view. Add a deal manually or source one from the New Deals tab.
-          </CardContent>
-        </Card>
+        <EmptyState
+          icon={KanbanSquare}
+          title="No deals in this view"
+          description="Add a deal manually or source one from the New Deals tab to start tracking your pipeline."
+        />
       ) : (
         <div className="space-y-4">
           {filtered.map((deal: any) => (

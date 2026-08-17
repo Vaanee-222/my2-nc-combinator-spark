@@ -50,4 +50,23 @@ export const SkeletonCards = ({ count = 3 }: { count?: number }) => (
   </div>
 );
 
+/** Vertical list placeholder — use for stacked rows, tables and inbox-style panes. */
+export const SkeletonList = ({ count = 4 }: { count?: number }) => (
+  <div className="space-y-3">
+    {Array.from({ length: count }).map((_, i) => (
+      <Card key={i} className="bg-card-gradient border-border">
+        <CardContent className="flex items-center gap-4 p-4">
+          <Skeleton className="h-10 w-10 shrink-0 rounded-full" />
+          <div className="min-w-0 flex-1 space-y-2">
+            <Skeleton className="h-4 w-1/3" />
+            <Skeleton className="h-3 w-2/3" />
+          </div>
+          <Skeleton className="h-8 w-20 shrink-0" />
+        </CardContent>
+      </Card>
+    ))}
+  </div>
+);
+
 export default EmptyState;
+
