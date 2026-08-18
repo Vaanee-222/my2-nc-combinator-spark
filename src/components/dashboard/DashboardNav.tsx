@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useDashboardShortcuts } from "@/hooks/useDashboardShortcuts";
 
 export type DashboardNavItem = {
   value: string;
@@ -23,7 +24,9 @@ type Props = {
   onChange: (value: string) => void;
 };
 
-const NavList = ({ groups, value, onChange }: Props) => (
+const NavList = ({ groups, value, onChange }: Props) => {
+  let index = 0;
+  return (
   <nav className="space-y-6">
     {groups.map((group) => (
       <div key={group.label}>
@@ -34,12 +37,15 @@ const NavList = ({ groups, value, onChange }: Props) => (
           {group.items.map((item) => {
             const Icon = item.icon;
             const active = value === item.value;
+            index += 1;
+            const shortcut = index <= 9 ? index : undefined;
             return (
               <button
                 key={item.value}
                 type="button"
                 onClick={() => onChange(item.value)}
                 aria-current={active ? "page" : undefined}
+                title={shortcut ? `${item.label} (g then ${shortcut})` : item.label}
                 className={cn(
                   "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
                   active
@@ -54,6 +60,9 @@ const NavList = ({ groups, value, onChange }: Props) => (
                     {item.badge}
                   </Badge>
                 )}
+                {!item.badge && shortcut && (
+                  <span className="ml-auto hidden text-[10px] text-muted-foreground/70 lg:inline">g{shortcut}</span>
+                )}
               </button>
             );
           })}
@@ -61,11 +70,14 @@ const NavList = ({ groups, value, onChange }: Props) => (
       </div>
     ))}
   </nav>
-);
+  );
+};
 
 const DashboardNav = ({ groups, value, onChange }: Props) => {
   const [open, setOpen] = useState(false);
-  const current = groups.flatMap((g) => g.items).find((i) => i.value === value);
+  const items = groups.flatMap((g) => g.items);
+  const current = items.find((i) => i.value === value);
+  useDashboardShortcuts(items.map((i) => i.value), onChange);
 
   return (
     <>

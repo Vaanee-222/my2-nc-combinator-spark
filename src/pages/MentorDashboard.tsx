@@ -274,7 +274,7 @@ const MentorDashboard = () => {
         <Tabs value={tab} onValueChange={setTab} className="flex flex-col lg:flex-row lg:gap-8">
           <DashboardNav groups={navGroups} value={tab} onChange={setTab} />
 
-          <div className="min-w-0 flex-1 space-y-6">
+          <div className="dashboard-panes min-w-0 flex-1 space-y-6">
 
           <TabsContent value="overview" className="space-y-6">
             <DashboardOverview
