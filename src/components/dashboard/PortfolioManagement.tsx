@@ -14,6 +14,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import ListToolbar from "@/components/dashboard/ListToolbar";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import Money from "@/components/Money";
 import { EmptyState, SkeletonList } from "@/components/dashboard/EmptyState";
 import {
@@ -102,7 +106,6 @@ const PortfolioManagement = () => {
   };
 
   const remove = async (id: string) => {
-    if (!confirm("Remove this holding from your portfolio?")) return;
     const { error } = await supabase.from("investor_portfolio").delete().eq("id", id);
     if (error) {
       toast({ title: "Delete failed", description: error.message, variant: "destructive" });
@@ -272,7 +275,7 @@ const PortfolioManagement = () => {
                           <Button variant="outline" size="sm" onClick={() => setEditing(h)}>
                             <Edit className="h-4 w-4" />
                           </Button>
-                          <Button variant="outline" size="sm" onClick={() => remove(h.id)}>
+                          <Button variant="outline" size="sm" onClick={() => setPendingDelete(h.id)}>
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
@@ -365,6 +368,27 @@ const PortfolioManagement = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      <AlertDialog open={!!pendingDelete} onOpenChange={(o) => !o && setPendingDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Remove this holding?</AlertDialogTitle>
+            <AlertDialogDescription>This removes the company from your portfolio tracking. Historical valuations for it will no longer appear in your metrics.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={() => {
+                const id = pendingDelete;
+                setPendingDelete(null);
+                if (id) remove(id);
+              }}
+            >
+              Remove
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

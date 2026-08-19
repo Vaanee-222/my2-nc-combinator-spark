@@ -9,6 +9,10 @@ import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Download, Trash2, KanbanSquare } from "lucide-react";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -106,7 +110,6 @@ const DealPipeline = () => {
   };
 
   const remove = async (id: string) => {
-    if (!confirm("Remove this deal from the pipeline?")) return;
     const { error } = await supabase.from("investor_deals").delete().eq("id", id);
     if (error) {
       toast({ title: "Delete failed", description: error.message, variant: "destructive" });
@@ -233,7 +236,7 @@ const DealPipeline = () => {
                         <Button variant="outline" size="sm">Schedule Call</Button>
                       </ConsultationDialog>
                       <Button size="sm" onClick={() => convertToHolding(deal)}>Add to portfolio</Button>
-                      <Button size="sm" variant="outline" onClick={() => remove(deal.id)}>
+                      <Button size="sm" variant="outline" onClick={() => setPendingDelete(deal.id)}>
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
@@ -325,6 +328,27 @@ const DealPipeline = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      <AlertDialog open={!!pendingDelete} onOpenChange={(o) => !o && setPendingDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Remove this deal?</AlertDialogTitle>
+            <AlertDialogDescription>The deal disappears from your pipeline. Notes and stage history for it are deleted too.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={() => {
+                const id = pendingDelete;
+                setPendingDelete(null);
+                if (id) remove(id);
+              }}
+            >
+              Remove
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
