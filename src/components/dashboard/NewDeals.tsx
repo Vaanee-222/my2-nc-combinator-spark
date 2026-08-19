@@ -12,6 +12,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useSourceableStartups, useMyDeals, useIncomingIntroductions } from "@/hooks/useInvestorData";
 import { formatDate as formatDealDate } from "@/hooks/useMyData";
 import { EmptyState, SkeletonCards } from "@/components/dashboard/EmptyState";
+import ListToolbar from "@/components/dashboard/ListToolbar";
 import { Sparkles } from "lucide-react";
 
 const NewDeals = () => {
@@ -78,23 +79,23 @@ const NewDeals = () => {
         <Button variant="outline" onClick={() => navigate("/startup-directory")}>Browse full directory</Button>
       </div>
 
-      <div className="flex flex-wrap gap-3">
-        <Input placeholder="Search startups" value={search} onChange={(e) => setSearch(e.target.value)} className="max-w-xs" />
-        <Select value={sector} onValueChange={setSector}>
-          <SelectTrigger className="w-44"><SelectValue placeholder="Sector" /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All sectors</SelectItem>
-            {sectors.map((s: any) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
-          </SelectContent>
-        </Select>
-        <Select value={stage} onValueChange={setStage}>
-          <SelectTrigger className="w-44"><SelectValue placeholder="Stage" /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All stages</SelectItem>
-            {stages.map((s: any) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
-          </SelectContent>
-        </Select>
-      </div>
+      <ListToolbar
+        search={search}
+        onSearchChange={setSearch}
+        placeholder="Search startups…"
+        filter={{
+          value: sector,
+          onChange: setSector,
+          label: "Sector",
+          options: [{ value: "all", label: "All sectors" }, ...sectors.map((s: any) => ({ value: s, label: s }))],
+        }}
+        sort={{
+          value: stage,
+          onChange: setStage,
+          label: "Stage",
+          options: [{ value: "all", label: "All stages" }, ...stages.map((s: any) => ({ value: s, label: s }))],
+        }}
+      />
 
       {intros.length > 0 && (
         <Card>
