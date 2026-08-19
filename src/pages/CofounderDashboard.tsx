@@ -17,6 +17,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import CofounderPostDialog from "@/components/CofounderPostDialog";
 import AdvisorPanel from "@/components/AdvisorPanel";
 import CofounderOpportunityDialog from "@/components/CofounderOpportunityDialog";
+import ListToolbar from "@/components/dashboard/ListToolbar";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -373,18 +374,12 @@ const CofounderDashboard = () => {
           </TabsContent>
 
           <TabsContent value="opportunities" className="space-y-6">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <h2 className="text-2xl font-bold">Open Opportunities</h2>
-              <div className="relative w-full sm:w-72">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  className="pl-9"
-                  placeholder="Search roles, skills, location…"
-                  value={oppSearch}
-                  onChange={(e) => setOppSearch(e.target.value)}
-                />
-              </div>
-            </div>
+            <h2 className="text-2xl font-bold">Open Opportunities</h2>
+            <ListToolbar
+              search={oppSearch}
+              onSearchChange={setOppSearch}
+              placeholder="Search roles, skills, location…"
+            />
             {oppLoading ? (
               <SkeletonCards count={2} />
             ) : visibleOpportunities.length === 0 ? (

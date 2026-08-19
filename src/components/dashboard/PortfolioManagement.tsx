@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import ListToolbar from "@/components/dashboard/ListToolbar";
 import Money from "@/components/Money";
 import { EmptyState, SkeletonList } from "@/components/dashboard/EmptyState";
 import {
