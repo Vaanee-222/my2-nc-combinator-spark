@@ -203,23 +203,17 @@ const PortfolioManagement = () => {
         </Card>
       </div>
 
-      <div className="flex flex-wrap gap-3">
-        <Input
-          placeholder="Search company, sector or stage"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="max-w-xs"
-        />
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-44"><SelectValue /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All statuses</SelectItem>
-            {STATUSES.map((s) => (
-              <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      <ListToolbar
+        search={search}
+        onSearchChange={setSearch}
+        placeholder="Search company, sector or stage…"
+        filter={{
+          value: statusFilter,
+          onChange: setStatusFilter,
+          label: "Status",
+          options: [{ value: "all", label: "All statuses" }, ...STATUSES.map((s) => ({ value: s, label: s }))],
+        }}
+      />
 
       <Card>
         <CardContent className="p-0">
