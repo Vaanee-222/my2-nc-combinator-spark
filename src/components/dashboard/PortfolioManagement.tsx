@@ -56,6 +56,7 @@ const PortfolioManagement = () => {
   const [saving, setSaving] = useState(false);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [pendingDelete, setPendingDelete] = useState<string | null>(null);
 
   const metrics = useMemo(() => portfolioMetrics(holdings), [holdings]);
 

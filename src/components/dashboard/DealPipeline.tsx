@@ -44,6 +44,7 @@ const DealPipeline = () => {
   const [editing, setEditing] = useState<any | null>(null);
   const [viewing, setViewing] = useState<any | null>(null);
   const [saving, setSaving] = useState(false);
+  const [pendingDelete, setPendingDelete] = useState<string | null>(null);
   const [stageFilter, setStageFilter] = useState("all");
 
   const refresh = () => {
