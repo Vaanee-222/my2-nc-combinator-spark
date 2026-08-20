@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Calendar, Clock, User, Share2, ArrowLeft, FileText } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { BLOGS_2026 } from "@/data/blogs2026";
+import { SkeletonCards } from "@/components/dashboard/EmptyState";
 
 type Blog = {
   slug: string;
@@ -109,7 +110,7 @@ const BlogDetailPage = () => {
           </Button>
 
           {loading ? (
-            <p className="text-muted-foreground">Loading…</p>
+            <SkeletonCards count={3} />
           ) : !post ? (
             <Card>
               <CardContent className="py-12 text-center space-y-3">
