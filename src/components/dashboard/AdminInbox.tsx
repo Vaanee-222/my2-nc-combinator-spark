@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { StatusBadge } from "@/components/dashboard/RecordManager";
 import { Download, Inbox, RefreshCw, Search } from "lucide-react";
+import { SkeletonRows } from "@/components/dashboard/EmptyState";
 
 type Source = "Contact" | "Consultation" | "Investor Inquiry";
 
@@ -161,7 +162,7 @@ const AdminInbox = () => {
             </TableHeader>
             <TableBody>
               {loading ? (
-                <TableRow><TableCell colSpan={7} className="py-8 text-center text-muted-foreground">Loading...</TableCell></TableRow>
+                <SkeletonRows rows={5} cols={7} />
               ) : filtered.length === 0 ? (
                 <TableRow><TableCell colSpan={7} className="py-8 text-center text-muted-foreground">No submissions match these filters.</TableCell></TableRow>
               ) : filtered.map((i) => (

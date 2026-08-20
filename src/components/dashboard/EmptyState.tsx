@@ -68,5 +68,48 @@ export const SkeletonList = ({ count = 4 }: { count?: number }) => (
   </div>
 );
 
+/** Block placeholder for a table that has not rendered yet (replaces the whole <Table>). */
+export const SkeletonTable = ({ rows = 5, cols = 5 }: { rows?: number; cols?: number }) => (
+  <div className="w-full space-y-3 p-4">
+    <div className="flex gap-4">
+      {Array.from({ length: cols }).map((_, i) => (
+        <Skeleton key={i} className="h-4 flex-1" />
+      ))}
+    </div>
+    {Array.from({ length: rows }).map((_, r) => (
+      <div key={r} className="flex gap-4">
+        {Array.from({ length: cols }).map((_, c) => (
+          <Skeleton key={c} className="h-8 flex-1" />
+        ))}
+      </div>
+    ))}
+  </div>
+);
+
+/** Placeholder rows rendered inside an existing <TableBody>. */
+export const SkeletonRows = ({ rows = 5, cols = 5 }: { rows?: number; cols?: number }) => (
+  <>
+    {Array.from({ length: rows }).map((_, r) => (
+      <tr key={r} className="border-b border-border">
+        {Array.from({ length: cols }).map((_, c) => (
+          <td key={c} className="p-4">
+            <Skeleton className="h-4 w-full" />
+          </td>
+        ))}
+      </tr>
+    ))}
+  </>
+);
+
+/** Grid placeholder for media/card galleries. */
+export const SkeletonGrid = ({ count = 8 }: { count?: number }) => (
+  <div className="grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    {Array.from({ length: count }).map((_, i) => (
+      <Skeleton key={i} className="aspect-square w-full rounded-md" />
+    ))}
+  </div>
+);
+
 export default EmptyState;
+
 

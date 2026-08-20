@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Building2, ExternalLink, MapPin, Calendar, ArrowLeft, CheckCircle2, Globe2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { SkeletonCards } from "@/components/dashboard/EmptyState";
 
 type Partner = {
   id: string;
@@ -93,7 +94,7 @@ const PartnerDetail = () => {
         </Button>
 
         {loading ? (
-          <p className="text-muted-foreground">Loading…</p>
+          <SkeletonCards count={3} />
         ) : !partner ? (
           <Card>
             <CardContent className="py-12 text-center space-y-3">

@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import { Plus, Eye, Edit, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { SkeletonTable } from "@/components/dashboard/EmptyState";
 
 const empty = { name: "", check_size: "", portfolio_count: 0, stage: "", status: "Active", website_url: "", notes: "" };
 
@@ -72,7 +73,7 @@ const InvestorManagement = () => {
       </div>
       <Card>
         <CardContent className="p-0">
-          {loading ? <div className="p-8 text-center text-muted-foreground">Loading…</div> : <Table>
+          {loading ? <SkeletonTable rows={5} cols={6} /> : <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Investor Name</TableHead>

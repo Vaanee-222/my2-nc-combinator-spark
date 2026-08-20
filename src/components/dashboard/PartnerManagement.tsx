@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Pencil, Trash2, ChevronUp, ChevronDown, Building2, Upload, Loader2 } from "lucide-react";
+import { SkeletonCards } from "@/components/dashboard/EmptyState";
 
 interface Region {
   id: string;
@@ -249,7 +250,7 @@ const PartnerManagement = () => {
       </div>
 
       {loading ? (
-        <p className="text-muted-foreground">Loading…</p>
+        <SkeletonCards count={3} />
       ) : regions.length === 0 ? (
         <Card><CardContent className="py-10 text-center text-muted-foreground">
           No regions yet. Create one to start adding partners.

@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Clock, ArrowLeft, ExternalLink, Share2, Newspaper } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { NEWS_2026 } from "@/data/news2026";
+import { SkeletonCards } from "@/components/dashboard/EmptyState";
 
 type NewsItem = {
   slug: string;
@@ -94,7 +95,7 @@ const NewsDetailPage = () => {
           </Button>
 
           {loading ? (
-            <p className="text-muted-foreground">Loading…</p>
+            <SkeletonCards count={3} />
           ) : !item ? (
             <Card>
               <CardContent className="py-12 text-center space-y-3">

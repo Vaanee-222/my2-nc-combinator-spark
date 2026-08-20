@@ -13,6 +13,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { FileText, ShieldCheck } from "lucide-react";
+import { SkeletonList } from "@/components/dashboard/EmptyState";
 
 const STAGES = ["submitted", "under_review", "shortlisted", "accepted", "rejected"] as const;
 type Stage = typeof STAGES[number];
@@ -154,7 +155,7 @@ const ApplicationStatusPage = () => {
               </CardHeader>
               <CardContent className="p-0">
                 {loading ? (
-                  <div className="p-8 text-center text-muted-foreground">Loading…</div>
+                  <div className="p-4"><SkeletonList count={4} /></div>
                 ) : visible.length === 0 ? (
                   <div className="p-8 text-center text-muted-foreground">No applications.</div>
                 ) : (
