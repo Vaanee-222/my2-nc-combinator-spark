@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import { Plus, Edit, Trash2, Calendar, Users, Target, Zap, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { SkeletonTable } from "@/components/dashboard/EmptyState";
 
 const programTypes = [
   { key: "hackathon", label: "Hackathons", icon: Zap },
@@ -123,7 +124,7 @@ const ProgramManagement = ({ lockedType, heading }: ProgramManagementProps = {})
 
         <Card>
           <CardContent className="p-0">
-            {loading ? <div className="p-8 text-center text-muted-foreground">Loading…</div> : <Table>
+            {loading ? <SkeletonTable rows={5} cols={6} /> : <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Program Name</TableHead>

@@ -17,6 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { api } from "@/lib/api";
 import { format } from "date-fns";
 import { History } from "lucide-react";
+import { SkeletonList } from "@/components/dashboard/EmptyState";
 
 const reviewBadge = (s: string) =>
   s === "approved"
@@ -321,7 +322,7 @@ const CofounderManagement = ({ requests, onRefresh }: { requests: any[]; onRefre
         <DialogContent className="max-w-2xl">
           <DialogHeader><DialogTitle>Review history — {historyFor?.title}</DialogTitle></DialogHeader>
           {historyLoading ? (
-            <p className="text-sm text-muted-foreground py-6 text-center">Loading…</p>
+            <SkeletonList count={3} />
           ) : historyRows.length === 0 ? (
             <p className="text-sm text-muted-foreground py-6 text-center">No recorded actions yet for this post.</p>
           ) : (

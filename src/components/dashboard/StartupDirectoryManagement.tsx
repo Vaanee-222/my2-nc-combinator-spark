@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import { Plus, Edit, Trash2, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { SkeletonTable } from "@/components/dashboard/EmptyState";
 
 interface Startup {
   id: string;
@@ -102,7 +103,7 @@ const StartupDirectoryManagement = () => {
 
       <Card>
         <CardContent className="p-0">
-          {loading ? <div className="p-8 text-center text-muted-foreground">Loading…</div> : (
+          {loading ? <SkeletonTable rows={5} cols={6} /> : (
             <Table>
               <TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Sector</TableHead><TableHead>Stage</TableHead><TableHead>Country</TableHead><TableHead>Status</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
               <TableBody>

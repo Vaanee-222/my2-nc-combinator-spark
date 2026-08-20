@@ -31,6 +31,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Pencil, Plus, RefreshCw, Trash2, Search, Download } from "lucide-react";
+import { SkeletonRows } from "@/components/dashboard/EmptyState";
 
 export type FieldType = "text" | "textarea" | "number" | "select" | "switch" | "array";
 
@@ -318,7 +319,7 @@ const RecordManager = ({
             </TableHeader>
             <TableBody>
               {loading ? (
-                <TableRow><TableCell colSpan={columns.length + 2} className="text-center py-8 text-muted-foreground">Loading...</TableCell></TableRow>
+                <SkeletonRows rows={5} cols={columns.length + 2} />
               ) : filtered.length === 0 ? (
                 <TableRow><TableCell colSpan={columns.length + 2} className="text-center py-8 text-muted-foreground">{emptyMessage}</TableCell></TableRow>
               ) : filtered.map((row) => (

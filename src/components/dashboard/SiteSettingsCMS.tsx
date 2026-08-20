@@ -17,6 +17,7 @@ import { useSiteSettings, SITE_SETTINGS_QUERY_KEY, type SiteSettings } from "@/h
 import { logAudit } from "@/lib/audit";
 import { MediaPickerDialog, uploadMediaAsset } from "@/components/dashboard/MediaLibrary";
 import { STATIC_SITEMAP_ENTRIES, buildRobotsTxt, buildSitemapXml, DEFAULT_ROBOTS_TXT, normalizePath } from "@/lib/seoFiles";
+import { SkeletonCards } from "@/components/dashboard/EmptyState";
 
 type Draft = Partial<SiteSettings> & {
   robots_txt?: string | null;
@@ -230,7 +231,7 @@ const SiteSettingsCMS = () => {
     </div>
   );
 
-  if (isLoading) return <div className="p-8 text-muted-foreground">Loading site settings…</div>;
+  if (isLoading) return <SkeletonCards count={3} />;
 
   return (
     <div className="space-y-6">

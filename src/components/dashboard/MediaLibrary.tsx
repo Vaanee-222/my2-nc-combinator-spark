@@ -10,6 +10,7 @@ import { Copy, ImagePlus, Loader2, Search, Trash2, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { logAudit } from "@/lib/audit";
+import { SkeletonGrid } from "@/components/dashboard/EmptyState";
 
 export interface MediaAsset {
   id: string;
@@ -173,7 +174,7 @@ const MediaLibrary = ({ onSelect, compact, defaultFolder = "general" }: Props) =
       </div>
 
       {loading ? (
-        <div className="p-8 text-center text-muted-foreground">Loading media…</div>
+        <SkeletonGrid count={8} />
       ) : visible.length === 0 ? (
         <Card><CardContent className="p-8 text-center text-muted-foreground">No media yet. Upload your first image.</CardContent></Card>
       ) : (

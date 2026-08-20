@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { trackEvent } from "@/lib/analytics";
 import { Eye } from "lucide-react";
+import { SkeletonRows } from "@/components/dashboard/EmptyState";
 
 type InclabApp = any;
 
@@ -75,7 +76,7 @@ const InclabApplications = () => {
             <TableHead>Submitted</TableHead><TableHead>Actions</TableHead>
           </TableRow></TableHeader>
           <TableBody>
-            {loading && <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">Loading…</TableCell></TableRow>}
+            {loading && <SkeletonRows rows={5} cols={8} />}
             {!loading && filtered.map((a) => (
               <TableRow key={a.id}>
                 <TableCell className="font-medium">{a.founder_name}</TableCell>

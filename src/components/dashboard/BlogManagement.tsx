@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import { Plus, Edit, Trash2, FileText, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { SkeletonTable } from "@/components/dashboard/EmptyState";
 
 interface Blog {
   id: string;
@@ -110,7 +111,7 @@ const BlogManagement = () => {
       <Card>
         <CardContent className="p-0">
           {loading ? (
-            <div className="p-8 text-center text-muted-foreground">Loading…</div>
+            <SkeletonTable rows={5} cols={6} />
           ) : (
             <Table>
               <TableHeader>

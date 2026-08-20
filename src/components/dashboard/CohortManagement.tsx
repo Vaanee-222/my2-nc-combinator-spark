@@ -15,6 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import type { Tables } from "@/integrations/supabase/types";
 import { logAudit } from "@/lib/audit";
+import { SkeletonRows } from "@/components/dashboard/EmptyState";
 
 type Row = Tables<"cohort_startups">;
 
@@ -151,7 +152,7 @@ const CohortManagement = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {isLoading && <TableRow><TableCell colSpan={7} className="text-center py-8 text-muted-foreground">Loading…</TableCell></TableRow>}
+              {isLoading && <SkeletonRows rows={5} cols={7} />}
               {!isLoading && filtered.length === 0 && (
                 <TableRow><TableCell colSpan={7} className="text-center py-8 text-muted-foreground">No cohort entries found.</TableCell></TableRow>
               )}
