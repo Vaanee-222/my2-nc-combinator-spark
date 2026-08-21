@@ -1824,6 +1824,39 @@ export type Database = {
           },
         ]
       }
+      point_events: {
+        Row: {
+          awarded_at: string
+          event_key: string
+          id: string
+          points: number
+          role: string | null
+          source_id: string | null
+          source_table: string | null
+          user_id: string
+        }
+        Insert: {
+          awarded_at?: string
+          event_key: string
+          id?: string
+          points: number
+          role?: string | null
+          source_id?: string | null
+          source_table?: string | null
+          user_id: string
+        }
+        Update: {
+          awarded_at?: string
+          event_key?: string
+          id?: string
+          points?: number
+          role?: string | null
+          source_id?: string | null
+          source_table?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -2197,6 +2230,30 @@ export type Database = {
           },
         ]
       }
+      user_points: {
+        Row: {
+          level: number
+          level_name: string
+          total_points: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          level?: number
+          level_name?: string
+          total_points?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          level?: number
+          level_name?: string
+          total_points?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -2255,6 +2312,16 @@ export type Database = {
       }
     }
     Functions: {
+      award_points: {
+        Args: {
+          _event_key: string
+          _points: number
+          _source_id?: string
+          _source_table?: string
+          _user_id: string
+        }
+        Returns: undefined
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -2262,6 +2329,14 @@ export type Database = {
         }
         Returns: boolean
       }
+      level_for_points: {
+        Args: { _points: number }
+        Returns: {
+          level: number
+          level_name: string
+        }[]
+      }
+      recalc_user_points: { Args: { _user_id: string }; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "startup" | "investor" | "mentor" | "cofounder"
