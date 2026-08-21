@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMyProfile } from "@/hooks/useMyData";
 import { useNotifications } from "@/hooks/useNotifications";
+import XPStrip from "@/components/dashboard/XPStrip";
 
 export type DashboardStat = { label: string; value: ReactNode; hint?: string };
 
