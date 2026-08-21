@@ -103,6 +103,7 @@ const DashboardHeader = ({ title, subtitle, stats = [], meta, actions, onOpenNot
                 </button>
               )}
             </div>
+            <XPStrip className="min-w-[170px]" />
           </div>
         </CardContent>
       </Card>
