@@ -146,6 +146,45 @@ export type Database = {
         }
         Relationships: []
       }
+      badges: {
+        Row: {
+          created_at: string
+          criteria_event: string
+          description: string | null
+          icon: string
+          id: string
+          is_active: boolean
+          key: string
+          name: string
+          sort_order: number
+          threshold: number
+        }
+        Insert: {
+          created_at?: string
+          criteria_event: string
+          description?: string | null
+          icon?: string
+          id?: string
+          is_active?: boolean
+          key: string
+          name: string
+          sort_order?: number
+          threshold?: number
+        }
+        Update: {
+          created_at?: string
+          criteria_event?: string
+          description?: string | null
+          icon?: string
+          id?: string
+          is_active?: boolean
+          key?: string
+          name?: string
+          sort_order?: number
+          threshold?: number
+        }
+        Relationships: []
+      }
       blogs: {
         Row: {
           author: string | null
@@ -2230,6 +2269,35 @@ export type Database = {
           },
         ]
       }
+      user_badges: {
+        Row: {
+          awarded_at: string
+          badge_key: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          awarded_at?: string
+          badge_key: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          awarded_at?: string
+          badge_key?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_badges_badge_key_fkey"
+            columns: ["badge_key"]
+            isOneToOne: false
+            referencedRelation: "badges"
+            referencedColumns: ["key"]
+          },
+        ]
+      }
       user_points: {
         Row: {
           level: number
@@ -2322,6 +2390,7 @@ export type Database = {
         }
         Returns: undefined
       }
+      evaluate_badges: { Args: { _user_id: string }; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { ArrowRight, CheckCircle2, ListChecks, Activity, type LucideIcon } from "lucide-react";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useMyProfile, formatDate } from "@/hooks/useMyData";
+import GamificationCard from "@/components/dashboard/GamificationCard";
 
 export type Kpi = { label: string; value: ReactNode; hint?: string; icon?: LucideIcon };
 export type NextStep = { id: string; label: string; description?: string; actionLabel: string; onAction: () => void; done?: boolean };
@@ -135,7 +136,10 @@ const DashboardOverview = ({ kpis, steps, onOpenAccount, onOpenAlerts }: Props) 
           </CardContent>
         </Card>
       </div>
+
+      <GamificationCard />
     </div>
+
   );
 };
 
