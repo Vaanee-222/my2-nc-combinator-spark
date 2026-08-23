@@ -139,6 +139,8 @@ const AppRoutes = () => {
               <Route path="/application-status" element={<ProtectedRoute><ApplicationStatusPage /></ProtectedRoute>} />
               <Route path="/monthly-top-10" element={<MonthlyTop10 />} />
               <Route path="/quarterly-top-5" element={<QuarterlyTop5 />} />
+              <Route path="/leaderboard" element={<Leaderboard />} />
+              <Route path="/member/:userId" element={<MemberProfile />} />
 
               <Route path="/about" element={<AboutUs />} />
               <Route path="/contact" element={<Contact />} />
