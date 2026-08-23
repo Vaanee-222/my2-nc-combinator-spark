@@ -2380,6 +2380,23 @@ export type Database = {
       }
     }
     Functions: {
+      admin_adjust_points: {
+        Args: { _points: number; _reason: string; _user_id: string }
+        Returns: string
+      }
+      admin_points_directory: {
+        Args: { _limit?: number; _search?: string }
+        Returns: {
+          email: string
+          full_name: string
+          level: number
+          level_name: string
+          role: string
+          total_points: number
+          user_id: string
+        }[]
+      }
+      admin_void_point_event: { Args: { _event_id: string }; Returns: string }
       award_points: {
         Args: {
           _event_key: string
@@ -2403,6 +2420,38 @@ export type Database = {
         Returns: {
           level: number
           level_name: string
+        }[]
+      }
+      monthly_leaderboard: {
+        Args: { _limit?: number; _month?: string; _role?: string }
+        Returns: {
+          avatar_url: string
+          badge_count: number
+          display_name: string
+          events: number
+          level: number
+          level_name: string
+          points: number
+          rank: number
+          role: string
+          total_points: number
+          user_id: string
+        }[]
+      }
+      public_gamification: {
+        Args: { _user_id: string }
+        Returns: {
+          avatar_url: string
+          badges: Json
+          bio: string
+          city: string
+          display_name: string
+          joined_at: string
+          level: number
+          level_name: string
+          role: string
+          total_points: number
+          user_id: string
         }[]
       }
       recalc_user_points: { Args: { _user_id: string }; Returns: undefined }

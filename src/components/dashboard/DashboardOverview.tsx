@@ -7,6 +7,7 @@ import { ArrowRight, CheckCircle2, ListChecks, Activity, type LucideIcon } from 
 import { useNotifications } from "@/hooks/useNotifications";
 import { useMyProfile, formatDate } from "@/hooks/useMyData";
 import GamificationCard from "@/components/dashboard/GamificationCard";
+import PerksCard from "@/components/dashboard/PerksCard";
 
 export type Kpi = { label: string; value: ReactNode; hint?: string; icon?: LucideIcon };
 export type NextStep = { id: string; label: string; description?: string; actionLabel: string; onAction: () => void; done?: boolean };
@@ -138,6 +139,8 @@ const DashboardOverview = ({ kpis, steps, onOpenAccount, onOpenAlerts }: Props) 
       </div>
 
       <GamificationCard />
+
+      <PerksCard />
     </div>
 
   );

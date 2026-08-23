@@ -18,6 +18,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
+import { usePerks } from "@/hooks/usePerks";
 
 export const introductionSchema = z.object({
   requester_name: z
@@ -80,6 +81,7 @@ const IntroductionRequestButton = ({
   ...rest
 }: Props) => {
   const { user, userRole } = useAuth();
+  const { intro, level } = usePerks();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [status, setStatus] = useState<Status>("none");
@@ -221,6 +223,15 @@ const IntroductionRequestButton = ({
               Our team reviews every request. You will see the status (pending, approved, or declined) here.
             </DialogDescription>
           </DialogHeader>
+          <div className="rounded-lg border border-border bg-muted/20 p-3 text-xs text-muted-foreground">
+            {intro.quota === 0 ? (
+              <>You are Level {level}. Reach Level 3 to unlock a fast-tracked free introduction each month.</>
+            ) : intro.remaining === 0 ? (
+              <>You have used all {intro.quota === Infinity ? "your" : intro.quota} fast-tracked intros this month — this request joins the standard review queue.</>
+            ) : (
+              <>Fast-tracked introductions left this month: <span className="font-medium text-primary">{intro.quota === Infinity ? "Unlimited" : intro.remaining}</span></>
+            )}
+          </div>
           <div className="space-y-4">
             <div className="space-y-1.5">
               <Label htmlFor="intro-name">Your name *</Label>

@@ -65,6 +65,8 @@ const PartnerDetail = lazy(() => import("./pages/PartnerDetail"));
 const ApplicationStatusPage = lazy(() => import("./pages/ApplicationStatus"));
 const MonthlyTop10 = lazy(() => import("./pages/MonthlyTop10"));
 const QuarterlyTop5 = lazy(() => import("./pages/QuarterlyTop5"));
+const Leaderboard = lazy(() => import("./pages/Leaderboard"));
+const MemberProfile = lazy(() => import("./pages/MemberProfile"));
 const AdminWorkflow = lazy(() => import("./pages/AdminWorkflow"));
 
 
@@ -137,6 +139,8 @@ const AppRoutes = () => {
               <Route path="/application-status" element={<ProtectedRoute><ApplicationStatusPage /></ProtectedRoute>} />
               <Route path="/monthly-top-10" element={<MonthlyTop10 />} />
               <Route path="/quarterly-top-5" element={<QuarterlyTop5 />} />
+              <Route path="/leaderboard" element={<Leaderboard />} />
+              <Route path="/member/:userId" element={<MemberProfile />} />
 
               <Route path="/about" element={<AboutUs />} />
               <Route path="/contact" element={<Contact />} />

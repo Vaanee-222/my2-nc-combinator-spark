@@ -28,6 +28,7 @@ import BlogManagement from "@/components/dashboard/BlogManagement";
 import NewsManagement from "@/components/dashboard/NewsManagement";
 import StartupDirectoryManagement from "@/components/dashboard/StartupDirectoryManagement";
 import AuditLog from "@/components/dashboard/AuditLog";
+import PointsAdmin from "@/components/dashboard/PointsAdmin";
 import RoleManagement from "@/components/dashboard/RoleManagement";
 import IntroductionRequests from "@/components/dashboard/IntroductionRequests";
 import CofounderManagement from "@/components/dashboard/CofounderManagement";
@@ -112,6 +113,7 @@ const adminMenuGroups = [
       { value: "users", label: "Users", icon: UserCog },
       { value: "roles", label: "Roles", icon: ShieldCheck },
       { value: "acl", label: "ACL", icon: ShieldCheck },
+      { value: "points", label: "Points & Levels", icon: Trophy },
       { value: "audit", label: "Audit Log", icon: ScrollText },
       { value: "config", label: "Config", icon: SlidersHorizontal },
       { value: "header-scripts", label: "Header Scripts", icon: Code2 },
@@ -449,6 +451,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="roles" forceMount className="space-y-6 data-[state=inactive]:hidden">
             <RoleManagement />
+          </TabsContent>
+
+          <TabsContent value="points" forceMount className="space-y-6 data-[state=inactive]:hidden">
+            <PointsAdmin />
           </TabsContent>
 
           <TabsContent value="audit" forceMount className="space-y-6 data-[state=inactive]:hidden">
