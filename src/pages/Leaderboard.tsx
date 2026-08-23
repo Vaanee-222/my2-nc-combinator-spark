@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Trophy, Crown, Medal, Flame, ArrowRight, Sparkles } from "lucide-react";
 import { useMonthlyLeaderboard, recentMonths, monthKey, ROLE_FILTERS, type LeaderboardRow } from "@/hooks/useLeaderboard";
 import { trackEvent } from "@/lib/analytics";
-import EmptyState from "@/components/dashboard/EmptyState";
+import { EmptyState } from "@/components/dashboard/EmptyState";
 
 const initials = (name: string) => name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase();
 
