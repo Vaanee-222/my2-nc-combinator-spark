@@ -65,6 +65,8 @@ const PartnerDetail = lazy(() => import("./pages/PartnerDetail"));
 const ApplicationStatusPage = lazy(() => import("./pages/ApplicationStatus"));
 const MonthlyTop10 = lazy(() => import("./pages/MonthlyTop10"));
 const QuarterlyTop5 = lazy(() => import("./pages/QuarterlyTop5"));
+const Leaderboard = lazy(() => import("./pages/Leaderboard"));
+const MemberProfile = lazy(() => import("./pages/MemberProfile"));
 const AdminWorkflow = lazy(() => import("./pages/AdminWorkflow"));
 
 
