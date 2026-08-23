@@ -138,6 +138,8 @@ const DashboardOverview = ({ kpis, steps, onOpenAccount, onOpenAlerts }: Props) 
       </div>
 
       <GamificationCard />
+
+      <PerksCard />
     </div>
 
   );
