@@ -2167,6 +2167,7 @@ export type Database = {
       }
       subscription_plans: {
         Row: {
+          audience: string
           billing_period: string
           category: string
           created_at: string
@@ -2182,6 +2183,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          audience?: string
           billing_period?: string
           category?: string
           created_at?: string
@@ -2197,6 +2199,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          audience?: string
           billing_period?: string
           category?: string
           created_at?: string
@@ -2268,6 +2271,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      usage_counters: {
+        Row: {
+          count: number
+          counter_key: string
+          id: string
+          period_start: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          count?: number
+          counter_key: string
+          id?: string
+          period_start?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          count?: number
+          counter_key?: string
+          id?: string
+          period_start?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       user_badges: {
         Row: {
@@ -2414,6 +2444,10 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      increment_usage_counter: {
+        Args: { _counter_key: string; _delta?: number }
+        Returns: number
       }
       level_for_points: {
         Args: { _points: number }
