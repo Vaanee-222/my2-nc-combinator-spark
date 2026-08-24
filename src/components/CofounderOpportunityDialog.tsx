@@ -12,6 +12,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { useEntitlements } from "@/hooks/useEntitlements";
+
 
 export interface CofounderOpportunity {
   id: string;
@@ -37,7 +39,11 @@ type Errors = Partial<Record<"applicant_name" | "email" | "message" | "linkedin_
 
 const CofounderOpportunityDialog = ({ opportunity, open, onOpenChange, startInApplyMode = false }: Props) => {
   const { user } = useAuth();
+  const { quotas } = useEntitlements();
+  const applications = quotas.applications;
+  const quotaReached = applications.limit !== Infinity && applications.remaining <= 0;
   const { toast } = useToast();
+
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -91,8 +97,17 @@ const CofounderOpportunityDialog = ({ opportunity, open, onOpenChange, startInAp
       navigate("/login");
       return;
     }
+    if (quotaReached) {
+      toast({
+        title: "Monthly application limit reached",
+        description: `Free plans include ${applications.limit} applications per month. Upgrade for unlimited applications.`,
+        variant: "destructive",
+      });
+      return;
+    }
     setApplying(true);
   };
+
 
   const submit = async () => {
     if (!user || !validate()) return;
@@ -123,6 +138,7 @@ const CofounderOpportunityDialog = ({ opportunity, open, onOpenChange, startInAp
     toast({ title: "Application sent", description: "The founder can now review your application." });
     queryClient.invalidateQueries({ queryKey: ["my-cofounder-applications"] });
     queryClient.invalidateQueries({ queryKey: ["applications-to-my-posts"] });
+    queryClient.invalidateQueries({ queryKey: ["usage-applications"] });
     onOpenChange(false);
   };
 

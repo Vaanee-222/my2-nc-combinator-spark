@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -13,6 +13,16 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Money } from "@/components/Money";
+import PlanLadder from "@/components/PlanLadder";
+import type { Audience } from "@/hooks/useEntitlements";
+
+const AUDIENCES: { key: Audience; label: string; blurb: string }[] = [
+  { key: "startup", label: "For startups", blurb: "Membership, subscription and service plans for founders." },
+  { key: "mentor", label: "For mentors", blurb: "List paid sessions, manage mentees and join the advisory board." },
+  { key: "cofounder", label: "For co-founders", blurb: "Stand out in founder search and apply without limits." },
+  { key: "investor", label: "For investors", blurb: "Curated deal flow, portfolio tracking and data-room access." },
+];
+
 
 const subscriptionPlans = [
   {
@@ -165,13 +175,23 @@ const services = [
 
 const Subscription = () => {
   const [paymentOpen, setPaymentOpen] = useState(false);
+  const [audience, setAudience] = useState<Audience>("startup");
+
   const [selectedPlan, setSelectedPlan] = useState<{ name: string; price: number | string } | null>(null);
   const [processing, setProcessing] = useState(false);
   const [cardNumber, setCardNumber] = useState("4242 4242 4242 4242");
   const [expiry, setExpiry] = useState("12/28");
   const [cvc, setCvc] = useState("123");
   const { toast } = useToast();
-  const { user } = useAuth();
+  const { user, userRole } = useAuth();
+
+  // Default the pricing view to the signed-in member's own ladder.
+  useEffect(() => {
+    if (userRole === "mentor" || userRole === "cofounder" || userRole === "investor") {
+      setAudience(userRole);
+    }
+  }, [userRole]);
+
 
   const handleSubscribe = (plan: { name: string; price: number | string }) => {
     setSelectedPlan(plan);
@@ -221,7 +241,30 @@ const Subscription = () => {
           </p>
         </div>
 
+        {/* Audience switcher */}
+        <div className="max-w-7xl mx-auto px-4 mb-10 flex flex-wrap justify-center gap-2">
+          {AUDIENCES.map((a) => (
+            <Button
+              key={a.key}
+              size="sm"
+              variant={audience === a.key ? "default" : "outline"}
+              onClick={() => setAudience(a.key)}
+            >
+              {a.label}
+            </Button>
+          ))}
+        </div>
+
+        {audience !== "startup" ? (
+          <div className="max-w-7xl mx-auto px-4">
+            <p className="text-center text-muted-foreground mb-8">
+              {AUDIENCES.find((a) => a.key === audience)?.blurb}
+            </p>
+            <PlanLadder audience={audience} onSelect={handleSubscribe} />
+          </div>
+        ) : (
         <div className="max-w-7xl mx-auto px-4">
+
           <Tabs defaultValue="subscription" className="w-full">
             <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 mb-10 bg-secondary">
               <TabsTrigger value="membership">Membership</TabsTrigger>
@@ -378,6 +421,8 @@ const Subscription = () => {
             </TabsContent>
           </Tabs>
         </div>
+        )}
+
       </div>
 
       {/* Demo Payment Dialog */}

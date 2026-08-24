@@ -8,6 +8,8 @@ import { useNotifications } from "@/hooks/useNotifications";
 import { useMyProfile, formatDate } from "@/hooks/useMyData";
 import GamificationCard from "@/components/dashboard/GamificationCard";
 import PerksCard from "@/components/dashboard/PerksCard";
+import PlanCard from "@/components/dashboard/PlanCard";
+
 
 export type Kpi = { label: string; value: ReactNode; hint?: string; icon?: LucideIcon };
 export type NextStep = { id: string; label: string; description?: string; actionLabel: string; onAction: () => void; done?: boolean };
@@ -140,7 +142,13 @@ const DashboardOverview = ({ kpis, steps, onOpenAccount, onOpenAlerts }: Props) 
 
       <GamificationCard />
 
-      <PerksCard />
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <PerksCard />
+        </div>
+        <PlanCard />
+      </div>
+
     </div>
 
   );
