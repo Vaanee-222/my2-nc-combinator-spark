@@ -138,6 +138,7 @@ const CofounderOpportunityDialog = ({ opportunity, open, onOpenChange, startInAp
     toast({ title: "Application sent", description: "The founder can now review your application." });
     queryClient.invalidateQueries({ queryKey: ["my-cofounder-applications"] });
     queryClient.invalidateQueries({ queryKey: ["applications-to-my-posts"] });
+    queryClient.invalidateQueries({ queryKey: ["usage-applications"] });
     onOpenChange(false);
   };
 
