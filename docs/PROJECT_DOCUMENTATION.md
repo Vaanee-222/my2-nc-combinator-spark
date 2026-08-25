@@ -112,7 +112,19 @@ Admin tab. Edge function `startup-health-score` scores 5 dimensions 0–100: Mar
 Recharts: 30-day application trends, status distribution, program conversion rates, hackathon & incubation aggregates.
 
 ### 3.13 Monetization
-`/subscription` page with Membership, Subscription, Services tiers. Mock payment dialog (test card `4242 4242 4242 4242`).
+`/subscription` page with audience-aware ladders (Startup, Mentor, Co-founder, Investor) rendered
+from `subscription_plans.audience`, plus Membership / Subscription / Services categories. Access is
+resolved by `useEntitlements` (role + active plan tier + gamification level) with monthly quotas for
+applications and investor introductions, and `UpgradePrompt` gating locked features. Mock payment
+dialog (test card `4242 4242 4242 4242`).
+
+### 3.14 Gamification & Engagement
+Points ledger (`point_events`) → totals and levels (`user_points`, Explorer → Flagship), badges,
+weekly streaks with a grace token, rotating weekly quests, public monthly leaderboards at
+`/leaderboard`, public member profiles at `/member/:id`, level-gated perks (directory boost, free
+intros, spotlights) and an admin **Points & Levels** tab for audited grants, deductions and voids.
+Full detail: [GAMIFICATION_AND_SUBSCRIPTIONS.md](./GAMIFICATION_AND_SUBSCRIPTIONS.md).
+
 
 ### 3.14 Reliability
 - `ErrorBoundary` with retry UI, toast on trigger, HTTP-status-aware friendly messaging, automatic re-fetch (no full page reload) for transient 412 / preview infrastructure errors.
