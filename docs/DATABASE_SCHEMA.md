@@ -16,6 +16,23 @@ Last updated: 2026-07-30 · Backend: Lovable Cloud (PostgreSQL + RLS + Edge Func
 | `admin_audit_log` | Every admin create/update/delete/note | `admin_user_id`, `admin_email`, `action_type`, `table_name`, `record_id`, `details` |
 | `partners`, `blogs`, `news`, `startups`, `programs` | Content & ecosystem | `slug`, `category`, SEO fields |
 
+## Engagement & monetisation tables
+
+| Table | Purpose | Key columns |
+|---|---|---|
+| `point_events` | Immutable XP ledger, unique on `(user_id, event_key, source_id)` | `role`, `event_key`, `points`, `source_table`, `source_id`, `awarded_at` |
+| `user_points` | Materialised totals and level | `total_points`, `level`, `current_streak`, `longest_streak` |
+| `badges` / `user_badges` | Achievement catalogue and awards | `badge_key`, `awarded_at` |
+| `usage_counters` | Per-user monthly quota counters | `counter_key`, `period`, `count` |
+| `subscription_plans` | Audience-aware plan ladders | `audience`, `tier`, `category`, `price_usd`, `features` |
+| `subscription_purchases` | Member purchases | `plan_name`, `status`, `purchased_at`, `expires_at` |
+
+Security-definer functions: `award_points`, `recalc_user_points`, `evaluate_badges`,
+`monthly_leaderboard`, `public_gamification`, `admin_adjust_points`, `admin_void_point_event`,
+`admin_points_directory`, `increment_usage_counter`.
+See [GAMIFICATION_AND_SUBSCRIPTIONS.md](./GAMIFICATION_AND_SUBSCRIPTIONS.md) for the full model.
+
+
 ## Access rules (RLS summary)
 
 - **Roles** live only in `user_roles` and are checked through the security-definer

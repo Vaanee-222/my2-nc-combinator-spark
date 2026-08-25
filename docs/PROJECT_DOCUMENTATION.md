@@ -1,7 +1,8 @@
 # Xi Combinator — Project Documentation
 
-**Version**: 4.0.0
-**Last Updated**: May 27, 2026
+**Version**: 5.0.0
+**Last Updated**: August 25, 2026
+
 **Live Preview**: https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app
 
 ---
@@ -111,9 +112,21 @@ Admin tab. Edge function `startup-health-score` scores 5 dimensions 0–100: Mar
 Recharts: 30-day application trends, status distribution, program conversion rates, hackathon & incubation aggregates.
 
 ### 3.13 Monetization
-`/subscription` page with Membership, Subscription, Services tiers. Mock payment dialog (test card `4242 4242 4242 4242`).
+`/subscription` page with audience-aware ladders (Startup, Mentor, Co-founder, Investor) rendered
+from `subscription_plans.audience`, plus Membership / Subscription / Services categories. Access is
+resolved by `useEntitlements` (role + active plan tier + gamification level) with monthly quotas for
+applications and investor introductions, and `UpgradePrompt` gating locked features. Mock payment
+dialog (test card `4242 4242 4242 4242`).
 
-### 3.14 Reliability
+### 3.14 Gamification & Engagement
+Points ledger (`point_events`) → totals and levels (`user_points`, Explorer → Flagship), badges,
+weekly streaks with a grace token, rotating weekly quests, public monthly leaderboards at
+`/leaderboard`, public member profiles at `/member/:id`, level-gated perks (directory boost, free
+intros, spotlights) and an admin **Points & Levels** tab for audited grants, deductions and voids.
+Full detail: [GAMIFICATION_AND_SUBSCRIPTIONS.md](./GAMIFICATION_AND_SUBSCRIPTIONS.md).
+
+
+### 3.15 Reliability
 - `ErrorBoundary` with retry UI, toast on trigger, HTTP-status-aware friendly messaging, automatic re-fetch (no full page reload) for transient 412 / preview infrastructure errors.
 - Route-level code splitting (`React.lazy`) + prefetch for `/startup-advisor`.
 - Vitest suite covering ErrorBoundary + route fallback.
@@ -165,6 +178,10 @@ Recharts: 30-day application trends, status distribution, program conversion rat
 | Subscription & Pricing | `/subscription` |
 | Startup Advisor (AI Agents) | `/startup-advisor` |
 | Messages | `/messages` |
+| Leaderboard | `/leaderboard` |
+| Public member profile | `/member/:id` |
+| Monthly Top 10 | `/monthly-top-10` |
+| Quarterly Top 5 | `/quarterly-top-5` |
 
 ### 4.3 Authentication
 | Page | Path |
@@ -201,6 +218,8 @@ Password for all demo accounts: **`Demo@1234`**
 
 ## 6. Database Schema
 
+See [DATABASE_SCHEMA.md](./DATABASE_SCHEMA.md) for the full table + RLS reference.
+
 | Table | Purpose |
 |---|---|
 | `profiles` | User profile (trigger-created) |
@@ -212,6 +231,11 @@ Password for all demo accounts: **`Demo@1234`**
 | `messages` | Realtime in-app messaging |
 | `partner_regions` | Partner regions (name, flag, description, sort_order, active) |
 | `partners` | Partner entries (region_id, name, note, description, website_url, logo_url, sort_order, active) |
+| `point_events` / `user_points` | XP ledger and materialised totals, level, streaks |
+| `badges` / `user_badges` | Achievement catalogue and awards |
+| `usage_counters` | Monthly quota counters per member |
+| `subscription_plans` / `subscription_purchases` | Audience-aware plan ladders and member purchases |
+
 
 **Storage buckets**: `partner-logos` (public — admin write via RLS).
 
