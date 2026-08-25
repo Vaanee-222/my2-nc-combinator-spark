@@ -1,7 +1,8 @@
 # Xi Combinator — Project Documentation
 
-**Version**: 4.0.0
-**Last Updated**: May 27, 2026
+**Version**: 5.0.0
+**Last Updated**: August 25, 2026
+
 **Live Preview**: https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app
 
 ---
