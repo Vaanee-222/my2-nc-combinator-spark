@@ -231,6 +231,11 @@ See [DATABASE_SCHEMA.md](./DATABASE_SCHEMA.md) for the full table + RLS referenc
 | `messages` | Realtime in-app messaging |
 | `partner_regions` | Partner regions (name, flag, description, sort_order, active) |
 | `partners` | Partner entries (region_id, name, note, description, website_url, logo_url, sort_order, active) |
+| `point_events` / `user_points` | XP ledger and materialised totals, level, streaks |
+| `badges` / `user_badges` | Achievement catalogue and awards |
+| `usage_counters` | Monthly quota counters per member |
+| `subscription_plans` / `subscription_purchases` | Audience-aware plan ladders and member purchases |
+
 
 **Storage buckets**: `partner-logos` (public — admin write via RLS).
 
