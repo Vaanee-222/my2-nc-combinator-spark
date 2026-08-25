@@ -126,7 +126,7 @@ intros, spotlights) and an admin **Points & Levels** tab for audited grants, ded
 Full detail: [GAMIFICATION_AND_SUBSCRIPTIONS.md](./GAMIFICATION_AND_SUBSCRIPTIONS.md).
 
 
-### 3.14 Reliability
+### 3.15 Reliability
 - `ErrorBoundary` with retry UI, toast on trigger, HTTP-status-aware friendly messaging, automatic re-fetch (no full page reload) for transient 412 / preview infrastructure errors.
 - Route-level code splitting (`React.lazy`) + prefetch for `/startup-advisor`.
 - Vitest suite covering ErrorBoundary + route fallback.
@@ -178,6 +178,10 @@ Full detail: [GAMIFICATION_AND_SUBSCRIPTIONS.md](./GAMIFICATION_AND_SUBSCRIPTION
 | Subscription & Pricing | `/subscription` |
 | Startup Advisor (AI Agents) | `/startup-advisor` |
 | Messages | `/messages` |
+| Leaderboard | `/leaderboard` |
+| Public member profile | `/member/:id` |
+| Monthly Top 10 | `/monthly-top-10` |
+| Quarterly Top 5 | `/quarterly-top-5` |
 
 ### 4.3 Authentication
 | Page | Path |
@@ -213,6 +217,8 @@ Password for all demo accounts: **`Demo@1234`**
 ---
 
 ## 6. Database Schema
+
+See [DATABASE_SCHEMA.md](./DATABASE_SCHEMA.md) for the full table + RLS reference.
 
 | Table | Purpose |
 |---|---|
