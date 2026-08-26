@@ -34,8 +34,11 @@ export const sanitizeHeadScripts = (rawHtml: string): SanitizeResult => {
   if (!rawHtml || !rawHtml.trim()) return { sanitizedHtml: "", warnings };
 
   // Parse in a detached document so nothing executes.
-  const doc = new DOMParser().parseFromString(`<!doctype html><html><head>${rawHtml}</head><body></body></html>`, "text/html");
-  const head = doc.head;
+  // NOTE: parse in *body* context — a head-context parse silently discards
+  // body-only tags (iframe/object) without a warning and turns <noscript>
+  // children into raw text, which destroyed GTM pixels.
+  const doc = new DOMParser().parseFromString(`<!doctype html><html><head></head><body>${rawHtml}</body></html>`, "text/html");
+  const head = doc.body;
   const out: string[] = [];
 
   const walk = (node: Element) => {
