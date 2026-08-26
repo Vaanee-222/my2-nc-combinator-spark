@@ -218,15 +218,17 @@ const GrantsFunding = () => {
                   </div>
                   <CardTitle className="text-xl">{grant.name}</CardTitle>
                   <div className="text-3xl font-bold text-primary mb-2">{grant.amount}</div>
-                  <CardDescription className="space-y-2">
-                    <div className="flex items-center space-x-4 text-sm">
-                      <Badge variant="outline">{grant.type}</Badge>
-                      <span className="flex items-center space-x-1">
-                        <Calendar className="h-3 w-3" />
-                        <span>Due: {grant.deadline}</span>
-                      </span>
+                  <CardDescription asChild>
+                    <div className="space-y-2">
+                      <div className="flex items-center space-x-4 text-sm">
+                        <Badge variant="outline">{grant.type}</Badge>
+                        <span className="flex items-center space-x-1">
+                          <Calendar className="h-3 w-3" />
+                          <span>Due: {grant.deadline}</span>
+                        </span>
+                      </div>
+                      <p className="font-medium">{grant.focus}</p>
                     </div>
-                    <p className="font-medium">{grant.focus}</p>
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
