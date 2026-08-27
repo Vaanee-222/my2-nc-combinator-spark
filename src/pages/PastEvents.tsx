@@ -201,18 +201,20 @@ const PastEvents = () => {
                     <div className="text-2xl"></div>
                   </div>
                   <CardTitle className="text-xl">{event.title}</CardTitle>
-                  <CardDescription className="space-y-2">
-                    <div className="flex items-center space-x-4 text-sm">
-                      <span className="flex items-center space-x-1">
-                        <Calendar className="h-3 w-3" />
-                        <span>{event.date}</span>
-                      </span>
-                      <span className="flex items-center space-x-1">
-                        <MapPin className="h-3 w-3" />
-                        <span>{event.location}</span>
-                      </span>
+                  <CardDescription asChild>
+                    <div className="space-y-2">
+                      <div className="flex items-center space-x-4 text-sm">
+                        <span className="flex items-center space-x-1">
+                          <Calendar className="h-3 w-3" />
+                          <span>{event.date}</span>
+                        </span>
+                        <span className="flex items-center space-x-1">
+                          <MapPin className="h-3 w-3" />
+                          <span>{event.location}</span>
+                        </span>
+                      </div>
+                      <Badge variant="secondary" className="text-xs">{event.theme}</Badge>
                     </div>
-                    <Badge variant="secondary" className="text-xs">{event.theme}</Badge>
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
