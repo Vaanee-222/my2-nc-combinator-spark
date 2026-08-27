@@ -291,9 +291,11 @@ const GrantsFunding = () => {
               <Card key={index} className="hover:shadow-md transition-all duration-300">
                 <CardHeader>
                   <CardTitle className="text-lg">{story.company}</CardTitle>
-                  <CardDescription>
-                    <Badge variant="outline" className="mb-2">{story.grant}</Badge>
-                    <div className="font-medium text-primary">{story.amount} Grant Received</div>
+                  <CardDescription asChild>
+                    <div>
+                      <Badge variant="outline" className="mb-2">{story.grant}</Badge>
+                      <div className="font-medium text-primary">{story.amount} Grant Received</div>
+                    </div>
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
