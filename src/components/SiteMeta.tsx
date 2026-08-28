@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const setMeta = (selector: string, attrs: Record<string, string>) => {
@@ -16,6 +17,9 @@ const setMeta = (selector: string, attrs: Record<string, string>) => {
  */
 const SiteMeta = () => {
   const { data } = useSiteSettings();
+  const { pathname } = useLocation();
+  // Per-route <Helmet> tags own title/description off the homepage.
+  const isHome = pathname === "/";
 
   useEffect(() => {
     if (!data) return;
@@ -23,14 +27,16 @@ const SiteMeta = () => {
     const title = data.meta_title || data.site_name;
     const description = data.meta_description || data.tagline || "";
 
-    document.title = title;
-    if (description) {
+    if (isHome) document.title = title;
+    if (isHome && description) {
       setMeta('meta[name="description"]', { name: "description", content: description });
       setMeta('meta[property="og:description"]', { property: "og:description", content: description });
       setMeta('meta[name="twitter:description"]', { name: "twitter:description", content: description });
     }
-    setMeta('meta[property="og:title"]', { property: "og:title", content: title });
-    setMeta('meta[name="twitter:title"]', { name: "twitter:title", content: title });
+    if (isHome) {
+      setMeta('meta[property="og:title"]', { property: "og:title", content: title });
+      setMeta('meta[name="twitter:title"]', { name: "twitter:title", content: title });
+    }
     if (data.og_image_url) {
       setMeta('meta[property="og:image"]', { property: "og:image", content: data.og_image_url });
       setMeta('meta[name="twitter:image"]', { name: "twitter:image", content: data.og_image_url });
@@ -48,7 +54,7 @@ const SiteMeta = () => {
       }
       link.href = data.favicon_url;
     }
-  }, [data]);
+  }, [data, isHome]);
 
   return null;
 };
