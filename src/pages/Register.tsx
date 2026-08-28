@@ -52,7 +52,7 @@ const Register = () => {
       <Card className="w-full max-w-md shadow-2xl">
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
+            <CardTitle asChild className="text-2xl font-bold"><h1>Create Account</h1></CardTitle>
             <Button variant="ghost" size="sm" onClick={() => navigate("/")}>
               <ArrowLeft className="h-4 w-4" />
             </Button>

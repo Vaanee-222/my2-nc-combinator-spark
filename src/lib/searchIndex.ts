@@ -27,7 +27,6 @@ export const searchIndex: SearchEntry[] = [
   { title: "Become a Mentor", path: "/become-mentor", description: "Join the mentor network.", keywords: ["mentor", "advisor"], category: "Community" },
   { title: "Partners", path: "/partners", description: "Our global ecosystem partners.", keywords: ["partners", "partner", "ecosystem"], category: "Community" },
   { title: "Partnership", path: "/partnership", description: "Become a strategic partner.", keywords: ["partnership", "collaborate"], category: "Community" },
-  { title: "Messages", path: "/messages", description: "In-app messaging.", keywords: ["messages", "chat", "inbox"], category: "Community" },
 
   // Resources
   { title: "Resources", path: "/resources", description: "Guides, templates, and toolkits.", keywords: ["resources", "guides", "templates"], category: "Resources" },
