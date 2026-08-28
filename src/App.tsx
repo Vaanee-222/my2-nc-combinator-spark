@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { lazy, Suspense } from "react";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import RouteSeo from "@/components/RouteSeo";
 import { useAnalyticsPageViews } from "@/hooks/useAnalyticsPageViews";
 import SiteMeta from "@/components/SiteMeta";
 
@@ -107,6 +108,7 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <SiteMeta />
+          <RouteSeo />
           <AppRoutes />
         </AuthProvider>
       </BrowserRouter>
