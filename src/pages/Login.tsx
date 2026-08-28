@@ -67,7 +67,7 @@ const Login = () => {
         <Card className="shadow-2xl">
           <CardHeader className="space-y-1">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-2xl font-bold">Sign In</CardTitle>
+              <CardTitle asChild className="text-2xl font-bold"><h1>Sign In</h1></CardTitle>
               <Button variant="ghost" size="sm" onClick={() => navigate("/")}>
                 <ArrowLeft className="h-4 w-4" />
               </Button>
