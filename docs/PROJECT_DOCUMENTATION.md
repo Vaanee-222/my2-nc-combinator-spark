@@ -9,7 +9,7 @@
 
 ## 1. Executive Summary
 
-Xi Combinator (Inc Combinator) is a YC-inspired, India-rooted, globally-networked startup ecosystem platform. It connects **founders, investors, mentors, co-founders, and ecosystem partners** through a single full-stack product covering incubation, hackathons, AI advisory, real-time messaging, analytics, partner directories, and tiered monetization — all powered by Lovable Cloud (PostgreSQL, Auth, RLS, Edge Functions, Realtime, Storage).
+Xi Combinator is a YC-inspired, India-rooted, globally-networked startup ecosystem platform. It connects **founders, investors, mentors, co-founders, and ecosystem partners** through a single full-stack product covering incubation, hackathons, AI advisory, real-time messaging, analytics, partner directories, and tiered monetization — all powered by Lovable Cloud (PostgreSQL, Auth, RLS, Edge Functions, Realtime, Storage).
 
 ---
 
@@ -143,7 +143,7 @@ Full detail: [GAMIFICATION_AND_SUBSCRIPTIONS.md](./GAMIFICATION_AND_SUBSCRIPTION
 | Hackathon Detail | `/hackathon/:id` |
 | Incubation | `/incubation` |
 | MVP Lab | `/mvp-lab` |
-| Xi Lab | `/inclab` |
+| Xi Lab | `/xi-lab` |
 | Resources | `/resources` |
 | Partnership | `/partnership` |
 | **Partners** | `/partners` |

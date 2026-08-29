@@ -29,7 +29,7 @@ const MVPLab = () => {
       description: "Enterprise-grade cloud setup and optimization",
       features: [
         "$12K+ AWS credits",
-        "$8L+ GCP credits", 
+        "$10K+ GCP credits", 
         "Azure startup credits",
         "DevOps & deployment setup"
       ],
@@ -63,7 +63,7 @@ const MVPLab = () => {
     },
     {
       name: "Rural Innovation Grant",
-      amount: "$30L", 
+      amount: "$36K", 
       criteria: "Rural market solutions",
       application: "Annual"
     },
@@ -83,12 +83,12 @@ const MVPLab = () => {
     },
     {
       name: "Google Cloud Platform",
-      credits: "$8L+", 
+      credits: "$10K+", 
       benefits: "AI/ML credits, startup program, mentorship"
     },
     {
       name: "Microsoft Azure",
-      credits: "$6L+",
+      credits: "$7.5K+",
       benefits: "Startup credits, BizSpark program, support"
     }
   ];

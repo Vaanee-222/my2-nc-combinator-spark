@@ -61,7 +61,7 @@ const FeaturedStartups = () => {
       category: "CleanTech",
       description: "IoT-based water purification systems for rural communities",
       stage: "Pre-seed",
-      funding: "$30L raised",
+      funding: "$36K raised",
       impact: "100+ villages",
       location: "Pune",
       team: 6,
