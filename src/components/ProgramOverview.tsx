@@ -41,7 +41,7 @@ const ProgramOverview = () => {
         "Demo Day Preparation"
       ],
       duration: "2 months",
-      investment: "$5L for 5% equity"
+      investment: "$50K for 5% equity"
     }
   ];
 

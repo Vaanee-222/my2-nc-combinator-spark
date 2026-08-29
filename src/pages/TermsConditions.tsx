@@ -11,7 +11,7 @@ const TermsConditions = () => {
           <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent mb-4">
             Terms & Conditions
           </h1>
-          <p className="text-muted-foreground">Last updated: December 21, 2024</p>
+          <p className="text-muted-foreground">Last updated: January 15, 2026</p>
         </div>
 
         <div className="space-y-8">
