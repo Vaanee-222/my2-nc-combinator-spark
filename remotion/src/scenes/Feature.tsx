@@ -15,7 +15,7 @@ export type FeatureProps = {
 
 export const Feature: React.FC<FeatureProps> = ({ kicker, title, accentFrom, bullets, shot, flip, panY = -60 }) => {
   const text = (
-    <div style={{ width: 700, display: "flex", flexDirection: "column", gap: 26 }}>
+    <div style={{ width: 690, display: "flex", flexDirection: "column", gap: 26 }}>
       <Kicker delay={4}>{kicker}</Kicker>
       <Headline text={title} delay={10} size={62} accentFrom={accentFrom} />
       <div style={{ display: "flex", flexDirection: "column", gap: 20, marginTop: 8 }}>
@@ -30,7 +30,7 @@ export const Feature: React.FC<FeatureProps> = ({ kicker, title, accentFrom, bul
 
   const visual = (
     <div style={{ flex: 1, display: "flex", justifyContent: flip ? "flex-start" : "flex-end" }}>
-      <Screen src={shot} width={1020} delay={12} tilt={flip ? 8 : -8} panY={panY} />
+      <Screen src={shot} width={950} delay={12} tilt={flip ? 8 : -8} panY={panY} />
     </div>
   );
 
@@ -39,8 +39,8 @@ export const Feature: React.FC<FeatureProps> = ({ kicker, title, accentFrom, bul
       style={{
         flexDirection: "row",
         alignItems: "center",
-        gap: 70,
-        padding: "0 110px",
+        gap: 60,
+        padding: "0 100px",
       }}
     >
       {flip ? (
