@@ -1,35 +1,62 @@
 # Xi Combinator — Database Schema & Migration Guide
 
-Last updated: 2026-07-30 · Backend: Lovable Cloud (PostgreSQL + RLS + Edge Functions)
+Last updated: 2026-09-04 · Backend: Lovable Cloud (PostgreSQL + RLS + Edge Functions)
+
+A machine-generated dump of the whole `public` schema (types, tables, constraints, indexes,
+grants, RLS policies, triggers and functions) is exported to `Xi-Combinator-Schema.sql`.
+Regenerate it whenever a migration lands.
+
+## Table inventory (47 tables)
+
+| Domain | Tables |
+|---|---|
+| Identity & access | `profiles`, `public_profiles`, `user_roles`, `admin_audit_log`, `notification_reads`, `messages` |
+| Applications & programs | `applications`, `inclab_applications`, `incubation_applications`, `hackathon_registrations`, `programs`, `cohort_startups` |
+| Co-founder matching | `cofounder_requests`, `cofounder_applications` |
+| Capital | `investors`, `investor_inquiries`, `investor_deals`, `investor_portfolio`, `investor_preferences`, `introduction_requests` |
+| Mentorship | `mentor_profiles`, `mentorships`, `mentorship_requests`, `mentor_sessions`, `advisors` |
+| Funding & perks | `grants`, `grant_applications`, `cloud_credit_requests`, `cloud_credit_ledger`, `deal_offers`, `deal_claims` |
+| Engagement | `point_events`, `user_points`, `badges`, `user_badges`, `usage_counters` |
+| Monetisation | `subscription_plans`, `subscription_purchases` |
+| Content & CMS | `blogs`, `news`, `startups`, `partners`, `partner_regions`, `media_assets`, `site_settings`, `site_settings_versions` |
+| Front desk | `contact_messages`, `consultation_bookings` |
 
 ## Core tables
 
 | Table | Purpose | Key columns |
 |---|---|---|
-| `profiles` | User profile, auto-created on signup | `user_id`, `email`, `full_name` |
+| `profiles` | User profile, auto-created on signup | `user_id`, `email`, `full_name`, `is_active` |
+| `public_profiles` | Safe, non-PII projection used by public pages | `user_id`, `full_name`, `avatar_url` |
 | `user_roles` | Role assignments (never on profiles) | `user_id`, `role` (`app_role` enum) |
-| `applications` | Program applications | `program_type`, `stage`, `review_notes` |
+| `applications` | Program applications | `program`, `status`, `review_notes` |
+| `inclab_applications` | Xi Lab intake with admin review | `startup_name`, `stage`, `status`, `reviewed_by` |
 | `incubation_applications` | Incubation intake | `startup_name`, `stage` |
-| `hackathon_registrations` | Hackathon signups | `team_name`, `skills` |
+| `hackathon_registrations` | Hackathon signups | `specialization`, `frameworks` |
 | `cofounder_requests` | Co-founder matching posts | `status`, `review_status`, `review_notes`, `reviewed_at`, `reviewed_by` |
+| `cofounder_applications` | Applications against a co-founder post | `request_id`, `applicant_id`, `status` |
 | `introduction_requests` | Founder → investor intros | `investor_name`, `contact_email`, `status`, `admin_notes`, `reviewed_at` |
 | `admin_audit_log` | Every admin create/update/delete/note | `admin_user_id`, `admin_email`, `action_type`, `table_name`, `record_id`, `details` |
 | `partners`, `blogs`, `news`, `startups`, `programs` | Content & ecosystem | `slug`, `category`, SEO fields |
+| `site_settings` | CMS branding/SEO with draft & version history | `logo_url`, `meta_title`, `draft_settings`, `has_draft` |
 
 ## Engagement & monetisation tables
 
 | Table | Purpose | Key columns |
 |---|---|---|
 | `point_events` | Immutable XP ledger, unique on `(user_id, event_key, source_id)` | `role`, `event_key`, `points`, `source_table`, `source_id`, `awarded_at` |
-| `user_points` | Materialised totals and level | `total_points`, `level`, `current_streak`, `longest_streak` |
-| `badges` / `user_badges` | Achievement catalogue and awards | `badge_key`, `awarded_at` |
-| `usage_counters` | Per-user monthly quota counters | `counter_key`, `period`, `count` |
+| `user_points` | Materialised totals and level | `total_points`, `level`, `level_name` |
+| `badges` / `user_badges` | Achievement catalogue and awards | `badge_key`, `criteria_event`, `threshold`, `awarded_at` |
+| `usage_counters` | Per-user monthly quota counters | `counter_key`, `period_start`, `count` |
 | `subscription_plans` | Audience-aware plan ladders | `audience`, `tier`, `category`, `price_usd`, `features` |
 | `subscription_purchases` | Member purchases | `plan_name`, `status`, `purchased_at`, `expires_at` |
+| `cloud_credit_ledger` | Allocations, redemptions and approvals | `entry_type`, `amount_usd`, `status`, `approved_by` |
 
-Security-definer functions: `award_points`, `recalc_user_points`, `evaluate_badges`,
-`monthly_leaderboard`, `public_gamification`, `admin_adjust_points`, `admin_void_point_event`,
-`admin_points_directory`, `increment_usage_counter`.
+Security-definer functions: `has_role`, `award_points`, `recalc_user_points`, `evaluate_badges`,
+`level_for_points`, `monthly_leaderboard`, `public_gamification`, `admin_adjust_points`,
+`admin_void_point_event`, `admin_points_directory`, `increment_usage_counter`, `handle_new_user`.
+Triggers: `update_updated_at_column`, `tg_award_points`, `tg_award_session_points`,
+`tg_evaluate_badges`, plus `validate_*` guards on co-founder applications, introduction
+requests and investor inquiries.
 See [GAMIFICATION_AND_SUBSCRIPTIONS.md](./GAMIFICATION_AND_SUBSCRIPTIONS.md) for the full model.
 
 
