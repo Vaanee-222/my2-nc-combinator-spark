@@ -15,7 +15,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { logAudit, type AuditAction } from "@/lib/audit";
 
-export const API_VERSION = "1.0.0";
+export const API_VERSION = "1.1.0";
 
 export interface ApiResult<T> {
   data: T | null;
@@ -243,12 +243,149 @@ export const tableApi = {
   },
 };
 
+/* ------------------------------------------------------------------ */
+/* Gamification (points, levels, badges, leaderboards)                 */
+/* ------------------------------------------------------------------ */
+export const gamificationApi = {
+  /** Totals + level for one user (defaults to the signed-in user). */
+  async points(userId: string): Promise<ApiResult<any>> {
+    const { data, error } = await supabase.from("user_points").select("*").eq("user_id", userId).maybeSingle();
+    return error ? fail(error) : ok(data);
+  },
+  /** Immutable XP ledger for one user, newest first. */
+  async events(userId: string, limit = 100): Promise<ApiResult<any[]>> {
+    const { data, error } = await supabase
+      .from("point_events")
+      .select("*")
+      .eq("user_id", userId)
+      .order("awarded_at", { ascending: false })
+      .limit(limit);
+    return error ? fail(error) : ok(data ?? []);
+  },
+  async badges(userId: string): Promise<ApiResult<any[]>> {
+    const { data, error } = await supabase.from("user_badges").select("*").eq("user_id", userId);
+    return error ? fail(error) : ok(data ?? []);
+  },
+  /** Monthly leaderboard RPC. `month` is any date inside the month. */
+  async leaderboard(month: string, role?: string | null, limit = 50): Promise<ApiResult<any[]>> {
+    const { data, error } = await (supabase as any).rpc("monthly_leaderboard", {
+      _month: month,
+      _role: role ?? null,
+      _limit: limit,
+    });
+    return error ? fail(error) : ok(data ?? []);
+  },
+  /** Public, RLS-safe profile card (points, level, badges) for /member/:id. */
+  async publicProfile(userId: string): Promise<ApiResult<any>> {
+    const { data, error } = await (supabase as any).rpc("public_gamification", { _user_id: userId });
+    return error ? fail(error) : ok(Array.isArray(data) ? data[0] ?? null : data);
+  },
+  /** Admin: grant or deduct XP with an audit trail. */
+  async adjustPoints(userId: string, points: number, reason: string): Promise<ApiResult<string>> {
+    const { data, error } = await (supabase as any).rpc("admin_adjust_points", {
+      _user_id: userId,
+      _points: points,
+      _reason: reason,
+    });
+    if (error) return fail(error);
+    await auditApi.record("update", "point_events", data ?? null, { user_id: userId, points, reason });
+    return ok(data);
+  },
+  /** Admin: void a previously awarded ledger entry. */
+  async voidEvent(eventId: string): Promise<ApiResult<string>> {
+    const { data, error } = await (supabase as any).rpc("admin_void_point_event", { _event_id: eventId });
+    if (error) return fail(error);
+    await auditApi.record("delete", "point_events", eventId, {});
+    return ok(data);
+  },
+  /** Admin: searchable directory of members with their totals. */
+  async directory(search?: string | null, limit = 50): Promise<ApiResult<any[]>> {
+    const { data, error } = await (supabase as any).rpc("admin_points_directory", {
+      _search: search ?? null,
+      _limit: limit,
+    });
+    return error ? fail(error) : ok(data ?? []);
+  },
+};
+
+/* ------------------------------------------------------------------ */
+/* Subscriptions, plans and usage quotas                               */
+/* ------------------------------------------------------------------ */
+export const subscriptionsApi = {
+  /** Active plans, optionally narrowed to one audience (startup, investor, …). */
+  async plans(audience?: string | null): Promise<ApiResult<any[]>> {
+    let q = supabase.from("subscription_plans").select("*").eq("is_active", true).order("sort_order");
+    if (audience) q = q.eq("audience", audience);
+    const { data, error } = await q;
+    return error ? fail(error) : ok(data ?? []);
+  },
+  /** Purchases visible to the signed-in user (RLS scoped). */
+  async myPurchases(): Promise<ApiResult<any[]>> {
+    const { data, error } = await supabase
+      .from("subscription_purchases")
+      .select("*")
+      .order("purchased_at", { ascending: false });
+    return error ? fail(error) : ok(data ?? []);
+  },
+  /** Increment a monthly quota counter and get the new value back. */
+  async useQuota(counterKey: string, delta = 1): Promise<ApiResult<number>> {
+    const { data, error } = await (supabase as any).rpc("increment_usage_counter", {
+      _counter_key: counterKey,
+      _delta: delta,
+    });
+    return error ? fail(error) : ok(Number(data ?? 0));
+  },
+  async counters(): Promise<ApiResult<any[]>> {
+    const { data, error } = await supabase.from("usage_counters").select("*");
+    return error ? fail(error) : ok(data ?? []);
+  },
+};
+
+/* ------------------------------------------------------------------ */
+/* Generic review workflow (applications, grants, deals, inquiries, …) */
+/* ------------------------------------------------------------------ */
+export const recordsApi = {
+  /**
+   * Change a record's `status`, write an audit entry and — when a contact
+   * email is supplied — notify the submitter through `send-notification`.
+   */
+  async setStatus(
+    table: string,
+    row: any,
+    status: string,
+    opts?: { label?: string; notes?: string | null; emailField?: string; nameField?: string; contextField?: string },
+  ): Promise<ApiResult<true>> {
+    const patch: Record<string, any> = { status };
+    if (opts?.notes !== undefined) patch.admin_notes = opts.notes;
+    const { error } = await (supabase as any).from(table).update(patch).eq("id", row.id);
+    if (error) return fail(error);
+    await auditApi.record("status_change", table, row.id, patch);
+    const to = row[opts?.emailField ?? "email"];
+    if (to) {
+      await notificationsApi.send({
+        event: status === "approved" ? "record_approved" : status === "rejected" ? "record_rejected" : "record_updated",
+        to,
+        recipientName: row[opts?.nameField ?? "applicant_name"] ?? row.full_name ?? row.name ?? null,
+        subjectContext: row[opts?.contextField ?? "startup_name"] ?? opts?.label ?? null,
+        notes: opts?.notes ?? row.admin_notes ?? null,
+        recordId: row.id,
+        label: opts?.label ?? null,
+        status,
+      });
+    }
+    return ok(true as const);
+  },
+};
+
 export const api = {
   version: API_VERSION,
   audit: auditApi,
   cofounders: cofoundersApi,
   introductions: introductionsApi,
   notifications: notificationsApi,
+  gamification: gamificationApi,
+  subscriptions: subscriptionsApi,
+  records: recordsApi,
   table: tableApi,
 };
 
