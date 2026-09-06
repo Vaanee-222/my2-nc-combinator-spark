@@ -1,6 +1,6 @@
 # Xi Combinator — API Reference
 
-**Package:** `src/lib/api` · **Version:** `1.1.0` · Last updated: 2026-09-04
+**Package:** `src/lib/api` · **Version:** `1.1.0` · Last updated: 2026-09-06
 
 A single typed entry point for every backend read/write. Prefer it over calling the
 database client directly so audit logging, validation, and error shapes stay consistent.

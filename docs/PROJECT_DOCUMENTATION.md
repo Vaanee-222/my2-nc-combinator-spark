@@ -1,7 +1,7 @@
 # Xi Combinator — Project Documentation
 
-**Version**: 5.0.0
-**Last Updated**: August 25, 2026
+**Version**: 5.1.0
+**Last Updated**: September 6, 2026
 
 **Live Preview**: https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app
 
@@ -275,3 +275,16 @@ All tables enforce RLS. Admin-only writes via `has_role(auth.uid(), 'admin')`. M
 - Support: support@incombinator.com
 
 *Mirrored in-app via Admin Dashboard → Docs tab.*
+
+---
+
+## 10. Version History
+
+| Version | Date | Highlights |
+|---|---|---|
+| 5.1.0 | 2026-09-06 | Documentation release: API package v1.1.0 (gamification, subscriptions, generic status workflow), live schema export (47 tables), Postman collection + environment, marketing plan refresh, decks and demo video. |
+| 5.0.0 | 2026-08-25 | Gamification (points, badges, streaks, quests, leaderboards, perks) and audience-aware subscriptions with entitlements and quotas. |
+| 4.0.0 | 2026-08-15 | Role dashboard UX overhaul: vertical navigation, Today overviews, list toolbars, shortcuts, skeleton states. |
+| 3.0.0 | 2026-07-30 | Admin CMS, media library, SEO file generation, admin inbox, cloud credit ledger, approval workflows, audit log. |
+| 2.0.0 | 2026-06-20 | AI advisory agents, health scoring, real-time messaging, analytics dashboards. |
+| 1.0.0 | 2026-05-01 | Public site, applications, authentication and RBAC. |

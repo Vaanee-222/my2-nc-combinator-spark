@@ -1,7 +1,7 @@
 # Xi Combinator — Marketing Plan
 
-**Version**: 1.0
-**Date**: August 2026
+**Version**: 1.1
+**Date**: September 2026
 **Owner**: Growth / Founder's office
 
 ---
