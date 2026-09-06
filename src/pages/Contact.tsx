@@ -153,14 +153,21 @@ const Contact = () => {
     name: "Xi Combinator",
     email: "hello@xicombinator.in",
     telephone: "+91 80 4567 8900",
+    url: "https://xicombinator.lovable.app/contact",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Koramangala Innovation Hub, 5th Block",
+      streetAddress: "Xi Combinator HQ, 5th Block Koramangala",
       addressLocality: "Bangalore",
       addressRegion: "Karnataka",
       postalCode: "560034",
       addressCountry: "IN",
     },
+    openingHours: ["Mo-Fr 09:00-19:00", "Sa 10:00-16:00"],
+    sameAs: [
+      "https://xicombinator.lovable.app",
+      "https://www.linkedin.com/company/xicombinator",
+      "https://twitter.com/xicombinator",
+    ],
   };
 
   return (
