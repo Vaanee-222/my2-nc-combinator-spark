@@ -60,7 +60,7 @@ const Contact = () => {
     {
       icon: MapPin,
       title: "Headquarters",
-      details: ["Koramangala, Bangalore", "Karnataka 560034, India"]
+      details: ["Xi Combinator HQ, 5th Block Koramangala", "Bangalore 560034, Karnataka, India"]
     },
     {
       icon: Phone,
@@ -70,39 +70,51 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email",
-      details: ["hello@xicombinator.in", "partnerships@xicombinator.in"]
+      details: ["hello@xicombinator.in", "partnerships@xicombinator.in", "support@xicombinator.in"]
     },
     {
       icon: Clock,
       title: "Office Hours",
-      details: ["Monday - Friday: 9 AM - 7 PM", "Saturday: 10 AM - 4 PM"]
+      details: ["Monday - Friday: 9:00 AM - 7:00 PM IST", "Saturday: 10:00 AM - 4:00 PM IST"]
     }
   ];
 
   const offices = [
     {
       city: "Bangalore",
-      address: "Koramangala Innovation Hub, 5th Block",
       type: "Headquarters",
-      emoji: ""
+      address: "Xi Combinator HQ, 5th Block Koramangala, Bangalore 560034",
+      phone: "+91 80 4567 8900",
+      email: "hello@xicombinator.in",
+      hours: "Mon - Fri: 9:00 AM - 7:00 PM IST",
+      mapsUrl: "https://www.google.com/maps/search/?api=1&query=Koramangala+5th+Block+Bangalore+560034"
     },
     {
       city: "Mumbai",
-      address: "Bandra Kurla Complex, Financial District",
       type: "Regional Office",
-      emoji: ""
+      address: "Bandra Kurla Complex, Bandra East, Mumbai 400051",
+      phone: "+91 22 4567 8900",
+      email: "mumbai@xicombinator.in",
+      hours: "Mon - Fri: 9:30 AM - 6:30 PM IST",
+      mapsUrl: "https://www.google.com/maps/search/?api=1&query=Bandra+Kurla+Complex+Mumbai+400051"
     },
     {
-      city: "Delhi",
-      address: "Connaught Place, Central Delhi",
+      city: "Delhi NCR",
       type: "Regional Office",
-      emoji: ""
+      address: "Connaught Place, New Delhi 110001",
+      phone: "+91 11 4567 8900",
+      email: "delhi@xicombinator.in",
+      hours: "Mon - Fri: 9:30 AM - 6:30 PM IST",
+      mapsUrl: "https://www.google.com/maps/search/?api=1&query=Connaught+Place+New+Delhi+110001"
     },
     {
       city: "Hyderabad",
-      address: "HITEC City, Cyberabad",
       type: "Tech Hub",
-      emoji: ""
+      address: "HITEC City, Madhapur, Hyderabad 500081",
+      phone: "+91 40 4567 8900",
+      email: "hyderabad@xicombinator.in",
+      hours: "Mon - Fri: 9:00 AM - 7:00 PM IST",
+      mapsUrl: "https://www.google.com/maps/search/?api=1&query=HITEC+City+Madhapur+Hyderabad+500081"
     }
   ];
 
