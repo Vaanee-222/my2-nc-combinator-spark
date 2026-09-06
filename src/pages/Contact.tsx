@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MapPin, Phone, Mail, Clock, MessageSquare, Users } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Building2, ExternalLink } from "lucide-react";
 import ConsultationDialog from "@/components/ConsultationDialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -60,7 +60,7 @@ const Contact = () => {
     {
       icon: MapPin,
       title: "Headquarters",
-      details: ["Koramangala, Bangalore", "Karnataka 560034, India"]
+      details: ["Xi Combinator HQ, 5th Block Koramangala", "Bangalore 560034, Karnataka, India"]
     },
     {
       icon: Phone,
@@ -70,39 +70,51 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email",
-      details: ["hello@xicombinator.in", "partnerships@xicombinator.in"]
+      details: ["hello@xicombinator.in", "partnerships@xicombinator.in", "support@xicombinator.in"]
     },
     {
       icon: Clock,
       title: "Office Hours",
-      details: ["Monday - Friday: 9 AM - 7 PM", "Saturday: 10 AM - 4 PM"]
+      details: ["Monday - Friday: 9:00 AM - 7:00 PM IST", "Saturday: 10:00 AM - 4:00 PM IST"]
     }
   ];
 
   const offices = [
     {
       city: "Bangalore",
-      address: "Koramangala Innovation Hub, 5th Block",
       type: "Headquarters",
-      emoji: ""
+      address: "Xi Combinator HQ, 5th Block Koramangala, Bangalore 560034",
+      phone: "+91 80 4567 8900",
+      email: "hello@xicombinator.in",
+      hours: "Mon - Fri: 9:00 AM - 7:00 PM IST",
+      mapsUrl: "https://www.google.com/maps/search/?api=1&query=Koramangala+5th+Block+Bangalore+560034"
     },
     {
       city: "Mumbai",
-      address: "Bandra Kurla Complex, Financial District",
       type: "Regional Office",
-      emoji: ""
+      address: "Bandra Kurla Complex, Bandra East, Mumbai 400051",
+      phone: "+91 22 4567 8900",
+      email: "mumbai@xicombinator.in",
+      hours: "Mon - Fri: 9:30 AM - 6:30 PM IST",
+      mapsUrl: "https://www.google.com/maps/search/?api=1&query=Bandra+Kurla+Complex+Mumbai+400051"
     },
     {
-      city: "Delhi",
-      address: "Connaught Place, Central Delhi",
+      city: "Delhi NCR",
       type: "Regional Office",
-      emoji: ""
+      address: "Connaught Place, New Delhi 110001",
+      phone: "+91 11 4567 8900",
+      email: "delhi@xicombinator.in",
+      hours: "Mon - Fri: 9:30 AM - 6:30 PM IST",
+      mapsUrl: "https://www.google.com/maps/search/?api=1&query=Connaught+Place+New+Delhi+110001"
     },
     {
       city: "Hyderabad",
-      address: "HITEC City, Cyberabad",
       type: "Tech Hub",
-      emoji: ""
+      address: "HITEC City, Madhapur, Hyderabad 500081",
+      phone: "+91 40 4567 8900",
+      email: "hyderabad@xicombinator.in",
+      hours: "Mon - Fri: 9:00 AM - 7:00 PM IST",
+      mapsUrl: "https://www.google.com/maps/search/?api=1&query=HITEC+City+Madhapur+Hyderabad+500081"
     }
   ];
 
@@ -141,14 +153,21 @@ const Contact = () => {
     name: "Xi Combinator",
     email: "hello@xicombinator.in",
     telephone: "+91 80 4567 8900",
+    url: "https://xicombinator.lovable.app/contact",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Koramangala Innovation Hub, 5th Block",
+      streetAddress: "Xi Combinator HQ, 5th Block Koramangala",
       addressLocality: "Bangalore",
       addressRegion: "Karnataka",
       postalCode: "560034",
       addressCountry: "IN",
     },
+    openingHours: ["Mo-Fr 09:00-19:00", "Sa 10:00-16:00"],
+    sameAs: [
+      "https://xicombinator.lovable.app",
+      "https://www.linkedin.com/company/xicombinator",
+      "https://twitter.com/xicombinator",
+    ],
   };
 
   return (
@@ -305,16 +324,36 @@ const Contact = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
             {offices.map((office, index) => (
-              <Card key={index} className="p-6 bg-card-gradient border-border text-center hover:shadow-orange-glow transition-all duration-300">
+              <Card key={index} className="p-6 bg-card-gradient border-border text-left hover:shadow-orange-glow transition-all duration-300">
                 <div className="space-y-4">
-                  <div className="text-4xl">{office.emoji}</div>
-                  <div className="space-y-2">
-                    <h3 className="text-xl font-bold">{office.city}</h3>
-                    <Badge variant="outline">{office.type}</Badge>
-                    <p className="text-muted-foreground text-sm">{office.address}</p>
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
+                      <Building2 className="w-5 h-5 text-primary" />
+                    </div>
+                    <Badge variant="outline" className="shrink-0">{office.type}</Badge>
                   </div>
-                  <Button variant="outline" size="sm" className="w-full">
-                    Get Directions
+                  <div className="space-y-3">
+                    <h3 className="text-xl font-bold">{office.city}</h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed">{office.address}</p>
+                    <div className="space-y-1 text-sm">
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <Phone className="w-4 h-4 text-primary" />
+                        <a href={`tel:${office.phone.replace(/\s/g, "")}`} className="hover:text-primary transition-colors">{office.phone}</a>
+                      </div>
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <Mail className="w-4 h-4 text-primary" />
+                        <a href={`mailto:${office.email}`} className="hover:text-primary transition-colors">{office.email}</a>
+                      </div>
+                      <div className="flex items-start gap-2 text-muted-foreground">
+                        <Clock className="w-4 h-4 text-primary mt-0.5" />
+                        <span>{office.hours}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <Button variant="outline" size="sm" className="w-full" asChild>
+                    <a href={office.mapsUrl} target="_blank" rel="noopener noreferrer">
+                      Get Directions <ExternalLink className="w-3.5 h-3.5 ml-1.5" />
+                    </a>
                   </Button>
                 </div>
               </Card>
