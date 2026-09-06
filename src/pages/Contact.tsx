@@ -324,16 +324,36 @@ const Contact = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
             {offices.map((office, index) => (
-              <Card key={index} className="p-6 bg-card-gradient border-border text-center hover:shadow-orange-glow transition-all duration-300">
+              <Card key={index} className="p-6 bg-card-gradient border-border text-left hover:shadow-orange-glow transition-all duration-300">
                 <div className="space-y-4">
-                  <div className="text-4xl">{office.emoji}</div>
-                  <div className="space-y-2">
-                    <h3 className="text-xl font-bold">{office.city}</h3>
-                    <Badge variant="outline">{office.type}</Badge>
-                    <p className="text-muted-foreground text-sm">{office.address}</p>
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
+                      <Building2 className="w-5 h-5 text-primary" />
+                    </div>
+                    <Badge variant="outline" className="shrink-0">{office.type}</Badge>
                   </div>
-                  <Button variant="outline" size="sm" className="w-full">
-                    Get Directions
+                  <div className="space-y-3">
+                    <h3 className="text-xl font-bold">{office.city}</h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed">{office.address}</p>
+                    <div className="space-y-1 text-sm">
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <Phone className="w-4 h-4 text-primary" />
+                        <a href={`tel:${office.phone.replace(/\s/g, "")}`} className="hover:text-primary transition-colors">{office.phone}</a>
+                      </div>
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <Mail className="w-4 h-4 text-primary" />
+                        <a href={`mailto:${office.email}`} className="hover:text-primary transition-colors">{office.email}</a>
+                      </div>
+                      <div className="flex items-start gap-2 text-muted-foreground">
+                        <Clock className="w-4 h-4 text-primary mt-0.5" />
+                        <span>{office.hours}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <Button variant="outline" size="sm" className="w-full" asChild>
+                    <a href={office.mapsUrl} target="_blank" rel="noopener noreferrer">
+                      Get Directions <ExternalLink className="w-3.5 h-3.5 ml-1.5" />
+                    </a>
                   </Button>
                 </div>
               </Card>
