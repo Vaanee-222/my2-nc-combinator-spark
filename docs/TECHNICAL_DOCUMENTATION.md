@@ -1,7 +1,7 @@
 
 # Xi Combinator — Technical Documentation
 
-## Version 3.0.0 — Full-Stack Platform with AI Agents, Analytics & Real-Time Messaging
+## Version 3.1.0 — Full-Stack Platform with AI Agents, Gamification, Subscriptions, Analytics & Real-Time Messaging
 
 **Preview URL**: https://id-preview--0cfa7671-4b3f-4f1c-9d5c-fa406e419cde.lovable.app  
 **Lovable Project ID**: `0cfa7671-4b3f-4f1c-9d5c-fa406e419cde`
@@ -399,4 +399,4 @@ Edge function secrets (server-side only):
 
 ---
 
-*Last updated: April 12, 2026*
+*Last updated: September 6, 2026*

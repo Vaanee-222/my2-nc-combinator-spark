@@ -1,6 +1,6 @@
 # Xi Combinator — Gamification & Subscriptions
 
-**Version**: 1.0.0 · **Last updated**: August 25, 2026
+**Version**: 1.1.0 · **Last updated**: September 6, 2026
 Covers the engagement layer (points, levels, badges, streaks, quests, leaderboards, perks)
 and the audience-aware monetisation layer (plans, tiers, entitlements, quotas).
 

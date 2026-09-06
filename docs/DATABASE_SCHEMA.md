@@ -1,6 +1,6 @@
 # Xi Combinator — Database Schema & Migration Guide
 
-Last updated: 2026-09-04 · Backend: Lovable Cloud (PostgreSQL + RLS + Edge Functions)
+**Version:** `2.1.0` · Last updated: 2026-09-06 · Backend: Lovable Cloud (PostgreSQL + RLS + Edge Functions)
 
 A machine-generated dump of the whole `public` schema (types, tables, constraints, indexes,
 grants, RLS policies, triggers and functions) is exported to `Xi-Combinator-Schema.sql`.

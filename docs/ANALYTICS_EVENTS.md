@@ -1,5 +1,7 @@
 # Analytics Events — GA4 / GTM
 
+**Version:** `1.1.0` · Last updated: September 6, 2026
+
 All events fire to `window.dataLayer` and (when GA4 is configured) `gtag('event', ...)`.
 Configure your **GA4 Measurement ID** and **GTM Container ID** in **Admin Dashboard → Header Scripts → Analytics IDs**.
 
