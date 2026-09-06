@@ -82,7 +82,7 @@ const ApiDocumentation = () => {
             Typed entry point for every backend read/write: <code className="font-mono">src/lib/api</code>
           </p>
         </div>
-        <Badge variant="secondary">v1.0.0</Badge>
+        <Badge variant="secondary">v1.1.0</Badge>
       </div>
 
       <Card>
