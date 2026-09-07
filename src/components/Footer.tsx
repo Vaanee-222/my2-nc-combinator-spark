@@ -1,10 +1,65 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
-import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, Youtube } from "lucide-react";
+import { z } from "zod";
+import { supabase } from "@/integrations/supabase/client";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { toast } from "@/hooks/use-toast";
+
+const emailSchema = z.string().trim().email({ message: "Enter a valid email address" }).max(255);
+
+const DEFAULTS = {
+  contactEmail: "hello@xicombinator.in",
+  contactPhone: "+91 80 4567 8900",
+  address: "5th Block Koramangala, Bangalore 560034, India",
+  footerText:
+    "A global startup accelerator and incubator empowering founders across continents to build the next generation of breakout companies.",
+};
 
 const Footer = () => {
+  const { data: siteSettings } = useSiteSettings();
+  const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const contactEmail = siteSettings?.contact_email || DEFAULTS.contactEmail;
+  const contactPhone = siteSettings?.contact_phone || DEFAULTS.contactPhone;
+  const address = siteSettings?.address || DEFAULTS.address;
+  const footerText = siteSettings?.footer_text || DEFAULTS.footerText;
+
+  const socials = [
+    { icon: Linkedin, url: siteSettings?.linkedin_url || "https://www.linkedin.com/company/xi-combinator", label: "LinkedIn" },
+    { icon: Twitter, url: siteSettings?.twitter_url || "https://twitter.com/xicombinator", label: "Twitter" },
+    { icon: Youtube, url: siteSettings?.youtube_url || "https://www.youtube.com/@xicombinator", label: "YouTube" },
+    { icon: Instagram, url: "https://www.instagram.com/xicombinator", label: "Instagram" },
+  ];
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const parsed = emailSchema.safeParse(email);
+    if (!parsed.success) {
+      toast({ title: "Invalid email", description: parsed.error.issues[0]?.message, variant: "destructive" });
+      return;
+    }
+    setSubmitting(true);
+    const { error } = await supabase
+      .from("newsletter_subscribers" as never)
+      .insert({ email: parsed.data.toLowerCase() } as never);
+    setSubmitting(false);
+    if (error) {
+      if ((error as { code?: string }).code === "23505") {
+        toast({ title: "Already subscribed", description: "This email is already on the list." });
+      } else {
+        toast({ title: "Subscription failed", description: "Please try again later.", variant: "destructive" });
+      }
+      return;
+    }
+    toast({ title: "Subscribed", description: "You're on the list — watch your inbox." });
+    setEmail("");
+  };
+
   return (
     <footer className="bg-muted/30 border-t">
       <div className="container mx-auto px-4 py-12">
@@ -12,16 +67,17 @@ const Footer = () => {
           {/* Company Info */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent">
-              Xi Combinator
+              {siteSettings?.site_name || "Xi Combinator"}
             </h3>
-            <p className="text-sm text-muted-foreground">
-              A global startup accelerator and incubator empowering founders across continents to build the next generation of breakout companies.
-            </p>
-            <div className="flex space-x-4">
-              <Button variant="ghost" size="icon"><Facebook className="h-4 w-4" /></Button>
-              <Button variant="ghost" size="icon"><Twitter className="h-4 w-4" /></Button>
-              <Button variant="ghost" size="icon"><Instagram className="h-4 w-4" /></Button>
-              <Button variant="ghost" size="icon"><Linkedin className="h-4 w-4" /></Button>
+            <p className="text-sm text-muted-foreground">{footerText}</p>
+            <div className="flex space-x-2">
+              {socials.map(({ icon: Icon, url, label }) => (
+                <Button key={label} variant="ghost" size="icon" asChild>
+                  <a href={url} target="_blank" rel="noopener noreferrer" aria-label={label}>
+                    <Icon className="h-4 w-4" />
+                  </a>
+                </Button>
+              ))}
             </div>
           </div>
 
@@ -77,26 +133,35 @@ const Footer = () => {
               <Link to="/contact" className="hover:text-primary transition-colors">Contact Us</Link>
             </h3>
             <div className="space-y-2">
-              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                <MapPin className="h-4 w-4" />
-                <span>San Francisco · Bangalore · Singapore</span>
+              <div className="flex items-start space-x-2 text-sm text-muted-foreground">
+                <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
+                <span>{address}</span>
               </div>
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                <Mail className="h-4 w-4" />
-                <span>hello@xicombinator.com</span>
+                <Mail className="h-4 w-4 shrink-0" />
+                <a href={`mailto:${contactEmail}`} className="hover:text-primary transition-colors">{contactEmail}</a>
               </div>
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                <Phone className="h-4 w-4" />
-                <span>+1 (415) 555-0142</span>
+                <Phone className="h-4 w-4 shrink-0" />
+                <a href={`tel:${contactPhone.replace(/\s/g, "")}`} className="hover:text-primary transition-colors">{contactPhone}</a>
               </div>
             </div>
 
             <div className="space-y-2">
               <h4 className="text-sm font-medium">Newsletter</h4>
-              <div className="flex space-x-2">
-                <Input placeholder="Your email" className="flex-1" />
-                <Button size="sm">Subscribe</Button>
-              </div>
+              <form onSubmit={handleSubscribe} className="flex space-x-2">
+                <Input
+                  type="email"
+                  placeholder="Your email"
+                  className="flex-1"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  aria-label="Newsletter email"
+                />
+                <Button size="sm" type="submit" disabled={submitting}>
+                  {submitting ? "..." : "Subscribe"}
+                </Button>
+              </form>
             </div>
           </div>
         </div>
@@ -105,7 +170,7 @@ const Footer = () => {
 
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Xi Combinator. All rights reserved.
+            © {new Date().getFullYear()} {siteSettings?.site_name || "Xi Combinator"}. All rights reserved.
           </p>
           <div className="flex space-x-4">
             <Link to="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
