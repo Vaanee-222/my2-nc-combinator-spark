@@ -153,10 +153,7 @@ const SuccessStories = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <RouteSeo
-        title="Success Stories | Xi Combinator"
-        description="Discover how Xi Combinator startups raised $38M+, created 3,500+ jobs, and are transforming industries across India and beyond in 2026."
-      />
+      <RouteSeo />
       <Navigation />
       <main className="container mx-auto px-4 pt-20 pb-12">
         <Breadcrumbs />
