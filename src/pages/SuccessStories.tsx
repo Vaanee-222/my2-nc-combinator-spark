@@ -1,12 +1,31 @@
-
+import { useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import RouteSeo from "@/components/RouteSeo";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, Users, Building, Award, Globe, Calendar } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { TrendingUp, Users, Building, Award, Globe, ArrowRight, MapPin, Sparkles } from "lucide-react";
 
 const SuccessStories = () => {
+  useEffect(() => {
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: "Success Stories — Xi Combinator",
+      description:
+        "Discover how Xi Combinator incubated startups are transforming industries and creating impact across the globe in 2026.",
+      url: "https://xicombinator.lovable.app/success-stories",
+    };
+    const el = document.createElement("script");
+    el.type = "application/ld+json";
+    el.text = JSON.stringify(schema);
+    document.head.appendChild(el);
+    return () => el.remove();
+  }, []);
+
   const successStories = [
     {
       id: 1,
@@ -14,21 +33,17 @@ const SuccessStories = () => {
       founder: "Dr. Priya Sharma",
       sector: "HealthTech",
       program: "Incubation",
-      cohort: "2023",
-      funding: "$1.8M Series A",
-      description: "AI-powered diagnostic platform revolutionizing healthcare delivery across underserved markets",
-      metrics: {
-        hospitals: "50+",
-        patients: "100K+",
-        accuracy: "95%",
-        cities: "25"
-      },
+      cohort: "2024",
+      funding: "$4.2M Series A",
+      location: "Bangalore, India",
+      description:
+        "AI-powered diagnostic platform revolutionizing healthcare delivery across underserved markets",
+      metrics: { hospitals: "120+", patients: "500K+", accuracy: "96%", cities: "42" },
       achievements: [
-        "First AI diagnostic tool approved by AIIMS",
-        "Partnership with Apollo Hospitals",
-        "Winner of HealthTech Innovation Award 2024"
+        "AI diagnostic suite deployed across 3 state health networks",
+        "Partnership with Apollo Hospitals expanded in 2026",
+        "Winner of National HealthTech Innovation Award 2026",
       ],
-      image: "/placeholder.svg"
     },
     {
       id: 2,
@@ -36,21 +51,17 @@ const SuccessStories = () => {
       founder: "Rajesh Kumar",
       sector: "EdTech",
       program: "MVP Lab",
-      cohort: "2022",
-      funding: "$1M Seed",
-      description: "Vernacular learning platform making quality education accessible in local languages",
-      metrics: {
-        users: "2M+",
-        languages: "12",
-        courses: "500+",
-        completion: "85%"
-      },
+      cohort: "2023",
+      funding: "$2.5M Seed",
+      location: "Pune, India",
+      description:
+        "Vernacular learning platform making quality education accessible in local languages",
+      metrics: { users: "5M+", languages: "14", courses: "1,200+", completion: "88%" },
       achievements: [
-        "Featured in Google Play Store top apps",
-        "Partnership with State Education Board",
-        "UNESCO EdTech Innovation Recognition"
+        "Top education app on Google Play Store in 2026",
+        "Partnership with 4 State Education Boards",
+        "UNESCO EdTech Innovation Recognition",
       ],
-      image: "/placeholder.svg"
     },
     {
       id: 3,
@@ -58,89 +69,126 @@ const SuccessStories = () => {
       founder: "Anita Patel",
       sector: "AgriTech",
       program: "Deep Tech Incubation",
-      cohort: "2023",
-      funding: "$1.5M Series A",
-      description: "IoT-based precision farming solution helping farmers increase crop yield and reduce costs",
-      metrics: {
-        farmers: "10,000+",
-        yield: "+30%",
-        water: "-40%",
-        revenue: "$6M"
-      },
+      cohort: "2024",
+      funding: "$3.8M Series A",
+      location: "Hyderabad, India",
+      description:
+        "IoT-based precision farming solution helping farmers increase crop yield and reduce costs",
+      metrics: { farmers: "25,000+", yield: "+34%", water: "-45%", revenue: "$9M" },
       achievements: [
-        "Featured in Forbes 30 Under 30",
+        "Featured in Forbes 30 Under 30 Asia",
         "Government of India Agriculture Innovation Award",
-        "Partnership with major fertilizer companies"
+        "Expanded to 8 states in 2026",
       ],
-      image: "/placeholder.svg"
-    }
+    },
+    {
+      id: 4,
+      name: "FinBridge",
+      founder: "Arjun Nair",
+      sector: "FinTech",
+      program: "Xi Lab",
+      cohort: "2025",
+      funding: "$5.5M Series A",
+      location: "Mumbai, India",
+      description:
+        "Embedded lending rails bringing instant credit to 2M+ small merchants across tier-2 and tier-3 India",
+      metrics: { merchants: "2M+", disbursed: "$120M", default: "<1.5%", partners: "35" },
+      achievements: [
+        "RBI sandbox graduate in 2025",
+        "Fastest Xi Lab company to Series A",
+        "Banking partnerships with 3 major PSU banks",
+      ],
+    },
+    {
+      id: 5,
+      name: "GreenGrid Energy",
+      founder: "Meera Krishnan",
+      sector: "CleanTech",
+      program: "Incubation",
+      cohort: "2024",
+      funding: "$6.2M Series A",
+      location: "Chennai, India",
+      description:
+        "Distributed solar micro-grids and smart metering for industrial parks and rural clusters",
+      metrics: { capacity: "85 MW", sites: "300+", savings: "$14M", co2: "-120K t" },
+      achievements: [
+        "Largest distributed solar deployment by an Indian startup in 2026",
+        "MNRE empanelment secured",
+        "National CleanTech Startup of the Year 2026",
+      ],
+    },
+    {
+      id: 6,
+      name: "LogiChain",
+      founder: "Vikram Singh",
+      sector: "Logistics",
+      program: "Hackathon",
+      cohort: "2025",
+      funding: "$1.2M Seed",
+      location: "Delhi NCR, India",
+      description:
+        "Born at our 2025 Hackathon — AI route optimization cutting freight costs for mid-market shippers",
+      metrics: { shipments: "400K+", savings: "-22%", trucks: "8,000+", cities: "60" },
+      achievements: [
+        "Hackathon Grand Prize winner to funded startup in 9 months",
+        "Onboarded 3 Fortune India 500 shippers",
+        "Series A term sheet secured in Q3 2026",
+      ],
+    },
   ];
 
   const programStats = [
     { program: "Incubation", startups: 45, funding: "$15M", success: "87%" },
     { program: "MVP Lab", startups: 78, funding: "$10M", success: "82%" },
     { program: "Xi Lab", startups: 32, funding: "$8M", success: "90%" },
-    { program: "Hackathon", startups: 25, funding: "$5M", success: "75%" }
+    { program: "Hackathon", startups: 25, funding: "$5M", success: "75%" },
+  ];
+
+  const overallStats = [
+    { label: "Total Startups", value: "180+", sub: "Across all programs", icon: Building },
+    { label: "Total Funding", value: "$38M+", sub: "Raised by alumni", icon: TrendingUp },
+    { label: "Jobs Created", value: "3,500+", sub: "Direct employment", icon: Users },
+    { label: "Global Reach", value: "15+", sub: "Countries served", icon: Globe },
   ];
 
   return (
     <div className="min-h-screen bg-background">
+      <RouteSeo
+        title="Success Stories | Xi Combinator"
+        description="Discover how Xi Combinator startups raised $38M+, created 3,500+ jobs, and are transforming industries across India and beyond in 2026."
+      />
       <Navigation />
       <main className="container mx-auto px-4 pt-20 pb-12">
         <Breadcrumbs />
-        
+
         {/* Hero Section */}
         <section className="text-center mb-16">
+          <Badge variant="outline" className="mb-4">
+            <Sparkles className="h-3 w-3 mr-1" /> 2026 Cohort Impact Report
+          </Badge>
           <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent mb-6">
             Success Stories
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Discover how our incubated startups are transforming industries and creating impact across the globe.
+            Discover how our incubated startups are transforming industries and creating impact
+            across the globe.
           </p>
         </section>
 
         {/* Overall Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Startups</CardTitle>
-              <Building className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-primary">180+</div>
-              <p className="text-xs text-muted-foreground">Across all programs</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Funding</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-primary">$38M+</div>
-              <p className="text-xs text-muted-foreground">Raised by alumni</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Jobs Created</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-primary">3,500+</div>
-              <p className="text-xs text-muted-foreground">Direct employment</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Global Reach</CardTitle>
-              <Globe className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-primary">15+</div>
-              <p className="text-xs text-muted-foreground">Countries served</p>
-            </CardContent>
-          </Card>
+          {overallStats.map((stat) => (
+            <Card key={stat.label}>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">{stat.label}</CardTitle>
+                <stat.icon className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-primary">{stat.value}</div>
+                <p className="text-xs text-muted-foreground">{stat.sub}</p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
         {/* Featured Success Stories */}
@@ -148,7 +196,10 @@ const SuccessStories = () => {
           <h2 className="text-3xl font-bold text-center mb-8">Featured Success Stories</h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {successStories.map((story) => (
-              <Card key={story.id} className="hover:shadow-lg transition-all duration-300">
+              <Card
+                key={story.id}
+                className="hover:shadow-lg hover:border-primary/40 transition-all duration-300 flex flex-col"
+              >
                 <CardHeader>
                   <div className="flex items-center justify-between mb-4">
                     <Badge variant="outline">{story.program}</Badge>
@@ -158,10 +209,13 @@ const SuccessStories = () => {
                   <CardDescription>
                     Founded by {story.founder} • {story.sector}
                   </CardDescription>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <MapPin className="h-3 w-3" /> {story.location}
+                  </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 flex-1 flex flex-col">
                   <p className="text-sm text-muted-foreground">{story.description}</p>
-                  
+
                   <div className="flex items-center space-x-2">
                     <TrendingUp className="h-4 w-4 text-green-600" />
                     <span className="font-medium text-green-600">{story.funding}</span>
@@ -238,6 +292,13 @@ const SuccessStories = () => {
                 <div className="text-4xl font-bold text-primary mb-2">85%</div>
                 <p className="text-muted-foreground">Average success rate across programs</p>
               </div>
+            </div>
+            <div className="pt-4">
+              <Link to="/featured-startups">
+                <Button size="lg">
+                  Explore Featured Startups <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
