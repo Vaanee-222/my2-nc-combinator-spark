@@ -47,6 +47,49 @@ const methodGroups = [
     ],
   },
   {
+    name: "api.newsletter",
+    icon: Mail,
+    description: "Footer subscriptions and admin management.",
+    methods: [
+      { sig: "subscribe(email)", desc: "Public subscribe; duplicates resolve to { duplicate: true }." },
+      { sig: "list(status?)", desc: "Admin list of subscribers, newest first." },
+      { sig: "setStatus(id, status)", desc: "Unsubscribe or re-activate, audited." },
+    ],
+  },
+  {
+    name: "api.settings",
+    icon: Settings,
+    description: "Website CMS settings with draft/publish.",
+    methods: [
+      { sig: "get()", desc: "The single site_settings row." },
+      { sig: "update(id, patch)", desc: "Audited live edit." },
+      { sig: "saveDraft(id, draft)", desc: "Store an unpublished draft." },
+      { sig: "publishDraft(id, draft)", desc: "Promote the draft to live." },
+    ],
+  },
+  {
+    name: "api.messages",
+    icon: MessageSquare,
+    description: "Direct messaging between members.",
+    methods: [
+      { sig: "inbox(limit = 500)", desc: "RLS-scoped message feed." },
+      { sig: "thread(userId, otherUserId, limit = 200)", desc: "One conversation, oldest first." },
+      { sig: "send(senderId, receiverId, content)", desc: "Rejects empty bodies." },
+      { sig: "markRead(userId, otherUserId)", desc: "Marks that sender's messages read." },
+      { sig: "unreadCount(userId)", desc: "Head count for badges." },
+    ],
+  },
+  {
+    name: "api.media",
+    icon: Image,
+    description: "Media library backed by storage.",
+    methods: [
+      { sig: "list()", desc: "Assets, newest first." },
+      { sig: "upload(file, folder?, bucket?)", desc: "Uploads and registers the asset, audited." },
+      { sig: "remove(id)", desc: "Audited delete." },
+    ],
+  },
+  {
     name: "api.table",
     icon: Database,
     description: "Generic audited CRUD for any table.",
