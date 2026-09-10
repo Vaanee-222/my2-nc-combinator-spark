@@ -377,6 +377,164 @@ export const recordsApi = {
   },
 };
 
+/* ------------------------------------------------------------------ */
+/* Newsletter                                                          */
+/* ------------------------------------------------------------------ */
+export const newsletterApi = {
+  /** Public subscribe. Duplicate addresses resolve to `{ duplicate: true }`. */
+  async subscribe(email: string): Promise<ApiResult<{ duplicate: boolean }>> {
+    const clean = email.trim().toLowerCase();
+    const { error } = await supabase.from("newsletter_subscribers").insert({ email: clean });
+    if (error) {
+      if ((error as any).code === "23505") return ok({ duplicate: true });
+      return fail(error);
+    }
+    return ok({ duplicate: false });
+  },
+  /** Admin list of subscribers, newest first. */
+  async list(status?: string | null): Promise<ApiResult<any[]>> {
+    let q = supabase.from("newsletter_subscribers").select("*").order("created_at", { ascending: false });
+    if (status) q = q.eq("status", status);
+    const { data, error } = await q;
+    return error ? fail(error) : ok(data ?? []);
+  },
+  /** Admin: unsubscribe / re-activate an address. */
+  async setStatus(id: string, status: string): Promise<ApiResult<true>> {
+    const { error } = await supabase.from("newsletter_subscribers").update({ status }).eq("id", id);
+    if (error) return fail(error);
+    await auditApi.record("status_change", "newsletter_subscribers", id, { status });
+    return ok(true as const);
+  },
+};
+
+/* ------------------------------------------------------------------ */
+/* Site settings (CMS)                                                 */
+/* ------------------------------------------------------------------ */
+export const settingsApi = {
+  /** The single site_settings row (branding, SEO, contact, socials). */
+  async get(): Promise<ApiResult<any>> {
+    const { data, error } = await supabase.from("site_settings").select("*").limit(1).maybeSingle();
+    return error ? fail(error) : ok(data);
+  },
+  /** Admin: patch the live settings row and audit the change. */
+  async update(id: string, patch: Record<string, any>): Promise<ApiResult<true>> {
+    const { error } = await supabase.from("site_settings").update(patch as any).eq("id", id);
+    if (error) return fail(error);
+    await auditApi.record("update", "site_settings", id, patch);
+    return ok(true as const);
+  },
+  /** Admin: stash an unpublished draft without touching the live values. */
+  async saveDraft(id: string, draft: Record<string, any>): Promise<ApiResult<true>> {
+    const { error } = await supabase
+      .from("site_settings")
+      .update({ draft_settings: draft as any, has_draft: true })
+      .eq("id", id);
+    if (error) return fail(error);
+    await auditApi.record("update", "site_settings", id, { draft: true });
+    return ok(true as const);
+  },
+  /** Admin: promote the stored draft to live and clear it. */
+  async publishDraft(id: string, draft: Record<string, any>): Promise<ApiResult<true>> {
+    const { error } = await supabase
+      .from("site_settings")
+      .update({ ...(draft as any), draft_settings: null, has_draft: false })
+      .eq("id", id);
+    if (error) return fail(error);
+    await auditApi.record("status_change", "site_settings", id, { published: true });
+    return ok(true as const);
+  },
+};
+
+/* ------------------------------------------------------------------ */
+/* Direct messages                                                     */
+/* ------------------------------------------------------------------ */
+export const messagesApi = {
+  /** Every message the signed-in user can see (RLS scoped), oldest first. */
+  async inbox(limit = 500): Promise<ApiResult<any[]>> {
+    const { data, error } = await supabase
+      .from("messages")
+      .select("*")
+      .order("created_at", { ascending: true })
+      .limit(limit);
+    return error ? fail(error) : ok(data ?? []);
+  },
+  /** One conversation between the signed-in user and `otherUserId`. */
+  async thread(userId: string, otherUserId: string, limit = 200): Promise<ApiResult<any[]>> {
+    const { data, error } = await supabase
+      .from("messages")
+      .select("*")
+      .or(
+        `and(sender_id.eq.${userId},receiver_id.eq.${otherUserId}),and(sender_id.eq.${otherUserId},receiver_id.eq.${userId})`,
+      )
+      .order("created_at", { ascending: true })
+      .limit(limit);
+    return error ? fail(error) : ok(data ?? []);
+  },
+  async send(senderId: string, receiverId: string, content: string): Promise<ApiResult<any>> {
+    const body = content.trim();
+    if (!body) return fail("Message cannot be empty");
+    const { data, error } = await supabase
+      .from("messages")
+      .insert({ sender_id: senderId, receiver_id: receiverId, content: body })
+      .select()
+      .single();
+    return error ? fail(error) : ok(data);
+  },
+  /** Mark every message received from one sender as read. */
+  async markRead(userId: string, otherUserId: string): Promise<ApiResult<true>> {
+    const { error } = await supabase
+      .from("messages")
+      .update({ is_read: true })
+      .eq("receiver_id", userId)
+      .eq("sender_id", otherUserId)
+      .eq("is_read", false);
+    return error ? fail(error) : ok(true as const);
+  },
+  async unreadCount(userId: string): Promise<ApiResult<number>> {
+    const { count, error } = await supabase
+      .from("messages")
+      .select("id", { count: "exact", head: true })
+      .eq("receiver_id", userId)
+      .eq("is_read", false);
+    return error ? fail(error) : ok(count ?? 0);
+  },
+};
+
+/* ------------------------------------------------------------------ */
+/* Media library (storage-backed assets)                               */
+/* ------------------------------------------------------------------ */
+export const mediaApi = {
+  async list(): Promise<ApiResult<any[]>> {
+    const { data, error } = await supabase.from("media_assets").select("*").order("created_at", { ascending: false });
+    return error ? fail(error) : ok(data ?? []);
+  },
+  /** Upload to the `partner-logos` bucket and register the asset row. */
+  async upload(file: File, bucket = "partner-logos"): Promise<ApiResult<any>> {
+    try {
+      const path = `${Date.now()}-${file.name.replace(/[^\w.-]+/g, "-")}`;
+      const { error: upErr } = await supabase.storage.from(bucket).upload(path, file, { upsert: false });
+      if (upErr) throw upErr;
+      const { data: pub } = supabase.storage.from(bucket).getPublicUrl(path);
+      const { data, error } = await supabase
+        .from("media_assets")
+        .insert({ name: file.name, url: pub.publicUrl, file_type: file.type, size_bytes: file.size } as any)
+        .select()
+        .single();
+      if (error) throw error;
+      await auditApi.record("create", "media_assets", data?.id ?? null, { name: file.name });
+      return ok(data);
+    } catch (e) {
+      return fail(e);
+    }
+  },
+  async remove(id: string): Promise<ApiResult<true>> {
+    const { error } = await supabase.from("media_assets").delete().eq("id", id);
+    if (error) return fail(error);
+    await auditApi.record("delete", "media_assets", id, {});
+    return ok(true as const);
+  },
+};
+
 export const api = {
   version: API_VERSION,
   audit: auditApi,
