@@ -554,6 +554,10 @@ export const api = {
   gamification: gamificationApi,
   subscriptions: subscriptionsApi,
   records: recordsApi,
+  newsletter: newsletterApi,
+  settings: settingsApi,
+  messages: messagesApi,
+  media: mediaApi,
   table: tableApi,
 };
 
