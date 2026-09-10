@@ -509,15 +509,25 @@ export const mediaApi = {
     return error ? fail(error) : ok(data ?? []);
   },
   /** Upload to the `partner-logos` bucket and register the asset row. */
-  async upload(file: File, bucket = "partner-logos"): Promise<ApiResult<any>> {
+  async upload(file: File, folder = "general", bucket = "partner-logos"): Promise<ApiResult<any>> {
     try {
-      const path = `${Date.now()}-${file.name.replace(/[^\w.-]+/g, "-")}`;
-      const { error: upErr } = await supabase.storage.from(bucket).upload(path, file, { upsert: false });
+      const safeName = file.name.replace(/[^\w.-]+/g, "-");
+      const path = `media/${folder}/${Date.now()}-${safeName}`;
+      const { error: upErr } = await supabase.storage.from(bucket).upload(path, file, { upsert: true });
       if (upErr) throw upErr;
       const { data: pub } = supabase.storage.from(bucket).getPublicUrl(path);
+      const { data: auth } = await supabase.auth.getUser();
       const { data, error } = await supabase
         .from("media_assets")
-        .insert({ name: file.name, url: pub.publicUrl, file_type: file.type, size_bytes: file.size } as any)
+        .insert({
+          file_name: file.name,
+          folder,
+          storage_path: path,
+          url: pub.publicUrl,
+          mime_type: file.type || null,
+          size_bytes: file.size,
+          uploaded_by: auth?.user?.id ?? null,
+        })
         .select()
         .single();
       if (error) throw error;
