@@ -165,6 +165,9 @@ curl "$SUPABASE_URL/rest/v1/cofounder_requests?review_status=eq.approved&select=
 ```
 
 ## Changelog
+- **1.2.0** (2026-09-10) — Added `newsletter` (public subscribe + admin list/status),
+  `settings` (site CMS read/update with draft save & publish), `messages` (inbox, thread,
+  send, mark-read, unread count) and `media` (library list, storage upload, delete).
 - **1.1.0** (2026-09-04) — Added `gamification` (points, badges, leaderboards, admin XP tools),
   `subscriptions` (audience plans, purchases, usage quotas) and `records.setStatus`
   (generic audited approve/reject workflow with notifications).
