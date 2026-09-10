@@ -83,6 +83,41 @@ Events: `introduction_approved · introduction_rejected · introduction_updated 
 `opts`: `{ label?, notes?, emailField = "email", nameField = "applicant_name", contextField = "startup_name" }`.
 Used by grants, deals, investor inquiries, cloud credits, consultations and Xi Lab applications.
 
+## `api.newsletter`
+
+| Method | Signature | Notes |
+|---|---|---|
+| `subscribe` | `(email) => ApiResult<{ duplicate }>` | Public footer form; duplicates resolve to `{ duplicate: true }`. |
+| `list` | `(status?) => ApiResult<Row[]>` | Admin list, newest first. |
+| `setStatus` | `(id, status) => ApiResult<true>` | Unsubscribe / re-activate; audited. |
+
+## `api.settings`
+
+| Method | Signature | Notes |
+|---|---|---|
+| `get` | `() => ApiResult<Row>` | The single `site_settings` row (branding, SEO, contact, socials). |
+| `update` | `(id, patch) => ApiResult<true>` | Audited live edit. |
+| `saveDraft` | `(id, draft) => ApiResult<true>` | Stores `draft_settings` without touching live values. |
+| `publishDraft` | `(id, draft) => ApiResult<true>` | Promotes the draft to live and clears it. |
+
+## `api.messages`
+
+| Method | Signature | Notes |
+|---|---|---|
+| `inbox` | `(limit = 500) => ApiResult<Row[]>` | RLS-scoped to the signed-in user. |
+| `thread` | `(userId, otherUserId, limit = 200) => ApiResult<Row[]>` | One conversation, oldest first. |
+| `send` | `(senderId, receiverId, content) => ApiResult<Row>` | Rejects empty bodies. |
+| `markRead` | `(userId, otherUserId) => ApiResult<true>` | Marks that sender's messages read. |
+| `unreadCount` | `(userId) => ApiResult<number>` | Head count query for badges. |
+
+## `api.media`
+
+| Method | Signature | Notes |
+|---|---|---|
+| `list` | `() => ApiResult<Row[]>` | Media library assets, newest first. |
+| `upload` | `(file, folder = "general", bucket = "partner-logos") => ApiResult<Row>` | Uploads to `media/<folder>/…`, registers `media_assets`, audited. |
+| `remove` | `(id) => ApiResult<true>` | Audited delete of the asset row. |
+
 ## `api.table` (generic CRUD)
 
 `list(table, orderBy?)` · `create(table, values)` · `update(table, id, patch)` · `remove(table, id)` — all audited.
