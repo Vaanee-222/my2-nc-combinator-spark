@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Code2, Database, Mail, ShieldCheck, Terminal } from "lucide-react";
+import { Code2, Database, Image, Mail, MessageSquare, Settings, ShieldCheck, Terminal } from "lucide-react";
 
 const methodGroups = [
   {
@@ -125,7 +125,7 @@ const ApiDocumentation = () => {
             Typed entry point for every backend read/write: <code className="font-mono">src/lib/api</code>
           </p>
         </div>
-        <Badge variant="secondary">v1.1.0</Badge>
+        <Badge variant="secondary">v1.2.0</Badge>
       </div>
 
       <Card>
