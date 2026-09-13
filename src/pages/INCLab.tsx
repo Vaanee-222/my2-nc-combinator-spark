@@ -217,7 +217,7 @@ const INCLab = () => {
               </Card>
               <Card className="p-6 bg-card-gradient border-border">
                 <div className="text-center space-y-2">
-                  <div className="text-3xl font-bold text-primary">15</div>
+                  <div className="text-3xl font-bold text-primary">{PLATFORM_STAT_LABELS.currentCohortSize}</div>
                   <div className="text-muted-foreground">Cohort Size</div>
                 </div>
               </Card>

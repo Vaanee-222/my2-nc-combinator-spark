@@ -18,7 +18,7 @@ const CurrentCohort = () => {
       category: "FinTech",
       description: "Digital banking platform for underserved communities with micro-lending capabilities",
       stage: "MVP",
-      funding: "$30K",
+      fundingUsd: 30000,
       traction: "5,000+ users, $2.4K MRR",
       location: "Bangalore",
       team: 4,
@@ -31,7 +31,7 @@ const CurrentCohort = () => {
       category: "CleanTech",
       description: "Solar panel leasing and maintenance platform for residential users",
       stage: "Early Traction",
-      funding: "$60K",
+      fundingUsd: 60000,
       traction: "200+ installations, $6K MRR",
       location: "Pune",
       team: 6,
@@ -44,7 +44,7 @@ const CurrentCohort = () => {
       category: "HealthTech",
       description: "AI-powered diagnosis assistant for rural healthcare centers",
       stage: "Pilot",
-      funding: "$36K",
+      fundingUsd: 36000,
       traction: "50+ clinics, 10K+ consultations",
       location: "Hyderabad",
       team: 8,
@@ -57,7 +57,7 @@ const CurrentCohort = () => {
       category: "EdTech",
       description: "Vernacular language skill development platform",
       stage: "MVP",
-      funding: "$24K",
+      fundingUsd: 24000,
       traction: "2,000+ students, 50+ courses",
       location: "Delhi",
       team: 5,
@@ -70,7 +70,7 @@ const CurrentCohort = () => {
       category: "Logistics",
       description: "AI-powered supply chain optimization for SMEs",
       stage: "Beta",
-      funding: "$48K",
+      fundingUsd: 48000,
       traction: "100+ businesses, $3.6K MRR",
       location: "Mumbai",
       team: 7,
@@ -155,7 +155,7 @@ const CurrentCohort = () => {
                     <div className="space-y-3">
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-muted-foreground">Funding:</span>
-                        <span className="font-medium text-primary">{startup.funding}</span>
+                         <span className="font-medium text-primary"><Money usd={startup.fundingUsd} compact /></span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-muted-foreground">Traction:</span>
