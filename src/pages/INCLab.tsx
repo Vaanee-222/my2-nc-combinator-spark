@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Users, Calendar, ArrowDown } from "lucide-react";
 import InclabApplicationDialog from "@/components/InclabApplicationDialog";
 import { Link } from "react-router-dom";
+import { PLATFORM_STAT_LABELS } from "@/lib/platformStats";
 
 const INCLab = () => {
   const applicationProcess = [
@@ -130,7 +131,7 @@ const INCLab = () => {
     },
     {
       title: "Mentor Network",
-      description: "Access to 200+ successful entrepreneurs and VCs",
+      description: `Access to ${PLATFORM_STAT_LABELS.activeMentors} active mentors and operators`,
       icon: ""
     },
     {

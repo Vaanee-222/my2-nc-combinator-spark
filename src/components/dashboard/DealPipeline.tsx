@@ -254,10 +254,15 @@ const DealPipeline = () => {
           <DialogHeader><DialogTitle>{viewing?.company_name}</DialogTitle></DialogHeader>
           {viewing && (
             <div className="space-y-3 text-sm">
+              <div className="flex justify-between gap-4 border-b pb-2">
+                <span className="text-muted-foreground">Ask</span>
+                <span className="text-right font-medium">
+                  {viewing.ask_amount ? <Money usd={Number(viewing.ask_amount)} /> : "—"}
+                </span>
+              </div>
               {[
                 ["Sector", viewing.sector],
                 ["Stage", viewing.stage],
-                ["Ask", viewing.ask_amount ? `$${Number(viewing.ask_amount).toLocaleString()}` : null],
                 ["Revenue", viewing.revenue],
                 ["Team size", viewing.team_size],
                 ["Founded", viewing.founded_year],
@@ -302,8 +307,8 @@ const DealPipeline = () => {
                 <Input type="number" value={editing.ask_amount ?? 0} onChange={(e) => setEditing({ ...editing, ask_amount: e.target.value })} />
               </div>
               <div>
-                <Label>Revenue</Label>
-                <Input value={editing.revenue ?? ""} onChange={(e) => setEditing({ ...editing, revenue: e.target.value })} placeholder="$60K ARR" />
+                <Label>Revenue (USD)</Label>
+                <Input value={editing.revenue ?? ""} onChange={(e) => setEditing({ ...editing, revenue: e.target.value })} placeholder="e.g., USD 60K ARR" />
               </div>
               <div>
                 <Label>Team size</Label>

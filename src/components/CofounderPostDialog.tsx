@@ -246,10 +246,10 @@ const CofounderPostDialog = ({ children, post, open: openProp, onOpenChange }: C
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="salary">Salary (Optional)</Label>
+              <Label htmlFor="salary">Monthly Salary in USD (Optional)</Label>
               <Input
                 id="salary"
-                placeholder="e.g., $50,000/month"
+                placeholder="e.g., USD 5,000"
                 value={formData.salary}
                 onChange={(e) => setFormData({...formData, salary: e.target.value})}
               />

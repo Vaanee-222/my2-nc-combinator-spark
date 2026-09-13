@@ -344,15 +344,13 @@ const ConfigurationPanel = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label>Default Currency</Label>
-                  <Select defaultValue="usd">
+                  <Label>Payment Settlement Currency</Label>
+                  <Select defaultValue="USD">
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="usd">USD ($)</SelectItem>
-                      <SelectItem value="inr">INR (₹)</SelectItem>
-                      <SelectItem value="eur">EUR (€)</SelectItem>
-                      <SelectItem value="gbp">GBP (£)</SelectItem>
-                      <SelectItem value="sgd">SGD (S$)</SelectItem>
+                      {SUPPORTED_CURRENCIES.map((currency) => (
+                        <SelectItem key={currency} value={currency}>{currency}</SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>

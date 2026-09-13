@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Clock, Users, TrendingUp, Lightbulb, Target, Award, Building } from "lucide-react";
 import { Link } from "react-router-dom";
+import { PLATFORM_STAT_LABELS } from "@/lib/platformStats";
 
 const Incubation = () => {
   const programs = [
@@ -198,12 +199,12 @@ const Incubation = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Startups Incubated</CardTitle>
+              <CardTitle className="text-sm font-medium">Startups Accelerated</CardTitle>
               <Building className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-primary">150+</div>
-              <p className="text-xs text-muted-foreground">Across all cohorts</p>
+              <div className="text-3xl font-bold text-primary">{PLATFORM_STAT_LABELS.startupsAccelerated}</div>
+              <p className="text-xs text-muted-foreground">Across platform programs</p>
             </CardContent>
           </Card>
           <Card>
@@ -212,8 +213,8 @@ const Incubation = () => {
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-primary">$30M</div>
-              <p className="text-xs text-muted-foreground">Raised by alumni</p>
+              <div className="text-3xl font-bold text-primary">{PLATFORM_STAT_LABELS.totalFundingRaised}</div>
+              <p className="text-xs text-muted-foreground">Raised across the platform</p>
             </CardContent>
           </Card>
           <Card>
@@ -222,8 +223,8 @@ const Incubation = () => {
               <Award className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-primary">85%</div>
-              <p className="text-xs text-muted-foreground">Still operating</p>
+              <div className="text-3xl font-bold text-primary">{PLATFORM_STAT_LABELS.successRate}</div>
+              <p className="text-xs text-muted-foreground">Platform program success rate</p>
             </CardContent>
           </Card>
           <Card>

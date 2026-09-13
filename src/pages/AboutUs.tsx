@@ -9,6 +9,7 @@ import ApplicationDialog from "@/components/ApplicationDialog";
 import { Link } from "react-router-dom";
 import { type AdvisorTier } from "@/data/advisoryBoard";
 import { useAdvisors } from "@/hooks/useAdvisors";
+import { PLATFORM_STAT_LABELS } from "@/lib/platformStats";
 
 const AboutUs = () => {
   const { data: advisors = [] } = useAdvisors();
@@ -38,10 +39,10 @@ const AboutUs = () => {
   const tiers: AdvisorTier[] = ["Founding Advisors", "Strategic Advisors", "Regional Partners", "Industry Experts"];
 
   const stats = [
-    { number: "500+", label: "Startups Mentored" },
-    { number: "$120M+", label: "Funding Raised" },
+    { number: PLATFORM_STAT_LABELS.startupsAccelerated, label: "Startups Accelerated" },
+    { number: PLATFORM_STAT_LABELS.totalFundingRaised, label: "Funding Raised" },
     { number: "50+", label: "Global Partners" },
-    { number: "30+", label: "Countries" }
+    { number: PLATFORM_STAT_LABELS.countriesRepresented, label: "Countries" }
   ];
 
   const offices = [
@@ -293,7 +294,7 @@ const AboutUs = () => {
               <Badge variant="secondary" className="bg-primary/10 text-primary">Global Network</Badge>
               <h2 className="text-3xl md:text-4xl font-bold">Advisory Board</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Operators, investors, and industry experts from across 12+ countries guiding Xi Combinator founders.
+                Operators, investors, and industry experts from across {PLATFORM_STAT_LABELS.countriesRepresented} countries guiding Xi Combinator founders.
               </p>
             </div>
 

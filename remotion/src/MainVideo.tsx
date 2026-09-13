@@ -8,6 +8,7 @@ import { Intro } from "./scenes/Intro";
 import { Stats } from "./scenes/Stats";
 import { Outro } from "./scenes/Outro";
 import { Feature, FeatureProps } from "./scenes/Feature";
+import { PLATFORM_STAT_LABELS } from "../../src/lib/platformStats";
 
 export const FEATURES: FeatureProps[] = [
   {
@@ -44,7 +45,7 @@ export const FEATURES: FeatureProps[] = [
     kicker: "Community",
     title: "Find your co-founder and your mentor",
     accentFrom: 2,
-    bullets: ["Co-founder listings and applications", "250+ mentors with booking flows", "In-app messaging across roles"],
+    bullets: ["Co-founder listings and applications", `${PLATFORM_STAT_LABELS.activeMentors} mentors with booking flows`, "In-app messaging across roles"],
     shot: "shots/cofounder.png",
   },
   {
