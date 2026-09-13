@@ -200,7 +200,7 @@ const HackathonDetail = () => {
                         {index === 0 ? '' : index === 1 ? '' : ''}
                       </div>
                       <h4 className="font-semibold">{prize.position}</h4>
-                      <p className="text-lg font-bold text-primary mb-2">{prize.amount}</p>
+                      <p className="text-lg font-bold text-primary mb-2"><Money usd={prize.amountUsd} /></p>
                       <div className="space-y-1">
                         {prize.benefits.map((benefit, idx) => (
                           <p key={idx} className="text-xs text-muted-foreground">{benefit}</p>

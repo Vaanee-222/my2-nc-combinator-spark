@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar, MapPin, Users, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import ApplicationDialog from "@/components/ApplicationDialog";
+import Money from "@/components/Money";
 
 const CurrentCohort = () => {
   const cohortStartups = [
@@ -87,7 +88,7 @@ const CurrentCohort = () => {
           <div className="container mx-auto px-4">
             <div className="text-center space-y-6 mb-16">
               <Badge variant="secondary" className="bg-primary/10 text-primary text-lg px-4 py-2">
-                Q1 2026 Cohort
+                 Q4 2026 Cohort
               </Badge>
               <h1 className="text-4xl md:text-6xl font-bold">
                 Current{" "}
@@ -96,7 +97,7 @@ const CurrentCohort = () => {
                 </span>
               </h1>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Meet the 10 exceptional startups in our current cohort, working on revolutionary 
+                 Meet five featured startups from our current cohort, working on breakthrough 
                 solutions across healthcare, fintech, edtech, and sustainability.
               </p>
             </div>
@@ -104,20 +105,20 @@ const CurrentCohort = () => {
             {/* Cohort Stats */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
               <Card className="p-6 text-center bg-card-gradient border-border">
-                <div className="text-3xl font-bold text-primary mb-2">10</div>
-                <div className="text-muted-foreground">Active Startups</div>
+                 <div className="text-3xl font-bold text-primary mb-2">{cohortStartups.length}</div>
+                 <div className="text-muted-foreground">Featured Startups</div>
               </Card>
               <Card className="p-6 text-center bg-card-gradient border-border">
-                <div className="text-3xl font-bold text-primary mb-2">$385K</div>
-                <div className="text-muted-foreground">Total Funding</div>
+                 <div className="text-3xl font-bold text-primary mb-2"><Money usd={198000} compact /></div>
+                 <div className="text-muted-foreground">Featured Funding</div>
               </Card>
               <Card className="p-6 text-center bg-card-gradient border-border">
                 <div className="text-3xl font-bold text-primary mb-2">50K+</div>
                 <div className="text-muted-foreground">Users Impacted</div>
               </Card>
               <Card className="p-6 text-center bg-card-gradient border-border">
-                <div className="text-3xl font-bold text-primary mb-2">$18K</div>
-                <div className="text-muted-foreground">Monthly Revenue</div>
+                 <div className="text-3xl font-bold text-primary mb-2"><Money usd={12000} compact /></div>
+                 <div className="text-muted-foreground">Reported Monthly Revenue</div>
               </Card>
             </div>
           </div>
