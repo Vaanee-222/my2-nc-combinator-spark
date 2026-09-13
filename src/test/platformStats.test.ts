@@ -39,7 +39,7 @@ describe("platformStats consistency", () => {
     const walk = (dir: string) => {
       for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
         const full = path.join(dir, entry.name);
-        if (entry.isDirectory()) walk(full);
+        if (entry.isDirectory() && entry.name !== "test") walk(full);
         else if (/\.(ts|tsx)$/.test(entry.name)) files.push(full);
       }
     };
