@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { TrendingUp, Users, Building, Award, Globe, ArrowRight, MapPin, Sparkles } from "lucide-react";
+import { PLATFORM_STAT_LABELS } from "@/lib/platformStats";
 
 const SuccessStories = () => {
   useEffect(() => {
@@ -145,10 +146,10 @@ const SuccessStories = () => {
   ];
 
   const overallStats = [
-    { label: "Total Startups", value: "180+", sub: "Across all programs", icon: Building },
-    { label: "Total Funding", value: "$38M+", sub: "Raised by alumni", icon: TrendingUp },
+    { label: "Startups Accelerated", value: PLATFORM_STAT_LABELS.startupsAccelerated, sub: "Across all programs", icon: Building },
+    { label: "Total Funding", value: PLATFORM_STAT_LABELS.totalFundingRaised, sub: "Raised across the platform", icon: TrendingUp },
     { label: "Jobs Created", value: "3,500+", sub: "Direct employment", icon: Users },
-    { label: "Global Reach", value: "15+", sub: "Countries served", icon: Globe },
+    { label: "Global Reach", value: PLATFORM_STAT_LABELS.countriesRepresented, sub: "Countries represented", icon: Globe },
   ];
 
   return (
@@ -278,7 +279,7 @@ const SuccessStories = () => {
             <h2 className="text-3xl font-bold">Our Impact</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
               <div>
-                <div className="text-4xl font-bold text-primary mb-2">$38M+</div>
+                <div className="text-4xl font-bold text-primary mb-2">{PLATFORM_STAT_LABELS.totalFundingRaised}</div>
                 <p className="text-muted-foreground">Total funding raised by our startups</p>
               </div>
               <div>
@@ -286,7 +287,7 @@ const SuccessStories = () => {
                 <p className="text-muted-foreground">Jobs created across all ventures</p>
               </div>
               <div>
-                <div className="text-4xl font-bold text-primary mb-2">85%</div>
+                <div className="text-4xl font-bold text-primary mb-2">{PLATFORM_STAT_LABELS.successRate}</div>
                 <p className="text-muted-foreground">Average success rate across programs</p>
               </div>
             </div>

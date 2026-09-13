@@ -5,15 +5,17 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
 import ApplicationDialog from "@/components/ApplicationDialog";
+import Money from "@/components/Money";
+import { PLATFORM_STATS } from "@/lib/platformStats";
 
 const CohortInfo = () => {
   const currentCohort = {
-    name: "Q1 2026 Cohort",
+    name: "Q4 2026 Cohort",
     status: "Applications Open",
-    deadline: "March 15, 2026",
-    startDate: "April 1, 2026",
-    spotsAvailable: 8,
-    totalSpots: 10
+    deadline: "October 31, 2026",
+    startDate: "November 16, 2026",
+    spotsAvailable: PLATFORM_STATS.currentCohortSize,
+    totalSpots: PLATFORM_STATS.currentCohortSize
   };
 
   const top10Startups = [
@@ -106,10 +108,10 @@ const CohortInfo = () => {
 
             <div className="text-center lg:text-right space-y-4">
               <div className="space-y-3">
-                <div className="text-4xl font-bold text-primary">$60K</div>
+                <div className="text-4xl font-bold text-primary"><Money usd={60000} compact /></div>
                 <div className="text-muted-foreground">Investment + Credits</div>
               </div>
-              <ApplicationDialog program="Q1 2026 Cohort">
+              <ApplicationDialog program="Q4 2026 Cohort">
                 <Button variant="hero" size="lg" className="text-lg px-8 py-6">
                   Apply to Current Cohort
                 </Button>
