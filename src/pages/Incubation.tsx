@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Clock, Users, TrendingUp, Lightbulb, Target, Award, Building } from "lucide-react";
 import { Link } from "react-router-dom";
+import { PLATFORM_STAT_LABELS } from "@/lib/platformStats";
 
 const Incubation = () => {
   const programs = [
@@ -21,7 +22,7 @@ const Incubation = () => {
       stage: "Idea to MVP",
       description: "Perfect for early-stage startups looking to validate their idea and build their first product.",
       benefits: ["Seed funding up to $30K", "Weekly mentorship", "Product development support", "Market validation"],
-      nextCohort: "March 2026",
+      nextCohort: "November 2026",
       applications: "Open"
     },
     {
@@ -31,7 +32,7 @@ const Incubation = () => {
       stage: "MVP to Scale",
       description: "For startups with proven traction ready to scale their business and expand market reach.",
       benefits: ["Growth funding up to $125K", "Go-to-market strategy", "Investor connections", "International expansion"],
-      nextCohort: "April 2026",
+      nextCohort: "December 2026",
       applications: "Open"
     },
     {
@@ -41,7 +42,7 @@ const Incubation = () => {
       stage: "R&D to Market",
       description: "Specialized program for deep tech startups working on breakthrough technologies.",
       benefits: ["R&D funding up to $250K", "Technical mentorship", "Lab facilities", "Patent support"],
-      nextCohort: "May 2026",
+      nextCohort: "January 2027",
       applications: "Coming Soon"
     }
   ];
@@ -198,12 +199,12 @@ const Incubation = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Startups Incubated</CardTitle>
+              <CardTitle className="text-sm font-medium">Startups Accelerated</CardTitle>
               <Building className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-primary">150+</div>
-              <p className="text-xs text-muted-foreground">Across all cohorts</p>
+              <div className="text-3xl font-bold text-primary">{PLATFORM_STAT_LABELS.startupsAccelerated}</div>
+              <p className="text-xs text-muted-foreground">Across platform programs</p>
             </CardContent>
           </Card>
           <Card>
@@ -212,8 +213,8 @@ const Incubation = () => {
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-primary">$30M</div>
-              <p className="text-xs text-muted-foreground">Raised by alumni</p>
+              <div className="text-3xl font-bold text-primary">{PLATFORM_STAT_LABELS.totalFundingRaised}</div>
+              <p className="text-xs text-muted-foreground">Raised across the platform</p>
             </CardContent>
           </Card>
           <Card>
@@ -222,8 +223,8 @@ const Incubation = () => {
               <Award className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-primary">85%</div>
-              <p className="text-xs text-muted-foreground">Still operating</p>
+              <div className="text-3xl font-bold text-primary">{PLATFORM_STAT_LABELS.successRate}</div>
+              <p className="text-xs text-muted-foreground">Platform program success rate</p>
             </CardContent>
           </Card>
           <Card>

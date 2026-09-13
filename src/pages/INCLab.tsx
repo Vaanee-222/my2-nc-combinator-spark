@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Users, Calendar, ArrowDown } from "lucide-react";
 import InclabApplicationDialog from "@/components/InclabApplicationDialog";
 import { Link } from "react-router-dom";
+import { PLATFORM_STAT_LABELS } from "@/lib/platformStats";
 
 const INCLab = () => {
   const applicationProcess = [
@@ -130,7 +131,7 @@ const INCLab = () => {
     },
     {
       title: "Mentor Network",
-      description: "Access to 200+ successful entrepreneurs and VCs",
+      description: `Access to ${PLATFORM_STAT_LABELS.activeMentors} active mentors and operators`,
       icon: ""
     },
     {
@@ -216,7 +217,7 @@ const INCLab = () => {
               </Card>
               <Card className="p-6 bg-card-gradient border-border">
                 <div className="text-center space-y-2">
-                  <div className="text-3xl font-bold text-primary">15</div>
+                  <div className="text-3xl font-bold text-primary">{PLATFORM_STAT_LABELS.currentCohortSize}</div>
                   <div className="text-muted-foreground">Cohort Size</div>
                 </div>
               </Card>
@@ -248,10 +249,10 @@ const INCLab = () => {
                     </Badge>
                   </div>
                   <h2 className="text-3xl md:text-4xl font-bold">
-                    Q2 2026 Cohort Applications
+                     Q4 2026 Cohort Applications
                   </h2>
                   <p className="text-muted-foreground text-lg">
-                    Apply now for our most selective cohort. Only 15 startups 
+                     Apply now for our most selective cohort. Only {PLATFORM_STAT_LABELS.currentCohortSize} startups 
                     will be chosen from thousands of applications.
                   </p>
                 </div>
@@ -259,11 +260,11 @@ const INCLab = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <div className="text-sm text-muted-foreground">Application Deadline</div>
-                    <div className="font-semibold text-primary">April 30, 2026</div>
+                     <div className="font-semibold text-primary">October 31, 2026</div>
                   </div>
                   <div className="space-y-1">
                     <div className="text-sm text-muted-foreground">Program Starts</div>
-                    <div className="font-semibold">June 1, 2026</div>
+                     <div className="font-semibold">November 16, 2026</div>
                   </div>
                   <div className="space-y-1">
                     <div className="text-sm text-muted-foreground">Duration</div>
@@ -278,7 +279,7 @@ const INCLab = () => {
 
               <div className="text-center lg:text-right space-y-4">
                 <div className="space-y-3">
-                  <div className="text-4xl font-bold text-primary">15</div>
+                   <div className="text-4xl font-bold text-primary">{PLATFORM_STAT_LABELS.currentCohortSize}</div>
                   <div className="text-muted-foreground">Spots Available</div>
                 </div>
                 <InclabApplicationDialog

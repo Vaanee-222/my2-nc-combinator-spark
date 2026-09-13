@@ -54,10 +54,11 @@ const InvestorDashboard = () => {
 
   const displayName =
     prefs?.firm_name || profile?.full_name || user?.email?.split("@")[0] || "Investor";
+  const hasCheckSize = Boolean(prefs?.check_size_min || prefs?.check_size_max);
   const checkSize =
-    prefs?.check_size_min || prefs?.check_size_max
-      ? `Check size: $${Number(prefs?.check_size_min ?? 0).toLocaleString()} – $${Number(prefs?.check_size_max ?? 0).toLocaleString()}`
-      : "Check size not set";
+    hasCheckSize ? (
+      <>Check size: <Money usd={Number(prefs?.check_size_min ?? 0)} /> – <Money usd={Number(prefs?.check_size_max ?? 0)} /></>
+    ) : "Check size not set";
   const stages = (prefs?.stages ?? []).join(", ") || "Stages not set";
 
   const navGroups: DashboardNavGroup[] = [

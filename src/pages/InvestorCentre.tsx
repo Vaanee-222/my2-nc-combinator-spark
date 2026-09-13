@@ -17,6 +17,7 @@ import Footer from "@/components/Footer";
 import { StatefulCTA } from "@/components/StatefulCTA";
 import IntroductionRequestButton from "@/components/IntroductionRequestButton";
 import { useAuth } from "@/contexts/AuthContext";
+import { PLATFORM_STAT_LABELS } from "@/lib/platformStats";
 
 const InvestorCentre = () => {
   const { toast } = useToast();
@@ -242,7 +243,7 @@ const InvestorCentre = () => {
               <Building2 className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-primary">250+</div>
+              <div className="text-3xl font-bold text-primary">{PLATFORM_STAT_LABELS.investorNetwork}</div>
               <p className="text-xs text-muted-foreground">VCs, Angels & PEs</p>
             </CardContent>
           </Card>
@@ -272,7 +273,7 @@ const InvestorCentre = () => {
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-primary">85%</div>
+              <div className="text-3xl font-bold text-primary">{PLATFORM_STAT_LABELS.successRate}</div>
               <p className="text-xs text-muted-foreground">Funding success rate</p>
             </CardContent>
           </Card>
@@ -596,11 +597,11 @@ const InvestorCentre = () => {
                   <div className="space-y-4">
                     <div>
                       <label className="text-sm font-medium mb-2 block">Funding Required</label>
-                      <Input placeholder="e.g., $250Kores" />
+                      <Input placeholder="e.g., USD 250,000" />
                     </div>
                     <div>
                       <label className="text-sm font-medium mb-2 block">Monthly Revenue (if any)</label>
-                      <Input placeholder="e.g., $6,000" />
+                      <Input placeholder="e.g., USD 6,000" />
                     </div>
                     <div>
                       <label className="text-sm font-medium mb-2 block">Team Size</label>

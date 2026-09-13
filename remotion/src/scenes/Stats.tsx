@@ -2,12 +2,13 @@ import React from "react";
 import { AbsoluteFill, useCurrentFrame, interpolate, spring, useVideoConfig } from "remotion";
 import { C, FONT_BODY, FONT_DISPLAY } from "../theme";
 import { Kicker } from "../components/Type";
+import { PLATFORM_STAT_LABELS } from "../../../src/lib/platformStats";
 
 const STATS = [
-  { value: "500+", label: "Startups accelerated" },
-  { value: "$1.2B+", label: "Total funding raised" },
-  { value: "250+", label: "Active mentors" },
-  { value: "32", label: "Countries represented" },
+  { value: PLATFORM_STAT_LABELS.startupsAccelerated, label: "Startups accelerated" },
+  { value: PLATFORM_STAT_LABELS.totalFundingRaised, label: "Total funding raised" },
+  { value: PLATFORM_STAT_LABELS.activeMentors, label: "Active mentors" },
+  { value: PLATFORM_STAT_LABELS.countriesRepresented, label: "Countries represented" },
 ];
 
 export const Stats: React.FC = () => {

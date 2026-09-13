@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, MapPin, Trophy, Users, Code, Zap, Target, CheckCircle } from "lucide-react";
 import { useParams } from "react-router-dom";
 import HackathonRegistrationForm from "@/components/HackathonRegistrationForm";
+import Money from "@/components/Money";
 
 const HackathonDetail = () => {
   const { id } = useParams();
@@ -15,15 +16,15 @@ const HackathonDetail = () => {
   const hackathonData = {
     id: id || "1",
     title: "AI Innovation Challenge 2026",
-    date: "Feb 15-17, 2026",
+    date: "November 20-22, 2026",
     location: "Bangalore, India",
     venue: "Indian Institute of Science (IISc)",
     theme: "Artificial Intelligence & Machine Learning",
-    prizePool: "$14,400",
+    prizePoolUsd: 12000,
     participants: "500+",
     status: "Registration Open",
     description: "Build AI solutions for real-world problems in healthcare, education, and sustainability.",
-    registrationDeadline: "Feb 10, 2026",
+    registrationDeadline: "November 15, 2026",
     longDescription: "The AI Innovation Challenge 2026 is a premier hackathon bringing together the brightest minds in technology to solve pressing challenges using artificial intelligence and machine learning. Over 48 hours, participants will collaborate, innovate, and build solutions that can make a real impact in healthcare, education, and sustainability.",
     schedule: [
       { time: "9:00 AM", activity: "Registration & Breakfast", day: "Day 1" },
@@ -46,9 +47,9 @@ const HackathonDetail = () => {
       { name: "Open Innovation", description: "Creative AI applications in any domain" },
     ],
     prizes: [
-      { position: "1st Place", amount: "$5,00,000", benefits: ["Cash Prize", "Incubation Program", "Mentorship"] },
-      { position: "2nd Place", amount: "$3,00,000", benefits: ["Cash Prize", "Mentorship Program", "Co-working Space"] },
-      { position: "3rd Place", amount: "$2,00,000", benefits: ["Cash Prize", "Online Courses", "Startup Resources"] },
+      { position: "1st Place", amountUsd: 6000, benefits: ["Cash Prize", "Incubation Program", "Mentorship"] },
+      { position: "2nd Place", amountUsd: 4000, benefits: ["Cash Prize", "Mentorship Program", "Co-working Space"] },
+      { position: "3rd Place", amountUsd: 2000, benefits: ["Cash Prize", "Online Courses", "Startup Resources"] },
     ],
     judges: [
       { name: "Dr. Priya Sharma", title: "AI Research Director, Microsoft India" },
@@ -122,7 +123,7 @@ const HackathonDetail = () => {
             <CardContent className="pt-6 text-center">
               <Trophy className="h-12 w-12 mx-auto mb-4 text-primary" />
               <h3 className="font-semibold mb-2">Prize Pool</h3>
-              <p className="text-sm text-muted-foreground">{hackathonData.prizePool}</p>
+              <p className="text-sm text-muted-foreground"><Money usd={hackathonData.prizePoolUsd} /></p>
             </CardContent>
           </Card>
           <Card className="bg-card-gradient border-border">
@@ -199,7 +200,7 @@ const HackathonDetail = () => {
                         {index === 0 ? '' : index === 1 ? '' : ''}
                       </div>
                       <h4 className="font-semibold">{prize.position}</h4>
-                      <p className="text-lg font-bold text-primary mb-2">{prize.amount}</p>
+                      <p className="text-lg font-bold text-primary mb-2"><Money usd={prize.amountUsd} /></p>
                       <div className="space-y-1">
                         {prize.benefits.map((benefit, idx) => (
                           <p key={idx} className="text-xs text-muted-foreground">{benefit}</p>

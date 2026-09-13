@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, MapPin, Users, Trophy, Award, Download, ExternalLink } from "lucide-react";
+import Money from "@/components/Money";
 
 const PastEvents = () => {
   const pastEvents = [
@@ -17,19 +18,19 @@ const PastEvents = () => {
       participants: 450,
       teams: 112,
       theme: "Artificial Intelligence & Machine Learning",
-      prizePool: "$9,600",
+      prizePoolUsd: 7800,
       winner: "MediAI - Smart Diagnostic Platform",
       status: "completed",
       highlights: [
         "48-hour intensive coding marathon",
         "Mentorship from industry experts",
-        "$9,600+ in prizes and awards",
+        "USD 7,800 in prizes and awards",
         "Partnership opportunities with tech giants"
       ],
       winners: [
-        { position: "1st", team: "MediAI", prize: "$3,600", solution: "AI-powered medical diagnosis" },
-        { position: "2nd", team: "EcoTrack", prize: "$2,400", solution: "Environmental monitoring system" },
-        { position: "3rd", team: "FinBot", prize: "$1,800", solution: "Personal finance AI assistant" }
+        { position: "1st", team: "MediAI", prizeUsd: 3600, solution: "AI-powered medical diagnosis" },
+        { position: "2nd", team: "EcoTrack", prizeUsd: 2400, solution: "Environmental monitoring system" },
+        { position: "3rd", team: "FinBot", prizeUsd: 1800, solution: "Personal finance AI assistant" }
       ],
       sponsors: ["Microsoft", "Google", "AWS"],
       mediaLinks: {
@@ -46,7 +47,7 @@ const PastEvents = () => {
       participants: 380,
       teams: 95,
       theme: "Financial Technology & Blockchain",
-      prizePool: "$14,400",
+      prizePoolUsd: 10800,
       winner: "CryptoSecure - Blockchain Security Platform",
       status: "completed",
       highlights: [
@@ -56,9 +57,9 @@ const PastEvents = () => {
         "Investor pitch opportunities"
       ],
       winners: [
-        { position: "1st", team: "CryptoSecure", prize: "$4,800", solution: "Blockchain security platform" },
-        { position: "2nd", team: "PayEasy", prize: "$3,600", solution: "Digital payment solution" },
-        { position: "3rd", team: "LoanBot", prize: "$2,400", solution: "AI loan processing system" }
+        { position: "1st", team: "CryptoSecure", prizeUsd: 4800, solution: "Blockchain security platform" },
+        { position: "2nd", team: "PayEasy", prizeUsd: 3600, solution: "Digital payment solution" },
+        { position: "3rd", team: "LoanBot", prizeUsd: 2400, solution: "AI loan processing system" }
       ],
       sponsors: ["HDFC Bank", "Paytm", "Razorpay"],
       mediaLinks: {
@@ -75,7 +76,7 @@ const PastEvents = () => {
       participants: 320,
       teams: 80,
       theme: "Sustainability & Clean Technology",
-      prizePool: "$7,200",
+      prizePoolUsd: 7200,
       winner: "GreenEnergy - Solar Optimization System",
       status: "completed",
       highlights: [
@@ -85,9 +86,9 @@ const PastEvents = () => {
         "Sustainability workshops"
       ],
       winners: [
-        { position: "1st", team: "GreenEnergy", prize: "$3,000", solution: "Solar panel optimization" },
-        { position: "2nd", team: "WaterPure", prize: "$2,400", solution: "Water purification tech" },
-        { position: "3rd", team: "AirClean", prize: "$1,800", solution: "Air pollution monitoring" }
+        { position: "1st", team: "GreenEnergy", prizeUsd: 3000, solution: "Solar panel optimization" },
+        { position: "2nd", team: "WaterPure", prizeUsd: 2400, solution: "Water purification tech" },
+        { position: "3rd", team: "AirClean", prizeUsd: 1800, solution: "Air pollution monitoring" }
       ],
       sponsors: ["Tata Power", "Mahindra", "Suzlon"],
       mediaLinks: {
@@ -104,7 +105,7 @@ const PastEvents = () => {
       participants: 280,
       teams: 70,
       theme: "Healthcare Technology & Telemedicine",
-      prizePool: "$8,400",
+      prizePoolUsd: 8400,
       winner: "TeleMed Pro - Remote Healthcare Platform",
       status: "completed",
       highlights: [
@@ -114,9 +115,9 @@ const PastEvents = () => {
         "Regulatory guidance sessions"
       ],
       winners: [
-        { position: "1st", team: "TeleMed Pro", prize: "$3,600", solution: "Telemedicine platform" },
-        { position: "2nd", team: "DiagnoAI", prize: "$3,000", solution: "AI diagnostic tool" },
-        { position: "3rd", team: "HealthTrack", prize: "$1,800", solution: "Patient monitoring system" }
+        { position: "1st", team: "TeleMed Pro", prizeUsd: 3600, solution: "Telemedicine platform" },
+        { position: "2nd", team: "DiagnoAI", prizeUsd: 3000, solution: "AI diagnostic tool" },
+        { position: "3rd", team: "HealthTrack", prizeUsd: 1800, solution: "Patient monitoring system" }
       ],
       sponsors: ["Apollo Hospitals", "Fortis", "Medanta"],
       mediaLinks: {
@@ -229,7 +230,7 @@ const PastEvents = () => {
                       <div className="text-xs text-muted-foreground">Teams</div>
                     </div>
                     <div>
-                      <div className="text-xl font-bold text-primary">{event.prizePool}</div>
+                      <div className="text-xl font-bold text-primary"><Money usd={event.prizePoolUsd} /></div>
                       <div className="text-xs text-muted-foreground">Prize Pool</div>
                     </div>
                   </div>
@@ -244,7 +245,7 @@ const PastEvents = () => {
                             <span className="font-medium">{winner.position} - {winner.team}</span>
                             <p className="text-xs text-muted-foreground">{winner.solution}</p>
                           </div>
-                          <Badge variant="outline" className="text-xs">{winner.prize}</Badge>
+                          <Badge variant="outline" className="text-xs"><Money usd={winner.prizeUsd} /></Badge>
                         </div>
                       ))}
                     </div>

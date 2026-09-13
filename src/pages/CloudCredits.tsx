@@ -6,18 +6,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Cloud, Server, Database, Shield, Zap, CheckCircle } from "lucide-react";
+import Money from "@/components/Money";
 
 const CloudCredits = () => {
   const cloudProviders = [
     {
       name: "Amazon Web Services (AWS)",
       logo: "",
-      credits: "$10,00,000",
+      creditsUsd: 10000,
       duration: "12 months",
       benefits: [
         "AWS Activate Program benefits",
         "24/7 technical support",
-        "Training credits worth $50,000",
+        "Training credits worth USD 500",
         "Architecture review sessions",
         "Startup webinar series access"
       ],
@@ -27,7 +28,7 @@ const CloudCredits = () => {
     {
       name: "Google Cloud Platform (GCP)",
       logo: "",
-      credits: "$8,00,000",
+      creditsUsd: 8000,
       duration: "12 months",
       benefits: [
         "Google for Startups program",
@@ -42,7 +43,7 @@ const CloudCredits = () => {
     {
       name: "Microsoft Azure",
       logo: "",
-      credits: "$6,00,000",
+      creditsUsd: 6000,
       duration: "12 months",
       benefits: [
         "Azure for Startups program",
@@ -60,25 +61,25 @@ const CloudCredits = () => {
     {
       category: "Development Tools",
       tools: [
-        { name: "GitHub Enterprise", value: "$2,00,000", description: "Advanced code collaboration" },
-        { name: "JetBrains Suite", value: "$1,50,000", description: "Professional IDE licenses" },
-        { name: "Docker Pro", value: "$1,00,000", description: "Container management platform" }
+        { name: "GitHub Enterprise", valueUsd: 2000, description: "Advanced code collaboration" },
+        { name: "JetBrains Suite", valueUsd: 1500, description: "Professional IDE licenses" },
+        { name: "Docker Pro", valueUsd: 1000, description: "Container management platform" }
       ]
     },
     {
       category: "Monitoring & Analytics",
       tools: [
-        { name: "New Relic", value: "$3,00,000", description: "Application performance monitoring" },
-        { name: "DataDog", value: "$2,50,000", description: "Infrastructure monitoring" },
-        { name: "Mixpanel", value: "$1,50,000", description: "Product analytics platform" }
+        { name: "New Relic", valueUsd: 3000, description: "Application performance monitoring" },
+        { name: "DataDog", valueUsd: 2500, description: "Infrastructure monitoring" },
+        { name: "Mixpanel", valueUsd: 1500, description: "Product analytics platform" }
       ]
     },
     {
       category: "Security & Compliance",
       tools: [
-        { name: "Cloudflare", value: "$2,00,000", description: "Web security and performance" },
-        { name: "Auth0", value: "$1,50,000", description: "Identity management platform" },
-        { name: "Snyk", value: "$1,00,000", description: "Security vulnerability scanning" }
+        { name: "Cloudflare", valueUsd: 2000, description: "Web security and performance" },
+        { name: "Auth0", valueUsd: 1500, description: "Identity management platform" },
+        { name: "Snyk", valueUsd: 1000, description: "Security vulnerability scanning" }
       ]
     }
   ];
@@ -118,12 +119,12 @@ const CloudCredits = () => {
             Cloud Credits & Infrastructure
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Access enterprise-grade cloud infrastructure worth $30K+ completely free. 
+            Access enterprise-grade cloud infrastructure worth more than <Money usd={30000} compact /> at no cost. 
             Build, scale, and deploy your startup without infrastructure costs.
           </p>
           <div className="flex justify-center space-x-4">
             <Badge variant="secondary" className="bg-primary/10 text-primary text-lg px-4 py-2">
-               $30K+ Value
+                <Money usd={30000} compact />+ Value
             </Badge>
             <Badge variant="secondary" className="bg-primary/10 text-primary text-lg px-4 py-2">
                12 Months Free
@@ -135,7 +136,7 @@ const CloudCredits = () => {
         <Card className="mb-16 bg-gradient-to-r from-primary/10 to-orange-400/10 border-border">
           <CardHeader className="text-center">
             <CardTitle className="text-3xl">Total Infrastructure Value</CardTitle>
-            <div className="text-5xl font-bold text-primary mt-4">$25,00,000+</div>
+            <div className="text-5xl font-bold text-primary mt-4"><Money usd={30000} compact />+</div>
             <CardDescription className="text-lg mt-2">
               Complete cloud infrastructure package for every MVP Lab participant
             </CardDescription>
@@ -153,7 +154,7 @@ const CloudCredits = () => {
                     <div className="text-3xl">{provider.logo}</div>
                     <div>
                       <CardTitle className="text-lg">{provider.name}</CardTitle>
-                      <div className="text-2xl font-bold text-primary">{provider.credits}</div>
+                      <div className="text-2xl font-bold text-primary"><Money usd={provider.creditsUsd} /></div>
                     </div>
                   </div>
                   <Badge variant="outline">{provider.duration}</Badge>
@@ -208,7 +209,7 @@ const CloudCredits = () => {
                       <div key={idx} className="p-3 bg-muted/5 rounded-lg">
                         <div className="flex items-center justify-between mb-1">
                           <h4 className="font-medium text-sm">{tool.name}</h4>
-                          <Badge variant="outline" className="text-xs">{tool.value}</Badge>
+                           <Badge variant="outline" className="text-xs"><Money usd={tool.valueUsd} /></Badge>
                         </div>
                         <p className="text-xs text-muted-foreground">{tool.description}</p>
                       </div>
@@ -286,7 +287,7 @@ const CloudCredits = () => {
         <section className="text-center py-16 bg-gradient-to-r from-primary/10 to-orange-400/10 rounded-3xl">
           <h2 className="text-3xl font-bold mb-4">Ready to Build on Enterprise Infrastructure?</h2>
           <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join MVP Lab today and get instant access to $30K+ worth of cloud credits and development tools.
+             Join MVP Lab today and get access to more than <Money usd={30000} compact /> in cloud credits and development tools.
           </p>
           <div className="flex justify-center space-x-4">
             <Button size="lg" className="bg-gradient-to-r from-primary to-orange-400 hover:shadow-orange-glow">

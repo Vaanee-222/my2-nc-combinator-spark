@@ -14,6 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { GLOBAL_STARTUPS, COUNTRIES, REGIONS, type StartupSeed } from "@/data/globalStartups";
 import { trackEvent } from "@/lib/analytics";
 import { StatefulCTA } from "@/components/StatefulCTA";
+import { PLATFORM_STAT_LABELS } from "@/lib/platformStats";
 
 type StartupRow = StartupSeed & { id?: string };
 
@@ -82,10 +83,10 @@ const StartupDirectory = () => {
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
           {[
-            { title: "Total Startups", value: `${all.length}+`, sub: `Across ${sectors.length - 1}+ sectors`, Icon: Building2 },
-            { title: "Active Founders", value: "5,200+", sub: "Building globally", Icon: Users },
-            { title: "Total Funding", value: "$42B+", sub: "Raised collectively", Icon: TrendingUp },
-            { title: "Countries", value: `${countries.length - 1}+`, sub: "Around the world", Icon: Globe2 },
+            { title: "Listed Startups", value: String(all.length), sub: `Across ${sectors.length - 1} sectors`, Icon: Building2 },
+            { title: "Startups Accelerated", value: PLATFORM_STAT_LABELS.startupsAccelerated, sub: "Across platform programs", Icon: Users },
+            { title: "Total Funding", value: PLATFORM_STAT_LABELS.totalFundingRaised, sub: "Raised across the platform", Icon: TrendingUp },
+            { title: "Countries", value: PLATFORM_STAT_LABELS.countriesRepresented, sub: "Represented across the platform", Icon: Globe2 },
           ].map((s, i) => (
             <Card key={i}>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
