@@ -129,7 +129,7 @@ const AppRoutes = () => {
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/hackathon" element={<Hackathon />} />
               <Route path="/hackathon/:id" element={<HackathonDetail />} />
-              <Route path="/hackathon-detail/:id" element={<HackathonDetail />} />
+              <Route path="/hackathon-detail/:id" element={<Navigate to="/hackathon/1" replace />} />
               <Route path="/incubation" element={<Incubation />} />
               <Route path="/mvp-lab" element={<MVPLab />} />
               <Route path="/xi-lab" element={<INCLab />} />
@@ -162,7 +162,7 @@ const AppRoutes = () => {
               <Route path="/current-cohort" element={<CurrentCohort />} />
               <Route path="/featured-startups" element={<FeaturedStartups />} />
               <Route path="/philosophy" element={<Philosophy />} />
-              <Route path="/all-applications" element={<AllApplications />} />
+              <Route path="/all-applications" element={<ProtectedRoute allowedRoles={["admin"]}><AllApplications /></ProtectedRoute>} />
               <Route path="/program-details" element={<ProgramDetails />} />
               <Route path="/consultation-booking" element={<ConsultationBooking />} />
               <Route path="/success-stories" element={<SuccessStories />} />
@@ -172,7 +172,7 @@ const AppRoutes = () => {
               <Route path="/grants-funding" element={<GrantsFunding />} />
               <Route path="/subscription" element={<Subscription />} />
               <Route path="/startup-advisor" element={<AIAgents />} />
-              <Route path="/messages" element={<Messages />} />
+              <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
 
               {/* Protected dashboard routes */}
               <Route path="/admin-dashboard" element={<ProtectedRoute allowedRoles={["admin"]}><AdminDashboard /></ProtectedRoute>} />

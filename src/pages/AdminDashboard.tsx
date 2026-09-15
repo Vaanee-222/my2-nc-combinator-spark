@@ -158,7 +158,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState(getInitialAdminTab);
 
-  const isAdmin = userRole === "admin" || !userRole;
+  const isAdmin = userRole === "admin";
   const allowedTabs = isAdmin ? adminTabValues : ROLE_TAB_ACCESS[userRole ?? ""] ?? ["overview"];
   const visibleGroups = adminMenuGroups
     .map((group) => ({ ...group, items: group.items.filter((i) => allowedTabs.includes(i.value)) }))

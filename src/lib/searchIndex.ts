@@ -25,6 +25,7 @@ export const searchIndex: SearchEntry[] = [
   { title: "Investor Centre", path: "/investor-centre", description: "Connect with active investors.", keywords: ["investor", "vc", "angel", "funding"], category: "Community" },
   { title: "Meet Co-founder", path: "/meet-cofounder", description: "Find your co-founder.", keywords: ["cofounder", "co-founder", "team"], category: "Community" },
   { title: "Become a Mentor", path: "/become-mentor", description: "Join the mentor network.", keywords: ["mentor", "advisor"], category: "Community" },
+  { title: "Community Leaderboard", path: "/leaderboard", description: "See this month's leading startups, mentors and co-founders.", keywords: ["leaderboard", "ranking", "points", "badges"], category: "Community" },
   { title: "Partners", path: "/partners", description: "Our global ecosystem partners.", keywords: ["partners", "partner", "ecosystem"], category: "Community" },
   { title: "Partnership", path: "/partnership", description: "Become a strategic partner.", keywords: ["partnership", "collaborate"], category: "Community" },
 
@@ -39,6 +40,7 @@ export const searchIndex: SearchEntry[] = [
   { title: "Startup Advisor (AI)", path: "/startup-advisor", description: "AI-powered startup advisory agents.", keywords: ["ai", "advisor", "chatgpt", "assistant"], category: "Resources" },
   { title: "Philosophy", path: "/philosophy", description: "Our investment and operating philosophy.", keywords: ["philosophy", "values"], category: "Resources" },
   { title: "Program Details", path: "/program-details", description: "Detailed breakdown of our programs.", keywords: ["program", "details"], category: "Resources" },
+  { title: "Program Requirements", path: "/requirements", description: "Review eligibility and requirements for Xi Combinator programs.", keywords: ["requirements", "eligibility", "apply"], category: "Resources" },
 
   // Company
   { title: "About Us", path: "/about", description: "Learn about Xi Combinator.", keywords: ["about", "team", "company"], category: "Company" },
