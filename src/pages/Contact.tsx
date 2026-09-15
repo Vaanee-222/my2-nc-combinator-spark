@@ -13,6 +13,18 @@ import { MapPin, Phone, Mail, Clock, Building2, ExternalLink } from "lucide-reac
 import ConsultationDialog from "@/components/ConsultationDialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { z } from "zod";
+
+const contactSchema = z.object({
+  firstName: z.string().trim().min(1, "First name is required.").max(80, "First name is too long."),
+  lastName: z.string().trim().max(80, "Last name is too long."),
+  email: z.string().trim().email("Enter a valid email address.").max(255, "Email is too long."),
+  phone: z.string().trim().max(40, "Phone number is too long."),
+  company: z.string().trim().max(120, "Company name is too long."),
+  inquiryType: z.string().trim().max(60),
+  subject: z.string().trim().min(1, "Subject is required.").max(160, "Subject is too long."),
+  message: z.string().trim().min(1, "Message is required.").max(3000, "Message must be 3,000 characters or fewer."),
+});
 
 const emptyForm = {
   firstName: "",
@@ -33,19 +45,20 @@ const Contact = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.firstName.trim() || !form.email.trim() || !form.subject.trim() || !form.message.trim()) {
-      toast({ title: "Missing details", description: "Name, email, subject and message are required.", variant: "destructive" });
+    const result = contactSchema.safeParse(form);
+    if (!result.success) {
+      toast({ title: "Check your details", description: result.error.issues[0]?.message ?? "Please correct the form.", variant: "destructive" });
       return;
     }
     setSubmitting(true);
     const { data: auth } = await supabase.auth.getUser();
     const { error } = await supabase.from("contact_messages").insert({
       user_id: auth?.user?.id ?? null,
-      name: `${form.firstName} ${form.lastName}`.trim(),
-      email: form.email.trim().toLowerCase(),
-      phone: form.phone || null,
-      subject: [form.inquiryType, form.subject].filter(Boolean).join(" · "),
-      message: [form.company ? `Company: ${form.company}` : "", form.message].filter(Boolean).join("\n\n"),
+      name: `${result.data.firstName} ${result.data.lastName}`.trim(),
+      email: result.data.email.toLowerCase(),
+      phone: result.data.phone || null,
+      subject: [result.data.inquiryType, result.data.subject].filter(Boolean).join(" · "),
+      message: [result.data.company ? `Company: ${result.data.company}` : "", result.data.message].filter(Boolean).join("\n\n"),
     });
     setSubmitting(false);
     if (error) {

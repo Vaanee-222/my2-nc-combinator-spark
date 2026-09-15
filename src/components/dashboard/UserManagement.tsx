@@ -106,11 +106,9 @@ const UserManagement = () => {
     if (userIds.length === 0) return;
     const selfIncluded = userIds.includes(user?.id || "");
     if (selfIncluded) return toast({ title: "You cannot delete your own profile", variant: "destructive" });
-    await supabase.from("user_roles").delete().in("user_id", userIds);
-    const { error } = await supabase.from("profiles").delete().in("user_id", userIds);
-    if (error) return toast({ title: "Delete failed", description: error.message, variant: "destructive" });
-    logAudit({ action: userIds.length > 1 ? "bulk_delete" : "delete", table: "profiles", details: { count: userIds.length, user_ids: userIds } });
-    toast({ title: `${userIds.length} user(s) deleted` });
+    const { data, error } = await supabase.functions.invoke("delete-user", { body: { userIds } });
+    if (error || data?.error) return toast({ title: "Delete failed", description: data?.error ?? error?.message, variant: "destructive" });
+    toast({ title: `${data?.deleted?.length ?? userIds.length} user(s) deleted` });
     setSelected(new Set());
     fetchData();
   };

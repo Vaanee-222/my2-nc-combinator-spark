@@ -145,15 +145,17 @@ const Navigation = () => {
           {/* Mobile toggle */}
           <div className="lg:hidden flex items-center gap-1">
             <GlobalSearch />
-            <button
-              className="p-2 rounded-lg hover:bg-muted/50 transition-colors"
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
               onClick={() => setIsOpen(!isOpen)}
               aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
               aria-expanded={isOpen}
               aria-controls="mobile-nav"
             >
               {isOpen ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -173,6 +175,13 @@ const Navigation = () => {
               </Link>
             ))}
             <div className="border-t border-border/50 my-2 pt-2" />
+
+            <div className="flex items-center gap-2 px-3 py-2">
+              <CurrencySelector />
+              <ApplicationDialog>
+                <Button variant="hero" size="sm" className="flex-1">Apply Now</Button>
+              </ApplicationDialog>
+            </div>
 
             <div className="border-t border-border/50 pt-3 flex flex-col gap-2">
               {user ? (

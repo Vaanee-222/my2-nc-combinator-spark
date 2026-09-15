@@ -14,6 +14,7 @@ import { ShieldCheck, Plus, Trash2, Undo2, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { logAudit } from "@/lib/audit";
+import { useAuth } from "@/contexts/AuthContext";
 
 const ROLES = ["admin", "startup", "investor", "mentor", "cofounder"] as const;
 type AppRole = typeof ROLES[number];
@@ -34,6 +35,7 @@ const roleBadge = (role: string) => {
 
 const RoleManagement = () => {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [roles, setRoles] = useState<RoleRow[]>([]);
   const [profiles, setProfiles] = useState<ProfileRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -148,6 +150,18 @@ const RoleManagement = () => {
 
   const revokeRole = async () => {
     if (!revokeTarget) return;
+    const adminCount = roles.filter((row) => row.role === "admin").length;
+    if (revokeTarget.role === "admin" && (revokeTarget.user_id === user?.id || adminCount <= 1)) {
+      toast({
+        title: "Admin role protected",
+        description: revokeTarget.user_id === user?.id
+          ? "You cannot revoke your own administrator role."
+          : "At least one administrator must remain.",
+        variant: "destructive",
+      });
+      setRevokeTarget(null);
+      return;
+    }
     const snapshot = { ...revokeTarget };
     const { error } = await supabase.from("user_roles").delete().eq("id", revokeTarget.id);
     if (error) {
@@ -245,6 +259,19 @@ const RoleManagement = () => {
     const ids = Array.from(selected);
     if (ids.length === 0) return;
     const snapshot = roles.filter((r) => selected.has(r.id));
+    const selectedAdminIds = new Set(snapshot.filter((row) => row.role === "admin").map((row) => row.user_id));
+    const adminCount = roles.filter((row) => row.role === "admin").length;
+    if (selectedAdminIds.has(user?.id ?? "") || adminCount - selectedAdminIds.size < 1) {
+      toast({
+        title: "Admin roles protected",
+        description: selectedAdminIds.has(user?.id ?? "")
+          ? "Your own administrator role cannot be included in a bulk revoke."
+          : "At least one administrator must remain.",
+        variant: "destructive",
+      });
+      setBulkRevokeOpen(false);
+      return;
+    }
 
     const { error } = await supabase.from("user_roles").delete().in("id", ids);
     if (error) {

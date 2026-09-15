@@ -54,7 +54,6 @@ const EXTRA_META: Record<string, { title: string; description: string }> = {
 /** Prefix-based fallbacks for dynamic detail routes. */
 const DYNAMIC_META: [string, { title: string; description: string }][] = [
   ["/hackathon/", { title: "Hackathon Details", description: "Details, prizes and registration for this Xi Combinator hackathon." }],
-  ["/hackathon-detail/", { title: "Hackathon Details", description: "Details, prizes and registration for this Xi Combinator hackathon." }],
   ["/partners/", { title: "Partner Profile", description: "Ecosystem partner profile and benefits for Xi Combinator startups." }],
   ["/blog/", { title: "Blog", description: "Insights and stories from the Xi Combinator community." }],
   ["/news/", { title: "News", description: "Latest announcements from Xi Combinator." }],
