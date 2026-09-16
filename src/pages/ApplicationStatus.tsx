@@ -70,8 +70,9 @@ const ApplicationStatusPage = () => {
   const updateStatus = async (id: string, status: Stage) => {
     const payload: any = { status, reviewed_at: new Date().toISOString() };
     if (reviewNotes[id]) payload.review_notes = reviewNotes[id];
-    const { error } = await supabase.from("applications").update(payload).eq("id", id);
+    const { data, error } = await supabase.from("applications").update(payload).eq("id", id).select("id").maybeSingle();
     if (error) return toast({ title: "Update failed", description: error.message, variant: "destructive" });
+    if (!data) return toast({ title: "Update failed", description: "No application was changed. Check your access and try again.", variant: "destructive" });
     toast({ title: `Marked as ${LABEL[status]}` });
     load();
   };

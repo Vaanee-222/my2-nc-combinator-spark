@@ -100,9 +100,10 @@ const MediaLibrary = ({ onSelect, compact, defaultFolder = "general" }: Props) =
 
   const remove = async (asset: MediaAsset) => {
     if (!confirm(`Delete ${asset.file_name}? Pages using this image will lose it.`)) return;
-    await supabase.storage.from(BUCKET).remove([asset.storage_path]);
+    const { error: storageError } = await supabase.storage.from(BUCKET).remove([asset.storage_path]);
+    if (storageError) return toast({ title: "Delete failed", description: `The stored file could not be removed: ${storageError.message}`, variant: "destructive" });
     const { error } = await (supabase as any).from("media_assets").delete().eq("id", asset.id);
-    if (error) return toast({ title: "Delete failed", description: error.message, variant: "destructive" });
+    if (error) return toast({ title: "File removed, library cleanup failed", description: error.message, variant: "destructive" });
     logAudit({ action: "delete", table: "media_assets", recordId: asset.id, details: { path: asset.storage_path } });
     toast({ title: "Deleted" });
     reload();
