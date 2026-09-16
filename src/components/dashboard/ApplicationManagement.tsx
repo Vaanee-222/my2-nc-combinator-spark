@@ -69,8 +69,9 @@ const ApplicationManagement = ({ applications, onRefresh }: ApplicationManagemen
   };
 
   const updateStatus = async (id: string, status: string) => {
-    const { error } = await supabase.from("applications").update({ status, reviewed_at: new Date().toISOString() }).eq("id", id);
+    const { data, error } = await supabase.from("applications").update({ status, reviewed_at: new Date().toISOString() }).eq("id", id).select("id").maybeSingle();
     if (error) return toast({ title: "Error", description: error.message, variant: "destructive" });
+    if (!data) return toast({ title: "Status not updated", description: "The application was not found or access was denied.", variant: "destructive" });
     logAudit({ action: "status_change", table: "applications", recordId: id, details: { status } });
     toast({ title: "Status Updated", description: `Marked as ${status}` });
     onRefresh();
@@ -93,11 +94,12 @@ const ApplicationManagement = ({ applications, onRefresh }: ApplicationManagemen
       reviewed_at: editing.review_notes ? new Date().toISOString() : editing.reviewed_at ?? null,
     };
     const isUpdate = !!editing.id;
-    const { error } = isUpdate
-      ? await supabase.from("applications").update(payload).eq("id", editing.id)
-      : await supabase.from("applications").insert(payload as any);
+    const { data, error } = isUpdate
+      ? await supabase.from("applications").update(payload).eq("id", editing.id).select("id").maybeSingle()
+      : await supabase.from("applications").insert(payload as any).select("id").maybeSingle();
     setBusy(false);
     if (error) return toast({ title: "Save failed", description: error.message, variant: "destructive" });
+    if (!data) return toast({ title: "Save failed", description: "No record was changed. Check your access and try again.", variant: "destructive" });
     logAudit({ action: isUpdate ? "update" : "create", table: "applications", recordId: editing.id || null, details: { program: editing.program, status: payload.status, has_notes: !!payload.review_notes } });
     if (isUpdate && editing.review_notes) logAudit({ action: "note", table: "applications", recordId: editing.id, details: { note: editing.review_notes } });
     toast({ title: isUpdate ? "Application updated" : "Application created" });
@@ -156,9 +158,10 @@ const ApplicationManagement = ({ applications, onRefresh }: ApplicationManagemen
     setBusy(true);
     const payload: any = { status: bulkStage, reviewed_at: new Date().toISOString() };
     if (bulkNotes.trim()) payload.review_notes = bulkNotes.trim();
-    const { error } = await supabase.from("applications").update(payload).in("id", ids);
+    const { data, error } = await supabase.from("applications").update(payload).in("id", ids).select("id");
     setBusy(false);
     if (error) return toast({ title: "Bulk update failed", description: error.message, variant: "destructive" });
+    if ((data?.length ?? 0) !== ids.length) return toast({ title: "Bulk update incomplete", description: `${data?.length ?? 0} of ${ids.length} applications were updated. Refresh and retry the remaining records.`, variant: "destructive" });
     logAudit({ action: "bulk_update", table: "applications", details: { count: ids.length, status: bulkStage, has_notes: !!bulkNotes.trim() } });
     if (bulkNotes.trim()) logAudit({ action: "note", table: "applications", details: { count: ids.length, note: bulkNotes.trim() } });
     toast({

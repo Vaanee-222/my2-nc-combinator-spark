@@ -499,8 +499,9 @@ const HackathonManagement = ({ registrations, onRefresh }: { registrations: any[
   const filtered = filter === "all" ? registrations : registrations.filter(r => r.status === filter);
 
   const updateStatus = async (id: string, status: string) => {
-    const { error } = await supabase.from("hackathon_registrations").update({ status }).eq("id", id);
+    const { data, error } = await supabase.from("hackathon_registrations").update({ status }).eq("id", id).select("id").maybeSingle();
     if (error) { toast({ title: "Error", description: error.message, variant: "destructive" }); return; }
+    if (!data) { toast({ title: "Status not updated", description: "The registration was not found or access was denied.", variant: "destructive" }); return; }
     toast({ title: "Status Updated", description: `Registration marked as ${status}` });
     onRefresh();
   };
@@ -573,8 +574,9 @@ const IncubationManagement = ({ applications, onRefresh }: { applications: any[]
   const filtered = filter === "all" ? applications : applications.filter(a => a.status === filter);
 
   const updateStatus = async (id: string, status: string) => {
-    const { error } = await supabase.from("incubation_applications").update({ status }).eq("id", id);
+    const { data, error } = await supabase.from("incubation_applications").update({ status }).eq("id", id).select("id").maybeSingle();
     if (error) { toast({ title: "Error", description: error.message, variant: "destructive" }); return; }
+    if (!data) { toast({ title: "Status not updated", description: "The application was not found or access was denied.", variant: "destructive" }); return; }
     toast({ title: "Status Updated", description: `Application marked as ${status}` });
     onRefresh();
   };

@@ -538,6 +538,11 @@ export const mediaApi = {
     }
   },
   async remove(id: string): Promise<ApiResult<true>> {
+    const { data: asset, error: lookupError } = await supabase.from("media_assets").select("storage_path").eq("id", id).maybeSingle();
+    if (lookupError) return fail(lookupError);
+    if (!asset) return fail(new Error("Media asset not found"));
+    const { error: storageError } = await supabase.storage.from("partner-logos").remove([asset.storage_path]);
+    if (storageError) return fail(storageError);
     const { error } = await supabase.from("media_assets").delete().eq("id", id);
     if (error) return fail(error);
     await auditApi.record("delete", "media_assets", id, {});

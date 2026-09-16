@@ -88,8 +88,9 @@ const AdminWorkflow = () => {
     if (!createdApp) return;
     const payload: any = { status: stage, reviewed_at: new Date().toISOString() };
     if (notes.trim()) payload.review_notes = notes.trim();
-    const { error } = await supabase.from("applications").update(payload).eq("id", createdApp.id);
+    const { data, error } = await supabase.from("applications").update(payload).eq("id", createdApp.id).select("id").maybeSingle();
     if (error) return toast({ title: "Update failed", description: error.message, variant: "destructive" });
+    if (!data) return toast({ title: "Update failed", description: "No application was changed. Check your access and try again.", variant: "destructive" });
     logAudit({ action: "status_change", table: "applications", recordId: createdApp.id, details: { stage, notes: notes || null } });
     if (notes.trim()) logAudit({ action: "note", table: "applications", recordId: createdApp.id, details: { note: notes.trim() } });
     toast({ title: "Stage updated", description: `Marked as ${stage}` });

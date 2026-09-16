@@ -27,12 +27,15 @@ DASHBOARDS = [
     "/cofounder-dashboard",
     "/user-dashboard",
     "/admin-workflow",
+    "/all-applications",
+    "/messages",
+    "/application-status",
 ]
 
 PUBLIC_ROUTES = [
     "/", "/about-us", "/mvp-lab", "/incubation", "/hackathon",
     "/startup-directory", "/investor-centre", "/partners", "/partnership",
-    "/blogs", "/news", "/login", "/register", "/application-status",
+    "/blogs", "/news", "/login", "/register", "/leaderboard", "/requirements",
 ]
 
 BROKEN = "/this-route-should-not-exist-xyz"

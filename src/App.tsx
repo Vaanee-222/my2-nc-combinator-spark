@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { lazy, Suspense } from "react";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -100,6 +100,11 @@ const PageLoader = () => (
   </div>
 );
 
+const LegacyHackathonRedirect = () => {
+  const { id } = useParams();
+  return <Navigate to={`/hackathon/${encodeURIComponent(id ?? "1")}`} replace />;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -129,7 +134,7 @@ const AppRoutes = () => {
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/hackathon" element={<Hackathon />} />
               <Route path="/hackathon/:id" element={<HackathonDetail />} />
-              <Route path="/hackathon-detail/:id" element={<Navigate to="/hackathon/1" replace />} />
+              <Route path="/hackathon-detail/:id" element={<LegacyHackathonRedirect />} />
               <Route path="/incubation" element={<Incubation />} />
               <Route path="/mvp-lab" element={<MVPLab />} />
               <Route path="/xi-lab" element={<INCLab />} />

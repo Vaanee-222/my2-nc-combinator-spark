@@ -26,6 +26,18 @@ describe("searchIndex data integrity", () => {
     const dead = searchIndex.map((e) => e.path).filter((p) => !declaredRoutes.has(p));
     expect(dead, `dead search paths: ${dead.join(", ")}`).toEqual([]);
   });
+
+  it("TC-SI-04 indexes every public static content route", () => {
+    const excluded = new Set([
+      "/", "/forgot-password", "/reset-password", "/inclab", "/hackathon-detail/:id",
+      "/application-status", "/all-applications", "/messages", "/admin-dashboard",
+      "/admin-workflow", "/startup-dashboard", "/investor-dashboard", "/mentor-dashboard",
+      "/cofounder-dashboard", "/user-dashboard", "*",
+    ]);
+    const dynamic = (route: string) => route.includes(":");
+    const missing = [...declaredRoutes].filter((route) => !excluded.has(route) && !dynamic(route) && !searchIndex.some((entry) => entry.path === route));
+    expect(missing, `public routes missing from search: ${missing.join(", ")}`).toEqual([]);
+  });
 });
 
 describe("searchEntries ranking", () => {
