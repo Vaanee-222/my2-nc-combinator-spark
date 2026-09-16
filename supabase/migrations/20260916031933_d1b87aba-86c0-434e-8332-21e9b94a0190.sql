@@ -1,0 +1,1 @@
+ALTER FUNCTION public.admin_replace_user_role(uuid, public.app_role) SECURITY INVOKER;
