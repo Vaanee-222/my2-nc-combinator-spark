@@ -2447,6 +2447,24 @@ export type Database = {
           user_id: string
         }[]
       }
+      admin_replace_user_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "user_roles"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       admin_void_point_event: { Args: { _event_id: string }; Returns: string }
       award_points: {
         Args: {
