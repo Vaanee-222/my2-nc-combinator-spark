@@ -5,7 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { BarChart3, BookOpen, Building2, ClipboardList, Code2, FlaskConical, Handshake, HeartPulse, LayoutDashboard, Mail, Newspaper, Rocket, Search, Settings, ShieldCheck, SlidersHorizontal, Trophy, Globe, UserCog, Users, ChevronLeft, ChevronRight, ScrollText, Workflow, Image as ImageIcon, CalendarClock, HandCoins, Cloud, Tag, Inbox } from "lucide-react";
+import { BarChart3, BookOpen, Building2, ClipboardList, Code2, FlaskConical, Handshake, HeartPulse, LayoutDashboard, Mail, Menu, Newspaper, Rocket, Search, Settings, ShieldCheck, SlidersHorizontal, Trophy, Globe, UserCog, Users, ChevronLeft, ChevronRight, ScrollText, Workflow, Image as ImageIcon, CalendarClock, HandCoins, Cloud, Tag, Inbox } from "lucide-react";
+import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import AdminOverview from "@/components/dashboard/AdminOverview";
@@ -157,9 +158,10 @@ const AdminDashboard = () => {
   const [profiles, setProfiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState(getInitialAdminTab);
+  const [savedAllowedTabs, setSavedAllowedTabs] = useState<string[] | null>(null);
 
   const isAdmin = userRole === "admin";
-  const allowedTabs = isAdmin ? adminTabValues : ROLE_TAB_ACCESS[userRole ?? ""] ?? ["overview"];
+  const allowedTabs = isAdmin ? adminTabValues : savedAllowedTabs ?? ROLE_TAB_ACCESS[userRole ?? ""] ?? ["overview"];
   const visibleGroups = adminMenuGroups
     .map((group) => ({ ...group, items: group.items.filter((i) => allowedTabs.includes(i.value)) }))
     .filter((group) => group.items.length > 0);
@@ -168,6 +170,18 @@ const AdminDashboard = () => {
     if (!allowedTabs.includes(activeTab)) setActiveTab(allowedTabs[0] ?? DEFAULT_ADMIN_TAB);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userRole]);
+
+  useEffect(() => {
+    if (!userRole || isAdmin) return;
+    const loadPermissions = async () => {
+      const { data } = await (supabase.from("admin_tab_permissions" as any) as any)
+        .select("tab_key")
+        .eq("role", userRole)
+        .eq("is_allowed", true);
+      if (data) setSavedAllowedTabs(data.map((row: any) => row.tab_key));
+    };
+    loadPermissions();
+  }, [isAdmin, userRole]);
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
@@ -218,7 +232,29 @@ const AdminDashboard = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={handleTabChange} className={`grid gap-6 ${collapsed ? "lg:grid-cols-[72px_minmax(0,1fr)]" : "lg:grid-cols-[260px_minmax(0,1fr)]"}`}>
-          <aside className="lg:sticky lg:top-24 lg:self-start">
+          <div className="lg:hidden">
+            <Sheet>
+              <SheetTrigger asChild><Button variant="outline"><Menu className="mr-2 h-4 w-4" /> Dashboard menu</Button></SheetTrigger>
+              <SheetContent side="left" className="w-[300px] overflow-y-auto">
+                <SheetHeader><SheetTitle>Dashboard sections</SheetTitle></SheetHeader>
+                <div className="mt-6 space-y-5">
+                  {visibleGroups.map((group) => (
+                    <div key={group.label} className="space-y-2">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{group.label}</p>
+                      {group.items.map(({ value, label, icon: Icon }) => (
+                        <SheetClose asChild key={value}>
+                          <Button variant={activeTab === value ? "default" : "ghost"} className="w-full justify-start" onClick={() => handleTabChange(value)}>
+                            <Icon className="mr-2 h-4 w-4" />{label}
+                          </Button>
+                        </SheetClose>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+          <aside className="hidden lg:block lg:sticky lg:top-24 lg:self-start">
             <div className="flex justify-end mb-2">
               <Button variant="ghost" size="icon" onClick={() => setCollapsed((c) => !c)} title={collapsed ? "Expand sidebar" : "Collapse sidebar"}>
                 {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
