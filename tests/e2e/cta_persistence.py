@@ -54,9 +54,9 @@ async def test_investor_centre_intros(page):
     await page.goto(url, wait_until="domcontentloaded")
     await clear_cta_state(page)
     await page.goto(url, wait_until="domcontentloaded")
-    intro = page.get_by_role("button", name="Get Introduction").first
-    await expect(intro).to_be_visible(timeout=10000)
-    await intro.click()
+    connect = page.get_by_role("button", name="Connect", exact=True).first
+    await expect(connect).to_be_visible(timeout=10000)
+    await connect.click()
     sent = page.get_by_role("button", name="Request Sent").first
     await assert_persists_after_reload(page, url, sent, "investor_intro")
     print("OK: Investor Centre Get Introduction persists")

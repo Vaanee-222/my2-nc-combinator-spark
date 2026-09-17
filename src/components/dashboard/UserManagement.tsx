@@ -69,10 +69,12 @@ const UserManagement = () => {
       return toast({ title: "Profile update failed", description: profileRes.error.message, variant: "destructive" });
     }
     const validRole = ["admin", "startup", "investor", "mentor", "cofounder"].includes(editing.role) ? editing.role : "startup";
-    const deleteRes = await supabase.from("user_roles").delete().eq("user_id", editing.user_id);
-    const insertRes = deleteRes.error ? deleteRes : await supabase.from("user_roles").insert({ user_id: editing.user_id, role: validRole as any });
+    const { error: roleError } = await (supabase.rpc as any)("admin_replace_user_role", {
+      _user_id: editing.user_id,
+      _role: validRole,
+    });
     setSaving(false);
-    if (insertRes.error) return toast({ title: "Role update failed", description: insertRes.error.message, variant: "destructive" });
+    if (roleError) return toast({ title: "Role update failed", description: roleError.message, variant: "destructive" });
     logAudit({ action: "update", table: "profiles", recordId: editing.user_id, details: { role: validRole, full_name: editing.full_name } });
     toast({ title: "User updated" });
     setEditing(null);
