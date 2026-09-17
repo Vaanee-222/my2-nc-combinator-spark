@@ -47,6 +47,33 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_tab_permissions: {
+        Row: {
+          created_at: string
+          id: string
+          is_allowed: boolean
+          role: Database["public"]["Enums"]["app_role"]
+          tab_key: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_allowed?: boolean
+          role: Database["public"]["Enums"]["app_role"]
+          tab_key: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_allowed?: boolean
+          role?: Database["public"]["Enums"]["app_role"]
+          tab_key?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       advisors: {
         Row: {
           avatar_url: string | null
