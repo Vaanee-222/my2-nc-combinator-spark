@@ -154,7 +154,6 @@ const ACLManagement = () => {
                         <TableCell key={r.value} className="text-center">
                           <Switch
                             checked={p[r.value]}
-                            disabled={r.value === "admin"}
                             onCheckedChange={() => togglePermission(p.feature, r.value)}
                           />
                         </TableCell>
